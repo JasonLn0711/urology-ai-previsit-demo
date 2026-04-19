@@ -1,0 +1,47 @@
+[
+  {
+    "id": "synthetic-frequency-older-adult",
+    "label": "Synthetic case: frequent urination at night",
+    "answers": {
+      "entryMode": "patient",
+      "symptomCategory": "Frequency or urgency",
+      "duration": "More than 1 month",
+      "severity": "Moderate",
+      "frequencyDay": "9 to 12 times",
+      "nocturia": "3 or more times",
+      "leak": "No",
+      "painBurning": "No",
+      "blood": "No",
+      "fever": "No",
+      "unableToUrinate": "No",
+      "medications": "Blood pressure medicine; exact name unknown",
+      "language": "Mandarin with Taiwanese preferred",
+      "phoneComfort": "Needs large buttons",
+      "supportNeeds": "May need nurse help reviewing answers",
+      "notes": "Patient worries about waking up repeatedly at night."
+    }
+  },
+  {
+    "id": "synthetic-emptying-difficulty",
+    "label": "Synthetic case: difficulty emptying bladder",
+    "answers": {
+      "entryMode": "nurse",
+      "symptomCategory": "Difficulty emptying",
+      "duration": "1 to 4 weeks",
+      "severity": "Severe",
+      "frequencyDay": "5 to 8 times",
+      "nocturia": "1 to 2 times",
+      "leak": "No",
+      "painBurning": "No",
+      "blood": "No",
+      "fever": "No",
+      "unableToUrinate": "Yes",
+      "medications": "Synthetic medication list not provided",
+      "language": "Mandarin",
+      "phoneComfort": "Can use phone with help",
+      "supportNeeds": "Nurse-assisted mode",
+      "notes": "Patient says flow is weak and sometimes cannot start."
+    }
+  }
+]
+

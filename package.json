@@ -1,0 +1,18 @@
+{
+  "name": "urology-ai-previsit-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Static browser MVP for a synthetic-data urology AI previsit discovery demo.",
+  "scripts": {
+    "start": "python3 -m http.server 4173",
+    "test": "node --test"
+  },
+  "keywords": [
+    "urology",
+    "previsit",
+    "health-literacy",
+    "synthetic-data"
+  ],
+  "license": "UNLICENSED"
+}
+

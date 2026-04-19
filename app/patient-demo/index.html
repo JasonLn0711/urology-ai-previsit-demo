@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Urology AI Previsit Demo</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="topbar" aria-label="Demo header">
+      <a class="brand" href="./index.html" aria-label="Urology AI Previsit Demo home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Urology AI Previsit</span>
+      </a>
+      <nav class="nav-actions" aria-label="Demo actions">
+        <button class="ghost-button" id="loadSample" type="button">Load Sample</button>
+        <button class="ghost-button" id="resetDemo" type="button">Reset</button>
+        <a class="ghost-button link-button" href="../clinician-summary/">Summary View</a>
+      </nav>
+    </header>
+
+    <main class="workspace">
+      <section class="patient-surface" aria-labelledby="patient-title">
+        <div class="patient-intro">
+          <div>
+            <p class="eyebrow">Synthetic data only</p>
+            <h1 id="patient-title">Guided urology previsit check-in</h1>
+            <p class="lead">
+              Answer a few patient-friendly questions, review them, then hand a short summary to the clinician.
+            </p>
+          </div>
+          <figure class="flow-figure">
+            <img src="../../assets/bladder-flow.svg" alt="Check-in to guided questions to review to summary">
+          </figure>
+        </div>
+
+        <div class="safety-strip" role="note" aria-label="Safety boundaries">
+          <span>This demo does not diagnose or recommend treatment.</span>
+          <span>A clinician must review all information.</span>
+          <span>Use synthetic data only.</span>
+        </div>
+
+        <div class="progress-shell" aria-label="Progress">
+          <div class="progress-track">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+          <p id="progressText">Step 1 of 6</p>
+        </div>
+
+        <form id="previsitForm" class="question-flow">
+          <div id="stepMount"></div>
+          <div class="flow-actions">
+            <button class="secondary-button" id="backButton" type="button">Back</button>
+            <button class="primary-button" id="nextButton" type="button">Next</button>
+          </div>
+        </form>
+      </section>
+
+      <aside class="summary-surface" aria-labelledby="summary-title">
+        <div class="summary-heading">
+          <p class="eyebrow">Clinician review</p>
+          <h2 id="summary-title">Previsit summary</h2>
+        </div>
+        <div id="summaryMount" class="summary-body" aria-live="polite"></div>
+        <div class="summary-actions">
+          <button class="secondary-button" id="printSummary" type="button">Print Summary</button>
+        </div>
+      </aside>
+    </main>
+
+    <script src="../shared/summary.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
+

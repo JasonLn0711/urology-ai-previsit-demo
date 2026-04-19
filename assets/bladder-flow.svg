@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 420" role="img" aria-labelledby="title desc">
+  <title id="title">Guided urology previsit flow</title>
+  <desc id="desc">A simple abstract bladder and workflow path showing patient check-in, guided questions, review, and clinician summary.</desc>
+  <rect width="680" height="420" rx="0" fill="#f5f7f2"/>
+  <path d="M80 76C132 34 211 31 261 82c48 49 34 132 80 173 47-41 32-124 80-173 50-51 129-48 181-6 45 37 55 108 20 169-43 75-129 108-207 95-26-4-50-15-74-31-24 16-48 27-74 31-78 13-164-20-207-95-35-61-25-132 20-169z" fill="#dfe8da"/>
+  <path d="M341 115c30 0 57 25 57 59 0 40-25 71-42 97-8 13-22 13-30 0-17-26-42-57-42-97 0-34 27-59 57-59z" fill="#6c8f7b"/>
+  <path d="M341 264v57" stroke="#6c8f7b" stroke-width="12" stroke-linecap="round"/>
+  <path d="M304 324c18 20 56 20 74 0" fill="none" stroke="#6c8f7b" stroke-width="12" stroke-linecap="round"/>
+  <g fill="#12322a" font-family="Arial, sans-serif" font-size="18" font-weight="700">
+    <text x="70" y="362">Check in</text>
+    <text x="220" y="362">Guided questions</text>
+    <text x="415" y="362">Review</text>
+    <text x="538" y="362">Summary</text>
+  </g>
+  <g fill="none" stroke="#12322a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M145 356h52"/>
+    <path d="M190 348l10 8-10 8"/>
+    <path d="M370 356h36"/>
+    <path d="M399 348l10 8-10 8"/>
+    <path d="M480 356h45"/>
+    <path d="M518 348l10 8-10 8"/>
+  </g>
+  <g fill="#ffffff" stroke="#6c8f7b" stroke-width="3">
+    <circle cx="107" cy="356" r="22"/>
+    <circle cx="293" cy="356" r="22"/>
+    <circle cx="447" cy="356" r="22"/>
+    <circle cx="579" cy="356" r="22"/>
+  </g>
+  <g fill="#12322a" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle">
+    <text x="107" y="362">1</text>
+    <text x="293" y="362">2</text>
+    <text x="447" y="362">3</text>
+    <text x="579" y="362">4</text>
+  </g>
+</svg>
+

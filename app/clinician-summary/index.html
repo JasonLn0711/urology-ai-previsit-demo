@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clinician Summary Sample</title>
+    <link rel="stylesheet" href="../patient-demo/styles.css">
+  </head>
+  <body>
+    <header class="topbar" aria-label="Demo header">
+      <a class="brand" href="../patient-demo/">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Urology AI Previsit</span>
+      </a>
+      <nav class="nav-actions" aria-label="Demo actions">
+        <a class="ghost-button link-button" href="../patient-demo/">Patient Demo</a>
+      </nav>
+    </header>
+
+    <main class="workspace">
+      <section class="patient-surface" aria-labelledby="sample-title">
+        <div class="patient-intro">
+          <div>
+            <p class="eyebrow">Synthetic summary</p>
+            <h1 id="sample-title">Clinician review sample</h1>
+            <p class="lead">
+              A one-page summary generated from synthetic patient answers.
+            </p>
+          </div>
+          <figure class="flow-figure">
+            <img src="../../assets/bladder-flow.svg" alt="Check-in to guided questions to review to summary">
+          </figure>
+        </div>
+      </section>
+
+      <aside class="summary-surface" aria-labelledby="summary-title">
+        <div class="summary-heading">
+          <p class="eyebrow">Clinician review</p>
+          <h2 id="summary-title">Synthetic case summary</h2>
+        </div>
+        <pre id="summaryText" class="summary-body"></pre>
+      </aside>
+    </main>
+
+    <script src="../shared/summary.js"></script>
+    <script>
+      const sample = {
+        symptomCategory: "Difficulty emptying",
+        duration: "1 to 4 weeks",
+        severity: "Severe",
+        frequencyDay: "5 to 8 times",
+        nocturia: "1 to 2 times",
+        leak: "No",
+        painBurning: "No",
+        blood: "No",
+        fever: "No",
+        unableToUrinate: "Yes",
+        medications: "Synthetic medication list not provided",
+        language: "Mandarin",
+        phoneComfort: "Can use phone with help",
+        supportNeeds: "Nurse-assisted mode",
+        notes: "Patient says flow is weak and sometimes cannot start."
+      };
+      const summary = window.UrologyPrevisit.buildClinicianSummary(sample);
+      document.querySelector("#summaryText").textContent = window.UrologyPrevisit.summaryToText(summary);
+    </script>
+  </body>
+</html>
+
