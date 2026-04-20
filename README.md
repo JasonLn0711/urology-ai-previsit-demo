@@ -62,4 +62,6 @@ npm run samples
 
 This repository owns the implementation: app code, UI, synthetic cases, tests, and demo documentation.
 
-The planning repository keeps source links, meeting notes, decisions, and knowledge-locator files only.
+The sibling thinking repository, `../urology-ai-previsit-thinking-spec`, owns system logic, clinical question governance, evidence mapping, and reviewer decision records.
+
+The planning repository keeps planning notes, meeting notes, decisions, and knowledge-locator files only.

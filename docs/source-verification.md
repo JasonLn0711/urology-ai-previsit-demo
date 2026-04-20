@@ -1,42 +1,51 @@
-# Source Verification
+# Demo Source Trace
 
-This demo is grounded in current public guidance and patient-safety principles. The sources below are used to justify question groups, workflow boundaries, and safety constraints.
+This file is a lightweight source trace for the static demo.
 
-## Clinical / Urology Intake
+It is not the canonical clinical evidence map. Detailed clinical question governance lives in the sibling thinking repository:
 
-- NIDDK bladder-control diagnosis: medical history, physical exam, bladder diary, labs, and diagnostic tests are part of finding causes of bladder-control problems.
-  - https://www.niddk.nih.gov/health-information/urologic-diseases/bladder-control-problems/diagnosis
-- NIDDK daily bladder diary: captures drinks, bathroom trips, leaks, urgency, and activity context.
-  - https://www.niddk.nih.gov/-/media/CFF38717ADB04D14B079828A52422A35.ashx
-- eCQI IPSS/AUA-SI measure: urinary symptom scores are used as patient-based urology measures for BPH/LUTS follow-up.
-  - https://ecqi.healthit.gov/ecqm/ec/2024/cms0771v5
+`../urology-ai-previsit-thinking-spec/clinical-question-governance/source_evidence_map.md`
 
-## Patient-Friendly Communication
+## Clinical Question Governance Source Of Truth
 
-- AHRQ Health Literacy Universal Precautions Toolkit: simplify communication, confirm understanding, and support navigation.
-  - https://www.ahrq.gov/health-literacy/improve/precautions/index.html
-- CDC health-literacy communication strategies: open-ended questions, plain language, and confirmation of understanding improve patient communication.
+Use the thinking repository for decisions about which patient questions belong in core MVP, conditional modules, nurse-assisted completion, or clinician-only workflows.
+
+The governance pack maps conclusions to sources such as:
+
+- AUA/SUFU overactive bladder guidance
+- AUA/SUFU microhematuria guidance
+- AUA/CUA/SUFU recurrent urinary tract infection guidance
+- AUA LUTS/BPH guidance
+- NICE LUTS and urinary incontinence guidance
+- ICS bladder diary / frequency-volume chart terminology
+- ICIQ urinary incontinence and bladder diary modules
+
+## Demo-Level Usability And Safety Sources
+
+These sources support demo communication, usability, accessibility, privacy, and safety boundaries:
+
+- CDC health-literacy communication strategies: clear communication, plain language, and support for patients with different literacy needs.
   - https://www.cdc.gov/health-literacy/php/research-summaries/communication-strategies.html
+- AHRQ Health Literacy Universal Precautions Toolkit: simplify communication, confirm understanding, and support patient navigation.
+  - https://www.ahrq.gov/health-literacy/improve/precautions/index.html
 - HHS Health Literacy Online user-friendly forms: short steps, minimal information, and easy scanning.
   - https://odphp.health.gov/healthliteracyonline/create-actionable-content/ensure-forms-are-user-friendly
-
-## Human Factors / Accessibility / Safety
-
-- FDA human factors and medical devices: user-device interfaces should reduce use-related hazards and support safe, effective use.
+- FDA human factors and medical devices: user interfaces should reduce use-related hazards and use errors.
   - https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/human-factors-and-medical-devices
-- FDA applying human factors and usability engineering: design should minimize potential use errors and resulting harm.
-  - https://www.fda.gov/regulatory-information/search-fda-guidance-documents/applying-human-factors-and-usability-engineering-medical-devices
 - WCAG 2.2: web content should support users with visual, physical, cognitive, language, and age-related needs.
-  - https://www.w3.org/TR/wcag/
+  - https://www.w3.org/TR/WCAG22/
 
-## Privacy / AI Boundaries
+## Privacy And AI Boundary Sources
 
-- HHS HIPAA mobile-health privacy guidance: personal devices and apps may not be protected by HIPAA unless provided by covered entities or business associates.
+- HHS HIPAA mobile-health privacy guidance: mobile health privacy obligations depend on whether a covered entity or business associate is involved.
   - https://www.hhs.gov/hipaa/for-professionals/privacy/guidance/cell-phone-hipaa/index.html
 - FTC mobile health app interactive tool: health app developers must understand data flows, PHI/PHR obligations, and breach notification triggers.
   - https://www.ftc.gov/business-guidance/resources/mobile-health-apps-interactive-tool
 - FDA AI/ML SaMD overview: AI/ML medical device functions need appropriate risk-based consideration.
   - https://www.fda.gov/medical-devices/software-medical-device-samd/artificial-intelligence-software-medical-device
-- FDA real-world AI performance request: clinical AI behavior can change with practice, demographics, inputs, infrastructure, and workflow.
-  - https://www.fda.gov/medical-devices/digital-health-center-excellence/request-public-comment-measuring-and-evaluating-artificial-intelligence-enabled-medical-device
 
+## Demo Boundary
+
+The demo may show synthetic patient-reported observations, missing-information prompts, and clinician-facing summaries.
+
+The demo must not claim to be clinically validated, diagnose, triage, recommend treatment, or replace the clinical question governance documents in the thinking repository.
