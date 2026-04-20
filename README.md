@@ -24,7 +24,7 @@ The first goal is discovery: show a low-friction guided-question flow, repair mi
 ## Run
 
 ```bash
-cd /home/jnclaw/every_on_git_jnclaw/urology-ai-previsit-demo
+cd /Users/iKev/Desktop/02_Projects_and_Code/everything_on_git/urology-ai-previsit-demo
 python3 -m http.server 4173
 ```
 

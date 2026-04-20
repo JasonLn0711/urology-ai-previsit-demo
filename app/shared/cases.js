@@ -100,6 +100,40 @@
         supportPreference: "Family-assisted mode",
         notes: "Helper says the patient is embarrassed to discuss leakage."
       }
+    },
+    {
+      id: "synthetic-recurrent-infection-context",
+      label: "Synthetic case: recurrent infection context",
+      shortLabel: "Recurrent infection context",
+      meta: "Pain/infection module, medication cue",
+      answers: {
+        filledBy: "Patient self-filled",
+        chiefConcern: "Recurrent infection concern",
+        duration: "More than 1 month",
+        botherScore: "6",
+        daytimeFrequencyChange: "Yes",
+        nocturiaCount: "1 time",
+        urgency: "Yes",
+        leakage: "No",
+        painBurning: "Yes",
+        visibleBlood: "No",
+        unableToUrinate: "No",
+        systemicSymptoms: ["None of these"],
+        medicationListStatus: "Can provide list",
+        daytimeFrequencyCount: "5 to 8 times",
+        urgencyFrequency: "Some days",
+        fluidCaffeineContext: ["None of these"],
+        bladderDiaryFeasible: "Only with staff or family help",
+        painFrequency: "Only while urinating",
+        infectionEpisodeHistory: "Yes, more than once",
+        medicationAssist: "No",
+        relevantComorbidities: ["Diabetes"],
+        diureticAnticoagulantAwareness: "No",
+        language: "Mandarin",
+        deviceComfort: "Comfortable",
+        supportPreference: "Self-filled",
+        notes: "Patient reports repeated similar episodes and wants the physician to know the pattern."
+      }
     }
   ];
 

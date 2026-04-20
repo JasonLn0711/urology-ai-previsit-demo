@@ -174,6 +174,55 @@ Purpose: Checks whether incomplete leakage intake keeps missing information visi
 - Are the missing fields worth repairing, or should they remain for clinician review?
 - Does the containment-support cue help staff, or does it add unnecessary burden?
 
+## Synthetic case: recurrent infection context
+
+Case id: `synthetic-recurrent-infection-context`
+
+Purpose: Checks whether frequency/nocturia details stay short while still surfacing bladder diary and medication-review cues.
+
+### Patient Flow Check
+
+1. Load this case from the synthetic scenario rail.
+2. Confirm source and main concern: Patient self-filled; Recurrent infection concern.
+3. Confirm active conditional modules: storage, pain, medication.
+4. Open Repair and confirm status: MVP fields complete for clinician review.
+5. Open Review and compare the patient-reported pattern against the clinician summary panel.
+
+### Expected Summary State
+
+- Completeness: MVP fields complete for clinician review
+- Active modules: storage, pain, medication
+- Duration / bother: More than 1 month / bother score 6/10
+- Patient-reported pattern: Storage: daytime change: Yes; daytime count: 5 to 8 times; night count: 1 time; urgency: Yes; urgency frequency: Some days; fluid/caffeine context: None of these; diary feasibility: Only with staff or family help | Pain/infection-related: pain/burning: Yes; pattern: Only while urinating; systemic symptoms: None of these; recent episodes/antibiotics: Yes, more than once
+
+### Priority Review Statements
+
+- Reports pain or burning with urination.
+
+### Nurse Workflow Cues
+
+- Bladder diary instruction may be relevant if clinic workflow supports it.
+- Medication list may need nurse-assisted review.
+- Priority review statements should be visible before the clinician encounter.
+
+### Missing Information
+
+- No required MVP fields missing.
+
+### Clinician Summary Check
+
+- Medication/context: list readiness: Can provide list; review support: No; patient-reported context: Diabetes; diuretic/anticoagulant awareness: No
+- Patient note: Patient reports repeated similar episodes and wants the physician to know the pattern.
+- Handoff: Patient-provided or helper-provided answers; clinician review required.
+
+### Reviewer Questions
+
+- Would a clinician read this summary before entering the room?
+- Which line is clinically useful and which line is noise?
+- Does any wording imply diagnosis, triage, or treatment?
+- Would nursing staff know what, if anything, to clarify before the clinician enters?
+- Is the bladder diary cue useful in this clinic workflow?
+
 ## Stop Rules
 
 - Stop and revise if any page suggests diagnosis, triage, or treatment.

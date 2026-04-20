@@ -77,38 +77,49 @@
   function activeModules(answers) {
     const systemic = listValue(answers.systemicSymptoms).join(" ").toLowerCase();
     const medicationStatus = lower(answers.medicationListStatus);
+    const storage =
+      hasConcern(answers, "frequency") ||
+      hasConcern(answers, "nocturia") ||
+      hasConcern(answers, "urgency") ||
+      isYes(answers.daytimeFrequencyChange) ||
+      isYes(answers.urgency) ||
+      ["2 times", "3 or more"].some((item) => lower(answers.nocturiaCount).includes(item));
+    const leakage =
+      hasConcern(answers, "leakage") ||
+      isYes(answers.leakage);
+    const voiding =
+      hasConcern(answers, "emptying") ||
+      hasConcern(answers, "weak stream") ||
+      isYes(answers.unableToUrinate);
+    const hematuria =
+      hasConcern(answers, "visible blood") ||
+      hasConcern(answers, "clots") ||
+      isYes(answers.visibleBlood);
+    const pain =
+      hasConcern(answers, "pain") ||
+      hasConcern(answers, "burning") ||
+      hasConcern(answers, "infection") ||
+      isYes(answers.painBurning) ||
+      systemic.includes("fever") ||
+      systemic.includes("chills") ||
+      systemic.includes("side or back pain");
+    const medication =
+      medicationStatus.includes("partial") ||
+      medicationStatus.includes("not sure") ||
+      medicationStatus.includes("cannot") ||
+      medicationStatus.includes("do not know") ||
+      storage ||
+      voiding ||
+      hematuria ||
+      hasConcern(answers, "infection");
+
     return {
-      storage:
-        hasConcern(answers, "frequency") ||
-        hasConcern(answers, "nocturia") ||
-        hasConcern(answers, "urgency") ||
-        isYes(answers.daytimeFrequencyChange) ||
-        isYes(answers.urgency) ||
-        ["2 times", "3 or more"].some((item) => lower(answers.nocturiaCount).includes(item)),
-      leakage:
-        hasConcern(answers, "leakage") ||
-        isYes(answers.leakage),
-      voiding:
-        hasConcern(answers, "emptying") ||
-        hasConcern(answers, "weak stream") ||
-        isYes(answers.unableToUrinate),
-      hematuria:
-        hasConcern(answers, "visible blood") ||
-        hasConcern(answers, "clots") ||
-        isYes(answers.visibleBlood),
-      pain:
-        hasConcern(answers, "pain") ||
-        hasConcern(answers, "burning") ||
-        hasConcern(answers, "infection") ||
-        isYes(answers.painBurning) ||
-        systemic.includes("fever") ||
-        systemic.includes("chills") ||
-        systemic.includes("side or back pain"),
-      medication:
-        medicationStatus.includes("partial") ||
-        medicationStatus.includes("not sure") ||
-        medicationStatus.includes("cannot") ||
-        medicationStatus.includes("do not know")
+      storage,
+      leakage,
+      voiding,
+      hematuria,
+      pain,
+      medication
     };
   }
 
@@ -123,6 +134,7 @@
     if (modules.storage) {
       fields.push(["daytimeFrequencyCount", "daytime urination count range"]);
       fields.push(["urgencyFrequency", "urgency frequency"]);
+      fields.push(["fluidCaffeineContext", "fluid or caffeine context"]);
       fields.push(["bladderDiaryFeasible", "bladder diary feasibility"]);
     }
 
@@ -154,6 +166,8 @@
 
     if (modules.medication) {
       fields.push(["medicationAssist", "medication review support need"]);
+      fields.push(["relevantComorbidities", "patient-reported medical context"]);
+      fields.push(["diureticAnticoagulantAwareness", "water pill or blood thinner awareness"]);
     }
 
     const seen = new Set();

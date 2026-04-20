@@ -70,6 +70,22 @@
 
           <form class="reviewer-form" id="reviewerForm">
             <fieldset>
+              <legend>Reviewer identity</legend>
+              <label>
+                Reviewer role
+                <select data-review-field="reviewerRole">
+                  <option value="">Choose one</option>
+                  <option value="Physician">Physician</option>
+                  <option value="Nurse">Nurse</option>
+                  <option value="Patient advocate">Patient advocate</option>
+                  <option value="Product / workflow reviewer">Product / workflow reviewer</option>
+                  <option value="Governance reviewer">Governance reviewer</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+            </fieldset>
+
+            <fieldset>
               <legend>Workflow value</legend>
               <label>
                 Repeated-question pain
@@ -129,6 +145,38 @@
                   <option value="unclear">Unclear</option>
                   <option value="sufficient">Existing process may be sufficient</option>
                 </select>
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Meeting evidence</legend>
+              <label>
+                Most useful summary line
+                <textarea data-review-field="mostUsefulLine" placeholder="One line the reviewer would actually read or use."></textarea>
+              </label>
+              <label>
+                Noisiest or riskiest line
+                <textarea data-review-field="noisiestLine" placeholder="One line to remove, rewrite, or demote."></textarea>
+              </label>
+              <label>
+                Missing information that matters
+                <textarea data-review-field="missingInformation" placeholder="Information the reviewer expected but did not see."></textarea>
+              </label>
+              <label>
+                Unsafe or misleading wording
+                <textarea data-review-field="unsafeWording" placeholder="Boundary wording to revise, or write none."></textarea>
+              </label>
+              <label>
+                Expected workflow slot
+                <textarea data-review-field="expectedWorkflowSlot" placeholder="Before visit, check-in, nurse rooming, physician room, or none."></textarea>
+              </label>
+              <label>
+                Staff burden concern
+                <textarea data-review-field="staffBurdenConcern" placeholder="What extra work this creates, or none."></textarea>
+              </label>
+              <label class="wide-field">
+                Case-specific evidence
+                <textarea data-review-field="caseEvidence" placeholder="Capture case-level notes for frequency/nocturia, emptying, leakage, and recurrent infection."></textarea>
               </label>
             </fieldset>
 

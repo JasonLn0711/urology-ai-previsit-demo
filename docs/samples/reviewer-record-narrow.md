@@ -12,6 +12,7 @@ status: "sample"
 ```text
 Urology previsit MVP reviewer record
 
+Reviewer role: Nurse
 Reviewer decision: narrow
 Decision guide: narrow
 Recorded decision: narrow
@@ -25,6 +26,15 @@ Evidence signals:
 - Safety boundary: acceptable (supporting)
 - Workflow slot: exists (supporting)
 - Existing process: not-sufficient (supporting)
+
+Meeting evidence:
+- Most useful summary line: Completion support and missing fields are visible.
+- Noisiest or riskiest line: Self-filled flow may imply too much independence for older patients.
+- Missing information that matters: Need which staff member owns clarification.
+- Unsafe or misleading wording: None recorded.
+- Expected workflow slot: Nurse-assisted rooming only.
+- Staff burden concern: Clarifying missing fields may add work unless limited to selected patients.
+- Case-specific evidence: Incomplete leakage intake showed assisted flow value; self-filled route should be narrowed.
 
 Blockers:
 - No hard blockers recorded.

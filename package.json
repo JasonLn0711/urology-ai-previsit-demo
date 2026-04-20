@@ -7,6 +7,7 @@
     "start": "python3 -m http.server 4173",
     "rehearsal": "node scripts/generate-workflow-rehearsal.js",
     "samples": "node scripts/generate-samples.js",
+    "meeting:check": "node scripts/check-meeting-readiness.js",
     "smoke": "node scripts/smoke-demo.js",
     "test": "node --test"
   },

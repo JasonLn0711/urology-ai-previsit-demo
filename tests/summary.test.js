@@ -30,6 +30,8 @@ test("builds a clinician-readable summary from governed MVP fields", () => {
     fluidCaffeineContext: ["Caffeinated drinks most days", "Drinks a lot near bedtime"],
     bladderDiaryFeasible: "Yes, with written instructions",
     medicationAssist: "Yes",
+    relevantComorbidities: ["Not sure"],
+    diureticAnticoagulantAwareness: "Not sure",
     language: "Mandarin with Taiwanese preferred",
     deviceComfort: "Needs large buttons",
     supportPreference: "Needs review before clinician enters",
@@ -44,6 +46,47 @@ test("builds a clinician-readable summary from governed MVP fields", () => {
   assert.deepEqual(summary.missingInformation, ["No required MVP fields missing."]);
   assert.equal(summary.completionStatus.tone, "ready");
   assert.match(summaryToText(summary), /A clinician must review all information/);
+});
+
+test("keeps governed conditional context fields visible for storage and medication cues", () => {
+  const required = requiredFieldsForAnswers({
+    filledBy: "Patient self-filled",
+    chiefConcern: "Frequency / nocturia / urgency",
+    duration: "More than 1 month",
+    botherScore: "7",
+    daytimeFrequencyChange: "Yes",
+    nocturiaCount: "3 or more times",
+    urgency: "Yes",
+    leakage: "No",
+    painBurning: "No",
+    visibleBlood: "No",
+    unableToUrinate: "No",
+    systemicSymptoms: ["None of these"],
+    medicationListStatus: "Can provide list"
+  }).map(([field]) => field);
+
+  assert.ok(required.includes("fluidCaffeineContext"));
+  assert.ok(required.includes("medicationAssist"));
+  assert.ok(required.includes("relevantComorbidities"));
+  assert.ok(required.includes("diureticAnticoagulantAwareness"));
+});
+
+test("routes recurrent infection concern to pain and medication context modules", () => {
+  const modules = activeModules({
+    chiefConcern: "Recurrent infection concern",
+    daytimeFrequencyChange: "No",
+    nocturiaCount: "1 time",
+    urgency: "No",
+    leakage: "No",
+    painBurning: "No",
+    visibleBlood: "No",
+    unableToUrinate: "No",
+    systemicSymptoms: ["None of these"],
+    medicationListStatus: "Can provide list"
+  });
+
+  assert.equal(modules.pain, true);
+  assert.equal(modules.medication, true);
 });
 
 test("shows missing prompts for core and conditional module fields", () => {

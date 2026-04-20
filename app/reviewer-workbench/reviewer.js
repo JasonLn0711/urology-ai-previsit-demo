@@ -1,6 +1,7 @@
 const { buildReviewRecord, reviewRecordToText } = window.UrologyPrevisitReview;
 
 let reviewInputs = {
+  reviewerRole: "",
   workflowPain: "",
   summaryUsefulness: "",
   staffBurden: "",
@@ -8,6 +9,13 @@ let reviewInputs = {
   safetyBoundary: "",
   workflowSlot: "",
   existingProcess: "",
+  mostUsefulLine: "",
+  noisiestLine: "",
+  missingInformation: "",
+  unsafeWording: "",
+  expectedWorkflowSlot: "",
+  staffBurdenConcern: "",
+  caseEvidence: "",
   decision: "",
   nextArtifact: "",
   reviewerNotes: ""
@@ -69,6 +77,12 @@ function render() {
     <section class="summary-section">
       <h3>Evidence signals</h3>
       <dl class="decision-list">${renderEvidence(record)}</dl>
+    </section>
+    <section class="summary-section">
+      <h3>Meeting evidence</h3>
+      <ul class="missing-list">
+        ${record.meetingEvidence.map(([label, value]) => `<li><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}</li>`).join("")}
+      </ul>
     </section>
     <section class="summary-section">
       <h3>Blockers</h3>

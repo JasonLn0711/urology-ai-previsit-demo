@@ -1,0 +1,43 @@
+# 2026-04-23 Urology Review Workspace
+
+This folder is the dated evidence workspace for the `2026-04-23` urology previsit MVP review.
+
+Do not pre-fill reviewer conclusions before the meeting. The only valid pre-meeting state is `pending review`.
+
+## Use Order
+
+1. Open `http://localhost:4173/app/review-packet/`.
+2. Run the four-case walkthrough from `../../meeting-demo-script.md`.
+3. Capture reviewer signals in `http://localhost:4173/app/reviewer-workbench/`.
+4. Copy the reviewer workbench record.
+5. Paste it into `decision-capture.md`.
+6. Select exactly one next artifact from `../../post-review-action-playbook.md`.
+
+## Files
+
+| File | Purpose |
+| --- | --- |
+| `decision-capture.md` | Holds the filled meeting capture template, copied reviewer record, and the selected next artifact after the review. |
+
+## Boundary
+
+- Synthetic data only.
+- No diagnosis.
+- No triage.
+- No treatment advice.
+- No real patient identifiers.
+- No EHR, HIS, EMR, scheduling, or messaging integration.
+- Clinician review remains required.
+
+## Completion Rule
+
+This folder is complete only when `decision-capture.md` contains:
+
+- reviewer role
+- four-case evidence
+- decision signals
+- one decision: `continue`, `revise`, `narrow`, or `pause`
+- one smallest next artifact
+- copied reviewer workbench record
+
+If any of those are missing after the meeting, leave the status as `pending follow-up`.

@@ -38,6 +38,30 @@ The meeting review entrypoint is:
 
 It consolidates artifact routing, reviewer roles, decision scorecard, continue/revise/narrow/pause rules, and hard stop conditions.
 
+The durable meeting capture template is:
+
+`docs/meeting-capture-template.md`
+
+It captures four-case evidence, decision signals, final decision, smallest next artifact, and hard stop notes.
+
+The post-review action playbook is:
+
+`docs/post-review-action-playbook.md`
+
+It maps `continue`, `revise`, `narrow`, and `pause` to exactly one next artifact, with done conditions and hard stops.
+
+The dated review workspace for the 2026-04-23 meeting is:
+
+`docs/reviews/2026-04-23-urology-review/decision-capture.md`
+
+It must remain `pending review` until real reviewer evidence is captured.
+
+The pre-meeting readiness check is:
+
+`npm run meeting:check`
+
+It verifies required files, pending capture state, smoke checks, tests, and live local routes while the static server is running.
+
 The governance pack maps conclusions to sources such as:
 
 - AUA/SUFU overactive bladder guidance

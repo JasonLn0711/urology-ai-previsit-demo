@@ -56,11 +56,23 @@ test("builds a reviewer record without clinical advice", () => {
     existingProcess: "not-sufficient",
     decision: "continue",
     nextArtifact: "Revised question tree",
+    reviewerRole: "Physician",
+    mostUsefulLine: "Patient-reported pattern line.",
+    noisiestLine: "None identified.",
+    missingInformation: "Clinic-specific summary order.",
+    unsafeWording: "None recorded.",
+    expectedWorkflowSlot: "Nurse rooming.",
+    staffBurdenConcern: "Medication review may add work.",
+    caseEvidence: "Recurrent infection context was useful.",
     reviewerNotes: "Summary may save repeated questioning."
   });
   const text = reviewRecordToText(record).toLowerCase();
 
   assert.equal(record.decision, "continue");
+  assert.equal(record.reviewerRole, "Physician");
+  assert.match(text, /meeting evidence/);
+  assert.match(text, /most useful summary line/);
+  assert.match(text, /recurrent infection context was useful/);
   assert.match(text, /no diagnosis/);
   assert.match(text, /no treatment advice/);
   assert.doesNotMatch(text, /take medication/);

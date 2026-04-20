@@ -12,6 +12,7 @@ status: "sample"
 ```text
 Urology previsit MVP reviewer record
 
+Reviewer role: Product / workflow reviewer
 Reviewer decision: revise
 Decision guide: revise
 Recorded decision: revise
@@ -25,6 +26,15 @@ Evidence signals:
 - Safety boundary: needs-wording (uncertain)
 - Workflow slot: unclear (uncertain)
 - Existing process: unclear (uncertain)
+
+Meeting evidence:
+- Most useful summary line: Priority review statements are visible without assigning urgency.
+- Noisiest or riskiest line: Summary format may be too paragraph-like for quick scanning.
+- Missing information that matters: Need preferred one-page layout from clinician.
+- Unsafe or misleading wording: Review-only boundary should be repeated near priority statements.
+- Expected workflow slot: Unclear until summary format is simplified.
+- Staff burden concern: Staff burden unknown without a clearer rooming workflow.
+- Case-specific evidence: All four cases produced signal, but the summary format should be mocked as one page.
 
 Blockers:
 - No hard blockers recorded.

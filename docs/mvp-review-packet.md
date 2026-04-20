@@ -43,7 +43,11 @@ Open the demo surfaces:
 | --- | --- |
 | `docs/product-brief.md` | Confirms MVP intent, scope, and out-of-scope boundaries. |
 | `docs/safety-and-privacy-boundaries.md` | Confirms hard safety, privacy, and wording rules. |
-| `docs/workflow-rehearsal.md` | Guides the three synthetic scenario walkthroughs. |
+| `docs/workflow-rehearsal.md` | Guides the four synthetic scenario walkthroughs. |
+| `docs/meeting-capture-template.md` | Captures case-level evidence and the final continue / revise / narrow / pause decision. |
+| `docs/post-review-action-playbook.md` | Maps the captured decision to exactly one next artifact and stop boundary. |
+| `docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md` | Pre-meeting command/checklist for confirming the live review stack is ready. |
+| `docs/reviews/2026-04-23-urology-review/decision-capture.md` | Dated review workspace for the 2026-04-23 meeting; remains pending until reviewer evidence is captured. |
 | `docs/samples/README.md` | Routes committed synthetic summary and reviewer-record outputs. |
 | `docs/source-verification.md` | Explains source-of-truth boundaries between demo and governance repos. |
 | `../urology-ai-previsit-thinking-spec/clinical-question-governance/mvp_question_set_recommendation.md` | Governs which questions belong in MVP. |
@@ -112,7 +116,7 @@ Use this exact framing:
 
 This is a synthetic-data previsit workflow MVP. It organizes patient-reported information for clinician review. It does not diagnose, triage, recommend treatment, or replace clinician judgment.
 
-### 2. Run The Three Cases
+### 2. Run The Four Cases
 
 Use `docs/workflow-rehearsal.md` as the case checklist.
 
@@ -122,6 +126,8 @@ Use `docs/workflow-rehearsal.md` as the case checklist.
    - Tests voiding/emptying summary and priority review wording.
 3. Incomplete leakage intake
    - Tests missing-information repair, assisted completion, and containment-support cue.
+4. Recurrent infection context
+   - Tests repeated-symptom history, pain/infection context, and medication/context cues without diagnosing UTI.
 
 ### 3. Inspect The Summary
 
@@ -147,6 +153,7 @@ For each case, ask:
 
 Use the reviewer workbench to record:
 
+- reviewer role
 - repeated-question pain
 - summary usefulness
 - workflow slot
@@ -154,6 +161,10 @@ Use the reviewer workbench to record:
 - patient or assisted completion fit
 - existing process gap
 - safety boundary
+- most useful summary line
+- noisiest or riskiest summary line
+- missing information that matters
+- unsafe or misleading wording
 - decision
 - smallest next artifact
 
@@ -261,5 +272,7 @@ After the review, there should be one of these outputs:
 - Revise: update wording, summary format, or question flow before adding scope.
 - Narrow: limit the MVP to nurse-assisted or one symptom module.
 - Pause: document rejected assumptions and stop implementation work.
+
+Use `docs/post-review-action-playbook.md` to create exactly one next artifact from the captured decision.
 
 Do not expand the question set until reviewer evidence shows the current flow is useful and bounded.

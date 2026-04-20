@@ -17,6 +17,7 @@ They are meeting artifacts for demonstrating what the MVP produces before any re
 - [clinician-summary-synthetic-frequency-older-adult.md](./clinician-summary-synthetic-frequency-older-adult.md)
 - [clinician-summary-synthetic-emptying-difficulty.md](./clinician-summary-synthetic-emptying-difficulty.md)
 - [clinician-summary-synthetic-incomplete-leakage.md](./clinician-summary-synthetic-incomplete-leakage.md)
+- [clinician-summary-synthetic-recurrent-infection-context.md](./clinician-summary-synthetic-recurrent-infection-context.md)
 
 ## Reviewer Record Samples
 

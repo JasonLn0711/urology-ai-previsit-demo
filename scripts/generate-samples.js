@@ -23,6 +23,14 @@ const reviewScenarios = [
       existingProcess: "not-sufficient",
       decision: "continue",
       nextArtifact: "Revised question tree",
+      reviewerRole: "Physician",
+      mostUsefulLine: "Patient-reported pattern is concise enough to read before entering the room.",
+      noisiestLine: "Noisy line not identified in this supporting review.",
+      missingInformation: "Need clinic-specific preferred summary order.",
+      unsafeWording: "None recorded.",
+      expectedWorkflowSlot: "Nurse rooming or check-in.",
+      staffBurdenConcern: "Keep medication review optional unless staff workflow supports it.",
+      caseEvidence: "Frequency/nocturia and recurrent infection context were useful; leakage may need assisted completion.",
       reviewerNotes: "Clinician sees potential value if the question tree stays short and the summary remains review-only."
     }
   },
@@ -39,6 +47,14 @@ const reviewScenarios = [
       existingProcess: "not-sufficient",
       decision: "narrow",
       nextArtifact: "Assisted workflow test",
+      reviewerRole: "Nurse",
+      mostUsefulLine: "Completion support and missing fields are visible.",
+      noisiestLine: "Self-filled flow may imply too much independence for older patients.",
+      missingInformation: "Need which staff member owns clarification.",
+      unsafeWording: "None recorded.",
+      expectedWorkflowSlot: "Nurse-assisted rooming only.",
+      staffBurdenConcern: "Clarifying missing fields may add work unless limited to selected patients.",
+      caseEvidence: "Incomplete leakage intake showed assisted flow value; self-filled route should be narrowed.",
       reviewerNotes: "The workflow appears useful only when staff or family can help with completion."
     }
   },
@@ -55,6 +71,14 @@ const reviewScenarios = [
       existingProcess: "unclear",
       decision: "revise",
       nextArtifact: "One-page summary mockup",
+      reviewerRole: "Product / workflow reviewer",
+      mostUsefulLine: "Priority review statements are visible without assigning urgency.",
+      noisiestLine: "Summary format may be too paragraph-like for quick scanning.",
+      missingInformation: "Need preferred one-page layout from clinician.",
+      unsafeWording: "Review-only boundary should be repeated near priority statements.",
+      expectedWorkflowSlot: "Unclear until summary format is simplified.",
+      staffBurdenConcern: "Staff burden unknown without a clearer rooming workflow.",
+      caseEvidence: "All four cases produced signal, but the summary format should be mocked as one page.",
       reviewerNotes: "The concept may be useful, but summary wording and workflow slot need another pass."
     }
   },
@@ -71,6 +95,14 @@ const reviewScenarios = [
       existingProcess: "sufficient",
       decision: "pause",
       nextArtifact: "Pause note with rejected assumptions",
+      reviewerRole: "Governance reviewer",
+      mostUsefulLine: "No line was useful enough to justify workflow change.",
+      noisiestLine: "The summary duplicates existing intake work.",
+      missingInformation: "Need proof that existing forms fail before adding a new intake layer.",
+      unsafeWording: "None recorded.",
+      expectedWorkflowSlot: "No workflow slot.",
+      staffBurdenConcern: "New intake layer adds unacceptable work.",
+      caseEvidence: "Four-case run did not show enough workflow value.",
       reviewerNotes: "The current clinic flow may not have a practical slot for this MVP."
     }
   }

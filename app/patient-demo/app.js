@@ -131,6 +131,7 @@ const STEPS = [
       ["Leakage", "Leakage", "Accidental urine leakage."],
       ["Difficulty emptying or weak stream", "Difficulty emptying or weak stream", "Weak stream, trouble starting, or feeling urine remains."],
       ["Pain, burning, or possible infection", "Pain, burning, or possible infection", "Discomfort when urinating or infection-related concern."],
+      ["Recurrent infection concern", "Recurrent infection concern", "Repeated urinary symptoms, visits, or antibiotics to discuss with the clinician."],
       ["Visible blood or clots", "Visible blood or clots", "Blood or clots noticed in urine."],
       ["Other urinary concern", "Other urinary concern", "Something else to explain."]
     ]

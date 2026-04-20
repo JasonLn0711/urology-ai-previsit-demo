@@ -14,6 +14,10 @@ test("sample artifacts are present for meeting demos", () => {
   assert.ok(files.includes("reviewer-record-continue.md"));
   assert.ok(files.includes("reviewer-record-pause.md"));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "mvp-review-packet.md")));
+  assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "meeting-capture-template.md")));
+  assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "post-review-action-playbook.md")));
+  assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "pre-meeting-readiness.md")));
+  assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "decision-capture.md")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "workflow-rehearsal.md")));
 });
 
@@ -38,6 +42,7 @@ test("workflow rehearsal covers all synthetic cases without clinical advice", ()
   assert.match(rehearsal, /synthetic-frequency-older-adult/);
   assert.match(rehearsal, /synthetic-emptying-difficulty/);
   assert.match(rehearsal, /synthetic-incomplete-leakage/);
+  assert.match(rehearsal, /synthetic-recurrent-infection-context/);
   assert.match(rehearsal, /Patient Flow Check/);
   assert.match(rehearsal, /Nurse Workflow Cues/);
   assert.match(rehearsal, /Reviewer Questions/);
@@ -53,7 +58,13 @@ test("review packet provides decision criteria without clinical advice", () => {
 
   assert.match(packet, /Non-Negotiable Boundary/);
   assert.match(packet, /Artifact Map/);
+  assert.match(packet, /meeting-capture-template\.md/);
+  assert.match(packet, /post-review-action-playbook\.md/);
+  assert.match(packet, /2026-04-23-urology-review\/pre-meeting-readiness\.md/);
+  assert.match(packet, /2026-04-23-urology-review\/decision-capture\.md/);
   assert.match(packet, /Decision Scorecard/);
+  assert.match(packet, /Run The Four Cases/);
+  assert.match(packet, /Recurrent infection context/);
   assert.match(packet, /Continue/);
   assert.match(packet, /Revise/);
   assert.match(packet, /Narrow/);
@@ -78,13 +89,93 @@ test("browser review packet routes reviewers to the demo artifacts", () => {
   assert.match(packetPage, /href="\.\.\/clinician-summary\/"/);
   assert.match(packetPage, /href="\.\.\/reviewer-workbench\/"/);
   assert.match(packetPage, /docs\/workflow-rehearsal\.md/);
+  assert.match(packetPage, /docs\/meeting-capture-template\.md/);
+  assert.match(packetPage, /docs\/post-review-action-playbook\.md/);
+  assert.match(packetPage, /docs\/reviews\/2026-04-23-urology-review\/pre-meeting-readiness\.md/);
+  assert.match(packetPage, /docs\/reviews\/2026-04-23-urology-review\/decision-capture\.md/);
   assert.match(packetPage, /docs\/mvp-review-packet\.md/);
+  assert.match(packetPage, /Four-case walkthrough/);
   assert.match(packetPage, /No diagnosis, triage, or treatment advice\./);
   assert.match(packetPage, /Clinician review remains required\./);
   assert.match(packetPage, /Continue/);
   assert.match(packetPage, /Revise/);
   assert.match(packetPage, /Narrow/);
   assert.match(packetPage, /Pause/);
+  assert.doesNotMatch(lower, /likely infection/);
+  assert.doesNotMatch(lower, /probable cancer/);
+  assert.doesNotMatch(lower, /take medication/);
+});
+
+test("pre-meeting readiness checklist routes the live review stack", () => {
+  const readiness = fs.readFileSync(
+    path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "pre-meeting-readiness.md"),
+    "utf8"
+  );
+  const packageJson = fs.readFileSync(path.join(__dirname, "..", "package.json"), "utf8");
+  const lower = readiness.toLowerCase();
+
+  assert.match(readiness, /npm run meeting:check/);
+  assert.match(readiness, /http:\/\/localhost:4173\/app\/review-packet\//);
+  assert.match(readiness, /decision-capture\.md/);
+  assert.match(readiness, /pending review/);
+  assert.match(packageJson, /"meeting:check": "node scripts\/check-meeting-readiness\.js"/);
+  assert.doesNotMatch(lower, /likely infection/);
+  assert.doesNotMatch(lower, /probable cancer/);
+  assert.doesNotMatch(lower, /take medication/);
+});
+
+test("meeting capture template preserves bounded review outputs", () => {
+  const capture = fs.readFileSync(path.join(__dirname, "..", "docs", "meeting-capture-template.md"), "utf8");
+  const lower = capture.toLowerCase();
+
+  assert.match(capture, /Four-Case Evidence/);
+  assert.match(capture, /Decision Signals/);
+  assert.match(capture, /Hard Stop Notes/);
+  assert.match(capture, /post-review-action-playbook\.md/);
+  assert.match(capture, /Recurrent infection context/);
+  assert.doesNotMatch(lower, /likely infection/);
+  assert.doesNotMatch(lower, /probable cancer/);
+  assert.doesNotMatch(lower, /take medication/);
+});
+
+test("post-review action playbook maps decisions to bounded artifacts", () => {
+  const playbook = fs.readFileSync(path.join(__dirname, "..", "docs", "post-review-action-playbook.md"), "utf8");
+  const lower = playbook.toLowerCase();
+
+  assert.match(playbook, /Decision-To-Artifact Map/);
+  assert.match(playbook, /2026-04-23-urology-review\/decision-capture\.md/);
+  assert.match(playbook, /Continue/);
+  assert.match(playbook, /Revise/);
+  assert.match(playbook, /Narrow/);
+  assert.match(playbook, /Pause/);
+  assert.match(playbook, /one next artifact/);
+  assert.match(playbook, /Hard Stop/);
+  assert.doesNotMatch(lower, /likely infection/);
+  assert.doesNotMatch(lower, /probable cancer/);
+  assert.doesNotMatch(lower, /take medication/);
+});
+
+test("dated review workspace stays pending until reviewer evidence exists", () => {
+  const capture = fs.readFileSync(
+    path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "decision-capture.md"),
+    "utf8"
+  );
+  const readme = fs.readFileSync(
+    path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "README.md"),
+    "utf8"
+  );
+  const combined = `${capture}\n${readme}`;
+  const lower = combined.toLowerCase();
+
+  assert.match(capture, /Status: pending review/);
+  assert.match(capture, /Frequent urination at night/);
+  assert.match(capture, /Recurrent infection context/);
+  assert.match(capture, /Selected artifact: pending review/);
+  assert.match(readme, /Do not pre-fill reviewer conclusions/);
+  assert.doesNotMatch(lower, /decision: continue/);
+  assert.doesNotMatch(lower, /decision: revise/);
+  assert.doesNotMatch(lower, /decision: narrow/);
+  assert.doesNotMatch(lower, /decision: pause/);
   assert.doesNotMatch(lower, /likely infection/);
   assert.doesNotMatch(lower, /probable cancer/);
   assert.doesNotMatch(lower, /take medication/);

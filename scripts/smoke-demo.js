@@ -95,6 +95,11 @@ function checkEntrypoints() {
     "app/shared/review.js",
     "assets/bladder-flow.svg",
     "docs/mvp-review-packet.md",
+    "docs/meeting-capture-template.md",
+    "docs/post-review-action-playbook.md",
+    "docs/reviews/2026-04-23-urology-review/README.md",
+    "docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md",
+    "docs/reviews/2026-04-23-urology-review/decision-capture.md",
     "docs/workflow-rehearsal.md",
     "docs/samples/README.md"
   ].forEach(assertFile);
@@ -107,6 +112,7 @@ function checkEntrypoints() {
     "app/reviewer-workbench/reviewer.js",
     "scripts/generate-workflow-rehearsal.js",
     "scripts/generate-samples.js",
+    "scripts/check-meeting-readiness.js",
     "scripts/smoke-demo.js"
   ].forEach(assertScriptCompiles);
 }
@@ -137,7 +143,7 @@ function checkBrowserScriptOrder() {
 }
 
 function checkSyntheticCases() {
-  record("three synthetic cases available", SYNTHETIC_CASES.length === 3);
+  record("four synthetic cases available", SYNTHETIC_CASES.length === 4);
 
   for (const sampleCase of SYNTHETIC_CASES) {
     record(`${sampleCase.id}: labeled synthetic`, /^Synthetic case:/.test(sampleCase.label));
@@ -194,8 +200,14 @@ function checkReviewPacket() {
   record("review packet includes hard stop conditions", text.includes("## Hard Stop Conditions"));
   record("review packet routes reviewer workbench", text.includes("Reviewer workbench"));
   record("review packet references workflow rehearsal", text.includes("docs/workflow-rehearsal.md"));
+  record("review packet covers four cases", text.includes("Run The Four Cases"));
+  record("review packet includes recurrent infection case", text.includes("Recurrent infection context"));
+  record("review packet references action playbook", text.includes("docs/post-review-action-playbook.md"));
+  record("review packet references pre-meeting readiness", text.includes("docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md"));
+  record("review packet references dated decision capture", text.includes("docs/reviews/2026-04-23-urology-review/decision-capture.md"));
   record("review packet keeps safety boundary", text.includes("No diagnosis.") && text.includes("No treatment advice."));
   record("review packet avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(text.toLowerCase()));
+  record("review packet has no stale three-case wording", !/three synthetic scenario|Run The Three Cases|Three-case walkthrough/i.test(text));
 }
 
 function checkBrowserReviewPacket() {
@@ -208,6 +220,10 @@ function checkBrowserReviewPacket() {
   record("browser review packet links reviewer workbench", text.includes('href="../reviewer-workbench/"'));
   record("browser review packet links workflow rehearsal", text.includes("../../docs/workflow-rehearsal.md"));
   record("browser review packet links markdown packet", text.includes("../../docs/mvp-review-packet.md"));
+  record("browser review packet links action playbook", text.includes("../../docs/post-review-action-playbook.md"));
+  record("browser review packet links pre-meeting readiness", text.includes("../../docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md"));
+  record("browser review packet links dated decision capture", text.includes("../../docs/reviews/2026-04-23-urology-review/decision-capture.md"));
+  record("browser review packet covers four cases", text.includes("Four-case walkthrough"));
   record(
     "browser review packet has decision outcomes",
     ["Continue", "Revise", "Narrow", "Pause"].every((outcome) => text.includes(`<h3>${outcome}</h3>`))
@@ -218,6 +234,7 @@ function checkBrowserReviewPacket() {
       text.includes("Clinician review remains required.")
   );
   record("browser review packet avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(lower));
+  record("browser review packet has no stale three-case wording", !/three-case walkthrough/i.test(lower));
 }
 
 function checkReviewerBoundary() {
@@ -233,7 +250,49 @@ function checkReviewerBoundary() {
 
   record("review record includes no diagnosis boundary", recordText.includes("no diagnosis"));
   record("review record includes no treatment boundary", recordText.includes("no treatment advice"));
+  record("review record includes meeting evidence", recordText.includes("meeting evidence"));
   record("review record avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(recordText));
+}
+
+function checkMeetingCaptureTemplate() {
+  const text = read("docs/meeting-capture-template.md");
+  const lower = text.toLowerCase();
+
+  record("meeting capture has four-case evidence", text.includes("## Four-Case Evidence"));
+  record("meeting capture includes recurrent infection case", text.includes("Recurrent infection context"));
+  record("meeting capture has decision signals", text.includes("## Decision Signals"));
+  record("meeting capture has hard stop notes", text.includes("## Hard Stop Notes"));
+  record("meeting capture references action playbook", text.includes("docs/post-review-action-playbook.md"));
+  record("meeting capture avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(lower));
+}
+
+function checkPostReviewActionPlaybook() {
+  const text = read("docs/post-review-action-playbook.md");
+  const lower = text.toLowerCase();
+
+  record("action playbook maps decisions", text.includes("## Decision-To-Artifact Map"));
+  record("action playbook has continue artifact", text.includes("## Continue Artifact: Revised Question Tree"));
+  record("action playbook has summary mockup artifact", text.includes("## Continue Or Revise Artifact: One-Page Summary Mockup"));
+  record("action playbook has narrow artifact", text.includes("## Narrow Artifact: Assisted Workflow Test"));
+  record("action playbook has pause artifact", text.includes("## Pause Artifact: Pause Note With Rejected Assumptions"));
+  record("action playbook has hard stop", text.includes("## Hard Stop"));
+  record("action playbook references dated decision capture", text.includes("docs/reviews/2026-04-23-urology-review/decision-capture.md"));
+  record("action playbook avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(lower));
+}
+
+function checkDatedReviewWorkspace() {
+  const capture = read("docs/reviews/2026-04-23-urology-review/decision-capture.md");
+  const readme = read("docs/reviews/2026-04-23-urology-review/README.md");
+  const readiness = read("docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md");
+  const lower = `${capture}\n${readme}`.toLowerCase();
+
+  record("dated review workspace is pending", capture.includes("Status: pending review"));
+  record("dated review workspace includes four cases", ["Frequent urination at night", "Difficulty emptying", "Incomplete leakage intake", "Recurrent infection context"].every((item) => capture.includes(item)));
+  record("dated review workspace has no prefilled decision", !/decision: continue|decision: revise|decision: narrow|decision: pause/.test(lower));
+  record("dated review workspace has no clinical advice wording", !/likely infection|probable cancer|take medication/.test(lower));
+  record("dated review workspace warns against prefill", readme.includes("Do not pre-fill reviewer conclusions"));
+  record("dated review workspace has readiness checklist", readiness.includes("npm run meeting:check"));
+  record("dated readiness checklist avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(readiness.toLowerCase()));
 }
 
 function checkNoStaleReferences() {
@@ -258,6 +317,9 @@ function main() {
   checkWorkflowRehearsal();
   checkReviewPacket();
   checkBrowserReviewPacket();
+  checkMeetingCaptureTemplate();
+  checkPostReviewActionPlaybook();
+  checkDatedReviewWorkspace();
   checkReviewerBoundary();
   checkNoStaleReferences();
 
