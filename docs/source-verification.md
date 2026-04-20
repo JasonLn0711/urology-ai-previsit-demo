@@ -32,6 +32,12 @@ The scenario workflow rehearsal is:
 
 It generates `docs/workflow-rehearsal.md` from shared cases and summary logic so patient flow, nurse cues, missing fields, clinician summary content, and reviewer questions can be checked before a meeting.
 
+The meeting review entrypoint is:
+
+`docs/mvp-review-packet.md`
+
+It consolidates artifact routing, reviewer roles, decision scorecard, continue/revise/narrow/pause rules, and hard stop conditions.
+
 The governance pack maps conclusions to sources such as:
 
 - AUA/SUFU overactive bladder guidance

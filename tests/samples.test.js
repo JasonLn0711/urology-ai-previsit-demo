@@ -13,6 +13,7 @@ test("sample artifacts are present for meeting demos", () => {
   assert.ok(files.some((file) => file.startsWith("reviewer-record-")));
   assert.ok(files.includes("reviewer-record-continue.md"));
   assert.ok(files.includes("reviewer-record-pause.md"));
+  assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "mvp-review-packet.md")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "workflow-rehearsal.md")));
 });
 
@@ -44,4 +45,23 @@ test("workflow rehearsal covers all synthetic cases without clinical advice", ()
   assert.doesNotMatch(rehearsal.toLowerCase(), /likely infection/);
   assert.doesNotMatch(rehearsal.toLowerCase(), /probable cancer/);
   assert.doesNotMatch(rehearsal.toLowerCase(), /take medication/);
+});
+
+test("review packet provides decision criteria without clinical advice", () => {
+  const packet = fs.readFileSync(path.join(__dirname, "..", "docs", "mvp-review-packet.md"), "utf8");
+  const lower = packet.toLowerCase();
+
+  assert.match(packet, /Non-Negotiable Boundary/);
+  assert.match(packet, /Artifact Map/);
+  assert.match(packet, /Decision Scorecard/);
+  assert.match(packet, /Continue/);
+  assert.match(packet, /Revise/);
+  assert.match(packet, /Narrow/);
+  assert.match(packet, /Pause/);
+  assert.match(packet, /Hard Stop Conditions/);
+  assert.match(packet, /workflow-rehearsal\.md/);
+  assert.match(packet, /Reviewer workbench/);
+  assert.doesNotMatch(lower, /likely infection/);
+  assert.doesNotMatch(lower, /probable cancer/);
+  assert.doesNotMatch(lower, /take medication/);
 });

@@ -4,6 +4,8 @@
 
 This is a synthetic-data professional MVP for urology previsit discovery. It does not diagnose, triage, or recommend treatment. The purpose is to test whether guided previsit questions can reduce repeated questioning, keep missing information visible, and give the physician a short, reviewable summary.
 
+Use `docs/mvp-review-packet.md` as the reviewer-facing entrypoint for boundaries, artifact routing, decision criteria, and stop conditions.
+
 ## Demo Path
 
 1. Open the patient demo.

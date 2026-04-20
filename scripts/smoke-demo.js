@@ -93,6 +93,7 @@ function checkEntrypoints() {
     "app/shared/cases.js",
     "app/shared/review.js",
     "assets/bladder-flow.svg",
+    "docs/mvp-review-packet.md",
     "docs/workflow-rehearsal.md",
     "docs/samples/README.md"
   ].forEach(assertFile);
@@ -181,6 +182,21 @@ function checkWorkflowRehearsal() {
   }
 }
 
+function checkReviewPacket() {
+  const text = read("docs/mvp-review-packet.md");
+  record("review packet has non-negotiable boundary", text.includes("## Non-Negotiable Boundary"));
+  record("review packet routes demo surfaces", text.includes("http://localhost:4173/app/patient-demo/"));
+  record("review packet includes artifact map", text.includes("## Artifact Map"));
+  record("review packet includes reviewer roles", text.includes("## Reviewer Roles"));
+  record("review packet includes decision scorecard", text.includes("## Decision Scorecard"));
+  record("review packet includes decision rules", text.includes("## Decision Rules"));
+  record("review packet includes hard stop conditions", text.includes("## Hard Stop Conditions"));
+  record("review packet routes reviewer workbench", text.includes("Reviewer workbench"));
+  record("review packet references workflow rehearsal", text.includes("docs/workflow-rehearsal.md"));
+  record("review packet keeps safety boundary", text.includes("No diagnosis.") && text.includes("No treatment advice."));
+  record("review packet avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(text.toLowerCase()));
+}
+
 function checkReviewerBoundary() {
   const recordText = reviewRecordToText(buildReviewRecord({
     workflowPain: "clear",
@@ -217,6 +233,7 @@ function main() {
   checkSyntheticCases();
   checkGeneratedSamples();
   checkWorkflowRehearsal();
+  checkReviewPacket();
   checkReviewerBoundary();
   checkNoStaleReferences();
 

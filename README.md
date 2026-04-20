@@ -34,6 +34,8 @@ Open:
 - Clinician summary sample: `http://localhost:4173/app/clinician-summary/`
 - Reviewer workbench: `http://localhost:4173/app/reviewer-workbench/`
 
+Use `docs/mvp-review-packet.md` as the meeting entrypoint when asking a reviewer to judge the MVP.
+
 You can also open `app/patient-demo/index.html` directly in a browser.
 
 ## Test
@@ -57,6 +59,7 @@ The repository includes synthetic sample artifacts for meeting demos:
 - Sample index: `docs/samples/README.md`
 - Clinician summary samples: `docs/samples/clinician-summary-*.md`
 - Reviewer decision-record samples: `docs/samples/reviewer-record-*.md`
+- MVP review packet: `docs/mvp-review-packet.md`
 - Workflow rehearsal: `docs/workflow-rehearsal.md`
 
 Synthetic scenarios are defined once in `app/shared/cases.js`, then reused by the browser demo and sample generator.
