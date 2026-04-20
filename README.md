@@ -44,6 +44,20 @@ npm test
 
 The tests check summary generation, missing-information prompts, completion status, safety wording, and reviewer decision-record logic.
 
+## Sample Outputs
+
+The repository includes synthetic sample artifacts for meeting demos:
+
+- Sample index: `docs/samples/README.md`
+- Clinician summary samples: `docs/samples/clinician-summary-*.md`
+- Reviewer decision-record samples: `docs/samples/reviewer-record-*.md`
+
+Regenerate them with:
+
+```bash
+npm run samples
+```
+
 ## Repository Boundary
 
 This repository owns the implementation: app code, UI, synthetic cases, tests, and demo documentation.

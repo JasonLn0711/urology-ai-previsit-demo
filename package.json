@@ -5,6 +5,7 @@
   "description": "Static browser MVP for a synthetic-data urology AI previsit discovery demo.",
   "scripts": {
     "start": "python3 -m http.server 4173",
+    "samples": "node scripts/generate-samples.js",
     "test": "node --test"
   },
   "keywords": [
@@ -15,4 +16,3 @@
   ],
   "license": "UNLICENSED"
 }
-

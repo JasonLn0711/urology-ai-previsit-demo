@@ -52,6 +52,7 @@ Patient checks in
 - Copy and print summary actions.
 - Reviewer decision workbench.
 - Copy and print reviewer record actions.
+- Synthetic sample summaries and reviewer records.
 
 ## Out of Scope
 

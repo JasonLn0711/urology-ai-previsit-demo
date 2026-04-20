@@ -17,6 +17,21 @@ This is a synthetic-data professional MVP for urology previsit discovery. It doe
 9. Capture workflow, adoption, safety, and next-artifact signals.
 10. Ask what would make the summary useful or unsafe in the real workflow.
 
+## Sample Artifact Path
+
+Use the committed synthetic outputs when a reviewer wants to inspect the handoff outside the browser:
+
+- `docs/samples/README.md`
+- `docs/samples/clinician-summary-synthetic-frequency-older-adult.md`
+- `docs/samples/clinician-summary-synthetic-emptying-difficulty.md`
+- `docs/samples/clinician-summary-synthetic-incomplete-leakage.md`
+- `docs/samples/reviewer-record-continue.md`
+- `docs/samples/reviewer-record-narrow.md`
+- `docs/samples/reviewer-record-revise.md`
+- `docs/samples/reviewer-record-pause.md`
+
+Regenerate samples with `npm run samples`.
+
 ## Questions For The Physician
 
 - Which parts of this summary would save time?
