@@ -93,6 +93,7 @@ function checkEntrypoints() {
     "app/shared/cases.js",
     "app/shared/review.js",
     "assets/bladder-flow.svg",
+    "docs/workflow-rehearsal.md",
     "docs/samples/README.md"
   ].forEach(assertFile);
 
@@ -102,6 +103,7 @@ function checkEntrypoints() {
     "app/shared/cases.js",
     "app/shared/review.js",
     "app/reviewer-workbench/reviewer.js",
+    "scripts/generate-workflow-rehearsal.js",
     "scripts/generate-samples.js",
     "scripts/smoke-demo.js"
   ].forEach(assertScriptCompiles);
@@ -164,6 +166,21 @@ function checkGeneratedSamples() {
   }
 }
 
+function checkWorkflowRehearsal() {
+  const text = read("docs/workflow-rehearsal.md");
+  record("workflow rehearsal declares generated sources", text.includes("Generated from `app/shared/cases.js`"));
+  record("workflow rehearsal has patient flow check", text.includes("### Patient Flow Check"));
+  record("workflow rehearsal has nurse workflow cues", text.includes("### Nurse Workflow Cues"));
+  record("workflow rehearsal has reviewer questions", text.includes("### Reviewer Questions"));
+  record("workflow rehearsal has stop rules", text.includes("## Stop Rules"));
+  record("workflow rehearsal keeps safety boundary", text.includes("does not diagnose, triage, or recommend treatment"));
+  record("workflow rehearsal avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(text.toLowerCase()));
+
+  for (const sampleCase of SYNTHETIC_CASES) {
+    record(`workflow rehearsal includes ${sampleCase.id}`, text.includes(`Case id: \`${sampleCase.id}\``));
+  }
+}
+
 function checkReviewerBoundary() {
   const recordText = reviewRecordToText(buildReviewRecord({
     workflowPain: "clear",
@@ -199,6 +216,7 @@ function main() {
   checkBrowserScriptOrder();
   checkSyntheticCases();
   checkGeneratedSamples();
+  checkWorkflowRehearsal();
   checkReviewerBoundary();
   checkNoStaleReferences();
 

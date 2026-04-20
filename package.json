@@ -5,6 +5,7 @@
   "description": "Static browser MVP for a synthetic-data urology AI previsit discovery demo.",
   "scripts": {
     "start": "python3 -m http.server 4173",
+    "rehearsal": "node scripts/generate-workflow-rehearsal.js",
     "samples": "node scripts/generate-samples.js",
     "smoke": "node scripts/smoke-demo.js",
     "test": "node --test"

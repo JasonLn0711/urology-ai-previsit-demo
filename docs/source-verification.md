@@ -26,6 +26,12 @@ The lightweight MVP readiness check is:
 
 It verifies entrypoints, browser script order, shared synthetic cases, generated sample front matter, stale references, and safety-boundary wording. It does not replace browser visual review.
 
+The scenario workflow rehearsal is:
+
+`npm run rehearsal`
+
+It generates `docs/workflow-rehearsal.md` from shared cases and summary logic so patient flow, nurse cues, missing fields, clinician summary content, and reviewer questions can be checked before a meeting.
+
 The governance pack maps conclusions to sources such as:
 
 - AUA/SUFU overactive bladder guidance

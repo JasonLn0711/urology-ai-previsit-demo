@@ -39,9 +39,12 @@ You can also open `app/patient-demo/index.html` directly in a browser.
 ## Test
 
 ```bash
+npm run rehearsal
 npm run smoke
 npm test
 ```
+
+The rehearsal generator creates `docs/workflow-rehearsal.md`, a scenario-by-scenario walkthrough for checking patient flow, nurse cues, clinician summary usefulness, and reviewer questions.
 
 The smoke check verifies demo entrypoints, browser script order, shared synthetic cases, generated sample boundaries, and stale-reference cleanup.
 
@@ -54,12 +57,14 @@ The repository includes synthetic sample artifacts for meeting demos:
 - Sample index: `docs/samples/README.md`
 - Clinician summary samples: `docs/samples/clinician-summary-*.md`
 - Reviewer decision-record samples: `docs/samples/reviewer-record-*.md`
+- Workflow rehearsal: `docs/workflow-rehearsal.md`
 
 Synthetic scenarios are defined once in `app/shared/cases.js`, then reused by the browser demo and sample generator.
 
 Regenerate them with:
 
 ```bash
+npm run rehearsal
 npm run samples
 ```
 
