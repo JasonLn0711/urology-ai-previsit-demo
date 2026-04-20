@@ -74,6 +74,12 @@ The post-review closeout check is:
 
 It should run only after the reviewer record has been pasted into `docs/reviews/2026-04-23-urology-review/decision-capture.md`. It verifies that the capture is complete enough to justify one selected artifact from `docs/post-review-action-playbook.md`.
 
+The post-review artifact starters are:
+
+`docs/reviews/2026-04-23-urology-review/artifact-starters/`
+
+They are blank, evidence-gated starters for the one selected artifact after `npm run review:closeout` passes. They do not choose an artifact or add clinical scope before reviewer evidence exists.
+
 The governance pack maps conclusions to sources such as:
 
 - AUA/SUFU overactive bladder guidance

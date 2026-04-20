@@ -101,6 +101,11 @@ function checkEntrypoints() {
     "docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md",
     "docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md",
     "docs/reviews/2026-04-23-urology-review/post-review-closeout.md",
+    "docs/reviews/2026-04-23-urology-review/artifact-starters/README.md",
+    "docs/reviews/2026-04-23-urology-review/artifact-starters/revised-question-tree.md",
+    "docs/reviews/2026-04-23-urology-review/artifact-starters/one-page-summary-mockup.md",
+    "docs/reviews/2026-04-23-urology-review/artifact-starters/assisted-workflow-test.md",
+    "docs/reviews/2026-04-23-urology-review/artifact-starters/pause-note-with-rejected-assumptions.md",
     "docs/reviews/2026-04-23-urology-review/decision-capture.md",
     "docs/workflow-rehearsal.md",
     "docs/samples/README.md"
@@ -209,6 +214,7 @@ function checkReviewPacket() {
   record("review packet references pre-meeting readiness", text.includes("docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md"));
   record("review packet references reviewer handout", text.includes("docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md"));
   record("review packet references post-review closeout", text.includes("docs/reviews/2026-04-23-urology-review/post-review-closeout.md"));
+  record("review packet references artifact starters", text.includes("docs/reviews/2026-04-23-urology-review/artifact-starters/"));
   record("review packet references dated decision capture", text.includes("docs/reviews/2026-04-23-urology-review/decision-capture.md"));
   record("review packet keeps safety boundary", text.includes("No diagnosis.") && text.includes("No treatment advice."));
   record("review packet avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(text.toLowerCase()));
@@ -229,6 +235,7 @@ function checkBrowserReviewPacket() {
   record("browser review packet links pre-meeting readiness", text.includes("../../docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md"));
   record("browser review packet links reviewer handout", text.includes("../../docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md"));
   record("browser review packet links post-review closeout", text.includes("../../docs/reviews/2026-04-23-urology-review/post-review-closeout.md"));
+  record("browser review packet links artifact starters", text.includes("../../docs/reviews/2026-04-23-urology-review/artifact-starters/"));
   record("browser review packet links dated decision capture", text.includes("../../docs/reviews/2026-04-23-urology-review/decision-capture.md"));
   record("browser review packet covers four cases", text.includes("Four-case walkthrough"));
   record(
@@ -293,6 +300,13 @@ function checkDatedReviewWorkspace() {
   const readiness = read("docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md");
   const handout = read("docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md");
   const closeout = read("docs/reviews/2026-04-23-urology-review/post-review-closeout.md");
+  const starterReadme = read("docs/reviews/2026-04-23-urology-review/artifact-starters/README.md");
+  const starterTexts = [
+    "docs/reviews/2026-04-23-urology-review/artifact-starters/revised-question-tree.md",
+    "docs/reviews/2026-04-23-urology-review/artifact-starters/one-page-summary-mockup.md",
+    "docs/reviews/2026-04-23-urology-review/artifact-starters/assisted-workflow-test.md",
+    "docs/reviews/2026-04-23-urology-review/artifact-starters/pause-note-with-rejected-assumptions.md"
+  ].map(read).join("\n");
   const lower = `${capture}\n${readme}`.toLowerCase();
 
   record("dated review workspace is pending", capture.includes("Status: pending review"));
@@ -303,9 +317,11 @@ function checkDatedReviewWorkspace() {
   record("dated review workspace has readiness checklist", readiness.includes("npm run meeting:check"));
   record("dated review workspace has reviewer handout", handout.includes("## Decision Choices"));
   record("dated review workspace has post-review closeout", closeout.includes("npm run review:closeout"));
+  record("dated review workspace has artifact starters", starterReadme.includes("## Starter Map"));
   record("dated readiness checklist avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(readiness.toLowerCase()));
   record("dated reviewer handout avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(handout.toLowerCase()));
   record("dated post-review closeout avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(closeout.toLowerCase()));
+  record("dated artifact starters avoid clinical advice wording", !/likely infection|probable cancer|take medication/.test(starterTexts.toLowerCase()));
 }
 
 function checkNoStaleReferences() {

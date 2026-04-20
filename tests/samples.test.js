@@ -19,6 +19,7 @@ test("sample artifacts are present for meeting demos", () => {
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "pre-meeting-readiness.md")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "reviewer-one-page-handout.md")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "post-review-closeout.md")));
+  assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "artifact-starters", "README.md")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "decision-capture.md")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "scripts", "check-review-closeout.js")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "workflow-rehearsal.md")));
@@ -66,6 +67,7 @@ test("review packet provides decision criteria without clinical advice", () => {
   assert.match(packet, /2026-04-23-urology-review\/pre-meeting-readiness\.md/);
   assert.match(packet, /2026-04-23-urology-review\/reviewer-one-page-handout\.md/);
   assert.match(packet, /2026-04-23-urology-review\/post-review-closeout\.md/);
+  assert.match(packet, /2026-04-23-urology-review\/artifact-starters\//);
   assert.match(packet, /2026-04-23-urology-review\/decision-capture\.md/);
   assert.match(packet, /npm run review:closeout/);
   assert.match(packet, /Decision Scorecard/);
@@ -100,6 +102,7 @@ test("browser review packet routes reviewers to the demo artifacts", () => {
   assert.match(packetPage, /docs\/reviews\/2026-04-23-urology-review\/pre-meeting-readiness\.md/);
   assert.match(packetPage, /docs\/reviews\/2026-04-23-urology-review\/reviewer-one-page-handout\.md/);
   assert.match(packetPage, /docs\/reviews\/2026-04-23-urology-review\/post-review-closeout\.md/);
+  assert.match(packetPage, /docs\/reviews\/2026-04-23-urology-review\/artifact-starters\//);
   assert.match(packetPage, /docs\/reviews\/2026-04-23-urology-review\/decision-capture\.md/);
   assert.match(packetPage, /docs\/mvp-review-packet\.md/);
   assert.match(packetPage, /Four-case walkthrough/);
@@ -166,6 +169,36 @@ test("post-review closeout defines the after-meeting artifact gate", () => {
   assert.match(closeout, /one smallest next artifact/);
   assert.match(closeout, /post-review-action-playbook\.md/);
   assert.match(packageJson, /"review:closeout": "node scripts\/check-review-closeout\.js"/);
+  assert.doesNotMatch(lower, /likely infection/);
+  assert.doesNotMatch(lower, /probable cancer/);
+  assert.doesNotMatch(lower, /take medication/);
+});
+
+test("artifact starters are evidence-gated and match closeout decisions", () => {
+  const starterDir = path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "artifact-starters");
+  const files = [
+    "README.md",
+    "revised-question-tree.md",
+    "one-page-summary-mockup.md",
+    "assisted-workflow-test.md",
+    "pause-note-with-rejected-assumptions.md"
+  ];
+  const combined = files.map((file) => fs.readFileSync(path.join(starterDir, file), "utf8")).join("\n");
+  const lower = combined.toLowerCase();
+
+  for (const file of files) {
+    assert.ok(fs.existsSync(path.join(starterDir, file)));
+  }
+  assert.match(combined, /npm run review:closeout/);
+  assert.match(combined, /TBD from reviewer evidence/);
+  assert.match(combined, /Synthetic data only/);
+  assert.match(combined, /No diagnosis/);
+  assert.match(combined, /No triage/);
+  assert.match(combined, /No treatment advice/);
+  assert.match(combined, /revised question tree/);
+  assert.match(combined, /one-page summary mockup/);
+  assert.match(combined, /assisted workflow test/);
+  assert.match(combined, /pause note with rejected assumptions/);
   assert.doesNotMatch(lower, /likely infection/);
   assert.doesNotMatch(lower, /probable cancer/);
   assert.doesNotMatch(lower, /take medication/);

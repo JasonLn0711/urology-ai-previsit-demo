@@ -18,6 +18,7 @@ const requiredFiles = [
   "docs/reviews/2026-04-23-urology-review/README.md",
   "docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md",
   "docs/reviews/2026-04-23-urology-review/post-review-closeout.md",
+  "docs/reviews/2026-04-23-urology-review/artifact-starters/README.md",
   "docs/reviews/2026-04-23-urology-review/decision-capture.md",
   "app/review-packet/index.html",
   "app/patient-demo/index.html",
@@ -31,6 +32,7 @@ const requiredRoutes = [
   "/app/reviewer-workbench/",
   "/docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md",
   "/docs/reviews/2026-04-23-urology-review/post-review-closeout.md",
+  "/docs/reviews/2026-04-23-urology-review/artifact-starters/",
   "/docs/reviews/2026-04-23-urology-review/decision-capture.md",
   "/docs/post-review-action-playbook.md"
 ];
@@ -78,9 +80,11 @@ function checkReviewPacketRoutes() {
   record("browser packet links dated capture", html.includes("../../docs/reviews/2026-04-23-urology-review/decision-capture.md"));
   record("browser packet links reviewer handout", html.includes("../../docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md"));
   record("browser packet links post-review closeout", html.includes("../../docs/reviews/2026-04-23-urology-review/post-review-closeout.md"));
+  record("browser packet links artifact starters", html.includes("../../docs/reviews/2026-04-23-urology-review/artifact-starters/"));
   record("markdown packet links dated capture", packet.includes("docs/reviews/2026-04-23-urology-review/decision-capture.md"));
   record("markdown packet links reviewer handout", packet.includes("docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md"));
   record("markdown packet links post-review closeout", packet.includes("docs/reviews/2026-04-23-urology-review/post-review-closeout.md"));
+  record("markdown packet links artifact starters", packet.includes("docs/reviews/2026-04-23-urology-review/artifact-starters/"));
   record("markdown packet links action playbook", packet.includes("docs/post-review-action-playbook.md"));
 }
 

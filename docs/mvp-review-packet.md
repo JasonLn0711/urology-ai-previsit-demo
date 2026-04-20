@@ -49,6 +49,7 @@ Open the demo surfaces:
 | `docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md` | Pre-meeting command/checklist for confirming the live review stack is ready. |
 | `docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md` | Reviewer-facing one-page handout for meeting goal, boundary, cases, decision choices, and evidence capture. |
 | `docs/reviews/2026-04-23-urology-review/post-review-closeout.md` | Post-review command/checklist for validating the capture before one next artifact is created. |
+| `docs/reviews/2026-04-23-urology-review/artifact-starters/` | Evidence-gated starters for the one selected artifact after closeout passes. |
 | `docs/reviews/2026-04-23-urology-review/decision-capture.md` | Dated review workspace for the 2026-04-23 meeting; remains pending until reviewer evidence is captured. |
 | `docs/samples/README.md` | Routes committed synthetic summary and reviewer-record outputs. |
 | `docs/source-verification.md` | Explains source-of-truth boundaries between demo and governance repos. |

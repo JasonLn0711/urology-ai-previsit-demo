@@ -15,6 +15,21 @@ Before choosing work, confirm these exist:
 - one selected smallest next artifact
 - passing post-review closeout check
 
+## Artifact Starters
+
+After `npm run review:closeout` passes, copy or edit exactly one starter from:
+
+`docs/reviews/2026-04-23-urology-review/artifact-starters/`
+
+| Selected Artifact | Starter |
+| --- | --- |
+| revised question tree | `artifact-starters/revised-question-tree.md` |
+| one-page summary mockup | `artifact-starters/one-page-summary-mockup.md` |
+| assisted workflow test | `artifact-starters/assisted-workflow-test.md` |
+| pause note with rejected assumptions | `artifact-starters/pause-note-with-rejected-assumptions.md` |
+
+The starter does not replace reviewer evidence. Replace every `TBD from reviewer evidence` placeholder with captured evidence from `decision-capture.md`.
+
 ## Decision-To-Artifact Map
 
 | Decision | Use When | Next Artifact | Done Condition |

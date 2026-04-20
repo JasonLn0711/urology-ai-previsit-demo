@@ -21,6 +21,7 @@ Do not pre-fill reviewer conclusions before the meeting. The only valid pre-meet
 | `reviewer-one-page-handout.md` | Reviewer-facing one-page goal, boundary, four-case scan, decision choices, and evidence checklist. |
 | `pre-meeting-readiness.md` | Command/checklist for confirming the review stack is live and still pending before the meeting starts. |
 | `post-review-closeout.md` | Command/checklist for confirming reviewer evidence is complete before one next artifact is created. |
+| `artifact-starters/` | Evidence-gated starters for the one selected artifact after closeout passes. |
 | `decision-capture.md` | Holds the filled meeting capture template, copied reviewer record, and the selected next artifact after the review. |
 
 ## Boundary

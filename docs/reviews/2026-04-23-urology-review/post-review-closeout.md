@@ -41,9 +41,10 @@ Do not create a next artifact yet. First fill the missing evidence or schedule o
 Only after `npm run review:closeout` passes:
 
 1. Open `../../post-review-action-playbook.md`.
-2. Create exactly one selected artifact.
-3. Link the artifact back to `decision-capture.md`.
-4. Keep synthetic-data, no-diagnosis, no-triage, and no-treatment boundaries unchanged.
+2. Open `artifact-starters/README.md`.
+3. Create exactly one selected artifact from the matching starter.
+4. Link the artifact back to `decision-capture.md`.
+5. Keep synthetic-data, no-diagnosis, no-triage, and no-treatment boundaries unchanged.
 
 ## Hard Stops
 
