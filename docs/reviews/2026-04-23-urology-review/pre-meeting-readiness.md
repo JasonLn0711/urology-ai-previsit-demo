@@ -29,6 +29,7 @@ npm run meeting:check
 ## Live URLs
 
 - Review packet: `http://localhost:4173/app/review-packet/`
+- Reviewer one-page handout: `http://localhost:4173/docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md`
 - Patient MVP: `http://localhost:4173/app/patient-demo/`
 - Clinician summary: `http://localhost:4173/app/clinician-summary/`
 - Reviewer workbench: `http://localhost:4173/app/reviewer-workbench/`
@@ -38,6 +39,7 @@ npm run meeting:check
 ## Manual Backup Checklist
 
 - [ ] Review packet opens.
+- [ ] Reviewer one-page handout opens.
 - [ ] Patient MVP opens.
 - [ ] Reviewer workbench opens.
 - [ ] `decision-capture.md` is still `pending review`.

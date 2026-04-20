@@ -17,6 +17,7 @@ test("sample artifacts are present for meeting demos", () => {
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "meeting-capture-template.md")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "post-review-action-playbook.md")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "pre-meeting-readiness.md")));
+  assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "reviewer-one-page-handout.md")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "decision-capture.md")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "workflow-rehearsal.md")));
 });
@@ -61,6 +62,7 @@ test("review packet provides decision criteria without clinical advice", () => {
   assert.match(packet, /meeting-capture-template\.md/);
   assert.match(packet, /post-review-action-playbook\.md/);
   assert.match(packet, /2026-04-23-urology-review\/pre-meeting-readiness\.md/);
+  assert.match(packet, /2026-04-23-urology-review\/reviewer-one-page-handout\.md/);
   assert.match(packet, /2026-04-23-urology-review\/decision-capture\.md/);
   assert.match(packet, /Decision Scorecard/);
   assert.match(packet, /Run The Four Cases/);
@@ -92,6 +94,7 @@ test("browser review packet routes reviewers to the demo artifacts", () => {
   assert.match(packetPage, /docs\/meeting-capture-template\.md/);
   assert.match(packetPage, /docs\/post-review-action-playbook\.md/);
   assert.match(packetPage, /docs\/reviews\/2026-04-23-urology-review\/pre-meeting-readiness\.md/);
+  assert.match(packetPage, /docs\/reviews\/2026-04-23-urology-review\/reviewer-one-page-handout\.md/);
   assert.match(packetPage, /docs\/reviews\/2026-04-23-urology-review\/decision-capture\.md/);
   assert.match(packetPage, /docs\/mvp-review-packet\.md/);
   assert.match(packetPage, /Four-case walkthrough/);
@@ -119,6 +122,26 @@ test("pre-meeting readiness checklist routes the live review stack", () => {
   assert.match(readiness, /decision-capture\.md/);
   assert.match(readiness, /pending review/);
   assert.match(packageJson, /"meeting:check": "node scripts\/check-meeting-readiness\.js"/);
+  assert.doesNotMatch(lower, /likely infection/);
+  assert.doesNotMatch(lower, /probable cancer/);
+  assert.doesNotMatch(lower, /take medication/);
+});
+
+test("reviewer handout keeps the meeting decision bounded", () => {
+  const handout = fs.readFileSync(
+    path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "reviewer-one-page-handout.md"),
+    "utf8"
+  );
+  const lower = handout.toLowerCase();
+
+  assert.match(handout, /Review Goal/);
+  assert.match(handout, /Non-Negotiable Boundary/);
+  assert.match(handout, /Four Cases To Scan/);
+  assert.match(handout, /Decision Choices/);
+  assert.match(handout, /Evidence To Capture/);
+  assert.match(handout, /Frequent urination at night/);
+  assert.match(handout, /Recurrent infection context/);
+  assert.match(handout, /Clinician review remains required/);
   assert.doesNotMatch(lower, /likely infection/);
   assert.doesNotMatch(lower, /probable cancer/);
   assert.doesNotMatch(lower, /take medication/);

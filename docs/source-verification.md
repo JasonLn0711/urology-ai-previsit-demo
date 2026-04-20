@@ -62,6 +62,12 @@ The pre-meeting readiness check is:
 
 It verifies required files, pending capture state, smoke checks, tests, and live local routes while the static server is running.
 
+The reviewer one-page handout is:
+
+`docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md`
+
+It gives the reviewer a compact meeting goal, boundary, four-case scan, decision choices, and evidence checklist without changing the clinical scope.
+
 The governance pack maps conclusions to sources such as:
 
 - AUA/SUFU overactive bladder guidance

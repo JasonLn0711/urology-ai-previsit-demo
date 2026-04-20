@@ -47,6 +47,7 @@ Open the demo surfaces:
 | `docs/meeting-capture-template.md` | Captures case-level evidence and the final continue / revise / narrow / pause decision. |
 | `docs/post-review-action-playbook.md` | Maps the captured decision to exactly one next artifact and stop boundary. |
 | `docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md` | Pre-meeting command/checklist for confirming the live review stack is ready. |
+| `docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md` | Reviewer-facing one-page handout for meeting goal, boundary, cases, decision choices, and evidence capture. |
 | `docs/reviews/2026-04-23-urology-review/decision-capture.md` | Dated review workspace for the 2026-04-23 meeting; remains pending until reviewer evidence is captured. |
 | `docs/samples/README.md` | Routes committed synthetic summary and reviewer-record outputs. |
 | `docs/source-verification.md` | Explains source-of-truth boundaries between demo and governance repos. |

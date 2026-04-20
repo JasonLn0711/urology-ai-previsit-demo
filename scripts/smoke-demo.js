@@ -99,6 +99,7 @@ function checkEntrypoints() {
     "docs/post-review-action-playbook.md",
     "docs/reviews/2026-04-23-urology-review/README.md",
     "docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md",
+    "docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md",
     "docs/reviews/2026-04-23-urology-review/decision-capture.md",
     "docs/workflow-rehearsal.md",
     "docs/samples/README.md"
@@ -204,6 +205,7 @@ function checkReviewPacket() {
   record("review packet includes recurrent infection case", text.includes("Recurrent infection context"));
   record("review packet references action playbook", text.includes("docs/post-review-action-playbook.md"));
   record("review packet references pre-meeting readiness", text.includes("docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md"));
+  record("review packet references reviewer handout", text.includes("docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md"));
   record("review packet references dated decision capture", text.includes("docs/reviews/2026-04-23-urology-review/decision-capture.md"));
   record("review packet keeps safety boundary", text.includes("No diagnosis.") && text.includes("No treatment advice."));
   record("review packet avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(text.toLowerCase()));
@@ -222,6 +224,7 @@ function checkBrowserReviewPacket() {
   record("browser review packet links markdown packet", text.includes("../../docs/mvp-review-packet.md"));
   record("browser review packet links action playbook", text.includes("../../docs/post-review-action-playbook.md"));
   record("browser review packet links pre-meeting readiness", text.includes("../../docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md"));
+  record("browser review packet links reviewer handout", text.includes("../../docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md"));
   record("browser review packet links dated decision capture", text.includes("../../docs/reviews/2026-04-23-urology-review/decision-capture.md"));
   record("browser review packet covers four cases", text.includes("Four-case walkthrough"));
   record(
@@ -284,6 +287,7 @@ function checkDatedReviewWorkspace() {
   const capture = read("docs/reviews/2026-04-23-urology-review/decision-capture.md");
   const readme = read("docs/reviews/2026-04-23-urology-review/README.md");
   const readiness = read("docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md");
+  const handout = read("docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md");
   const lower = `${capture}\n${readme}`.toLowerCase();
 
   record("dated review workspace is pending", capture.includes("Status: pending review"));
@@ -292,7 +296,9 @@ function checkDatedReviewWorkspace() {
   record("dated review workspace has no clinical advice wording", !/likely infection|probable cancer|take medication/.test(lower));
   record("dated review workspace warns against prefill", readme.includes("Do not pre-fill reviewer conclusions"));
   record("dated review workspace has readiness checklist", readiness.includes("npm run meeting:check"));
+  record("dated review workspace has reviewer handout", handout.includes("## Decision Choices"));
   record("dated readiness checklist avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(readiness.toLowerCase()));
+  record("dated reviewer handout avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(handout.toLowerCase()));
 }
 
 function checkNoStaleReferences() {
