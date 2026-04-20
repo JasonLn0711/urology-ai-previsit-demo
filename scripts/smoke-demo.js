@@ -100,6 +100,7 @@ function checkEntrypoints() {
     "docs/reviews/2026-04-23-urology-review/README.md",
     "docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md",
     "docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md",
+    "docs/reviews/2026-04-23-urology-review/post-review-closeout.md",
     "docs/reviews/2026-04-23-urology-review/decision-capture.md",
     "docs/workflow-rehearsal.md",
     "docs/samples/README.md"
@@ -114,6 +115,7 @@ function checkEntrypoints() {
     "scripts/generate-workflow-rehearsal.js",
     "scripts/generate-samples.js",
     "scripts/check-meeting-readiness.js",
+    "scripts/check-review-closeout.js",
     "scripts/smoke-demo.js"
   ].forEach(assertScriptCompiles);
 }
@@ -206,6 +208,7 @@ function checkReviewPacket() {
   record("review packet references action playbook", text.includes("docs/post-review-action-playbook.md"));
   record("review packet references pre-meeting readiness", text.includes("docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md"));
   record("review packet references reviewer handout", text.includes("docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md"));
+  record("review packet references post-review closeout", text.includes("docs/reviews/2026-04-23-urology-review/post-review-closeout.md"));
   record("review packet references dated decision capture", text.includes("docs/reviews/2026-04-23-urology-review/decision-capture.md"));
   record("review packet keeps safety boundary", text.includes("No diagnosis.") && text.includes("No treatment advice."));
   record("review packet avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(text.toLowerCase()));
@@ -225,6 +228,7 @@ function checkBrowserReviewPacket() {
   record("browser review packet links action playbook", text.includes("../../docs/post-review-action-playbook.md"));
   record("browser review packet links pre-meeting readiness", text.includes("../../docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md"));
   record("browser review packet links reviewer handout", text.includes("../../docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md"));
+  record("browser review packet links post-review closeout", text.includes("../../docs/reviews/2026-04-23-urology-review/post-review-closeout.md"));
   record("browser review packet links dated decision capture", text.includes("../../docs/reviews/2026-04-23-urology-review/decision-capture.md"));
   record("browser review packet covers four cases", text.includes("Four-case walkthrough"));
   record(
@@ -288,6 +292,7 @@ function checkDatedReviewWorkspace() {
   const readme = read("docs/reviews/2026-04-23-urology-review/README.md");
   const readiness = read("docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md");
   const handout = read("docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md");
+  const closeout = read("docs/reviews/2026-04-23-urology-review/post-review-closeout.md");
   const lower = `${capture}\n${readme}`.toLowerCase();
 
   record("dated review workspace is pending", capture.includes("Status: pending review"));
@@ -297,8 +302,10 @@ function checkDatedReviewWorkspace() {
   record("dated review workspace warns against prefill", readme.includes("Do not pre-fill reviewer conclusions"));
   record("dated review workspace has readiness checklist", readiness.includes("npm run meeting:check"));
   record("dated review workspace has reviewer handout", handout.includes("## Decision Choices"));
+  record("dated review workspace has post-review closeout", closeout.includes("npm run review:closeout"));
   record("dated readiness checklist avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(readiness.toLowerCase()));
   record("dated reviewer handout avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(handout.toLowerCase()));
+  record("dated post-review closeout avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(closeout.toLowerCase()));
 }
 
 function checkNoStaleReferences() {

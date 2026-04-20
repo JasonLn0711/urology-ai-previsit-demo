@@ -12,6 +12,7 @@ Do not pre-fill reviewer conclusions before the meeting. The only valid pre-meet
 4. Copy the reviewer workbench record.
 5. Paste it into `decision-capture.md`.
 6. Select exactly one next artifact from `../../post-review-action-playbook.md`.
+7. Run `npm run review:closeout` before creating that artifact.
 
 ## Files
 
@@ -19,6 +20,7 @@ Do not pre-fill reviewer conclusions before the meeting. The only valid pre-meet
 | --- | --- |
 | `reviewer-one-page-handout.md` | Reviewer-facing one-page goal, boundary, four-case scan, decision choices, and evidence checklist. |
 | `pre-meeting-readiness.md` | Command/checklist for confirming the review stack is live and still pending before the meeting starts. |
+| `post-review-closeout.md` | Command/checklist for confirming reviewer evidence is complete before one next artifact is created. |
 | `decision-capture.md` | Holds the filled meeting capture template, copied reviewer record, and the selected next artifact after the review. |
 
 ## Boundary

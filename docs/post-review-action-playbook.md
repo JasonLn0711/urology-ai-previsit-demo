@@ -1,6 +1,6 @@
 # Post-Review Action Playbook
 
-Use this after a reviewer record has been copied into `docs/meeting-capture-template.md`.
+Use this after a reviewer record has been copied into `docs/reviews/2026-04-23-urology-review/decision-capture.md` and `npm run review:closeout` passes.
 
 The rule is simple: one review decision creates one next artifact. Do not open a new feature branch, expand the clinical question set, or add integration scope until this artifact is finished and reviewed.
 
@@ -13,6 +13,7 @@ Before choosing work, confirm these exist:
 - filled meeting capture template
 - one recorded decision: `continue`, `revise`, `narrow`, or `pause`
 - one selected smallest next artifact
+- passing post-review closeout check
 
 ## Decision-To-Artifact Map
 
@@ -124,3 +125,5 @@ After the `2026-04-23` meeting, create one file under a dated review folder, for
 Paste the filled meeting capture template first. Then add only the one next artifact selected by the decision.
 
 The dated review workspace has already been scaffolded for the 2026-04-23 meeting. Keep its status as `pending review` until real reviewer evidence is captured.
+
+Run `npm run review:closeout` before creating the selected artifact. If it fails, complete the capture or mark it `pending follow-up` instead of starting artifact work.

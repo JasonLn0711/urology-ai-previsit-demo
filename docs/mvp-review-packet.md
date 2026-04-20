@@ -48,6 +48,7 @@ Open the demo surfaces:
 | `docs/post-review-action-playbook.md` | Maps the captured decision to exactly one next artifact and stop boundary. |
 | `docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md` | Pre-meeting command/checklist for confirming the live review stack is ready. |
 | `docs/reviews/2026-04-23-urology-review/reviewer-one-page-handout.md` | Reviewer-facing one-page handout for meeting goal, boundary, cases, decision choices, and evidence capture. |
+| `docs/reviews/2026-04-23-urology-review/post-review-closeout.md` | Post-review command/checklist for validating the capture before one next artifact is created. |
 | `docs/reviews/2026-04-23-urology-review/decision-capture.md` | Dated review workspace for the 2026-04-23 meeting; remains pending until reviewer evidence is captured. |
 | `docs/samples/README.md` | Routes committed synthetic summary and reviewer-record outputs. |
 | `docs/source-verification.md` | Explains source-of-truth boundaries between demo and governance repos. |
@@ -274,6 +275,6 @@ After the review, there should be one of these outputs:
 - Narrow: limit the MVP to nurse-assisted or one symptom module.
 - Pause: document rejected assumptions and stop implementation work.
 
-Use `docs/post-review-action-playbook.md` to create exactly one next artifact from the captured decision.
+Run `npm run review:closeout`, then use `docs/post-review-action-playbook.md` to create exactly one next artifact from the captured decision.
 
 Do not expand the question set until reviewer evidence shows the current flow is useful and bounded.

@@ -34,6 +34,7 @@ npm run meeting:check
 - Clinician summary: `http://localhost:4173/app/clinician-summary/`
 - Reviewer workbench: `http://localhost:4173/app/reviewer-workbench/`
 - Dated decision capture: `http://localhost:4173/docs/reviews/2026-04-23-urology-review/decision-capture.md`
+- Post-review closeout: `http://localhost:4173/docs/reviews/2026-04-23-urology-review/post-review-closeout.md`
 - Action playbook: `http://localhost:4173/docs/post-review-action-playbook.md`
 
 ## Manual Backup Checklist
@@ -45,6 +46,7 @@ npm run meeting:check
 - [ ] `decision-capture.md` is still `pending review`.
 - [ ] The four cases are visible in the capture file.
 - [ ] No reviewer decision is prefilled.
+- [ ] Post-review closeout opens.
 - [ ] The action playbook opens.
 - [ ] Boundary wording is visible: synthetic data only, no diagnosis, no triage, no treatment advice.
 

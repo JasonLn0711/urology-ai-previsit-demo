@@ -8,6 +8,7 @@
     "rehearsal": "node scripts/generate-workflow-rehearsal.js",
     "samples": "node scripts/generate-samples.js",
     "meeting:check": "node scripts/check-meeting-readiness.js",
+    "review:closeout": "node scripts/check-review-closeout.js",
     "smoke": "node scripts/smoke-demo.js",
     "test": "node --test"
   },

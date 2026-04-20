@@ -68,6 +68,12 @@ The reviewer one-page handout is:
 
 It gives the reviewer a compact meeting goal, boundary, four-case scan, decision choices, and evidence checklist without changing the clinical scope.
 
+The post-review closeout check is:
+
+`npm run review:closeout`
+
+It should run only after the reviewer record has been pasted into `docs/reviews/2026-04-23-urology-review/decision-capture.md`. It verifies that the capture is complete enough to justify one selected artifact from `docs/post-review-action-playbook.md`.
+
 The governance pack maps conclusions to sources such as:
 
 - AUA/SUFU overactive bladder guidance
