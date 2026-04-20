@@ -31,6 +31,7 @@ python3 -m http.server 4173
 Open:
 
 - Patient demo: `http://localhost:4173/app/patient-demo/`
+- Review packet: `http://localhost:4173/app/review-packet/`
 - Clinician summary sample: `http://localhost:4173/app/clinician-summary/`
 - Reviewer workbench: `http://localhost:4173/app/reviewer-workbench/`
 

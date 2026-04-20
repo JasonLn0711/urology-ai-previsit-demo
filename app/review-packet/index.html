@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MVP Review Packet</title>
+    <link rel="stylesheet" href="../patient-demo/styles.css">
+  </head>
+  <body>
+    <header class="topbar" aria-label="Review packet header">
+      <a class="brand" href="../patient-demo/">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>
+          <strong>Urology AI Previsit</strong>
+          <small>MVP review packet</small>
+        </span>
+      </a>
+      <nav class="nav-actions" aria-label="Review packet navigation">
+        <a class="ghost-button link-button" href="../patient-demo/">Patient MVP</a>
+        <a class="ghost-button link-button" href="../clinician-summary/">Summary View</a>
+        <a class="ghost-button link-button" href="../reviewer-workbench/">Reviewer Workbench</a>
+      </nav>
+    </header>
+
+    <main class="app-shell">
+      <section class="mvp-brief" aria-labelledby="packet-title">
+        <div>
+          <p class="eyebrow">Reviewer entrypoint</p>
+          <h1 id="packet-title">MVP review packet</h1>
+          <p class="lead">
+            Judge whether this synthetic previsit workflow deserves another prototype cycle, without changing its review-only clinical boundary.
+          </p>
+        </div>
+        <div class="brief-visual" aria-hidden="true">
+          <img src="../../assets/bladder-flow.svg" alt="">
+        </div>
+      </section>
+
+      <section class="safety-strip" role="note" aria-label="Review boundaries">
+        <span>Synthetic data only.</span>
+        <span>No diagnosis, triage, or treatment advice.</span>
+        <span>Clinician review remains required.</span>
+      </section>
+
+      <section class="workspace packet-workspace" aria-label="MVP review packet workspace">
+        <aside class="case-rail">
+          <div class="rail-section">
+            <p class="eyebrow">Review sequence</p>
+            <h2>Run in order</h2>
+            <ol class="gate-list">
+              <li>Open the patient MVP.</li>
+              <li>Load each synthetic case.</li>
+              <li>Compare against the workflow rehearsal.</li>
+              <li>Inspect the clinician summary.</li>
+              <li>Capture a decision in the reviewer workbench.</li>
+            </ol>
+          </div>
+
+          <div class="rail-section">
+            <p class="eyebrow">Open surfaces</p>
+            <div class="packet-link-list">
+              <a href="../patient-demo/">Patient MVP</a>
+              <a href="../clinician-summary/">Clinician summary</a>
+              <a href="../reviewer-workbench/">Reviewer workbench</a>
+              <a href="../../docs/workflow-rehearsal.md">Workflow rehearsal</a>
+              <a href="../../docs/mvp-review-packet.md">Markdown packet</a>
+            </div>
+          </div>
+
+          <div class="rail-section boundary-note">
+            <p class="eyebrow">Stop immediately</p>
+            <p>Revise before continuing if any screen implies diagnosis, triage, urgency assignment, treatment, real patient-data use, or hidden missing information.</p>
+          </div>
+        </aside>
+
+        <section class="intake-panel" aria-labelledby="scorecard-title">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Decision frame</p>
+              <h2 id="scorecard-title">Reviewer scorecard</h2>
+            </div>
+          </div>
+
+          <div class="packet-stack">
+            <section class="summary-section">
+              <h3>Review question</h3>
+              <p>Would this MVP improve previsit readiness enough to justify another prototype cycle, while staying safe, understandable, and realistic for clinic workflow?</p>
+            </section>
+
+            <section class="summary-section">
+              <h3>Artifact map</h3>
+              <table class="packet-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Artifact</th>
+                    <th scope="col">Use</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="../../docs/product-brief.md">Product brief</a></td>
+                    <td>Intent, scope, and out-of-scope boundaries.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="../../docs/safety-and-privacy-boundaries.md">Safety boundaries</a></td>
+                    <td>Privacy rules, wording rules, and no-advice boundary.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="../../docs/workflow-rehearsal.md">Workflow rehearsal</a></td>
+                    <td>Three-case walkthrough for patient, nurse, and clinician checks.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="../../docs/samples/README.md">Sample outputs</a></td>
+                    <td>Generated clinician summaries and reviewer records.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="../../docs/source-verification.md">Source trace</a></td>
+                    <td>Demo source-of-truth and governance boundaries.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="summary-section">
+              <h3>What to judge</h3>
+              <dl class="review-grid">
+                <div class="review-row">
+                  <dt>Patient/helper lens</dt>
+                  <dd>Plain wording, visible not-sure options, and no pressure to guess.</dd>
+                </div>
+                <div class="review-row">
+                  <dt>Nurse lens</dt>
+                  <dd>Completion support, missing information, medication review, bladder diary, and containment cues.</dd>
+                </div>
+                <div class="review-row">
+                  <dt>Clinician lens</dt>
+                  <dd>Main concern, duration, pattern, priority review statements, context, and missing information in under one minute.</dd>
+                </div>
+                <div class="review-row">
+                  <dt>Governance lens</dt>
+                  <dd>Safety boundary, workflow fit, staff burden, existing process gap, and smallest next artifact.</dd>
+                </div>
+              </dl>
+            </section>
+
+            <section class="summary-section">
+              <h3>Decision scorecard</h3>
+              <table class="packet-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Signal</th>
+                    <th scope="col">Supporting</th>
+                    <th scope="col">Blocking</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Summary usefulness</td>
+                    <td>Clinician would read it.</td>
+                    <td>Clinician would not read it.</td>
+                  </tr>
+                  <tr>
+                    <td>Workflow slot</td>
+                    <td>Check-in, previsit, or nurse rooming slot exists.</td>
+                    <td>No realistic workflow slot.</td>
+                  </tr>
+                  <tr>
+                    <td>Staff burden</td>
+                    <td>Effort is acceptable or limited to selected cases.</td>
+                    <td>Burden is unacceptable.</td>
+                  </tr>
+                  <tr>
+                    <td>Safety boundary</td>
+                    <td>Review-only wording is acceptable.</td>
+                    <td>Boundary is unacceptable.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          </div>
+        </section>
+
+        <aside class="summary-panel" aria-labelledby="decision-title">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Decision rules</p>
+              <h2 id="decision-title">Outcome</h2>
+            </div>
+          </div>
+          <div class="decision-output">
+            <section class="summary-section">
+              <h3>Continue</h3>
+              <p>Use when workflow pain is clear, the summary would be read, a slot exists, staff burden is acceptable, and safety is acceptable.</p>
+            </section>
+            <section class="summary-section">
+              <h3>Revise</h3>
+              <p>Use when the idea fits but wording, summary format, or workflow placement needs another pass.</p>
+            </section>
+            <section class="summary-section">
+              <h3>Narrow</h3>
+              <p>Use when value exists only for assisted completion, selected patients, or one symptom module.</p>
+            </section>
+            <section class="summary-section">
+              <h3>Pause</h3>
+              <p>Use when safety, workflow slot, staff burden, summary usefulness, or existing-process value blocks the MVP.</p>
+            </section>
+          </div>
+          <div class="summary-actions">
+            <a class="secondary-button link-button" href="../reviewer-workbench/">Capture Decision</a>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </body>
+</html>

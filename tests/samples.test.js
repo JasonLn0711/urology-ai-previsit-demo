@@ -65,3 +65,27 @@ test("review packet provides decision criteria without clinical advice", () => {
   assert.doesNotMatch(lower, /probable cancer/);
   assert.doesNotMatch(lower, /take medication/);
 });
+
+test("browser review packet routes reviewers to the demo artifacts", () => {
+  const packetPage = fs.readFileSync(
+    path.join(__dirname, "..", "app", "review-packet", "index.html"),
+    "utf8"
+  );
+  const lower = packetPage.toLowerCase();
+
+  assert.match(packetPage, /MVP review packet/);
+  assert.match(packetPage, /href="\.\.\/patient-demo\/"/);
+  assert.match(packetPage, /href="\.\.\/clinician-summary\/"/);
+  assert.match(packetPage, /href="\.\.\/reviewer-workbench\/"/);
+  assert.match(packetPage, /docs\/workflow-rehearsal\.md/);
+  assert.match(packetPage, /docs\/mvp-review-packet\.md/);
+  assert.match(packetPage, /No diagnosis, triage, or treatment advice\./);
+  assert.match(packetPage, /Clinician review remains required\./);
+  assert.match(packetPage, /Continue/);
+  assert.match(packetPage, /Revise/);
+  assert.match(packetPage, /Narrow/);
+  assert.match(packetPage, /Pause/);
+  assert.doesNotMatch(lower, /likely infection/);
+  assert.doesNotMatch(lower, /probable cancer/);
+  assert.doesNotMatch(lower, /take medication/);
+});

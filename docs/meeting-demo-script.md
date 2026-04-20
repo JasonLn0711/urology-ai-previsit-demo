@@ -8,17 +8,19 @@ Use `docs/mvp-review-packet.md` as the reviewer-facing entrypoint for boundaries
 
 ## Demo Path
 
-1. Open the patient demo.
-2. Load a synthetic case.
-3. Show the scenario rail and safety boundary.
-4. Walk through the source, concern, and core previsit screens.
-5. Show how conditional modules appear only when the core answers justify them.
-6. Show the missing-information repair step.
-7. Review the patient answers, nurse cues, and clinician summary.
-8. Show copy/print actions.
-9. Open the reviewer workbench.
-10. Capture workflow, adoption, safety, and next-artifact signals.
-11. Ask what would make the summary useful or unsafe in the real workflow.
+1. Open the review packet.
+2. Show the review sequence, artifact map, scorecard, and hard stop boundaries.
+3. Open the patient demo.
+4. Load a synthetic case.
+5. Show the scenario rail and safety boundary.
+6. Walk through the source, concern, and core previsit screens.
+7. Show how conditional modules appear only when the core answers justify them.
+8. Show the missing-information repair step.
+9. Review the patient answers, nurse cues, and clinician summary.
+10. Show copy/print actions.
+11. Open the reviewer workbench.
+12. Capture workflow, adoption, safety, and next-artifact signals.
+13. Ask what would make the summary useful or unsafe in the real workflow.
 
 ## Sample Artifact Path
 

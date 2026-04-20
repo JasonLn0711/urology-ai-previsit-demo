@@ -86,6 +86,7 @@ function checkEntrypoints() {
   [
     "app/patient-demo/index.html",
     "app/patient-demo/app.js",
+    "app/review-packet/index.html",
     "app/clinician-summary/index.html",
     "app/reviewer-workbench/index.html",
     "app/reviewer-workbench/reviewer.js",
@@ -197,6 +198,28 @@ function checkReviewPacket() {
   record("review packet avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(text.toLowerCase()));
 }
 
+function checkBrowserReviewPacket() {
+  const text = read("app/review-packet/index.html");
+  const lower = text.toLowerCase();
+
+  record("browser review packet has title", text.includes("MVP review packet"));
+  record("browser review packet links patient demo", text.includes('href="../patient-demo/"'));
+  record("browser review packet links clinician summary", text.includes('href="../clinician-summary/"'));
+  record("browser review packet links reviewer workbench", text.includes('href="../reviewer-workbench/"'));
+  record("browser review packet links workflow rehearsal", text.includes("../../docs/workflow-rehearsal.md"));
+  record("browser review packet links markdown packet", text.includes("../../docs/mvp-review-packet.md"));
+  record(
+    "browser review packet has decision outcomes",
+    ["Continue", "Revise", "Narrow", "Pause"].every((outcome) => text.includes(`<h3>${outcome}</h3>`))
+  );
+  record(
+    "browser review packet keeps safety boundary",
+    text.includes("No diagnosis, triage, or treatment advice.") &&
+      text.includes("Clinician review remains required.")
+  );
+  record("browser review packet avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(lower));
+}
+
 function checkReviewerBoundary() {
   const recordText = reviewRecordToText(buildReviewRecord({
     workflowPain: "clear",
@@ -234,6 +257,7 @@ function main() {
   checkGeneratedSamples();
   checkWorkflowRehearsal();
   checkReviewPacket();
+  checkBrowserReviewPacket();
   checkReviewerBoundary();
   checkNoStaleReferences();
 

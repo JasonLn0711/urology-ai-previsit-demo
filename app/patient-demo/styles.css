@@ -231,6 +231,10 @@ h4 {
   grid-template-columns: minmax(220px, 0.55fr) minmax(420px, 1.05fr) minmax(330px, 0.75fr);
 }
 
+.packet-workspace {
+  grid-template-columns: minmax(220px, 0.55fr) minmax(440px, 1.05fr) minmax(310px, 0.72fr);
+}
+
 .case-rail,
 .intake-panel,
 .summary-panel,
@@ -328,6 +332,22 @@ h4 {
   margin-bottom: 0;
   color: var(--muted);
   line-height: 1.5;
+}
+
+.packet-link-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.packet-link-list a {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  color: var(--accent-strong);
+  font-weight: 850;
+  text-decoration: none;
 }
 
 .panel-head {
@@ -757,6 +777,46 @@ pre.summary-body {
   line-height: 1.5;
 }
 
+.packet-stack {
+  display: grid;
+  gap: 24px;
+  padding: 18px 0 0;
+}
+
+.packet-table {
+  width: 100%;
+  border-collapse: collapse;
+  line-height: 1.45;
+}
+
+.packet-table th,
+.packet-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 12px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.packet-table th {
+  color: var(--accent-strong);
+  font-size: 0.82rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.packet-table td {
+  color: var(--muted);
+}
+
+.packet-table td:first-child {
+  color: var(--ink);
+  font-weight: 850;
+}
+
+.packet-table a {
+  color: var(--accent-strong);
+}
+
 .summary-actions {
   border-top: 1px solid var(--line);
   padding-top: 16px;
@@ -967,6 +1027,7 @@ pre.summary-body {
   .mvp-brief,
   .workspace,
   .reviewer-workspace,
+  .packet-workspace,
   .patient-intro {
     grid-template-columns: 1fr;
   }
