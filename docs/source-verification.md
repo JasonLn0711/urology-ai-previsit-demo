@@ -20,6 +20,12 @@ The demo's synthetic scenario source of truth is:
 
 Patient demo scenarios, clinician summary samples, and generated sample artifacts should read from this shared source so meeting artifacts do not drift from the browser demo.
 
+The lightweight MVP readiness check is:
+
+`npm run smoke`
+
+It verifies entrypoints, browser script order, shared synthetic cases, generated sample front matter, stale references, and safety-boundary wording. It does not replace browser visual review.
+
 The governance pack maps conclusions to sources such as:
 
 - AUA/SUFU overactive bladder guidance

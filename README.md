@@ -39,8 +39,11 @@ You can also open `app/patient-demo/index.html` directly in a browser.
 ## Test
 
 ```bash
+npm run smoke
 npm test
 ```
+
+The smoke check verifies demo entrypoints, browser script order, shared synthetic cases, generated sample boundaries, and stale-reference cleanup.
 
 The tests check summary generation, conditional module activation, missing-information prompts, completion status, safety wording, and reviewer decision-record logic.
 

@@ -6,6 +6,7 @@
   "scripts": {
     "start": "python3 -m http.server 4173",
     "samples": "node scripts/generate-samples.js",
+    "smoke": "node scripts/smoke-demo.js",
     "test": "node --test"
   },
   "keywords": [
