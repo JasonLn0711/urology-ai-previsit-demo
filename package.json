@@ -9,6 +9,7 @@
     "samples": "node scripts/generate-samples.js",
     "meeting:check": "node scripts/check-meeting-readiness.js",
     "review:closeout": "node scripts/check-review-closeout.js",
+    "artifact:check": "node scripts/check-selected-artifact.js",
     "smoke": "node scripts/smoke-demo.js",
     "test": "node --test"
   },

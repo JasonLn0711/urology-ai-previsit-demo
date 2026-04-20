@@ -20,7 +20,8 @@ Do not edit more than one starter. The selected starter must match the decision 
 1. Run `npm run review:closeout`.
 2. Copy exactly one starter into the dated review folder or edit exactly one starter in place.
 3. Replace all `TBD from reviewer evidence` placeholders using `decision-capture.md`.
-4. Keep the synthetic-data, no-diagnosis, no-triage, and no-treatment boundaries unchanged.
+4. Run `npm run artifact:check`.
+5. Keep the synthetic-data, no-diagnosis, no-triage, and no-treatment boundaries unchanged.
 
 ## Stop Conditions
 

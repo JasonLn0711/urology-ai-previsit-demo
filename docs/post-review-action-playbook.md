@@ -30,6 +30,14 @@ After `npm run review:closeout` passes, copy or edit exactly one starter from:
 
 The starter does not replace reviewer evidence. Replace every `TBD from reviewer evidence` placeholder with captured evidence from `decision-capture.md`.
 
+After the selected starter is filled, run:
+
+```bash
+npm run artifact:check
+```
+
+The check should fail if the selected artifact still contains placeholders or does not preserve the review-only boundary.
+
 ## Decision-To-Artifact Map
 
 | Decision | Use When | Next Artifact | Done Condition |

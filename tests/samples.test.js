@@ -22,6 +22,7 @@ test("sample artifacts are present for meeting demos", () => {
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "artifact-starters", "README.md")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "reviews", "2026-04-23-urology-review", "decision-capture.md")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "scripts", "check-review-closeout.js")));
+  assert.ok(fs.existsSync(path.join(__dirname, "..", "scripts", "check-selected-artifact.js")));
   assert.ok(fs.existsSync(path.join(__dirname, "..", "docs", "workflow-rehearsal.md")));
 });
 
@@ -164,11 +165,13 @@ test("post-review closeout defines the after-meeting artifact gate", () => {
   const lower = closeout.toLowerCase();
 
   assert.match(closeout, /npm run review:closeout/);
+  assert.match(closeout, /npm run artifact:check/);
   assert.match(closeout, /Status: complete/);
   assert.match(closeout, /pending follow-up/);
   assert.match(closeout, /one smallest next artifact/);
   assert.match(closeout, /post-review-action-playbook\.md/);
   assert.match(packageJson, /"review:closeout": "node scripts\/check-review-closeout\.js"/);
+  assert.match(packageJson, /"artifact:check": "node scripts\/check-selected-artifact\.js"/);
   assert.doesNotMatch(lower, /likely infection/);
   assert.doesNotMatch(lower, /probable cancer/);
   assert.doesNotMatch(lower, /take medication/);
@@ -190,6 +193,7 @@ test("artifact starters are evidence-gated and match closeout decisions", () => 
     assert.ok(fs.existsSync(path.join(starterDir, file)));
   }
   assert.match(combined, /npm run review:closeout/);
+  assert.match(combined, /npm run artifact:check/);
   assert.match(combined, /TBD from reviewer evidence/);
   assert.match(combined, /Synthetic data only/);
   assert.match(combined, /No diagnosis/);
@@ -230,6 +234,7 @@ test("post-review action playbook maps decisions to bounded artifacts", () => {
   assert.match(playbook, /Pause/);
   assert.match(playbook, /one next artifact/);
   assert.match(playbook, /npm run review:closeout/);
+  assert.match(playbook, /npm run artifact:check/);
   assert.match(playbook, /Hard Stop/);
   assert.doesNotMatch(lower, /likely infection/);
   assert.doesNotMatch(lower, /probable cancer/);

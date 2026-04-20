@@ -121,6 +121,7 @@ function checkEntrypoints() {
     "scripts/generate-samples.js",
     "scripts/check-meeting-readiness.js",
     "scripts/check-review-closeout.js",
+    "scripts/check-selected-artifact.js",
     "scripts/smoke-demo.js"
   ].forEach(assertScriptCompiles);
 }
@@ -291,6 +292,7 @@ function checkPostReviewActionPlaybook() {
   record("action playbook has pause artifact", text.includes("## Pause Artifact: Pause Note With Rejected Assumptions"));
   record("action playbook has hard stop", text.includes("## Hard Stop"));
   record("action playbook references dated decision capture", text.includes("docs/reviews/2026-04-23-urology-review/decision-capture.md"));
+  record("action playbook references artifact check", text.includes("npm run artifact:check"));
   record("action playbook avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(lower));
 }
 
@@ -318,6 +320,7 @@ function checkDatedReviewWorkspace() {
   record("dated review workspace has reviewer handout", handout.includes("## Decision Choices"));
   record("dated review workspace has post-review closeout", closeout.includes("npm run review:closeout"));
   record("dated review workspace has artifact starters", starterReadme.includes("## Starter Map"));
+  record("dated review workspace has artifact check", closeout.includes("npm run artifact:check") && starterReadme.includes("npm run artifact:check"));
   record("dated readiness checklist avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(readiness.toLowerCase()));
   record("dated reviewer handout avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(handout.toLowerCase()));
   record("dated post-review closeout avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(closeout.toLowerCase()));

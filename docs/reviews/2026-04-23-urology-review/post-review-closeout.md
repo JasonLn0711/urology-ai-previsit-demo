@@ -44,7 +44,8 @@ Only after `npm run review:closeout` passes:
 2. Open `artifact-starters/README.md`.
 3. Create exactly one selected artifact from the matching starter.
 4. Link the artifact back to `decision-capture.md`.
-5. Keep synthetic-data, no-diagnosis, no-triage, and no-treatment boundaries unchanged.
+5. Run `npm run artifact:check`.
+6. Keep synthetic-data, no-diagnosis, no-triage, and no-treatment boundaries unchanged.
 
 ## Hard Stops
 

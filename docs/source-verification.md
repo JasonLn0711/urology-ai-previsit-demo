@@ -80,6 +80,12 @@ The post-review artifact starters are:
 
 They are blank, evidence-gated starters for the one selected artifact after `npm run review:closeout` passes. They do not choose an artifact or add clinical scope before reviewer evidence exists.
 
+The selected-artifact readiness check is:
+
+`npm run artifact:check`
+
+It should run only after one starter has been filled with reviewer evidence. It fails while placeholders remain or the review-only safety boundary is missing.
+
 The governance pack maps conclusions to sources such as:
 
 - AUA/SUFU overactive bladder guidance
