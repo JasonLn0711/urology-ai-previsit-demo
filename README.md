@@ -64,4 +64,6 @@ This repository owns the implementation: app code, UI, synthetic cases, tests, a
 
 The sibling thinking repository, `../urology-ai-previsit-thinking-spec`, owns system logic, clinical question governance, evidence mapping, and reviewer decision records.
 
+Current architecture decision: keep this demo repo separate from the thinking/governance repo unless governance and implementation need to be version-locked in a future deployment package.
+
 The planning repository keeps planning notes, meeting notes, decisions, and knowledge-locator files only.
