@@ -3,12 +3,14 @@ const assert = require("node:assert/strict");
 const {
   buildClinicianSummary,
   clinicianFlags,
+  completionStatus,
   missingFields,
   summaryToText
 } = require("../app/shared/summary.js");
 
 test("builds a clinician-readable synthetic summary", () => {
   const summary = buildClinicianSummary({
+    entryMode: "Patient self-filled",
     symptomCategory: "Frequency or urgency",
     duration: "More than 1 month",
     severity: "Moderate",
@@ -29,11 +31,13 @@ test("builds a clinician-readable synthetic summary", () => {
   assert.equal(summary.chiefConcern, "Frequency or urgency");
   assert.match(summary.symptomPattern, /9 to 12 times/);
   assert.deepEqual(summary.missingInformation, ["No required MVP fields missing."]);
+  assert.equal(summary.completionStatus.tone, "ready");
   assert.match(summaryToText(summary), /A clinician must review all information/);
 });
 
 test("shows missing information prompts", () => {
   const missing = missingFields({
+    entryMode: "Family-assisted",
     symptomCategory: "Leakage",
     duration: "",
     severity: "",
@@ -45,12 +49,14 @@ test("shows missing information prompts", () => {
     unableToUrinate: "",
     medications: "",
     language: "",
-    phoneComfort: ""
+    phoneComfort: "",
+    supportNeeds: ""
   });
 
   assert.ok(missing.includes("duration"));
   assert.ok(missing.includes("current medicines or relevant medicine uncertainty"));
   assert.ok(missing.includes("preferred language"));
+  assert.ok(missing.includes("support need"));
 });
 
 test("uses neutral clinician-review flags", () => {
@@ -69,3 +75,13 @@ test("uses neutral clinician-review flags", () => {
   ]);
 });
 
+test("reports MVP completion status without clinical conclusions", () => {
+  const status = completionStatus({
+    entryMode: "Patient self-filled",
+    symptomCategory: "Visible blood"
+  });
+
+  assert.equal(status.tone, "needs-review");
+  assert.ok(status.missingCount > 0);
+  assert.match(status.label, /MVP fields still missing/);
+});

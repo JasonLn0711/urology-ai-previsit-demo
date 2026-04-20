@@ -3,7 +3,7 @@
     "id": "synthetic-frequency-older-adult",
     "label": "Synthetic case: frequent urination at night",
     "answers": {
-      "entryMode": "patient",
+      "entryMode": "Patient self-filled",
       "symptomCategory": "Frequency or urgency",
       "duration": "More than 1 month",
       "severity": "Moderate",
@@ -17,7 +17,7 @@
       "medications": "Blood pressure medicine; exact name unknown",
       "language": "Mandarin with Taiwanese preferred",
       "phoneComfort": "Needs large buttons",
-      "supportNeeds": "May need nurse help reviewing answers",
+      "supportNeeds": "Needs review before clinician enters",
       "notes": "Patient worries about waking up repeatedly at night."
     }
   },
@@ -25,7 +25,7 @@
     "id": "synthetic-emptying-difficulty",
     "label": "Synthetic case: difficulty emptying bladder",
     "answers": {
-      "entryMode": "nurse",
+      "entryMode": "Nurse-assisted",
       "symptomCategory": "Difficulty emptying",
       "duration": "1 to 4 weeks",
       "severity": "Severe",
@@ -42,6 +42,27 @@
       "supportNeeds": "Nurse-assisted mode",
       "notes": "Patient says flow is weak and sometimes cannot start."
     }
+  },
+  {
+    "id": "synthetic-incomplete-leakage",
+    "label": "Synthetic case: incomplete leakage intake",
+    "answers": {
+      "entryMode": "Family-assisted",
+      "symptomCategory": "Leakage",
+      "duration": "",
+      "severity": "Mild",
+      "frequencyDay": "",
+      "nocturia": "Not sure",
+      "leak": "Yes",
+      "painBurning": "",
+      "blood": "No",
+      "fever": "",
+      "unableToUrinate": "No",
+      "medications": "",
+      "language": "Taiwanese",
+      "phoneComfort": "Prefer staff help",
+      "supportNeeds": "Family-assisted mode",
+      "notes": "Helper says the patient is embarrassed to discuss leakage."
+    }
   }
 ]
-

@@ -2,7 +2,7 @@
 
 ## Product
 
-Urology AI Previsit Demo
+Urology AI Previsit MVP
 
 ## Primary User
 
@@ -14,7 +14,7 @@ Clinicians who need a short, reviewable previsit summary before entering the roo
 
 ## MVP Goal
 
-Show a browser-based, synthetic-data workflow that helps collect common urology previsit information and turns it into a clinician-readable summary.
+Show a professional synthetic-data workflow that helps collect common urology previsit information, repair missing fields, and turn patient-provided answers into a clinician-readable summary.
 
 ## Core Flow
 
@@ -33,18 +33,21 @@ Patient checks in
 - The summary is readable in under 60 seconds.
 - The demo never diagnoses, triages, or recommends treatment.
 - The demo works without real patient data.
+- Missing information remains visible instead of being hidden.
 - The meeting audience can judge whether the workflow is worth prototyping.
 
 ## MVP Scope
 
 - Large-button question flow.
+- Synthetic scenario rail.
+- Stepper and completion status.
 - Symptom category selection.
 - Fixed yes/no and multiple-choice questions.
 - Optional free-text context.
 - Missing-information prompts.
 - Final patient review.
 - Clinician-facing summary.
-- Synthetic case loader.
+- Copy and print summary actions.
 
 ## Out of Scope
 
@@ -54,4 +57,3 @@ Patient checks in
 - EHR/HIS/EMR integration.
 - Autonomous triage.
 - Model-driven medical judgment.
-

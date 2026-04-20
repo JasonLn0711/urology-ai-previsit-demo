@@ -10,41 +10,65 @@
     <header class="topbar" aria-label="Demo header">
       <a class="brand" href="../patient-demo/">
         <span class="brand-mark" aria-hidden="true"></span>
-        <span>Urology AI Previsit</span>
+        <span>
+          <strong>Urology AI Previsit</strong>
+          <small>Clinician summary sample</small>
+        </span>
       </a>
       <nav class="nav-actions" aria-label="Demo actions">
-        <a class="ghost-button link-button" href="../patient-demo/">Patient Demo</a>
+        <a class="ghost-button link-button" href="../patient-demo/">Patient MVP</a>
       </nav>
     </header>
 
-    <main class="workspace">
-      <section class="patient-surface" aria-labelledby="sample-title">
-        <div class="patient-intro">
-          <div>
-            <p class="eyebrow">Synthetic summary</p>
-            <h1 id="sample-title">Clinician review sample</h1>
-            <p class="lead">
-              A one-page summary generated from synthetic patient answers.
-            </p>
-          </div>
-          <figure class="flow-figure">
-            <img src="../../assets/bladder-flow.svg" alt="Check-in to guided questions to review to summary">
-          </figure>
+    <main class="app-shell">
+      <section class="mvp-brief" aria-labelledby="sample-title">
+        <div>
+          <p class="eyebrow">Synthetic summary</p>
+          <h1 id="sample-title">One-minute clinician review</h1>
+          <p class="lead">
+            A sample handoff generated from synthetic answers. It is designed to be reviewed, corrected, or ignored by the clinician.
+          </p>
+        </div>
+        <div class="brief-visual" aria-hidden="true">
+          <img src="../../assets/bladder-flow.svg" alt="">
         </div>
       </section>
 
-      <aside class="summary-surface" aria-labelledby="summary-title">
-        <div class="summary-heading">
-          <p class="eyebrow">Clinician review</p>
-          <h2 id="summary-title">Synthetic case summary</h2>
-        </div>
-        <pre id="summaryText" class="summary-body"></pre>
-      </aside>
+      <section class="safety-strip" role="note" aria-label="Safety boundaries">
+        <span>This demo does not diagnose or recommend treatment.</span>
+        <span>A clinician must review all information.</span>
+        <span>Use synthetic data only.</span>
+      </section>
+
+      <section class="workspace summary-workspace" aria-label="Clinician summary workspace">
+        <aside class="case-rail">
+          <div class="rail-section">
+            <p class="eyebrow">Sample case</p>
+            <h2>Difficulty emptying</h2>
+            <p class="lead">Nurse-assisted synthetic case with neutral review flags.</p>
+          </div>
+          <div class="rail-section boundary-note">
+            <p class="eyebrow">Boundary</p>
+            <p>The summary reports patient-provided information. It does not assign disease, urgency, or treatment.</p>
+          </div>
+        </aside>
+
+        <section class="intake-panel" aria-labelledby="summary-title">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Clinician review</p>
+              <h2 id="summary-title">Synthetic case summary</h2>
+            </div>
+          </div>
+          <pre id="summaryText" class="summary-body"></pre>
+        </section>
+      </section>
     </main>
 
     <script src="../shared/summary.js"></script>
     <script>
       const sample = {
+        entryMode: "Nurse-assisted",
         symptomCategory: "Difficulty emptying",
         duration: "1 to 4 weeks",
         severity: "Severe",
@@ -66,4 +90,3 @@
     </script>
   </body>
 </html>
-

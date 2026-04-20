@@ -1,13 +1,14 @@
-# Urology AI Previsit Demo
+# Urology AI Previsit MVP
 
-A static browser MVP for a patient-friendly urology previsit interview demo.
+A static browser MVP for a professional, patient-friendly urology previsit interview workflow.
 
-The first goal is discovery: show a low-friction guided-question flow, generate a physician-facing summary, and learn whether the workflow is useful before building anything clinical or integrated.
+The first goal is discovery: show a low-friction guided-question flow, repair missing information, generate a physician-facing summary, and learn whether the workflow is useful before building anything clinical or integrated.
 
 ## What This Is
 
-- Browser demo using synthetic data only.
-- UI-guided questionnaire first; voice input is out of scope for MVP.
+- Professional static MVP using synthetic data only.
+- UI-guided questionnaire first; voice input is out of scope.
+- Scenario rail, stepper, missing-information repair, review handoff, and clinician summary.
 - Clinician-review summary, not diagnosis, triage, or treatment advice.
 - Patient-friendly, large-touch-target interface for urology previsit intake.
 
@@ -39,11 +40,10 @@ You can also open `app/patient-demo/index.html` directly in a browser.
 npm test
 ```
 
-The tests check summary generation, missing-information prompts, and safety wording.
+The tests check summary generation, missing-information prompts, completion status, and safety wording.
 
 ## Repository Boundary
 
 This repository owns the implementation: app code, UI, synthetic cases, tests, and demo documentation.
 
 The planning repository keeps source links, meeting notes, decisions, and knowledge-locator files only.
-
