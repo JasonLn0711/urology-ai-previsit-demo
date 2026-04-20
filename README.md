@@ -52,6 +52,8 @@ The repository includes synthetic sample artifacts for meeting demos:
 - Clinician summary samples: `docs/samples/clinician-summary-*.md`
 - Reviewer decision-record samples: `docs/samples/reviewer-record-*.md`
 
+Synthetic scenarios are defined once in `app/shared/cases.js`, then reused by the browser demo and sample generator.
+
 Regenerate them with:
 
 ```bash

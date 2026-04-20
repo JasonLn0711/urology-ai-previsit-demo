@@ -14,6 +14,12 @@ The implemented demo question flow follows the sibling file:
 
 `../urology-ai-previsit-thinking-spec/clinical-question-governance/mvp_question_set_recommendation.md`
 
+The demo's synthetic scenario source of truth is:
+
+`app/shared/cases.js`
+
+Patient demo scenarios, clinician summary samples, and generated sample artifacts should read from this shared source so meeting artifacts do not drift from the browser demo.
+
 The governance pack maps conclusions to sources such as:
 
 - AUA/SUFU overactive bladder guidance

@@ -67,34 +67,9 @@
     </main>
 
     <script src="../shared/summary.js"></script>
+    <script src="../shared/cases.js"></script>
     <script>
-      const sample = {
-        filledBy: "Nurse-assisted",
-        chiefConcern: "Difficulty emptying or weak stream",
-        duration: "1 to 4 weeks",
-        botherScore: "8",
-        daytimeFrequencyChange: "No",
-        nocturiaCount: "1 time",
-        urgency: "No",
-        leakage: "No",
-        painBurning: "No",
-        visibleBlood: "No",
-        unableToUrinate: "Yes",
-        currentlyUnableToUrinate: "No",
-        systemicSymptoms: ["None of these"],
-        medicationListStatus: "Not sure",
-        weakStream: "Yes",
-        straining: "Yes",
-        intermittency: "Yes",
-        incompleteEmptying: "Yes",
-        medicationAssist: "Yes",
-        relevantComorbidities: ["Not sure"],
-        diureticAnticoagulantAwareness: "Not sure",
-        language: "Mandarin",
-        deviceComfort: "Can use phone with help",
-        supportPreference: "Nurse-assisted mode",
-        notes: "Patient says flow is weak and sometimes cannot start."
-      };
+      const sample = window.UrologyCases.findCase("synthetic-emptying-difficulty").answers;
       const summary = window.UrologyPrevisit.buildClinicianSummary(sample);
       document.querySelector("#summaryText").textContent = window.UrologyPrevisit.summaryToText(summary);
     </script>

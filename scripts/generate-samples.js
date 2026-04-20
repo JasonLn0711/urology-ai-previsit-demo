@@ -2,12 +2,12 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const { SYNTHETIC_CASES } = require("../app/shared/cases.js");
 const { buildClinicianSummary, summaryToText } = require("../app/shared/summary.js");
 const { buildReviewRecord, reviewRecordToText } = require("../app/shared/review.js");
 
 const root = path.resolve(__dirname, "..");
 const outDir = path.join(root, "docs", "samples");
-const casesPath = path.join(root, "data", "synthetic-cases", "cases.json");
 
 const reviewScenarios = [
   {
@@ -107,7 +107,7 @@ function generateClinicianSamples(cases) {
         frontMatter({
           type: "synthetic-clinician-summary",
           case_id: sampleCase.id,
-          source: "data/synthetic-cases/cases.json",
+          source: "app/shared/cases.js",
           status: "sample"
         }),
         `# ${sampleCase.label}`,
@@ -183,8 +183,7 @@ function generateIndex(clinicianFiles, reviewFiles) {
 
 function main() {
   fs.mkdirSync(outDir, { recursive: true });
-  const cases = JSON.parse(fs.readFileSync(casesPath, "utf8"));
-  const clinicianFiles = generateClinicianSamples(cases);
+  const clinicianFiles = generateClinicianSamples(SYNTHETIC_CASES);
   const reviewFiles = generateReviewSamples();
   generateIndex(clinicianFiles, reviewFiles);
   console.log(`Generated ${clinicianFiles.length + reviewFiles.length + 1} sample files in ${path.relative(root, outDir)}`);

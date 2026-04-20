@@ -1,7 +1,7 @@
 ---
 type: "synthetic-clinician-summary"
 case_id: "synthetic-frequency-older-adult"
-source: "data/synthetic-cases/cases.json"
+source: "app/shared/cases.js"
 status: "sample"
 ---
 
