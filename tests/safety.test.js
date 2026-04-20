@@ -4,20 +4,36 @@ const { buildClinicianSummary, summaryToText } = require("../app/shared/summary.
 
 test("summary does not contain diagnosis or treatment claims", () => {
   const summary = buildClinicianSummary({
-    symptomCategory: "Visible blood",
+    filledBy: "Nurse-assisted",
+    chiefConcern: "Visible blood or clots",
     duration: "Today",
-    severity: "Severe",
-    frequencyDay: "More than 12 times",
-    nocturia: "3 or more times",
-    leak: "Yes",
+    botherScore: "9",
+    daytimeFrequencyChange: "Yes",
+    nocturiaCount: "3 or more times",
+    urgency: "Yes",
+    leakage: "Yes",
     painBurning: "Yes",
-    blood: "Yes",
-    fever: "Yes",
+    visibleBlood: "Yes",
+    bloodClots: "Yes",
+    systemicSymptoms: ["Fever", "Chills", "Side or back pain"],
     unableToUrinate: "Yes",
-    medications: "Synthetic medication list unknown",
+    currentlyUnableToUrinate: "No",
+    medicationListStatus: "Not sure",
+    daytimeFrequencyCount: "More than 12 times",
+    urgencyFrequency: "Several times a day",
+    bladderDiaryFeasible: "Not sure",
+    leakageFrequency: "Daily",
+    leakageAmount: "Moderate amount",
+    leakageTriggers: ["Before reaching toilet"],
+    containmentProducts: "Pads or liners",
+    hematuriaPattern: "More than once",
+    painFrequency: "Only while urinating",
+    infectionEpisodeHistory: "Not sure",
+    flankPainScore: "7 to 10",
+    medicationAssist: "Yes",
     language: "Mandarin",
-    phoneComfort: "Prefer staff help",
-    supportNeeds: "Nurse-assisted mode",
+    deviceComfort: "Prefer staff help",
+    supportPreference: "Nurse-assisted mode",
     notes: "Synthetic severe concern."
   });
   const text = summaryToText(summary).toLowerCase();
@@ -39,4 +55,3 @@ test("safety notice is always present", () => {
     "Use synthetic data only."
   ]);
 });
-

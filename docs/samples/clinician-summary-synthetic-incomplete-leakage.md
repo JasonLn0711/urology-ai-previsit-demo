@@ -18,28 +18,36 @@ Safety:
 - A clinician must review all information.
 - Use synthetic data only.
 
-Completeness: 5 MVP fields still missing
-Intake mode: Family-assisted
+Completeness: 6 MVP fields still missing
+Active modules: leakage
+Intake mode: Family or helper-assisted
 Chief concern: Leakage
-Pattern: Not sure at night; leakage: Yes
-Duration / bother: Duration not provided / Mild
+Duration / bother: Duration not provided / bother score 4/10
+Patient-reported pattern: Leakage: past 4 weeks: Yes; frequency: Weekly; triggers: Before reaching toilet; containment: Pads or liners
 
-Clinician review flags:
-- No red-flag statements captured in this synthetic demo.
+Priority review statements:
+- No priority review statement captured in this synthetic demo.
+
+Nurse workflow cues:
+- Completion support may be needed before clinician review.
+- Some core answers are marked not sure; staff may need to clarify them before clinician review.
+- Containment product or leakage-support needs should remain visible to staff.
 
 Missing information:
-- duration
-- daytime bathroom trips
-- pain or burning
-- fever or chills
-- current medicines or relevant medicine uncertainty
+- symptom duration
+- daytime urination change
+- pain or burning with urination
+- fever, chills, or side/back pain
+- medication list readiness
+- leakage amount
 
 Support needs:
+- Family or helper-assisted
 - Taiwanese
 - Prefer staff help
 - Family-assisted mode
 
-Medicines: Not provided
+Medication/context: Not provided
 Patient note: Helper says the patient is embarrassed to discuss leakage.
 
 Handoff note: Patient-provided or helper-provided answers; clinician review required.

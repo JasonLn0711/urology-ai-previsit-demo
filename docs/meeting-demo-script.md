@@ -9,13 +9,14 @@ This is a synthetic-data professional MVP for urology previsit discovery. It doe
 1. Open the patient demo.
 2. Load a synthetic case.
 3. Show the scenario rail and safety boundary.
-4. Walk through the stepper and large-button question flow.
-5. Show the missing-information repair step.
-6. Review the patient answers.
-7. Show the clinician summary and copy/print actions.
-8. Open the reviewer workbench.
-9. Capture workflow, adoption, safety, and next-artifact signals.
-10. Ask what would make the summary useful or unsafe in the real workflow.
+4. Walk through the source, concern, and core previsit screens.
+5. Show how conditional modules appear only when the core answers justify them.
+6. Show the missing-information repair step.
+7. Review the patient answers, nurse cues, and clinician summary.
+8. Show copy/print actions.
+9. Open the reviewer workbench.
+10. Capture workflow, adoption, safety, and next-artifact signals.
+11. Ask what would make the summary useful or unsafe in the real workflow.
 
 ## Sample Artifact Path
 

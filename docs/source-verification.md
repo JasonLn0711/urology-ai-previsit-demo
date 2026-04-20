@@ -10,6 +10,10 @@ It is not the canonical clinical evidence map. Detailed clinical question govern
 
 Use the thinking repository for decisions about which patient questions belong in core MVP, conditional modules, nurse-assisted completion, or clinician-only workflows.
 
+The implemented demo question flow follows the sibling file:
+
+`../urology-ai-previsit-thinking-spec/clinical-question-governance/mvp_question_set_recommendation.md`
+
 The governance pack maps conclusions to sources such as:
 
 - AUA/SUFU overactive bladder guidance

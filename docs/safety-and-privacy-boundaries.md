@@ -13,7 +13,8 @@
 
 - Ask patient-friendly previsit questions.
 - Identify missing information.
-- Show patient-provided red-flag statements as clinician-review flags.
+- Show patient-provided priority review statements as clinician-review flags.
+- Show nurse workflow cues for completion support, bladder diary instruction, containment support, medication review support, and visibility of priority review statements.
 - Generate a concise clinician-facing summary.
 - Export or print synthetic summaries for demo discussion.
 
@@ -25,13 +26,14 @@ Use these statements in the UI and documentation:
 - A clinician must review all information.
 - Use synthetic data only.
 
-## Red-Flag Wording
+## Priority Review Wording
 
 Use neutral observation language:
 
-- "Reports blood in urine."
-- "Reports fever or chills."
-- "Reports being unable to urinate."
+- "Reports visible blood or clots in urine."
+- "Reports fever."
+- "Reports chills."
+- "Reports currently being unable to urinate."
 
 Do not use diagnostic language:
 
@@ -39,4 +41,3 @@ Do not use diagnostic language:
 - "Probable cancer."
 - "Needs catheter."
 - "Treat with medication."
-

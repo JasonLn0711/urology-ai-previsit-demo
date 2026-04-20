@@ -19,23 +19,29 @@ Safety:
 - Use synthetic data only.
 
 Completeness: MVP fields complete for clinician review
+Active modules: storage, medication
 Intake mode: Patient self-filled
-Chief concern: Frequency or urgency
-Pattern: 9 to 12 times during the day; 3 or more times at night; leakage: No
-Duration / bother: More than 1 month / Moderate
+Chief concern: Frequency / nocturia / urgency
+Duration / bother: More than 1 month / bother score 7/10
+Patient-reported pattern: Storage: daytime change: Yes; daytime count: 9 to 12 times; night count: 3 or more times; urgency: Yes; urgency frequency: Most days; fluid/caffeine context: Caffeinated drinks most days, Drinks a lot near bedtime; diary feasibility: Yes, with written instructions
 
-Clinician review flags:
-- No red-flag statements captured in this synthetic demo.
+Priority review statements:
+- No priority review statement captured in this synthetic demo.
+
+Nurse workflow cues:
+- Bladder diary instruction may be relevant if clinic workflow supports it.
+- Medication list may need nurse-assisted review.
 
 Missing information:
 - No required MVP fields missing.
 
 Support needs:
+- Patient self-filled
 - Mandarin with Taiwanese preferred
 - Needs large buttons
 - Needs review before clinician enters
 
-Medicines: Blood pressure medicine; exact name unknown
+Medication/context: list readiness: Partial list only; review support: Yes; patient-reported context: Not sure; diuretic/anticoagulant awareness: Not sure
 Patient note: Patient worries about waking up repeatedly at night.
 
 Handoff note: Patient-provided or helper-provided answers; clinician review required.

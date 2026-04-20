@@ -8,7 +8,7 @@ The first goal is discovery: show a low-friction guided-question flow, repair mi
 
 - Professional static MVP using synthetic data only.
 - UI-guided questionnaire first; voice input is out of scope.
-- Scenario rail, stepper, missing-information repair, review handoff, and clinician summary.
+- Scenario rail, governed core questions, conditional modules, missing-information repair, review handoff, nurse cues, and clinician summary.
 - Reviewer workbench for meeting feedback and continue / revise / narrow / pause decision capture.
 - Clinician-review summary, not diagnosis, triage, or treatment advice.
 - Patient-friendly, large-touch-target interface for urology previsit intake.
@@ -42,7 +42,7 @@ You can also open `app/patient-demo/index.html` directly in a browser.
 npm test
 ```
 
-The tests check summary generation, missing-information prompts, completion status, safety wording, and reviewer decision-record logic.
+The tests check summary generation, conditional module activation, missing-information prompts, completion status, safety wording, and reviewer decision-record logic.
 
 ## Sample Outputs
 

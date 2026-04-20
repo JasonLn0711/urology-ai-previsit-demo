@@ -1,60 +1,120 @@
 const {
-  REQUIRED_FIELDS,
+  activeModules,
   buildClinicianSummary,
   completionStatus,
+  missingFieldEntries,
   summaryToText
 } = window.UrologyPrevisit;
 
+const ARRAY_FIELDS = new Set([
+  "systemicSymptoms",
+  "fluidCaffeineContext",
+  "leakageTriggers",
+  "hematuriaCoSymptoms",
+  "relevantComorbidities"
+]);
+
+const EXCLUSIVE_CHECKBOX_VALUES = new Set(["None of these", "Not sure"]);
+
 const ANSWER_FIELDS = [
-  "entryMode",
-  "symptomCategory",
+  "filledBy",
+  "chiefConcern",
   "duration",
-  "severity",
-  "frequencyDay",
-  "nocturia",
-  "leak",
+  "botherScore",
+  "daytimeFrequencyChange",
+  "nocturiaCount",
+  "urgency",
+  "leakage",
   "painBurning",
-  "blood",
-  "fever",
+  "visibleBlood",
   "unableToUrinate",
-  "medications",
+  "currentlyUnableToUrinate",
+  "systemicSymptoms",
+  "medicationListStatus",
+  "daytimeFrequencyCount",
+  "urgencyFrequency",
+  "fluidCaffeineContext",
+  "bladderDiaryFeasible",
+  "leakageFrequency",
+  "leakageAmount",
+  "leakageTriggers",
+  "containmentProducts",
+  "weakStream",
+  "straining",
+  "intermittency",
+  "incompleteEmptying",
+  "hematuriaPattern",
+  "bloodClots",
+  "hematuriaCoSymptoms",
+  "painFrequency",
+  "infectionEpisodeHistory",
+  "flankPainScore",
+  "medicationAssist",
+  "relevantComorbidities",
+  "diureticAnticoagulantAwareness",
   "language",
-  "phoneComfort",
-  "supportNeeds",
+  "deviceComfort",
+  "supportPreference",
   "notes"
 ];
 
 const FIELD_TO_STEP = {
-  entryMode: 0,
-  symptomCategory: 1,
+  filledBy: 0,
+  chiefConcern: 1,
   duration: 2,
-  severity: 2,
-  frequencyDay: 2,
-  nocturia: 2,
-  unableToUrinate: 3,
-  blood: 3,
-  fever: 3,
-  painBurning: 3,
-  leak: 3,
+  botherScore: 2,
+  daytimeFrequencyChange: 2,
+  nocturiaCount: 2,
+  urgency: 2,
+  leakage: 2,
+  painBurning: 2,
+  visibleBlood: 2,
+  unableToUrinate: 2,
+  currentlyUnableToUrinate: 2,
+  systemicSymptoms: 2,
+  medicationListStatus: 2,
+  daytimeFrequencyCount: 3,
+  urgencyFrequency: 3,
+  fluidCaffeineContext: 3,
+  bladderDiaryFeasible: 3,
+  leakageFrequency: 3,
+  leakageAmount: 3,
+  leakageTriggers: 3,
+  containmentProducts: 3,
+  weakStream: 3,
+  straining: 3,
+  intermittency: 3,
+  incompleteEmptying: 3,
+  hematuriaPattern: 3,
+  bloodClots: 3,
+  hematuriaCoSymptoms: 3,
+  painFrequency: 3,
+  infectionEpisodeHistory: 3,
+  flankPainScore: 3,
+  medicationAssist: 3,
+  relevantComorbidities: 3,
+  diureticAnticoagulantAwareness: 3,
   language: 4,
-  phoneComfort: 4,
-  supportNeeds: 4,
-  medications: 4,
+  deviceComfort: 4,
+  supportPreference: 4,
   notes: 4
 };
 
+const YES_NO_UNSURE = ["", "No", "Yes", "Not sure"];
+const BOTHER_OPTIONS = ["", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Not sure"];
+
 const STEPS = [
   {
-    id: "mode",
-    label: "Mode",
+    id: "source",
+    label: "Source",
     title: "Who is filling this out?",
-    copy: "Choose the support mode for this synthetic previsit intake.",
+    copy: "This tells the clinic whether the answers came from the patient directly or with help.",
     type: "options",
-    field: "entryMode",
+    field: "filledBy",
     options: [
       ["Patient self-filled", "Patient self-filled", "The patient is answering directly."],
       ["Nurse-assisted", "Nurse-assisted", "Clinic staff helps the patient complete the flow."],
-      ["Family-assisted", "Family-assisted", "A trusted helper is present."],
+      ["Family or helper-assisted", "Family or helper-assisted", "A trusted helper is present."],
       ["Demo observer", "Demo observer", "Synthetic walkthrough for review only."]
     ]
   },
@@ -62,23 +122,23 @@ const STEPS = [
     id: "concern",
     label: "Concern",
     title: "What is the main urinary concern?",
-    copy: "Pick the closest starting point. The clinician can revise it later.",
+    copy: "Choose the closest starting point. The clinician can revise it later.",
     type: "options",
-    field: "symptomCategory",
+    field: "chiefConcern",
     options: [
-      ["Frequency or urgency", "Frequency or urgency", "Going often or feeling sudden urgency."],
+      ["Frequency / nocturia / urgency", "Frequency / nocturia / urgency", "Going often, waking at night, or sudden hard-to-hold urge."],
       ["Leakage", "Leakage", "Accidental urine leakage."],
-      ["Difficulty emptying", "Difficulty emptying", "Weak stream, trouble starting, or incomplete emptying."],
-      ["Pain or burning", "Pain or burning", "Discomfort when urinating."],
-      ["Visible blood", "Visible blood", "Blood noticed in urine."],
-      ["Other concern", "Other concern", "Something else to explain."]
+      ["Difficulty emptying or weak stream", "Difficulty emptying or weak stream", "Weak stream, trouble starting, or feeling urine remains."],
+      ["Pain, burning, or possible infection", "Pain, burning, or possible infection", "Discomfort when urinating or infection-related concern."],
+      ["Visible blood or clots", "Visible blood or clots", "Blood or clots noticed in urine."],
+      ["Other urinary concern", "Other urinary concern", "Something else to explain."]
     ]
   },
   {
-    id: "pattern",
-    label: "Pattern",
-    title: "Describe the pattern",
-    copy: "These are patient-reported details for clinician review.",
+    id: "core",
+    label: "Core",
+    title: "Core previsit screen",
+    copy: "These questions stay patient-friendly and are used only to organize the clinician handoff.",
     type: "fields",
     fields: [
       {
@@ -88,69 +148,86 @@ const STEPS = [
         options: ["", "Today", "1 to 7 days", "1 to 4 weeks", "More than 1 month", "Not sure"]
       },
       {
-        field: "severity",
-        label: "How bothersome is it?",
+        field: "botherScore",
+        label: "How bothersome is it? 0 means none, 10 means worst.",
         type: "select",
-        options: ["", "Mild", "Moderate", "Severe", "Not sure"]
+        options: BOTHER_OPTIONS
       },
       {
-        field: "frequencyDay",
-        label: "Bathroom trips during the day",
+        field: "daytimeFrequencyChange",
+        label: "Are daytime bathroom trips noticeably more than before?",
         type: "select",
-        options: ["", "1 to 4 times", "5 to 8 times", "9 to 12 times", "More than 12 times", "Not sure"]
+        options: YES_NO_UNSURE
       },
       {
-        field: "nocturia",
-        label: "Bathroom trips at night",
+        field: "nocturiaCount",
+        label: "How many times do you usually get up to urinate at night?",
         type: "select",
-        options: ["", "0 times", "1 to 2 times", "3 or more times", "Not sure"]
+        options: ["", "0 times", "1 time", "2 times", "3 or more times", "Not sure"]
+      },
+      {
+        field: "urgency",
+        label: "Do you suddenly feel it is hard to hold urine?",
+        type: "select",
+        options: YES_NO_UNSURE
+      },
+      {
+        field: "leakage",
+        label: "Have you leaked urine in the past 4 weeks?",
+        type: "select",
+        options: YES_NO_UNSURE
+      },
+      {
+        field: "painBurning",
+        label: "Do you have pain or burning when urinating?",
+        type: "select",
+        options: YES_NO_UNSURE
+      },
+      {
+        field: "visibleBlood",
+        label: "Have you seen blood or clots in urine?",
+        type: "select",
+        options: YES_NO_UNSURE
+      },
+      {
+        field: "unableToUrinate",
+        label: "Have you had trouble urinating or been unable to urinate?",
+        type: "select",
+        options: YES_NO_UNSURE
+      },
+      {
+        field: "currentlyUnableToUrinate",
+        label: "Is being unable to urinate happening now?",
+        type: "select",
+        options: ["", "No", "Yes", "Not sure"],
+        when: (currentAnswers) => currentAnswers.unableToUrinate === "Yes"
+      },
+      {
+        field: "systemicSymptoms",
+        label: "Do any of these apply now?",
+        type: "checkboxes",
+        options: ["Fever", "Chills", "Side or back pain", "None of these", "Not sure"]
+      },
+      {
+        field: "medicationListStatus",
+        label: "Can you provide your medication list today?",
+        type: "select",
+        options: ["", "Can provide list", "Partial list only", "Not sure", "No regular medicines"]
       }
     ]
   },
   {
-    id: "review-flags",
-    label: "Flags",
-    title: "Anything the clinician should review quickly?",
-    copy: "These statements are displayed neutrally. The system does not assign meaning or urgency.",
-    type: "fields",
-    fields: [
-      {
-        field: "unableToUrinate",
-        label: "Unable to urinate at any point?",
-        type: "select",
-        options: ["", "No", "Yes", "Not sure"]
-      },
-      {
-        field: "blood",
-        label: "Blood in urine?",
-        type: "select",
-        options: ["", "No", "Yes", "Not sure"]
-      },
-      {
-        field: "fever",
-        label: "Fever or chills?",
-        type: "select",
-        options: ["", "No", "Yes", "Not sure"]
-      },
-      {
-        field: "painBurning",
-        label: "Pain or burning when urinating?",
-        type: "select",
-        options: ["", "No", "Yes", "Not sure"]
-      },
-      {
-        field: "leak",
-        label: "Any leakage?",
-        type: "select",
-        options: ["", "No", "Yes", "Not sure"]
-      }
-    ]
+    id: "modules",
+    label: "Modules",
+    title: "Conditional follow-up",
+    copy: "Only modules suggested by the core answers are shown. Leave uncertain answers visible instead of guessing.",
+    type: "modules"
   },
   {
     id: "support",
     label: "Support",
-    title: "Support needs and context",
-    copy: "These answers help the clinic decide whether self-filled or assisted intake is realistic.",
+    title: "Support needs and patient context",
+    copy: "These answers help staff decide whether self-filled or assisted intake is realistic.",
     type: "fields",
     fields: [
       {
@@ -160,22 +237,16 @@ const STEPS = [
         options: ["", "Mandarin", "Taiwanese", "Mandarin with Taiwanese preferred", "English", "Other"]
       },
       {
-        field: "phoneComfort",
-        label: "Phone comfort",
+        field: "deviceComfort",
+        label: "Phone or screen comfort",
         type: "select",
         options: ["", "Comfortable", "Can use phone with help", "Needs large buttons", "Prefer staff help"]
       },
       {
-        field: "supportNeeds",
-        label: "Support need",
+        field: "supportPreference",
+        label: "Support preference",
         type: "select",
         options: ["", "Self-filled", "Nurse-assisted mode", "Family-assisted mode", "Needs review before clinician enters"]
-      },
-      {
-        field: "medications",
-        label: "Medicines or relevant uncertainty",
-        type: "textarea",
-        placeholder: "Synthetic example: blood pressure medicine; exact name unknown"
       },
       {
         field: "notes",
@@ -201,50 +272,239 @@ const STEPS = [
   }
 ];
 
+const MODULES = [
+  {
+    id: "storage",
+    title: "Frequency / nocturia / urgency module",
+    copy: "Clarifies storage-symptom pattern without asking the patient to interpret a diagnosis.",
+    fields: [
+      {
+        field: "daytimeFrequencyCount",
+        label: "About how many times do you urinate during the day?",
+        type: "select",
+        options: ["", "1 to 4 times", "5 to 8 times", "9 to 12 times", "More than 12 times", "Not sure"]
+      },
+      {
+        field: "urgencyFrequency",
+        label: "How often do sudden hard-to-hold urges happen?",
+        type: "select",
+        options: ["", "Rarely", "Some days", "Most days", "Several times a day", "Not sure"]
+      },
+      {
+        field: "fluidCaffeineContext",
+        label: "Which context may matter?",
+        type: "checkboxes",
+        options: ["Caffeinated drinks most days", "Drinks a lot near bedtime", "Night shift or poor sleep", "None of these", "Not sure"]
+      },
+      {
+        field: "bladderDiaryFeasible",
+        label: "Could you complete a simple bladder diary if staff explains it?",
+        type: "select",
+        options: ["", "Yes", "Yes, with written instructions", "Only with staff or family help", "No", "Not sure"]
+      }
+    ]
+  },
+  {
+    id: "leakage",
+    title: "Leakage module",
+    copy: "Captures frequency, amount, triggers, and containment needs in patient language.",
+    fields: [
+      {
+        field: "leakageFrequency",
+        label: "How often does leakage happen?",
+        type: "select",
+        options: ["", "Less than once a week", "Weekly", "Daily", "Several times a day", "Not sure"]
+      },
+      {
+        field: "leakageAmount",
+        label: "How much urine usually leaks?",
+        type: "select",
+        options: ["", "A few drops", "Small amount", "Moderate amount", "Large amount", "Not sure"]
+      },
+      {
+        field: "leakageTriggers",
+        label: "When does leakage tend to happen?",
+        type: "checkboxes",
+        options: ["Before reaching toilet", "Coughing, laughing, or exercise", "During sleep", "Without warning", "Not sure"]
+      },
+      {
+        field: "containmentProducts",
+        label: "Do you use pads, diapers, or other products?",
+        type: "select",
+        options: ["", "No products used", "Pads or liners", "Adult diapers", "Other product", "Prefer not to answer", "Not sure"]
+      }
+    ]
+  },
+  {
+    id: "voiding",
+    title: "Voiding / emptying module",
+    copy: "Uses plain symptom words for weak stream, straining, and incomplete emptying.",
+    fields: [
+      {
+        field: "weakStream",
+        label: "Is the urine stream weak?",
+        type: "select",
+        options: YES_NO_UNSURE
+      },
+      {
+        field: "straining",
+        label: "Do you need to push or strain to urinate?",
+        type: "select",
+        options: YES_NO_UNSURE
+      },
+      {
+        field: "intermittency",
+        label: "Does the stream stop and start?",
+        type: "select",
+        options: YES_NO_UNSURE
+      },
+      {
+        field: "incompleteEmptying",
+        label: "Do you feel urine remains after finishing?",
+        type: "select",
+        options: YES_NO_UNSURE
+      }
+    ]
+  },
+  {
+    id: "hematuria",
+    title: "Visible blood / clots module",
+    copy: "Records what the patient saw without assigning cause or risk level.",
+    fields: [
+      {
+        field: "hematuriaPattern",
+        label: "How often have you seen blood or clots?",
+        type: "select",
+        options: ["", "One time", "More than once", "Every time recently", "Not sure"]
+      },
+      {
+        field: "bloodClots",
+        label: "Did you see clots?",
+        type: "select",
+        options: YES_NO_UNSURE
+      },
+      {
+        field: "hematuriaCoSymptoms",
+        label: "What happened around the same time?",
+        type: "checkboxes",
+        options: ["Pain or burning", "Fever or chills", "Side or back pain", "None of these", "Not sure"]
+      }
+    ]
+  },
+  {
+    id: "pain",
+    title: "Pain / infection-related module",
+    copy: "Supports clinician review of pain and recent episode history while avoiding diagnosis.",
+    fields: [
+      {
+        field: "painFrequency",
+        label: "When does pain or burning happen?",
+        type: "select",
+        options: ["", "Only while urinating", "After urinating", "Most of the day", "Comes and goes", "Not sure"]
+      },
+      {
+        field: "infectionEpisodeHistory",
+        label: "In the past 12 months, have you had urinary infection episodes or antibiotics?",
+        type: "select",
+        options: ["", "No", "Yes, once", "Yes, more than once", "Not sure"]
+      },
+      {
+        field: "flankPainScore",
+        label: "If side or back pain is present, how strong is it?",
+        type: "select",
+        options: ["", "0", "1 to 3", "4 to 6", "7 to 10", "Not sure"],
+        when: (currentAnswers) => Array.isArray(currentAnswers.systemicSymptoms) && currentAnswers.systemicSymptoms.includes("Side or back pain")
+      }
+    ]
+  },
+  {
+    id: "medication",
+    title: "Medication / context module",
+    copy: "Shows what staff may need to review, without asking the patient to classify medicines medically.",
+    fields: [
+      {
+        field: "medicationAssist",
+        label: "Would staff help be useful for medication review?",
+        type: "select",
+        options: ["", "Yes", "No", "Not sure"]
+      },
+      {
+        field: "relevantComorbidities",
+        label: "Have you been told you have any of these?",
+        type: "checkboxes",
+        options: ["Diabetes", "Kidney disease", "Neurologic disease", "Spinal cord problem", "None of these", "Not sure"]
+      },
+      {
+        field: "diureticAnticoagulantAwareness",
+        label: "Do you know if you take a water pill or blood thinner?",
+        type: "select",
+        options: ["", "Yes", "No", "Not sure"]
+      }
+    ]
+  }
+];
+
 const SCENARIOS = [
   {
     id: "frequency-night",
     label: "Frequent urination at night",
-    meta: "Older adult, language support",
+    meta: "Storage module, diary cue",
     answers: {
-      entryMode: "Patient self-filled",
-      symptomCategory: "Frequency or urgency",
+      filledBy: "Patient self-filled",
+      chiefConcern: "Frequency / nocturia / urgency",
       duration: "More than 1 month",
-      severity: "Moderate",
-      frequencyDay: "9 to 12 times",
-      nocturia: "3 or more times",
-      leak: "No",
+      botherScore: "7",
+      daytimeFrequencyChange: "Yes",
+      nocturiaCount: "3 or more times",
+      urgency: "Yes",
+      leakage: "No",
       painBurning: "No",
-      blood: "No",
-      fever: "No",
+      visibleBlood: "No",
       unableToUrinate: "No",
-      medications: "Blood pressure medicine; exact name unknown",
+      systemicSymptoms: ["None of these"],
+      medicationListStatus: "Partial list only",
+      daytimeFrequencyCount: "9 to 12 times",
+      urgencyFrequency: "Most days",
+      fluidCaffeineContext: ["Caffeinated drinks most days", "Drinks a lot near bedtime"],
+      bladderDiaryFeasible: "Yes, with written instructions",
+      medicationAssist: "Yes",
+      relevantComorbidities: ["Not sure"],
+      diureticAnticoagulantAwareness: "Not sure",
       language: "Mandarin with Taiwanese preferred",
-      phoneComfort: "Needs large buttons",
-      supportNeeds: "Needs review before clinician enters",
+      deviceComfort: "Needs large buttons",
+      supportPreference: "Needs review before clinician enters",
       notes: "Patient worries about waking up repeatedly at night."
     }
   },
   {
     id: "emptying-difficulty",
     label: "Difficulty emptying",
-    meta: "Nurse-assisted review",
+    meta: "Voiding module, review flag",
     answers: {
-      entryMode: "Nurse-assisted",
-      symptomCategory: "Difficulty emptying",
+      filledBy: "Nurse-assisted",
+      chiefConcern: "Difficulty emptying or weak stream",
       duration: "1 to 4 weeks",
-      severity: "Severe",
-      frequencyDay: "5 to 8 times",
-      nocturia: "1 to 2 times",
-      leak: "No",
+      botherScore: "8",
+      daytimeFrequencyChange: "No",
+      nocturiaCount: "1 time",
+      urgency: "No",
+      leakage: "No",
       painBurning: "No",
-      blood: "No",
-      fever: "No",
+      visibleBlood: "No",
       unableToUrinate: "Yes",
-      medications: "Synthetic medication list not provided",
+      currentlyUnableToUrinate: "No",
+      systemicSymptoms: ["None of these"],
+      medicationListStatus: "Not sure",
+      weakStream: "Yes",
+      straining: "Yes",
+      intermittency: "Yes",
+      incompleteEmptying: "Yes",
+      medicationAssist: "Yes",
+      relevantComorbidities: ["Not sure"],
+      diureticAnticoagulantAwareness: "Not sure",
       language: "Mandarin",
-      phoneComfort: "Can use phone with help",
-      supportNeeds: "Nurse-assisted mode",
+      deviceComfort: "Can use phone with help",
+      supportPreference: "Nurse-assisted mode",
       notes: "Patient says flow is weak and sometimes cannot start."
     }
   },
@@ -253,21 +513,26 @@ const SCENARIOS = [
     label: "Incomplete leakage intake",
     meta: "Shows missing-info repair",
     answers: {
-      entryMode: "Family-assisted",
-      symptomCategory: "Leakage",
+      filledBy: "Family or helper-assisted",
+      chiefConcern: "Leakage",
       duration: "",
-      severity: "Mild",
-      frequencyDay: "",
-      nocturia: "Not sure",
-      leak: "Yes",
+      botherScore: "4",
+      daytimeFrequencyChange: "",
+      nocturiaCount: "Not sure",
+      urgency: "Not sure",
+      leakage: "Yes",
       painBurning: "",
-      blood: "No",
-      fever: "",
+      visibleBlood: "No",
       unableToUrinate: "No",
-      medications: "",
+      systemicSymptoms: [],
+      medicationListStatus: "",
+      leakageFrequency: "Weekly",
+      leakageAmount: "",
+      leakageTriggers: ["Before reaching toilet"],
+      containmentProducts: "Pads or liners",
       language: "Taiwanese",
-      phoneComfort: "Prefer staff help",
-      supportNeeds: "Family-assisted mode",
+      deviceComfort: "Prefer staff help",
+      supportPreference: "Family-assisted mode",
       notes: "Helper says the patient is embarrassed to discuss leakage."
     }
   }
@@ -295,7 +560,15 @@ const copySummary = document.querySelector("#copySummary");
 const toast = document.querySelector("#toast");
 
 function emptyAnswers() {
-  return Object.fromEntries(ANSWER_FIELDS.map((field) => [field, ""]));
+  return Object.fromEntries(ANSWER_FIELDS.map((field) => [field, ARRAY_FIELDS.has(field) ? [] : ""]));
+}
+
+function normalizeAnswers(source) {
+  const base = emptyAnswers();
+  Object.entries(source || {}).forEach(([field, value]) => {
+    base[field] = ARRAY_FIELDS.has(field) ? (Array.isArray(value) ? value.slice() : []) : value;
+  });
+  return base;
 }
 
 function escapeHtml(value) {
@@ -307,23 +580,40 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
-function isCompleteField(field) {
-  return Boolean(String(answers[field] || "").trim());
+function listAnswer(field) {
+  return Array.isArray(answers[field]) ? answers[field] : [];
+}
+
+function visibleFields(fields) {
+  return fields.filter((field) => !field.when || field.when(answers));
 }
 
 function missingEntries() {
-  return REQUIRED_FIELDS.filter(([field]) => !isCompleteField(field));
+  return missingFieldEntries(answers);
 }
 
 function setAnswer(field, value) {
-  answers = Object.assign({}, answers, { [field]: value });
+  answers = Object.assign({}, answers, { [field]: ARRAY_FIELDS.has(field) ? value.slice() : value });
   render();
+}
+
+function toggleCheckbox(field, value, checked) {
+  let next = listAnswer(field).filter((item) => item !== value);
+  if (checked) {
+    if (EXCLUSIVE_CHECKBOX_VALUES.has(value)) {
+      next = [value];
+    } else {
+      next = next.filter((item) => !EXCLUSIVE_CHECKBOX_VALUES.has(item));
+      next.push(value);
+    }
+  }
+  setAnswer(field, next);
 }
 
 function loadScenario(scenarioId) {
   const scenario = SCENARIOS.find((item) => item.id === scenarioId) || SCENARIOS[0];
   activeScenario = scenario.id;
-  answers = Object.assign(emptyAnswers(), scenario.answers);
+  answers = normalizeAnswers(scenario.answers);
   currentStep = STEPS.length - 1;
   render();
   showToast(`Loaded synthetic case: ${scenario.label}`);
@@ -373,31 +663,85 @@ function renderOptions(step) {
   `;
 }
 
+function renderField(field) {
+  if (field.type === "textarea") {
+    return `
+      <div class="field wide-field">
+        <label for="${escapeHtml(field.field)}">${escapeHtml(field.label)}</label>
+        <textarea id="${escapeHtml(field.field)}" data-field="${escapeHtml(field.field)}" placeholder="${escapeHtml(field.placeholder || "")}">${escapeHtml(answers[field.field])}</textarea>
+      </div>
+    `;
+  }
+
+  if (field.type === "checkboxes") {
+    const current = listAnswer(field.field);
+    return `
+      <fieldset class="field wide-field checkbox-field">
+        <legend>${escapeHtml(field.label)}</legend>
+        <div class="checkbox-grid">
+          ${field.options.map((option) => `
+            <label class="checkbox-option">
+              <input
+                type="checkbox"
+                data-checkbox-field="${escapeHtml(field.field)}"
+                data-checkbox-value="${escapeHtml(option)}"
+                ${current.includes(option) ? "checked" : ""}>
+              <span>${escapeHtml(option)}</span>
+            </label>
+          `).join("")}
+        </div>
+      </fieldset>
+    `;
+  }
+
+  return `
+    <div class="field">
+      <label for="${escapeHtml(field.field)}">${escapeHtml(field.label)}</label>
+      <select id="${escapeHtml(field.field)}" data-field="${escapeHtml(field.field)}">
+        ${field.options.map((option) => `
+          <option value="${escapeHtml(option)}" ${answers[field.field] === option ? "selected" : ""}>
+            ${option ? escapeHtml(option) : "Choose one"}
+          </option>
+        `).join("")}
+      </select>
+    </div>
+  `;
+}
+
 function renderFields(step) {
   return `
     <div class="field-grid">
-      ${step.fields.map((field) => {
-        if (field.type === "textarea") {
-          return `
-            <div class="field wide-field">
-              <label for="${escapeHtml(field.field)}">${escapeHtml(field.label)}</label>
-              <textarea id="${escapeHtml(field.field)}" data-field="${escapeHtml(field.field)}" placeholder="${escapeHtml(field.placeholder || "")}">${escapeHtml(answers[field.field])}</textarea>
-            </div>
-          `;
-        }
-        return `
-          <div class="field">
-            <label for="${escapeHtml(field.field)}">${escapeHtml(field.label)}</label>
-            <select id="${escapeHtml(field.field)}" data-field="${escapeHtml(field.field)}">
-              ${field.options.map((option) => `
-                <option value="${escapeHtml(option)}" ${answers[field.field] === option ? "selected" : ""}>
-                  ${option ? escapeHtml(option) : "Choose one"}
-                </option>
-              `).join("")}
-            </select>
+      ${visibleFields(step.fields).map(renderField).join("")}
+    </div>
+  `;
+}
+
+function renderModules() {
+  const modules = activeModules(answers);
+  const activeDefinitions = MODULES.filter((module) => modules[module.id]);
+
+  if (!activeDefinitions.length) {
+    return `
+      <div class="empty-state">
+        <h4>No conditional module is active yet.</h4>
+        <p>Complete the core screen, or leave this section empty if the concern does not need module follow-up.</p>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="module-stack">
+      ${activeDefinitions.map((module) => `
+        <section class="module-card" aria-label="${escapeHtml(module.title)}">
+          <div class="module-head">
+            <h3>${escapeHtml(module.title)}</h3>
+            <p>${escapeHtml(module.copy)}</p>
           </div>
-        `;
-      }).join("")}
+          <div class="field-grid">
+            ${visibleFields(module.fields).map(renderField).join("")}
+          </div>
+        </section>
+      `).join("")}
     </div>
   `;
 }
@@ -429,11 +773,13 @@ function renderRepair() {
 function renderReview() {
   const summary = buildClinicianSummary(answers);
   const rows = [
-    ["Intake mode", summary.intakeMode],
+    ["Completion source", summary.intakeMode],
     ["Chief concern", summary.chiefConcern],
-    ["Pattern", summary.symptomPattern],
-    ["Duration / bother", summary.durationSeverity],
-    ["Medicines", summary.medicines],
+    ["Active modules", summary.activeModules.join(", ")],
+    ["Duration / bother", summary.durationBother],
+    ["Patient-reported pattern", summary.symptomPattern],
+    ["Medication/context", summary.medicines],
+    ["Nurse cues", summary.nurseCues.join("; ")],
     ["Support needs", summary.patientConstraints.join("; ")],
     ["Patient note", summary.patientNote]
   ];
@@ -458,6 +804,7 @@ function renderStep() {
   let body = "";
   if (step.type === "options") body = renderOptions(step);
   if (step.type === "fields") body = renderFields(step);
+  if (step.type === "modules") body = renderModules(step);
   if (step.type === "repair") body = renderRepair(step);
   if (step.type === "review") body = renderReview();
 
@@ -484,7 +831,7 @@ function renderSummary() {
       <h3>Patient-provided context</h3>
       <dl class="summary-list">
         <div class="summary-row">
-          <dt>Intake mode</dt>
+          <dt>Completion source</dt>
           <dd>${escapeHtml(summary.intakeMode)}</dd>
         </div>
         <div class="summary-row">
@@ -492,19 +839,29 @@ function renderSummary() {
           <dd>${escapeHtml(summary.chiefConcern)}</dd>
         </div>
         <div class="summary-row">
-          <dt>Pattern</dt>
-          <dd>${escapeHtml(summary.symptomPattern)}</dd>
+          <dt>Active modules</dt>
+          <dd>${escapeHtml(summary.activeModules.join(", "))}</dd>
         </div>
         <div class="summary-row">
           <dt>Duration / bother</dt>
-          <dd>${escapeHtml(summary.durationSeverity)}</dd>
+          <dd>${escapeHtml(summary.durationBother)}</dd>
+        </div>
+        <div class="summary-row">
+          <dt>Patient-reported pattern</dt>
+          <dd>${escapeHtml(summary.symptomPattern)}</dd>
         </div>
       </dl>
     </section>
     <section class="summary-section">
-      <h3>Clinician review flags</h3>
+      <h3>Priority review statements</h3>
       <ul class="flag-list">
         ${summary.clinicianReviewFlags.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </section>
+    <section class="summary-section">
+      <h3>Nurse workflow cues</h3>
+      <ul class="support-list">
+        ${summary.nurseCues.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
       </ul>
     </section>
     <section class="summary-section">
@@ -524,7 +881,7 @@ function renderSummary() {
 
 function renderReadiness() {
   const status = completionStatus(answers);
-  const percentage = Math.round((status.completed / status.total) * 100);
+  const percentage = status.total ? Math.round((status.completed / status.total) * 100) : 0;
   readinessLabel.textContent = status.label;
   readinessMeter.style.width = `${percentage}%`;
   readinessMeter.dataset.tone = status.tone;
@@ -573,6 +930,12 @@ mount.addEventListener("click", (event) => {
 });
 
 mount.addEventListener("change", (event) => {
+  const checkbox = event.target.closest("[data-checkbox-field]");
+  if (checkbox) {
+    toggleCheckbox(checkbox.dataset.checkboxField, checkbox.dataset.checkboxValue, checkbox.checked);
+    return;
+  }
+
   const field = event.target.closest("[data-field]");
   if (!field) return;
   setAnswer(field.dataset.field, field.value);

@@ -43,12 +43,14 @@ Patient checks in
 - Large-button question flow.
 - Synthetic scenario rail.
 - Stepper and completion status.
-- Symptom category selection.
-- Fixed yes/no and multiple-choice questions.
+- Governed core question set.
+- Conditional modules for storage, leakage, voiding, visible blood/clots, pain/infection-related context, and medication/context.
+- Fixed yes/no, not-sure, multiple-choice, and checkbox questions.
 - Optional free-text context.
 - Missing-information prompts.
 - Final patient review.
 - Clinician-facing summary.
+- Nurse workflow cues.
 - Copy and print summary actions.
 - Reviewer decision workbench.
 - Copy and print reviewer record actions.
