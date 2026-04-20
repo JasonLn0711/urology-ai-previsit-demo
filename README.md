@@ -9,6 +9,7 @@ The first goal is discovery: show a low-friction guided-question flow, repair mi
 - Professional static MVP using synthetic data only.
 - UI-guided questionnaire first; voice input is out of scope.
 - Scenario rail, stepper, missing-information repair, review handoff, and clinician summary.
+- Reviewer workbench for meeting feedback and continue / revise / narrow / pause decision capture.
 - Clinician-review summary, not diagnosis, triage, or treatment advice.
 - Patient-friendly, large-touch-target interface for urology previsit intake.
 
@@ -31,6 +32,7 @@ Open:
 
 - Patient demo: `http://localhost:4173/app/patient-demo/`
 - Clinician summary sample: `http://localhost:4173/app/clinician-summary/`
+- Reviewer workbench: `http://localhost:4173/app/reviewer-workbench/`
 
 You can also open `app/patient-demo/index.html` directly in a browser.
 
@@ -40,7 +42,7 @@ You can also open `app/patient-demo/index.html` directly in a browser.
 npm test
 ```
 
-The tests check summary generation, missing-information prompts, completion status, and safety wording.
+The tests check summary generation, missing-information prompts, completion status, safety wording, and reviewer decision-record logic.
 
 ## Repository Boundary
 

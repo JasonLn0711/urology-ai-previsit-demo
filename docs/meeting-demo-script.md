@@ -13,7 +13,9 @@ This is a synthetic-data professional MVP for urology previsit discovery. It doe
 5. Show the missing-information repair step.
 6. Review the patient answers.
 7. Show the clinician summary and copy/print actions.
-8. Ask what would make the summary useful or unsafe in the real workflow.
+8. Open the reviewer workbench.
+9. Capture workflow, adoption, safety, and next-artifact signals.
+10. Ask what would make the summary useful or unsafe in the real workflow.
 
 ## Questions For The Physician
 
@@ -23,6 +25,7 @@ This is a synthetic-data professional MVP for urology previsit discovery. It doe
 - Should the first real version be patient self-filled or nurse-assisted?
 - What would make this unacceptable from a privacy or clinical-safety perspective?
 - What is the smallest useful next artifact: question tree, mock screen, summary format, or feasibility note?
+- Should the decision be continue, revise, narrow, or pause?
 
 ## Stop Boundary
 

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reviewer Workbench</title>
+    <link rel="stylesheet" href="../patient-demo/styles.css">
+  </head>
+  <body>
+    <header class="topbar" aria-label="Reviewer header">
+      <a class="brand" href="../patient-demo/">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>
+          <strong>Urology AI Previsit</strong>
+          <small>Reviewer workbench</small>
+        </span>
+      </a>
+      <nav class="nav-actions" aria-label="Reviewer navigation">
+        <a class="ghost-button link-button" href="../patient-demo/">Patient MVP</a>
+        <a class="ghost-button link-button" href="../clinician-summary/">Summary View</a>
+      </nav>
+    </header>
+
+    <main class="app-shell">
+      <section class="mvp-brief" aria-labelledby="workbench-title">
+        <div>
+          <p class="eyebrow">Meeting decision capture</p>
+          <h1 id="workbench-title">Reviewer workbench</h1>
+          <p class="lead">
+            Convert clinician feedback into a continue, revise, narrow, or pause record without adding clinical decision behavior.
+          </p>
+        </div>
+        <div class="brief-visual" aria-hidden="true">
+          <img src="../../assets/bladder-flow.svg" alt="">
+        </div>
+      </section>
+
+      <section class="safety-strip" role="note" aria-label="Safety boundaries">
+        <span>This workbench captures reviewer judgment.</span>
+        <span>It does not diagnose, triage, or recommend treatment.</span>
+        <span>Use synthetic data only.</span>
+      </section>
+
+      <section class="workspace reviewer-workspace" aria-label="Reviewer decision workspace">
+        <aside class="case-rail">
+          <div class="rail-section">
+            <p class="eyebrow">Decision gate</p>
+            <h2>How to use</h2>
+            <ol class="gate-list">
+              <li>Run the patient MVP with a synthetic case.</li>
+              <li>Show the clinician summary.</li>
+              <li>Capture reviewer signals here.</li>
+              <li>Copy the record into the meeting notes.</li>
+            </ol>
+          </div>
+          <div class="rail-section boundary-note">
+            <p class="eyebrow">Choices</p>
+            <p><strong>Continue</strong> means useful and bounded. <strong>Revise</strong> means the idea fits but needs redesign. <strong>Narrow</strong> means only a smaller use case fits. <strong>Pause</strong> means no safe workflow value yet.</p>
+          </div>
+        </aside>
+
+        <section class="intake-panel" aria-labelledby="review-form-title">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Reviewer input</p>
+              <h2 id="review-form-title">Decision signals</h2>
+            </div>
+          </div>
+
+          <form class="reviewer-form" id="reviewerForm">
+            <fieldset>
+              <legend>Workflow value</legend>
+              <label>
+                Repeated-question pain
+                <select data-review-field="workflowPain">
+                  <option value="">Choose one</option>
+                  <option value="clear">Clear</option>
+                  <option value="mixed">Mixed or unclear</option>
+                  <option value="no">No meaningful repeated-question pain</option>
+                </select>
+              </label>
+              <label>
+                Summary usefulness
+                <select data-review-field="summaryUsefulness">
+                  <option value="">Choose one</option>
+                  <option value="would-read">Would read in the visit</option>
+                  <option value="needs-rewrite">Useful idea, wrong format</option>
+                  <option value="no">Would not read</option>
+                </select>
+              </label>
+              <label>
+                Workflow slot
+                <select data-review-field="workflowSlot">
+                  <option value="">Choose one</option>
+                  <option value="exists">A realistic slot exists</option>
+                  <option value="unclear">Workflow slot unclear</option>
+                  <option value="none">No workflow slot</option>
+                </select>
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Adoption reality</legend>
+              <label>
+                Staff burden
+                <select data-review-field="staffBurden">
+                  <option value="">Choose one</option>
+                  <option value="acceptable">Acceptable</option>
+                  <option value="unclear">Unclear</option>
+                  <option value="unacceptable">Unacceptable</option>
+                </select>
+              </label>
+              <label>
+                Patient or assisted completion
+                <select data-review-field="patientFit">
+                  <option value="">Choose one</option>
+                  <option value="self-filled">Self-filled seems realistic</option>
+                  <option value="mixed">Mixed self-filled and assisted</option>
+                  <option value="assisted-only">Assisted-only seems realistic</option>
+                  <option value="unrealistic">Completion seems unrealistic</option>
+                </select>
+              </label>
+              <label>
+                Existing process
+                <select data-review-field="existingProcess">
+                  <option value="">Choose one</option>
+                  <option value="not-sufficient">Existing process leaves a gap</option>
+                  <option value="unclear">Unclear</option>
+                  <option value="sufficient">Existing process may be sufficient</option>
+                </select>
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Boundary and next action</legend>
+              <label>
+                Safety boundary
+                <select data-review-field="safetyBoundary">
+                  <option value="">Choose one</option>
+                  <option value="acceptable">Acceptable</option>
+                  <option value="needs-wording">Needs wording changes</option>
+                  <option value="unacceptable">Unacceptable</option>
+                </select>
+              </label>
+              <label>
+                Reviewer decision
+                <select data-review-field="decision">
+                  <option value="">Use decision guide</option>
+                  <option value="continue">Continue</option>
+                  <option value="revise">Revise</option>
+                  <option value="narrow">Narrow</option>
+                  <option value="pause">Pause</option>
+                </select>
+              </label>
+              <label>
+                Smallest next artifact
+                <select data-review-field="nextArtifact">
+                  <option value="">Choose one</option>
+                  <option value="Revised question tree">Revised question tree</option>
+                  <option value="One-page summary mockup">One-page summary mockup</option>
+                  <option value="Assisted workflow test">Assisted workflow test</option>
+                  <option value="Pause note with rejected assumptions">Pause note with rejected assumptions</option>
+                </select>
+              </label>
+            </fieldset>
+
+            <label class="wide-field">
+              Reviewer notes
+              <textarea data-review-field="reviewerNotes" placeholder="Capture useful, noisy, unsafe, missing, and next-review comments."></textarea>
+            </label>
+          </form>
+        </section>
+
+        <aside class="summary-panel" aria-labelledby="record-title">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Decision record</p>
+              <h2 id="record-title">Output</h2>
+            </div>
+          </div>
+          <div id="decisionMount" class="decision-output" aria-live="polite"></div>
+          <div class="summary-actions">
+            <button class="secondary-button" id="copyRecord" type="button">Copy Record</button>
+            <button class="secondary-button" id="printRecord" type="button">Print</button>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+
+    <script src="../shared/review.js"></script>
+    <script src="./reviewer.js"></script>
+  </body>
+</html>

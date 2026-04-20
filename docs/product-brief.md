@@ -25,6 +25,7 @@ Patient checks in
 -> patient or nurse reviews answers
 -> physician-facing summary
 -> physician confirms, edits, or ignores
+-> reviewer captures continue / revise / narrow / pause decision
 ```
 
 ## Success Criteria
@@ -34,6 +35,7 @@ Patient checks in
 - The demo never diagnoses, triages, or recommends treatment.
 - The demo works without real patient data.
 - Missing information remains visible instead of being hidden.
+- Reviewer feedback can be captured as a decision record.
 - The meeting audience can judge whether the workflow is worth prototyping.
 
 ## MVP Scope
@@ -48,6 +50,8 @@ Patient checks in
 - Final patient review.
 - Clinician-facing summary.
 - Copy and print summary actions.
+- Reviewer decision workbench.
+- Copy and print reviewer record actions.
 
 ## Out of Scope
 
