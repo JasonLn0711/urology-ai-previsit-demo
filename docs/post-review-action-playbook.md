@@ -141,12 +141,12 @@ Stop before doing any artifact work if:
 
 ## Recommended Next Physical Action
 
-After the `2026-04-23` meeting, create one file under a dated review folder, for example:
+After the `2026-04-23` meeting, use the existing dated review workspace:
 
 `docs/reviews/2026-04-23-urology-review/decision-capture.md`
 
-Paste the filled meeting capture template first. Then add only the one next artifact selected by the decision.
+Paste the filled meeting capture template first. Then choose only the one next artifact selected by the decision.
 
-The dated review workspace has already been scaffolded for the 2026-04-23 meeting. Keep its status as `pending review` until real reviewer evidence is captured.
+The dated review workspace has already been scaffolded for the 2026-04-23 meeting. Keep its status as `pending review` until real reviewer evidence is captured. Do not create a second review folder or a parallel artifact tracker for the same meeting.
 
-Run `npm run review:closeout` before creating the selected artifact. If it fails, complete the capture or mark it `pending follow-up` instead of starting artifact work.
+Run `npm run review:closeout` before filling the selected artifact starter. If it fails, complete the capture or mark it `pending follow-up` instead of starting artifact work. After one matching starter is filled, run `npm run artifact:check`.

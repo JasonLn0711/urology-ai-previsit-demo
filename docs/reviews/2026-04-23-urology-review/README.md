@@ -13,6 +13,8 @@ Do not pre-fill reviewer conclusions before the meeting. The only valid pre-meet
 5. Paste it into `decision-capture.md`.
 6. Select exactly one next artifact from `../../post-review-action-playbook.md`.
 7. Run `npm run review:closeout` before creating that artifact.
+8. Fill exactly one matching starter from `artifact-starters/`.
+9. Run `npm run artifact:check` before treating the selected artifact as ready.
 
 ## Files
 
@@ -46,3 +48,10 @@ This folder is complete only when `decision-capture.md` contains:
 - copied reviewer workbench record
 
 If any of those are missing after the meeting, leave the status as `pending follow-up`.
+
+## Source Of Truth
+
+- `decision-capture.md` owns reviewer evidence and the selected next artifact.
+- `../../post-review-action-playbook.md` owns the decision-to-artifact rules.
+- `artifact-starters/` owns the blank artifact shapes only; starters do not choose work.
+- This folder is the dated workspace. Do not create a second 2026-04-23 review folder unless the meeting is split into a separate follow-up review.
