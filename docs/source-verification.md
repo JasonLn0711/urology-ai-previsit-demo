@@ -8,7 +8,7 @@ It is not the canonical clinical evidence map. Detailed clinical question govern
 
 ## Clinical Question Governance Source Of Truth
 
-Use the thinking repository for decisions about which patient questions belong in core MVP, conditional modules, nurse-assisted completion, or clinician-only workflows.
+Use the thinking repository for decisions about which patient questions belong in core MVP, conditional modules, family/source-labeled support, nurse repair, or clinician-only workflows.
 
 The implemented demo question flow follows the sibling file:
 
@@ -20,17 +20,26 @@ The demo's synthetic scenario source of truth is:
 
 Patient demo scenarios, clinician summary samples, and generated sample artifacts should read from this shared source so meeting artifacts do not drift from the browser demo.
 
+The implemented demo now has four role-separated browser surfaces:
+
+- Patient/family intake: `app/patient-demo/`
+- Nurse missing-information workbench: `app/nurse-workbench/`
+- Clinician previsit summary: `app/clinician-summary/`
+- Role-separated visit packet: `app/visit-packet/`
+
+Patient/family screens must not expose staff-only routes or staff-only wording. The nurse and clinician surfaces may read the same synthetic answer object, but they must render different tasks and preserve field-level answer source.
+
 The lightweight MVP readiness check is:
 
 `npm run smoke`
 
-It verifies entrypoints, browser script order, shared synthetic cases, generated sample front matter, stale references, and safety-boundary wording. It does not replace browser visual review.
+It verifies entrypoints, browser script order, shared synthetic cases, generated sample front matter, stale references, patient/family isolation from staff-only surfaces, display controls, read-aloud wiring, and safety-boundary wording. It does not replace browser visual review.
 
 The scenario workflow rehearsal is:
 
 `npm run rehearsal`
 
-It generates `docs/workflow-rehearsal.md` from shared cases and summary logic so patient flow, nurse cues, missing fields, clinician summary content, and reviewer questions can be checked before a meeting.
+It generates `docs/workflow-rehearsal.md` from shared cases and summary logic so patient/family flow, nurse cues, missing fields, clinician summary content, source labeling, and reviewer questions can be checked before a meeting.
 
 The meeting review entrypoint is:
 
@@ -85,6 +94,10 @@ The selected-artifact readiness check is:
 `npm run artifact:check`
 
 It should run only after one starter has been filled with reviewer evidence. It fails while placeholders remain or the review-only safety boundary is missing.
+
+The role-separated architecture note is:
+
+`docs/role-separated-workflow.md`
 
 The governance pack maps conclusions to sources such as:
 

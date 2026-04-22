@@ -10,6 +10,7 @@ Use this document before a meeting or browser walkthrough to check whether the M
 The rehearsal asks four first-principles questions for each case:
 
 - Can the patient or helper understand what to answer?
+- Does the patient/family UI avoid staff-only screens and language?
 - Can nursing staff see what may need support or clarification?
 - Can the clinician scan the summary without being misled?
 - Does the demo keep missing information visible instead of hiding uncertainty?
@@ -19,8 +20,9 @@ The rehearsal asks four first-principles questions for each case:
 1. Run `npm run rehearsal` after editing shared cases or summary logic.
 2. Open `http://localhost:4173/app/patient-demo/`.
 3. Load each synthetic case in the same order as below.
-4. Compare the browser state with this rehearsal document.
-5. Record reviewer feedback in the reviewer workbench.
+4. Confirm patient/family isolation, then inspect `app/nurse-workbench/`, `app/clinician-summary/`, and `app/visit-packet/`.
+5. Compare the browser state with this rehearsal document.
+6. Record reviewer feedback in the reviewer workbench.
 
 ## Synthetic case: frequent urination at night
 
@@ -32,9 +34,10 @@ Purpose: Checks whether frequency/nocturia details stay short while still surfac
 
 1. Load this case from the synthetic scenario rail.
 2. Confirm source and main concern: Patient self-filled; Frequency / nocturia / urgency.
-3. Confirm active conditional modules: storage, medication.
-4. Open Repair and confirm status: MVP fields complete for clinician review.
-5. Open Review and compare the patient-reported pattern against the clinician summary panel.
+3. Confirm the patient/family page has no nurse, clinician, visit-packet, or reviewer links.
+4. Confirm active conditional modules: storage, medication.
+5. Open the nurse workbench and confirm status: MVP fields complete for clinician review.
+6. Compare the clinician summary against the patient-reported pattern and source notes.
 
 ### Expected Summary State
 
@@ -49,8 +52,9 @@ Purpose: Checks whether frequency/nocturia details stay short while still surfac
 
 ### Nurse Workflow Cues
 
+- Completion support may be needed before clinician review.
 - Bladder diary instruction may be relevant if clinic workflow supports it.
-- Medication list may need nurse-assisted review.
+- Medication list may need nurse review or supplemental confirmation.
 
 ### Missing Information
 
@@ -79,10 +83,11 @@ Purpose: Checks whether voiding and emptying symptoms are visible without the sy
 ### Patient Flow Check
 
 1. Load this case from the synthetic scenario rail.
-2. Confirm source and main concern: Nurse-assisted; Difficulty emptying or weak stream.
-3. Confirm active conditional modules: voiding, medication.
-4. Open Repair and confirm status: MVP fields complete for clinician review.
-5. Open Review and compare the patient-reported pattern against the clinician summary panel.
+2. Confirm source and main concern: Family helped operate; patient answered; Difficulty emptying or weak stream.
+3. Confirm the patient/family page has no nurse, clinician, visit-packet, or reviewer links.
+4. Confirm active conditional modules: voiding, medication.
+5. Open the nurse workbench and confirm status: MVP fields complete for clinician review.
+6. Compare the clinician summary against the patient-reported pattern and source notes.
 
 ### Expected Summary State
 
@@ -98,7 +103,7 @@ Purpose: Checks whether voiding and emptying symptoms are visible without the sy
 ### Nurse Workflow Cues
 
 - Completion support may be needed before clinician review.
-- Medication list may need nurse-assisted review.
+- Medication list may need nurse review or supplemental confirmation.
 - Priority review statements should be visible before the clinician encounter.
 
 ### Missing Information
@@ -129,9 +134,10 @@ Purpose: Checks whether incomplete leakage intake keeps missing information visi
 
 1. Load this case from the synthetic scenario rail.
 2. Confirm source and main concern: Family or helper-assisted; Leakage.
-3. Confirm active conditional modules: leakage.
-4. Open Repair and confirm status: 6 MVP fields still missing.
-5. Open Review and compare the patient-reported pattern against the clinician summary panel.
+3. Confirm the patient/family page has no nurse, clinician, visit-packet, or reviewer links.
+4. Confirm active conditional modules: leakage.
+5. Open the nurse workbench and confirm status: 6 MVP fields still missing.
+6. Compare the clinician summary against the patient-reported pattern and source notes.
 
 ### Expected Summary State
 
@@ -227,5 +233,7 @@ Purpose: Checks whether frequency/nocturia details stay short while still surfac
 
 - Stop and revise if any page suggests diagnosis, triage, or treatment.
 - Stop and revise if missing fields disappear from view.
+- Stop and revise if the patient/family page exposes nurse, clinician, visit-packet, or reviewer surfaces.
+- Stop and revise if family observations and patient self-reports are indistinguishable.
 - Stop and revise if a `Not sure` answer opens large follow-up modules without a clear main concern.
 - Stop and revise if nurse cues require action the clinic cannot realistically perform.

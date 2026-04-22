@@ -2,13 +2,15 @@
 
 A static browser MVP for a professional, patient-friendly urology previsit interview workflow.
 
-The first goal is discovery: show a low-friction guided-question flow, repair missing information, generate a physician-facing summary, and learn whether the workflow is useful before building anything clinical or integrated.
+The first goal is discovery: show a low-friction patient/family guided-question flow, repair missing information for staff, generate a physician-facing summary, and learn whether the workflow is useful before building anything clinical or integrated.
 
 ## What This Is
 
 - Professional static MVP using synthetic data only.
 - UI-guided questionnaire first; voice input is out of scope.
-- Scenario rail, governed core questions, conditional modules, missing-information repair, review handoff, nurse cues, and clinician summary.
+- Separate patient/family intake, nurse missing-information workbench, and clinician summary surfaces.
+- Governed core questions, conditional modules, source labeling for family-assisted answers, missing-information repair, nurse cues, and clinician summary.
+- Patient/family display controls for larger text, high contrast, and read-aloud of the current step.
 - Reviewer workbench for meeting feedback and continue / revise / narrow / pause decision capture.
 - Clinician-review summary, not diagnosis, triage, or treatment advice.
 - Patient-friendly, large-touch-target interface for urology previsit intake.
@@ -31,6 +33,8 @@ python3 -m http.server 4173
 Open:
 
 - Patient demo: `http://localhost:4173/app/patient-demo/`
+- Nurse workbench: `http://localhost:4173/app/nurse-workbench/`
+- Visit packet export: `http://localhost:4173/app/visit-packet/`
 - Review packet: `http://localhost:4173/app/review-packet/`
 - Clinician summary sample: `http://localhost:4173/app/clinician-summary/`
 - Reviewer workbench: `http://localhost:4173/app/reviewer-workbench/`
@@ -59,8 +63,10 @@ The repository includes synthetic sample artifacts for meeting demos:
 
 - Sample index: `docs/samples/README.md`
 - Clinician summary samples: `docs/samples/clinician-summary-*.md`
+- Browser visit packet export: `app/visit-packet/`
 - Reviewer decision-record samples: `docs/samples/reviewer-record-*.md`
 - MVP review packet: `docs/mvp-review-packet.md`
+- Role-separated workflow note: `docs/role-separated-workflow.md`
 - Workflow rehearsal: `docs/workflow-rehearsal.md`
 
 Synthetic scenarios are defined once in `app/shared/cases.js`, then reused by the browser demo and sample generator.

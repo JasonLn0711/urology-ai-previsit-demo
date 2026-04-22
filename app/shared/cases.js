@@ -10,8 +10,8 @@
     {
       id: "synthetic-frequency-older-adult",
       label: "Synthetic case: frequent urination at night",
-      shortLabel: "Frequent urination at night",
-      meta: "Storage module, diary cue",
+      shortLabel: "晚上常起床尿尿",
+      meta: "會啟動夜尿/急尿補問",
       answers: {
         filledBy: "Patient self-filled",
         chiefConcern: "Frequency / nocturia / urgency",
@@ -35,17 +35,17 @@
         diureticAnticoagulantAwareness: "Not sure",
         language: "Mandarin with Taiwanese preferred",
         deviceComfort: "Needs large buttons",
-        supportPreference: "Needs review before clinician enters",
+        supportPreference: "Needs staff help",
         notes: "Patient worries about waking up repeatedly at night."
       }
     },
     {
       id: "synthetic-emptying-difficulty",
       label: "Synthetic case: difficulty emptying bladder",
-      shortLabel: "Difficulty emptying",
-      meta: "Voiding module, review flag",
+      shortLabel: "尿不太出來",
+      meta: "會啟動排尿困難補問",
       answers: {
-        filledBy: "Nurse-assisted",
+        filledBy: "Family helped operate; patient answered",
         chiefConcern: "Difficulty emptying or weak stream",
         duration: "1 to 4 weeks",
         botherScore: "8",
@@ -68,15 +68,15 @@
         diureticAnticoagulantAwareness: "Not sure",
         language: "Mandarin",
         deviceComfort: "Can use phone with help",
-        supportPreference: "Nurse-assisted mode",
+        supportPreference: "Family-assisted mode",
         notes: "Patient says flow is weak and sometimes cannot start."
       }
     },
     {
       id: "synthetic-incomplete-leakage",
       label: "Synthetic case: incomplete leakage intake",
-      shortLabel: "Incomplete leakage intake",
-      meta: "Shows missing-info repair",
+      shortLabel: "漏尿但資料不完整",
+      meta: "會示範自動找缺漏",
       answers: {
         filledBy: "Family or helper-assisted",
         chiefConcern: "Leakage",

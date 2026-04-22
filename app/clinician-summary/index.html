@@ -1,34 +1,36 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Clinician Summary Sample</title>
+    <title>看診前醫師摘要</title>
     <link rel="stylesheet" href="../patient-demo/styles.css">
   </head>
   <body>
-    <header class="topbar" aria-label="Demo header">
+    <header class="topbar" aria-label="醫師摘要頁">
       <a class="brand" href="../patient-demo/">
         <span class="brand-mark" aria-hidden="true"></span>
         <span>
-          <strong>Urology AI Previsit</strong>
-          <small>Clinician summary sample</small>
+          <strong>看診前醫師摘要</strong>
+          <small>patient-reported observations</small>
         </span>
       </a>
-      <nav class="nav-actions" aria-label="Demo actions">
-        <a class="ghost-button link-button" href="../patient-demo/">Patient MVP</a>
-        <a class="ghost-button link-button" href="../review-packet/">Review Packet</a>
-        <a class="ghost-button link-button" href="../reviewer-workbench/">Reviewer Workbench</a>
+      <nav class="nav-actions" aria-label="工作入口">
+        <a class="ghost-button link-button" href="../patient-demo/">病人/家屬端</a>
+        <a class="ghost-button link-button" href="../nurse-workbench/">護理補問</a>
+        <a class="ghost-button link-button" href="../visit-packet/">資料包</a>
+        <button class="ghost-button" id="loadSample" type="button">載入示範</button>
+        <button class="ghost-button" id="printSummary" type="button">列印</button>
       </nav>
     </header>
 
     <main class="app-shell">
-      <section class="mvp-brief" aria-labelledby="sample-title">
+      <section class="mvp-brief staff-brief" aria-labelledby="summary-title">
         <div>
-          <p class="eyebrow">Synthetic summary</p>
-          <h1 id="sample-title">One-minute clinician review</h1>
+          <p class="eyebrow">門診前 30 秒</p>
+          <h1 id="summary-title">先看主訴、缺漏與需確認的病人回報</h1>
           <p class="lead">
-            A sample handoff generated from synthetic answers. It is designed to be reviewed, corrected, or ignored by the clinician.
+            此頁只整理病人或家屬提供的資訊；不產生診斷、治療建議、分流等級或檢查建議。
           </p>
         </div>
         <div class="brief-visual" aria-hidden="true">
@@ -36,43 +38,46 @@
         </div>
       </section>
 
-      <section class="safety-strip" role="note" aria-label="Safety boundaries">
-        <span>This demo does not diagnose or recommend treatment.</span>
-        <span>A clinician must review all information.</span>
-        <span>Use synthetic data only.</span>
+      <section class="safety-strip" role="note" aria-label="安全邊界">
+        <span>不診斷。</span>
+        <span>不提供治療建議。</span>
+        <span>所有內容仍需臨床確認。</span>
       </section>
 
-      <section class="workspace summary-workspace" aria-label="Clinician summary workspace">
+      <section class="workspace summary-workspace" aria-label="醫師摘要工作區">
         <aside class="case-rail">
           <div class="rail-section">
-            <p class="eyebrow">Sample case</p>
-            <h2>Difficulty emptying</h2>
-            <p class="lead">Nurse-assisted synthetic case with neutral review flags.</p>
+            <p class="eyebrow">摘要狀態</p>
+            <h2 id="statusTitle">讀取中</h2>
+            <p class="staff-muted" id="statusMeta">正在整理最新填答資料。</p>
+          </div>
+          <div class="rail-section">
+            <p class="eyebrow">資料來源</p>
+            <div id="sourceMount" class="source-stack"></div>
           </div>
           <div class="rail-section boundary-note">
-            <p class="eyebrow">Boundary</p>
-            <p>The summary reports patient-provided information. It does not assign disease, urgency, or treatment.</p>
+            <p class="eyebrow">不可解讀為</p>
+            <p>本頁不是診斷書、分流工具、檢查建議或治療建議。</p>
           </div>
         </aside>
 
-        <section class="intake-panel" aria-labelledby="summary-title">
+        <section class="intake-panel" aria-labelledby="doctor-summary-heading">
           <div class="panel-head">
             <div>
-              <p class="eyebrow">Clinician review</p>
-              <h2 id="summary-title">Synthetic case summary</h2>
+              <p class="eyebrow">醫師快速摘要</p>
+              <h2 id="doctor-summary-heading">看診前重點</h2>
             </div>
+            <button class="secondary-button" id="copySummary" type="button">複製文字摘要</button>
           </div>
-          <pre id="summaryText" class="summary-body"></pre>
+          <div id="summaryMount" class="staff-summary"></div>
         </section>
       </section>
     </main>
 
+    <div class="toast" id="toast" role="status" hidden></div>
+
     <script src="../shared/summary.js"></script>
     <script src="../shared/cases.js"></script>
-    <script>
-      const sample = window.UrologyCases.findCase("synthetic-emptying-difficulty").answers;
-      const summary = window.UrologyPrevisit.buildClinicianSummary(sample);
-      document.querySelector("#summaryText").textContent = window.UrologyPrevisit.summaryToText(summary);
-    </script>
+    <script src="./clinician.js"></script>
   </body>
 </html>

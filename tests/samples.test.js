@@ -95,7 +95,9 @@ test("browser review packet routes reviewers to the demo artifacts", () => {
 
   assert.match(packetPage, /MVP review packet/);
   assert.match(packetPage, /href="\.\.\/patient-demo\/"/);
+  assert.match(packetPage, /href="\.\.\/nurse-workbench\/"/);
   assert.match(packetPage, /href="\.\.\/clinician-summary\/"/);
+  assert.match(packetPage, /href="\.\.\/visit-packet\/"/);
   assert.match(packetPage, /href="\.\.\/reviewer-workbench\/"/);
   assert.match(packetPage, /docs\/workflow-rehearsal\.md/);
   assert.match(packetPage, /docs\/meeting-capture-template\.md/);

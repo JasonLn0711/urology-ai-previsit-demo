@@ -1,36 +1,38 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Urology AI Previsit MVP</title>
+    <title>安心看診前整理</title>
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <header class="topbar" aria-label="MVP header">
-      <a class="brand" href="./index.html" aria-label="Urology AI Previsit MVP home">
+    <header class="topbar patient-topbar" aria-label="看診前整理">
+      <a class="brand" href="./index.html" aria-label="安心看診前整理首頁">
         <span class="brand-mark" aria-hidden="true"></span>
         <span>
-          <strong>Urology AI Previsit</strong>
-          <small>Professional MVP</small>
+          <strong>安心看診前整理</strong>
+          <small>病人與家屬使用</small>
         </span>
       </a>
-      <nav class="nav-actions" aria-label="MVP actions">
-        <button class="ghost-button" id="loadSample" type="button">Load Sample</button>
-        <button class="ghost-button" id="resetDemo" type="button">Reset</button>
-        <a class="ghost-button link-button" href="../review-packet/">Review Packet</a>
-        <a class="ghost-button link-button" href="../clinician-summary/">Summary View</a>
-        <a class="ghost-button link-button" href="../reviewer-workbench/">Reviewer Workbench</a>
+      <nav class="nav-actions" aria-label="示範操作">
+        <button class="ghost-button" id="loadSample" type="button">載入示範</button>
+        <button class="ghost-button" id="resetDemo" type="button">重新開始</button>
       </nav>
+      <div class="patient-tools" aria-label="顯示與朗讀">
+        <button class="tool-button" id="largeTextToggle" type="button" aria-pressed="false">A+ 大字</button>
+        <button class="tool-button" id="contrastToggle" type="button" aria-pressed="false">高對比</button>
+        <button class="tool-button" id="readStepButton" type="button">朗讀本題</button>
+      </div>
     </header>
 
-    <main class="app-shell">
-      <section class="mvp-brief" aria-labelledby="mvp-title">
+    <main class="app-shell patient-app">
+      <section class="mvp-brief patient-brief" aria-labelledby="mvp-title">
         <div>
-          <p class="eyebrow">Synthetic-data clinical workflow discovery</p>
-          <h1 id="mvp-title">Guided intake to clinician-review handoff</h1>
+          <p class="eyebrow">泌尿科看診前</p>
+          <h1 id="mvp-title">先安心說清楚，再交給門診團隊確認</h1>
           <p class="lead">
-            Collect governed urology previsit questions, open only relevant follow-up modules, repair missing fields, and produce a short reviewable summary without diagnosis or treatment advice.
+            系統會用簡單問題整理今天最困擾的狀況；家人可以協助操作，但每份答案都會標示來源，避免把本人感受與家屬觀察混在一起。
           </p>
         </div>
         <div class="brief-visual" aria-hidden="true">
@@ -38,82 +40,65 @@
         </div>
       </section>
 
-      <section class="safety-strip" role="note" aria-label="Safety boundaries">
-        <span>This demo does not diagnose or recommend treatment.</span>
-        <span>A clinician must review all information.</span>
-        <span>Use synthetic data only.</span>
+      <section class="safety-strip patient-strip" role="note" aria-label="使用提醒">
+        <span>可以選「不確定」，不用猜。</span>
+        <span>送出前可以回去修改。</span>
+        <span>這裡只整理資訊，不做診斷或治療建議。</span>
       </section>
 
-      <section class="workspace" aria-label="Previsit MVP workspace">
-        <aside class="case-rail" aria-labelledby="case-title">
+      <section class="workspace patient-workspace" aria-label="病人與家屬填答區">
+        <aside class="case-rail patient-help" aria-labelledby="help-title">
           <div class="rail-section">
-            <p class="eyebrow">Synthetic scenarios</p>
-            <h2 id="case-title">Load a case</h2>
+            <p class="eyebrow">示範情境</p>
+            <h2 id="help-title">先試一個案例</h2>
             <div id="scenarioMount" class="scenario-list"></div>
           </div>
 
           <div class="rail-section">
-            <p class="eyebrow">Handoff gates</p>
+            <p class="eyebrow">填答方式</p>
             <ol class="gate-list">
-              <li>Patient or helper answers.</li>
-              <li>Missing fields stay visible.</li>
-              <li>Patient or staff reviews.</li>
-              <li>Clinician confirms or ignores.</li>
+              <li>先確認是本人回答，或家人協助。</li>
+              <li>只問和目前狀況有關的追問題。</li>
+              <li>不清楚可以選「不確定」。</li>
+              <li>最後用白話確認一次，錯了可修改。</li>
             </ol>
           </div>
 
           <div class="rail-section boundary-note">
-            <p class="eyebrow">Boundary</p>
-            <p>No real patient data, diagnosis, triage, or treatment suggestion belongs in this MVP.</p>
+            <p class="eyebrow">安心提醒</p>
+            <p>若題目不好意思回答，可以先略過，之後到現場再說。家人協助時，主觀感受仍盡量由長輩本人回答。</p>
           </div>
         </aside>
 
-        <section class="intake-panel" aria-labelledby="intake-title">
+        <section class="intake-panel patient-intake" aria-labelledby="intake-title">
           <div class="panel-head">
             <div>
-              <p class="eyebrow">Patient flow</p>
-              <h2 id="intake-title">Previsit intake</h2>
+              <p class="eyebrow">看診前整理</p>
+              <h2 id="intake-title">一步一步填</h2>
             </div>
             <div class="readiness" aria-live="polite">
-              <span id="readinessLabel">MVP fields still missing</span>
-              <strong><span id="missingCount">13</span> missing</strong>
+              <span id="readinessLabel">還有重點可補充</span>
+              <strong><span id="missingCount">13</span> 項</strong>
             </div>
           </div>
 
-          <div class="step-nav" id="stepNav" aria-label="Intake steps"></div>
+          <div class="step-nav" id="stepNav" aria-label="填答步驟"></div>
 
-          <div class="progress-shell" aria-label="Progress">
+          <div class="progress-shell" aria-label="填答進度">
             <div class="progress-track">
               <div class="progress-bar" id="progressBar"></div>
             </div>
-            <p id="progressText">Step 1 of 7</p>
+            <p id="progressText">第 1 步，共 7 步</p>
           </div>
 
           <form id="previsitForm" class="question-flow">
             <div id="stepMount"></div>
             <div class="flow-actions">
-              <button class="secondary-button" id="backButton" type="button">Back</button>
-              <button class="primary-button" id="nextButton" type="button">Next</button>
+              <button class="secondary-button" id="backButton" type="button">上一步</button>
+              <button class="primary-button" id="nextButton" type="button">下一步</button>
             </div>
           </form>
         </section>
-
-        <aside class="summary-panel" aria-labelledby="summary-title">
-          <div class="panel-head">
-            <div>
-              <p class="eyebrow">Clinician review</p>
-              <h2 id="summary-title">Summary</h2>
-            </div>
-            <div class="meter" aria-hidden="true">
-              <span id="readinessMeter"></span>
-            </div>
-          </div>
-          <div id="summaryMount" class="summary-body" aria-live="polite"></div>
-          <div class="summary-actions">
-            <button class="secondary-button" id="copySummary" type="button">Copy Summary</button>
-            <button class="secondary-button" id="printSummary" type="button">Print</button>
-          </div>
-        </aside>
       </section>
     </main>
 

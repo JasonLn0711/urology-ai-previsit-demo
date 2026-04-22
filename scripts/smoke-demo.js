@@ -88,12 +88,18 @@ function checkEntrypoints() {
     "app/patient-demo/app.js",
     "app/review-packet/index.html",
     "app/clinician-summary/index.html",
+    "app/clinician-summary/clinician.js",
+    "app/nurse-workbench/index.html",
+    "app/nurse-workbench/nurse.js",
+    "app/visit-packet/index.html",
+    "app/visit-packet/visit-packet.js",
     "app/reviewer-workbench/index.html",
     "app/reviewer-workbench/reviewer.js",
     "app/shared/summary.js",
     "app/shared/cases.js",
     "app/shared/review.js",
     "assets/bladder-flow.svg",
+    "docs/role-separated-workflow.md",
     "docs/mvp-review-packet.md",
     "docs/meeting-capture-template.md",
     "docs/post-review-action-playbook.md",
@@ -113,6 +119,9 @@ function checkEntrypoints() {
 
   [
     "app/patient-demo/app.js",
+    "app/clinician-summary/clinician.js",
+    "app/nurse-workbench/nurse.js",
+    "app/visit-packet/visit-packet.js",
     "app/shared/summary.js",
     "app/shared/cases.js",
     "app/shared/review.js",
@@ -139,9 +148,32 @@ function checkBrowserScriptOrder() {
 
   const clinicianSummaryIndex = indexOf("app/clinician-summary/index.html", "../shared/summary.js");
   const clinicianCasesIndex = indexOf("app/clinician-summary/index.html", "../shared/cases.js");
+  const clinicianAppIndex = indexOf("app/clinician-summary/index.html", "./clinician.js");
   record(
-    "clinician summary loads case source after summary library",
-    clinicianSummaryIndex > -1 && clinicianCasesIndex > clinicianSummaryIndex
+    "clinician summary loads shared scripts before page script",
+    clinicianSummaryIndex > -1 &&
+      clinicianCasesIndex > clinicianSummaryIndex &&
+      clinicianAppIndex > clinicianCasesIndex
+  );
+
+  const nurseSummaryIndex = indexOf("app/nurse-workbench/index.html", "../shared/summary.js");
+  const nurseCasesIndex = indexOf("app/nurse-workbench/index.html", "../shared/cases.js");
+  const nurseAppIndex = indexOf("app/nurse-workbench/index.html", "./nurse.js");
+  record(
+    "nurse workbench loads shared scripts before page script",
+    nurseSummaryIndex > -1 &&
+      nurseCasesIndex > nurseSummaryIndex &&
+      nurseAppIndex > nurseCasesIndex
+  );
+
+  const visitSummaryIndex = indexOf("app/visit-packet/index.html", "../shared/summary.js");
+  const visitCasesIndex = indexOf("app/visit-packet/index.html", "../shared/cases.js");
+  const visitAppIndex = indexOf("app/visit-packet/index.html", "./visit-packet.js");
+  record(
+    "visit packet loads shared scripts before page script",
+    visitSummaryIndex > -1 &&
+      visitCasesIndex > visitSummaryIndex &&
+      visitAppIndex > visitCasesIndex
   );
 
   record(
@@ -202,6 +234,9 @@ function checkReviewPacket() {
   const text = read("docs/mvp-review-packet.md");
   record("review packet has non-negotiable boundary", text.includes("## Non-Negotiable Boundary"));
   record("review packet routes demo surfaces", text.includes("http://localhost:4173/app/patient-demo/"));
+  record("review packet routes nurse workbench", text.includes("http://localhost:4173/app/nurse-workbench/"));
+  record("review packet routes visit packet", text.includes("http://localhost:4173/app/visit-packet/"));
+  record("review packet includes role-separated workflow", text.includes("docs/role-separated-workflow.md"));
   record("review packet includes artifact map", text.includes("## Artifact Map"));
   record("review packet includes reviewer roles", text.includes("## Reviewer Roles"));
   record("review packet includes decision scorecard", text.includes("## Decision Scorecard"));
@@ -228,9 +263,12 @@ function checkBrowserReviewPacket() {
 
   record("browser review packet has title", text.includes("MVP review packet"));
   record("browser review packet links patient demo", text.includes('href="../patient-demo/"'));
+  record("browser review packet links nurse workbench", text.includes('href="../nurse-workbench/"'));
   record("browser review packet links clinician summary", text.includes('href="../clinician-summary/"'));
+  record("browser review packet links visit packet", text.includes('href="../visit-packet/"'));
   record("browser review packet links reviewer workbench", text.includes('href="../reviewer-workbench/"'));
   record("browser review packet links workflow rehearsal", text.includes("../../docs/workflow-rehearsal.md"));
+  record("browser review packet links role-separated workflow", text.includes("../../docs/role-separated-workflow.md"));
   record("browser review packet links markdown packet", text.includes("../../docs/mvp-review-packet.md"));
   record("browser review packet links action playbook", text.includes("../../docs/post-review-action-playbook.md"));
   record("browser review packet links pre-meeting readiness", text.includes("../../docs/reviews/2026-04-23-urology-review/pre-meeting-readiness.md"));
@@ -250,6 +288,20 @@ function checkBrowserReviewPacket() {
   );
   record("browser review packet avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(lower));
   record("browser review packet has no stale three-case wording", !/three-case walkthrough/i.test(lower));
+}
+
+function checkVisitPacket() {
+  const text = read("app/visit-packet/index.html");
+  const script = read("app/visit-packet/visit-packet.js");
+  const lower = `${text}\n${script}`.toLowerCase();
+
+  record("visit packet has title", text.includes("看診前資料包"));
+  record("visit packet separates patient page", script.includes("renderPatientPage"));
+  record("visit packet separates nurse page", script.includes("renderNursePage"));
+  record("visit packet separates clinician page", script.includes("renderClinicianPage"));
+  record("visit packet uses shared packet builder", script.includes("buildVisitPacket"));
+  record("visit packet supports print", script.includes("window.print()"));
+  record("visit packet avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(lower));
 }
 
 function checkReviewerBoundary() {
@@ -336,6 +388,29 @@ function checkNoStaleReferences() {
     "patient app no longer embeds scenario array",
     !contains("app/patient-demo/app.js", "const SCENARIOS = [")
   );
+  record(
+    "patient and family UI does not link staff-only surfaces",
+    !contains("app/patient-demo/index.html", "../nurse-workbench/") &&
+      !contains("app/patient-demo/index.html", "../clinician-summary/") &&
+      !contains("app/patient-demo/index.html", "../reviewer-workbench/")
+  );
+  record(
+    "patient and family UI hides staff workflow wording",
+    !/Nurse Workflow|Clinician review|Summary View|Reviewer Workbench|醫師摘要|護理補問|醫師使用|護理師使用/i.test(
+      read("app/patient-demo/index.html") + read("app/patient-demo/app.js")
+    )
+  );
+  record(
+    "patient app exposes elder-friendly display controls",
+    contains("app/patient-demo/index.html", "largeTextToggle") &&
+      contains("app/patient-demo/index.html", "contrastToggle") &&
+      contains("app/patient-demo/index.html", "readStepButton")
+  );
+  record(
+    "patient app persists display preferences and supports read-aloud",
+    contains("app/patient-demo/app.js", "urologyPrevisitUiPrefs") &&
+      contains("app/patient-demo/app.js", "speechSynthesis")
+  );
 
   assertNoRepositoryText(/data\/synthetic-cases\/cases\.json/, "old synthetic cases json path");
   assertNoRepositoryText(/\bentryMode\b|\bsymptomCategory\b|\bfrequencyDay\b|\bphoneComfort\b|\bsupportNeeds\b/, "old answer field names");
@@ -352,6 +427,7 @@ function main() {
   checkMeetingCaptureTemplate();
   checkPostReviewActionPlaybook();
   checkDatedReviewWorkspace();
+  checkVisitPacket();
   checkReviewerBoundary();
   checkNoStaleReferences();
 

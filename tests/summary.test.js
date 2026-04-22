@@ -3,11 +3,15 @@ const assert = require("node:assert/strict");
 const {
   activeModules,
   buildClinicianSummary,
+  buildNurseChecklist,
+  buildVisitPacket,
   clinicianFlags,
   completionStatus,
   missingFields,
   requiredFieldsForAnswers,
-  summaryToText
+  sourceAttributionSummary,
+  summaryToText,
+  visitPacketToText
 } = require("../app/shared/summary.js");
 
 test("builds a clinician-readable summary from governed MVP fields", () => {
@@ -192,4 +196,89 @@ test("reports dynamic MVP completion status without clinical conclusions", () =>
   assert.ok(required.includes("hematuriaPattern"));
   assert.ok(required.includes("bloodClots"));
   assert.match(status.label, /MVP fields still missing/);
+});
+
+test("builds nurse supplemental questions from missing fields without diagnosis", () => {
+  const checklist = buildNurseChecklist({
+    filledBy: "Family or helper-assisted",
+    chiefConcern: "Leakage",
+    leakage: "Yes",
+    leakageFrequency: "Weekly",
+    visibleBlood: "No",
+    unableToUrinate: "No",
+    systemicSymptoms: [],
+    medicationListStatus: ""
+  });
+
+  assert.ok(checklist.supplementalQuestions.length > 0);
+  assert.ok(checklist.supplementalQuestions.some((item) => item.field === "leakageAmount"));
+  assert.ok(checklist.sourceNotes.some((note) => note.includes("家屬")));
+  assert.doesNotMatch(
+    checklist.supplementalQuestions.map((item) => `${item.ask} ${item.why}`).join("\n"),
+    /診斷為|治療建議|分流|建議用藥|需要手術/
+  );
+});
+
+test("keeps field-level source attribution visible for family-assisted answers", () => {
+  const answers = {
+    filledBy: "Family or helper-assisted",
+    chiefConcern: "Leakage",
+    leakage: "Yes",
+    botherScore: "7",
+    visibleBlood: "No",
+    unableToUrinate: "No",
+    systemicSymptoms: ["None of these"],
+    medicationListStatus: "Partial list only",
+    sourceByField: {
+      filledBy: "declared_on_entry",
+      leakage: "family_observation",
+      botherScore: "patient_with_family_operator",
+      medicationListStatus: "nurse_supplement"
+    }
+  };
+  const summary = buildClinicianSummary(answers);
+  const leakageSource = summary.fieldSources.find((item) => item.field === "leakage");
+  const medicationSource = summary.fieldSources.find((item) => item.field === "medicationListStatus");
+
+  assert.equal(leakageSource.source, "family_observation");
+  assert.equal(medicationSource.source, "nurse_supplement");
+  assert.ok(summary.sourceNotes.some((note) => note.includes("家屬")));
+  assert.ok(sourceAttributionSummary(answers).some((line) => line.includes("家屬")));
+});
+
+test("builds a role-separated visit packet without clinical advice", () => {
+  const packet = buildVisitPacket({
+    filledBy: "Family or helper-assisted",
+    chiefConcern: "Leakage",
+    duration: "1 to 4 weeks",
+    botherScore: "6",
+    daytimeFrequencyChange: "Not sure",
+    nocturiaCount: "2 times",
+    urgency: "Not sure",
+    leakage: "Yes",
+    painBurning: "No",
+    visibleBlood: "No",
+    unableToUrinate: "No",
+    systemicSymptoms: ["None of these"],
+    medicationListStatus: "Partial list only",
+    leakageFrequency: "Weekly",
+    leakageAmount: "Small amount",
+    leakageTriggers: ["Before reaching toilet"],
+    containmentProducts: "Pads or liners",
+    sourceByField: {
+      filledBy: "declared_on_entry",
+      leakage: "family_observation",
+      leakageAmount: "nurse_supplement"
+    }
+  });
+  const text = visitPacketToText(packet).toLowerCase();
+
+  assert.equal(packet.patientPage.audience, "patient-family");
+  assert.equal(packet.nursePage.audience, "nurse");
+  assert.equal(packet.clinicianPage.audience, "clinician");
+  assert.ok(packet.nursePage.supplementalQuestions.length >= 0);
+  assert.match(text, /patient and family confirmation/i);
+  assert.match(text, /nurse missing-information repair/i);
+  assert.match(text, /clinician previsit scan/i);
+  assert.doesNotMatch(text, /likely infection|probable cancer|take medication/);
 });

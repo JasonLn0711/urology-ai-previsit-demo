@@ -1,11 +1,12 @@
 const {
   activeModules,
-  buildClinicianSummary,
   completionStatus,
-  missingFieldEntries,
-  summaryToText
+  missingFieldEntries
 } = window.UrologyPrevisit;
 const { SYNTHETIC_CASES } = window.UrologyCases;
+
+const STORAGE_KEY = "urologyPrevisitAnswers";
+const UI_PREFS_KEY = "urologyPrevisitUiPrefs";
 
 const ARRAY_FIELDS = new Set([
   "systemicSymptoms",
@@ -101,175 +102,373 @@ const FIELD_TO_STEP = {
   notes: 4
 };
 
-const YES_NO_UNSURE = ["", "No", "Yes", "Not sure"];
-const BOTHER_OPTIONS = ["", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Not sure"];
+const YES_NO_UNSURE = [
+  ["No", "沒有"],
+  ["Yes", "有"],
+  ["Not sure", "不確定"]
+];
+
+const BOTHER_OPTIONS = [
+  ["0", "0 不困擾"],
+  ["1", "1"],
+  ["2", "2"],
+  ["3", "3"],
+  ["4", "4"],
+  ["5", "5 中等困擾"],
+  ["6", "6"],
+  ["7", "7"],
+  ["8", "8"],
+  ["9", "9"],
+  ["10", "10 非常困擾"],
+  ["Not sure", "不確定"]
+];
+
+const MODULE_LABELS = {
+  storage: "頻尿、夜尿、急尿",
+  leakage: "漏尿",
+  voiding: "排尿困難",
+  hematuria: "看得到的血尿或血塊",
+  pain: "疼痛或發燒相關",
+  medication: "用藥需要補充"
+};
+
+const SOURCE_LABELS = {
+  declared_on_entry: "填答開始時標記",
+  patient_self: "本人回答",
+  patient_with_family_operator: "本人回答，家人協助操作",
+  family_observation: "家屬觀察",
+  nurse_supplement: "現場補問",
+  unknown: "未標記"
+};
+
+const VALUE_LABELS = {
+  "Patient self-filled": "我自己回答",
+  "Family helped operate; patient answered": "家人幫忙操作，我自己回答",
+  "Family or helper-assisted": "家人依平常觀察協助回答",
+  "Frequency / nocturia / urgency": "尿很頻繁、晚上常起床尿尿、突然很急",
+  Leakage: "尿不小心漏出來",
+  "Difficulty emptying or weak stream": "尿不太出來、尿流變弱、尿不乾淨",
+  "Pain, burning, or possible infection": "尿尿會痛、刺痛或灼熱",
+  "Visible blood or clots": "看到紅色或茶色尿、或看到血塊",
+  "Other urinary concern": "其他泌尿問題",
+  Today: "今天",
+  "1 to 7 days": "1 到 7 天內",
+  "1 to 4 weeks": "1 到 4 週",
+  "More than 1 month": "超過 1 個月",
+  No: "沒有",
+  Yes: "有",
+  "Not sure": "不確定",
+  "0 times": "0 次",
+  "1 time": "1 次",
+  "2 times": "2 次",
+  "3 or more times": "3 次以上",
+  Fever: "發燒",
+  Chills: "發冷",
+  "Side or back pain": "腰部兩側痛",
+  "None of these": "以上都沒有",
+  "Can provide list": "可以提供藥單或藥袋",
+  "Partial list only": "只記得一部分",
+  "No regular medicines": "沒有固定用藥",
+  "1 to 4 times": "1 到 4 次",
+  "5 to 8 times": "5 到 8 次",
+  "9 to 12 times": "9 到 12 次",
+  "More than 12 times": "超過 12 次",
+  Rarely: "很少",
+  "Some days": "有些天會",
+  "Most days": "大多數日子會",
+  "Several times a day": "一天好幾次",
+  "Caffeinated drinks most days": "常喝咖啡、茶或含咖啡因飲料",
+  "Drinks a lot near bedtime": "睡前常喝比較多水",
+  "Night shift or poor sleep": "作息不固定或睡不好",
+  "Yes, with written instructions": "可以，但需要清楚說明",
+  "Only with staff or family help": "需要家人或現場人員協助",
+  "Less than once a week": "少於每週一次",
+  Weekly: "每週會發生",
+  Daily: "每天會發生",
+  "A few drops": "幾滴",
+  "Small amount": "少量",
+  "Moderate amount": "會濕內褲或護墊",
+  "Large amount": "量較多或需要換衣物",
+  "Before reaching toilet": "來不及到廁所",
+  "Coughing, laughing, or exercise": "咳嗽、笑、運動或搬重物時",
+  "During sleep": "睡覺時",
+  "Without warning": "沒有明顯原因",
+  "No products used": "沒有使用",
+  "Pads or liners": "護墊或襯墊",
+  "Adult diapers": "成人紙尿褲",
+  "Other product": "其他用品",
+  "Prefer not to answer": "暫時不想回答",
+  "One time": "一次",
+  "More than once": "不只一次",
+  "Every time recently": "最近幾乎每次都有",
+  "Pain or burning": "疼痛或灼熱",
+  "Fever or chills": "發燒或發冷",
+  "Only while urinating": "尿尿時",
+  "After urinating": "尿完後",
+  "Most of the day": "一天中大多時間",
+  "Comes and goes": "有時有、有時沒有",
+  "Yes, once": "有，1 次",
+  "Yes, more than once": "有，超過 1 次",
+  "1 to 3": "1 到 3 分",
+  "4 to 6": "4 到 6 分",
+  "7 to 10": "7 到 10 分",
+  Diabetes: "糖尿病",
+  "Kidney disease": "腎臟病",
+  "Neurologic disease": "神經系統疾病",
+  "Spinal cord problem": "脊髓相關問題",
+  Mandarin: "國語",
+  Taiwanese: "台語",
+  "Mandarin with Taiwanese preferred": "國語，可以搭配台語",
+  English: "英文",
+  Other: "其他",
+  Comfortable: "可以自己操作",
+  "Can use phone with help": "有人協助就可以",
+  "Needs large buttons": "需要大按鈕、大字",
+  "Prefer staff help": "希望到現場請人協助",
+  "Self-filled": "自己填",
+  "Family-assisted mode": "家人協助",
+  "Needs staff help": "到現場請人員協助",
+  "Prefer to talk in person": "想直接到現場用說的"
+};
+
+const PATIENT_MISSING_PROMPTS = {
+  filledBy: ["先確認誰在回答", "這樣可以分清楚本人感受和家人觀察。"],
+  chiefConcern: ["選一個今天最想先說的問題", "先抓主要困擾，後面才不會問太多不相關的問題。"],
+  duration: ["補一下大約開始時間", "不知道精確日期也沒關係，選大概區間即可。"],
+  botherScore: ["選一個困擾程度", "0 是不困擾，10 是非常困擾。"],
+  daytimeFrequencyChange: ["白天尿尿次數有沒有變多？", "若不確定，可以選不確定。"],
+  nocturiaCount: ["晚上睡著後通常起床尿尿幾次？", "只算睡著後又起床的次數。"],
+  urgency: ["會不會突然很想尿、很難忍？", "用自己的感覺回答即可。"],
+  leakage: ["最近 4 週有沒有尿不小心漏出來？", "這題可以先略過，現場再說也可以。"],
+  painBurning: ["尿尿時會不會痛、刺痛或灼熱？", "這只是整理症狀，不是在判斷疾病。"],
+  visibleBlood: ["有沒有看過紅色或茶色尿、或血塊？", "不確定也可以選不確定。"],
+  unableToUrinate: ["有沒有想尿卻尿不出來？", "若正在發生，請到現場讓人員知道。"],
+  currentlyUnableToUrinate: ["現在還有尿不出來嗎？", "這能幫助現場更快了解狀況。"],
+  systemicSymptoms: ["最近有沒有發燒、發冷或腰側痛？", "以上都沒有也可以直接選。"],
+  medicationListStatus: ["今天能不能提供藥袋或藥單？", "不用猜藥名，可以帶藥袋、藥單或照片。"],
+  daytimeFrequencyCount: ["白天大約尿尿幾次？", "用區間回答即可，不用算得很精準。"],
+  urgencyFrequency: ["突然急尿大約多常發生？", "選最接近的頻率即可。"],
+  bladderDiaryFeasible: ["如果需要，能不能記幾天排尿狀況？", "這不是現在一定要做，只是先確認是否方便。"],
+  leakageFrequency: ["漏尿大約多常發生？", "選最接近的頻率即可。"],
+  leakageAmount: ["漏尿量大約多少？", "用幾滴、少量、會濕等方式回答即可。"],
+  leakageTriggers: ["什麼情況比較容易漏尿？", "可以複選，也可以選不確定。"],
+  containmentProducts: ["目前有沒有使用護墊、尿布或其他用品？", "不想回答可以選暫時不想回答。"],
+  weakStream: ["尿流有沒有變細、變弱？", "用自己的觀察回答即可。"],
+  straining: ["尿尿時是否常需要用力？", "若不確定，可以選不確定。"],
+  intermittency: ["尿尿時會不會斷斷續續？", "用最近的經驗回答。"],
+  incompleteEmptying: ["尿完後會不會覺得還沒尿乾淨？", "這只是感覺描述，不是檢查結果。"],
+  hematuriaPattern: ["看到紅色或茶色尿是一次還是反覆？", "記不清楚可以選不確定。"],
+  bloodClots: ["有沒有看到像血塊的東西？", "不確定也可以選不確定。"],
+  painFrequency: ["疼痛或灼熱通常什麼時候發生？", "選最接近的情況即可。"],
+  infectionEpisodeHistory: ["過去一年有沒有因類似症狀就醫或吃抗生素？", "不記得可以選不確定。"],
+  flankPainScore: ["腰部兩側痛大約幾分？", "0 是不痛，10 是非常痛。"],
+  medicationAssist: ["是否需要現場協助看藥袋或藥單？", "避免自己猜藥物類別。"]
+};
 
 const STEPS = [
   {
     id: "source",
-    label: "Source",
-    title: "Who is filling this out?",
-    copy: "This tells the clinic whether the answers came from the patient directly or with help.",
+    label: "誰回答",
+    title: "先確認誰在回答",
+    copy: "如果家人幫忙操作，請盡量讓長輩本人回答感受；家人可以補充平常看到的事。",
     type: "options",
     field: "filledBy",
     options: [
-      ["Patient self-filled", "Patient self-filled", "The patient is answering directly."],
-      ["Nurse-assisted", "Nurse-assisted", "Clinic staff helps the patient complete the flow."],
-      ["Family or helper-assisted", "Family or helper-assisted", "A trusted helper is present."],
-      ["Demo observer", "Demo observer", "Synthetic walkthrough for review only."]
+      ["Patient self-filled", "我自己回答", "我自己看題目、自己選答案。"],
+      ["Family helped operate; patient answered", "家人幫忙操作，我自己回答", "家人幫忙按按鈕，但答案是我說的。"],
+      ["Family or helper-assisted", "家人依觀察協助回答", "長輩不方便時，由家人先依平常觀察補充。"]
     ]
   },
   {
     id: "concern",
-    label: "Concern",
-    title: "What is the main urinary concern?",
-    copy: "Choose the closest starting point. The clinician can revise it later.",
+    label: "主要問題",
+    title: "今天最想先說哪一個問題？",
+    copy: "選最接近的就好。若不完全符合，可以選其他，最後再補充。",
     type: "options",
     field: "chiefConcern",
     options: [
-      ["Frequency / nocturia / urgency", "Frequency / nocturia / urgency", "Going often, waking at night, or sudden hard-to-hold urge."],
-      ["Leakage", "Leakage", "Accidental urine leakage."],
-      ["Difficulty emptying or weak stream", "Difficulty emptying or weak stream", "Weak stream, trouble starting, or feeling urine remains."],
-      ["Pain, burning, or possible infection", "Pain, burning, or possible infection", "Discomfort when urinating or infection-related concern."],
-      ["Recurrent infection concern", "Recurrent infection concern", "Repeated urinary symptoms, visits, or antibiotics to discuss with the clinician."],
-      ["Visible blood or clots", "Visible blood or clots", "Blood or clots noticed in urine."],
-      ["Other urinary concern", "Other urinary concern", "Something else to explain."]
+      ["Frequency / nocturia / urgency", "尿很頻繁、晚上常起床、突然很急", "例如白天一直跑廁所、晚上起床尿尿、很難忍。"],
+      ["Leakage", "尿不小心漏出來", "例如來不及到廁所、咳嗽時漏尿、睡覺時漏尿。"],
+      ["Difficulty emptying or weak stream", "尿不太出來、尿流變弱", "例如尿流變細、需要用力、尿完覺得不乾淨。"],
+      ["Pain, burning, or possible infection", "尿尿會痛、刺痛或灼熱", "例如尿尿時不舒服，或伴隨發燒、發冷。"],
+      ["Recurrent infection concern", "反覆出現類似感染症狀", "例如反覆因類似症狀就醫、吃抗生素，想讓醫師知道過去狀況。"],
+      ["Visible blood or clots", "看到紅色或茶色尿、或血塊", "只問你看到的現象，不代表系統判斷原因。"],
+      ["Other urinary concern", "其他泌尿問題", "可以在最後用自己的話補充。"]
     ]
   },
   {
     id: "core",
-    label: "Core",
-    title: "Core previsit screen",
-    copy: "These questions stay patient-friendly and are used only to organize the clinician handoff.",
+    label: "基本狀況",
+    title: "先整理幾個基本狀況",
+    copy: "這些問題會幫你把狀況說得更有條理。不確定時請直接選不確定。",
     type: "fields",
     fields: [
       {
         field: "duration",
-        label: "How long has this been happening?",
+        label: "這個問題大約從什麼時候開始？",
         type: "select",
-        options: ["", "Today", "1 to 7 days", "1 to 4 weeks", "More than 1 month", "Not sure"]
+        options: [
+          ["Today", "今天"],
+          ["1 to 7 days", "1 到 7 天內"],
+          ["1 to 4 weeks", "1 到 4 週"],
+          ["More than 1 month", "超過 1 個月"],
+          ["Not sure", "很久但不確定"]
+        ]
       },
       {
         field: "botherScore",
-        label: "How bothersome is it? 0 means none, 10 means worst.",
+        label: "目前對生活造成多大困擾？",
         type: "select",
         options: BOTHER_OPTIONS
       },
       {
         field: "daytimeFrequencyChange",
-        label: "Are daytime bathroom trips noticeably more than before?",
+        label: "白天清醒時，尿尿次數有沒有明顯比以前多？",
         type: "select",
         options: YES_NO_UNSURE
       },
       {
         field: "nocturiaCount",
-        label: "How many times do you usually get up to urinate at night?",
+        label: "晚上睡著後，通常會起床尿尿幾次？",
         type: "select",
-        options: ["", "0 times", "1 time", "2 times", "3 or more times", "Not sure"]
+        options: [
+          ["0 times", "0 次"],
+          ["1 time", "1 次"],
+          ["2 times", "2 次"],
+          ["3 or more times", "3 次以上"],
+          ["Not sure", "不確定"]
+        ]
       },
       {
         field: "urgency",
-        label: "Do you suddenly feel it is hard to hold urine?",
+        label: "會不會突然很想尿，而且很難忍住？",
         type: "select",
         options: YES_NO_UNSURE
       },
       {
         field: "leakage",
-        label: "Have you leaked urine in the past 4 weeks?",
+        label: "最近 4 週，有沒有尿不小心漏出來？",
         type: "select",
         options: YES_NO_UNSURE
       },
       {
         field: "painBurning",
-        label: "Do you have pain or burning when urinating?",
+        label: "尿尿時會不會痛、刺痛或灼熱？",
         type: "select",
         options: YES_NO_UNSURE
       },
       {
         field: "visibleBlood",
-        label: "Have you seen blood or clots in urine?",
+        label: "有沒有看過尿液變紅、茶色，或看到血塊？",
         type: "select",
         options: YES_NO_UNSURE
       },
       {
         field: "unableToUrinate",
-        label: "Have you had trouble urinating or been unable to urinate?",
+        label: "有沒有很想尿，卻尿不太出來或完全尿不出來？",
         type: "select",
         options: YES_NO_UNSURE
       },
       {
         field: "currentlyUnableToUrinate",
-        label: "Is being unable to urinate happening now?",
+        label: "現在是否還有尿不出來的情況？",
         type: "select",
-        options: ["", "No", "Yes", "Not sure"],
+        options: YES_NO_UNSURE,
         when: (currentAnswers) => currentAnswers.unableToUrinate === "Yes"
       },
       {
         field: "systemicSymptoms",
-        label: "Do any of these apply now?",
+        label: "最近有沒有以下情況？",
         type: "checkboxes",
-        options: ["Fever", "Chills", "Side or back pain", "None of these", "Not sure"]
+        options: [
+          ["Fever", "發燒"],
+          ["Chills", "發冷"],
+          ["Side or back pain", "腰部兩側疼痛"],
+          ["None of these", "以上都沒有"],
+          ["Not sure", "不確定"]
+        ]
       },
       {
         field: "medicationListStatus",
-        label: "Can you provide your medication list today?",
+        label: "今天能不能提供目前正在吃的藥或藥單？",
         type: "select",
-        options: ["", "Can provide list", "Partial list only", "Not sure", "No regular medicines"]
+        options: [
+          ["Can provide list", "可以提供藥單、藥袋或照片"],
+          ["Partial list only", "只記得一部分"],
+          ["Not sure", "不清楚"],
+          ["No regular medicines", "沒有固定用藥"]
+        ]
       }
     ]
   },
   {
     id: "modules",
-    label: "Modules",
-    title: "Conditional follow-up",
-    copy: "Only modules suggested by the core answers are shown. Leave uncertain answers visible instead of guessing.",
+    label: "補問",
+    title: "根據前面答案，再補幾題",
+    copy: "系統只顯示和你目前狀況有關的問題，避免一次問太多。",
     type: "modules"
   },
   {
     id: "support",
-    label: "Support",
-    title: "Support needs and patient context",
-    copy: "These answers help staff decide whether self-filled or assisted intake is realistic.",
+    label: "協助",
+    title: "需要什麼協助？",
+    copy: "這些答案只用來安排溝通方式與補充資料，不會拿來評價你會不會用手機或電腦。",
     type: "fields",
     fields: [
       {
         field: "language",
-        label: "Preferred language",
+        label: "你比較習慣用哪種語言說明？",
         type: "select",
-        options: ["", "Mandarin", "Taiwanese", "Mandarin with Taiwanese preferred", "English", "Other"]
+        options: [
+          ["Mandarin", "國語"],
+          ["Taiwanese", "台語"],
+          ["Mandarin with Taiwanese preferred", "國語，可以搭配台語"],
+          ["English", "英文"],
+          ["Other", "其他"]
+        ]
       },
       {
         field: "deviceComfort",
-        label: "Phone or screen comfort",
+        label: "看螢幕或操作按鈕的狀況？",
         type: "select",
-        options: ["", "Comfortable", "Can use phone with help", "Needs large buttons", "Prefer staff help"]
+        options: [
+          ["Comfortable", "可以自己操作"],
+          ["Can use phone with help", "有人協助就可以"],
+          ["Needs large buttons", "需要大字或大按鈕"],
+          ["Prefer staff help", "希望到現場請人協助"]
+        ]
       },
       {
         field: "supportPreference",
-        label: "Support preference",
+        label: "如果還有不清楚的地方，你希望怎麼補充？",
         type: "select",
-        options: ["", "Self-filled", "Nurse-assisted mode", "Family-assisted mode", "Needs review before clinician enters"]
+        options: [
+          ["Self-filled", "我可以自己補"],
+          ["Family-assisted mode", "請家人協助補"],
+          ["Needs staff help", "到現場請人員協助"],
+          ["Prefer to talk in person", "我想直接到現場用說的"]
+        ]
       },
       {
         field: "notes",
-        label: "Optional patient context",
+        label: "還有什麼想先補充？可以留空。",
         type: "textarea",
-        placeholder: "Synthetic note for clinician review"
+        placeholder: "例如：我最擔心晚上一直醒來，或不好意思在現場說漏尿的事。"
       }
     ]
   },
   {
     id: "repair",
-    label: "Repair",
-    title: "Repair missing information",
-    copy: "Missing fields stay visible. Answer what is available, or leave the gap for clinician review.",
+    label: "補一下",
+    title: "還有幾個地方可以補一下",
+    copy: "系統會自動找出目前還缺的重點。能補就補，不確定也可以選不確定。",
     type: "repair"
   },
   {
     id: "review",
-    label: "Review",
-    title: "Review before handoff",
-    copy: "Patient, helper, or staff can catch unclear answers before the clinician summary is used.",
+    label: "確認",
+    title: "確認要交給門診團隊的內容",
+    copy: "請確認這些內容是否符合你的意思；如果有選錯，可以回上一題修改。",
     type: "review"
   }
 ];
@@ -277,92 +476,141 @@ const STEPS = [
 const MODULES = [
   {
     id: "storage",
-    title: "Frequency / nocturia / urgency module",
-    copy: "Clarifies storage-symptom pattern without asking the patient to interpret a diagnosis.",
+    title: "尿很頻繁、夜尿或急尿",
+    copy: "只補充大概頻率與是否方便記錄，不要求精準計算。",
     fields: [
       {
         field: "daytimeFrequencyCount",
-        label: "About how many times do you urinate during the day?",
+        label: "白天清醒時，大約尿尿幾次？",
         type: "select",
-        options: ["", "1 to 4 times", "5 to 8 times", "9 to 12 times", "More than 12 times", "Not sure"]
+        options: [
+          ["1 to 4 times", "1 到 4 次"],
+          ["5 to 8 times", "5 到 8 次"],
+          ["9 to 12 times", "9 到 12 次"],
+          ["More than 12 times", "超過 12 次"],
+          ["Not sure", "不確定"]
+        ]
       },
       {
         field: "urgencyFrequency",
-        label: "How often do sudden hard-to-hold urges happen?",
+        label: "突然很急、很難忍住的情況大約多常發生？",
         type: "select",
-        options: ["", "Rarely", "Some days", "Most days", "Several times a day", "Not sure"]
+        options: [
+          ["Rarely", "很少"],
+          ["Some days", "有些天會"],
+          ["Most days", "大多數日子會"],
+          ["Several times a day", "一天好幾次"],
+          ["Not sure", "不確定"]
+        ]
       },
       {
         field: "fluidCaffeineContext",
-        label: "Which context may matter?",
+        label: "下面哪些情況可能有關？",
         type: "checkboxes",
-        options: ["Caffeinated drinks most days", "Drinks a lot near bedtime", "Night shift or poor sleep", "None of these", "Not sure"]
+        options: [
+          ["Caffeinated drinks most days", "常喝咖啡、茶或含咖啡因飲料"],
+          ["Drinks a lot near bedtime", "睡前常喝比較多水"],
+          ["Night shift or poor sleep", "作息不固定或睡不好"],
+          ["None of these", "以上都沒有"],
+          ["Not sure", "不確定"]
+        ]
       },
       {
         field: "bladderDiaryFeasible",
-        label: "Could you complete a simple bladder diary if staff explains it?",
+        label: "如果需要，你是否方便記錄幾天尿尿時間、尿量或喝水？",
         type: "select",
-        options: ["", "Yes", "Yes, with written instructions", "Only with staff or family help", "No", "Not sure"]
+        options: [
+          ["Yes", "可以"],
+          ["Yes, with written instructions", "可以，但需要清楚說明"],
+          ["Only with staff or family help", "需要家人或現場人員協助"],
+          ["No", "不方便"],
+          ["Not sure", "不確定"]
+        ]
       }
     ]
   },
   {
     id: "leakage",
-    title: "Leakage module",
-    copy: "Captures frequency, amount, triggers, and containment needs in patient language.",
+    title: "尿不小心漏出來",
+    copy: "用比較不尷尬的方式描述頻率、量和發生情境。",
     fields: [
       {
         field: "leakageFrequency",
-        label: "How often does leakage happen?",
+        label: "最近 4 週，漏尿大約多常發生？",
         type: "select",
-        options: ["", "Less than once a week", "Weekly", "Daily", "Several times a day", "Not sure"]
+        options: [
+          ["Less than once a week", "少於每週一次"],
+          ["Weekly", "每週會發生"],
+          ["Daily", "每天會發生"],
+          ["Several times a day", "一天好幾次"],
+          ["Not sure", "不確定"]
+        ]
       },
       {
         field: "leakageAmount",
-        label: "How much urine usually leaks?",
+        label: "通常漏出來的量大約是多少？",
         type: "select",
-        options: ["", "A few drops", "Small amount", "Moderate amount", "Large amount", "Not sure"]
+        options: [
+          ["A few drops", "幾滴"],
+          ["Small amount", "少量"],
+          ["Moderate amount", "會濕內褲或護墊"],
+          ["Large amount", "量較多或需要更換衣物"],
+          ["Not sure", "不確定"]
+        ]
       },
       {
         field: "leakageTriggers",
-        label: "When does leakage tend to happen?",
+        label: "什麼情況比較容易漏尿？",
         type: "checkboxes",
-        options: ["Before reaching toilet", "Coughing, laughing, or exercise", "During sleep", "Without warning", "Not sure"]
+        options: [
+          ["Before reaching toilet", "來不及到廁所"],
+          ["Coughing, laughing, or exercise", "咳嗽、笑、運動或搬重物時"],
+          ["During sleep", "睡覺時"],
+          ["Without warning", "沒有明顯原因"],
+          ["Not sure", "不確定"]
+        ]
       },
       {
         field: "containmentProducts",
-        label: "Do you use pads, diapers, or other products?",
+        label: "目前有沒有使用護墊、尿布或其他用品？",
         type: "select",
-        options: ["", "No products used", "Pads or liners", "Adult diapers", "Other product", "Prefer not to answer", "Not sure"]
+        options: [
+          ["No products used", "沒有使用"],
+          ["Pads or liners", "護墊或襯墊"],
+          ["Adult diapers", "成人紙尿褲"],
+          ["Other product", "其他用品"],
+          ["Prefer not to answer", "暫時不想回答"],
+          ["Not sure", "不確定"]
+        ]
       }
     ]
   },
   {
     id: "voiding",
-    title: "Voiding / emptying module",
-    copy: "Uses plain symptom words for weak stream, straining, and incomplete emptying.",
+    title: "尿不太出來、尿流變弱",
+    copy: "只問你感覺到的狀況，不要求你判斷原因。",
     fields: [
       {
         field: "weakStream",
-        label: "Is the urine stream weak?",
+        label: "尿流有沒有變細或變弱？",
         type: "select",
         options: YES_NO_UNSURE
       },
       {
         field: "straining",
-        label: "Do you need to push or strain to urinate?",
+        label: "尿尿時是否常需要用力才尿得出來？",
         type: "select",
         options: YES_NO_UNSURE
       },
       {
         field: "intermittency",
-        label: "Does the stream stop and start?",
+        label: "尿尿時會不會斷斷續續？",
         type: "select",
         options: YES_NO_UNSURE
       },
       {
         field: "incompleteEmptying",
-        label: "Do you feel urine remains after finishing?",
+        label: "尿完後，會不會常覺得還沒尿乾淨？",
         type: "select",
         options: YES_NO_UNSURE
       }
@@ -370,77 +618,112 @@ const MODULES = [
   },
   {
     id: "hematuria",
-    title: "Visible blood / clots module",
-    copy: "Records what the patient saw without assigning cause or risk level.",
+    title: "看到紅色或茶色尿、或血塊",
+    copy: "只記錄你看到的現象，不判斷原因。",
     fields: [
       {
         field: "hematuriaPattern",
-        label: "How often have you seen blood or clots?",
+        label: "看到紅色或茶色尿是一次、反覆，還是最近幾乎每次都有？",
         type: "select",
-        options: ["", "One time", "More than once", "Every time recently", "Not sure"]
+        options: [
+          ["One time", "一次"],
+          ["More than once", "不只一次"],
+          ["Every time recently", "最近幾乎每次都有"],
+          ["Not sure", "不確定"]
+        ]
       },
       {
         field: "bloodClots",
-        label: "Did you see clots?",
+        label: "有沒有看到像血塊的東西？",
         type: "select",
         options: YES_NO_UNSURE
       },
       {
         field: "hematuriaCoSymptoms",
-        label: "What happened around the same time?",
+        label: "同時有沒有下面情況？",
         type: "checkboxes",
-        options: ["Pain or burning", "Fever or chills", "Side or back pain", "None of these", "Not sure"]
+        options: [
+          ["Pain or burning", "疼痛或灼熱"],
+          ["Fever or chills", "發燒或發冷"],
+          ["Side or back pain", "腰部兩側痛"],
+          ["None of these", "以上都沒有"],
+          ["Not sure", "不確定"]
+        ]
       }
     ]
   },
   {
     id: "pain",
-    title: "Pain / infection-related module",
-    copy: "Supports clinician review of pain and recent episode history while avoiding diagnosis.",
+    title: "疼痛、灼熱或發燒相關",
+    copy: "整理不舒服的時間與過去類似情況，不做疾病判斷。",
     fields: [
       {
         field: "painFrequency",
-        label: "When does pain or burning happen?",
+        label: "疼痛或灼熱通常什麼時候發生？",
         type: "select",
-        options: ["", "Only while urinating", "After urinating", "Most of the day", "Comes and goes", "Not sure"]
+        options: [
+          ["Only while urinating", "尿尿時"],
+          ["After urinating", "尿完後"],
+          ["Most of the day", "一天中大多時間"],
+          ["Comes and goes", "有時有、有時沒有"],
+          ["Not sure", "不確定"]
+        ]
       },
       {
         field: "infectionEpisodeHistory",
-        label: "In the past 12 months, have you had urinary infection episodes or antibiotics?",
+        label: "過去 12 個月，有沒有因類似尿痛、頻尿或急尿就醫或吃抗生素？",
         type: "select",
-        options: ["", "No", "Yes, once", "Yes, more than once", "Not sure"]
+        options: [
+          ["No", "沒有"],
+          ["Yes, once", "有，1 次"],
+          ["Yes, more than once", "有，超過 1 次"],
+          ["Not sure", "不確定"]
+        ]
       },
       {
         field: "flankPainScore",
-        label: "If side or back pain is present, how strong is it?",
+        label: "如果有腰部兩側疼痛，大約幾分？",
         type: "select",
-        options: ["", "0", "1 to 3", "4 to 6", "7 to 10", "Not sure"],
+        options: [
+          ["0", "0 不痛"],
+          ["1 to 3", "1 到 3 分"],
+          ["4 to 6", "4 到 6 分"],
+          ["7 to 10", "7 到 10 分"],
+          ["Not sure", "不確定"]
+        ],
         when: (currentAnswers) => Array.isArray(currentAnswers.systemicSymptoms) && currentAnswers.systemicSymptoms.includes("Side or back pain")
       }
     ]
   },
   {
     id: "medication",
-    title: "Medication / context module",
-    copy: "Shows what staff may need to review, without asking the patient to classify medicines medically.",
+    title: "用藥與身體背景",
+    copy: "不需要背藥名；能提供藥袋、藥單或照片就很好。",
     fields: [
       {
         field: "medicationAssist",
-        label: "Would staff help be useful for medication review?",
+        label: "是否需要現場人員協助確認藥袋、藥單或藥物照片？",
         type: "select",
-        options: ["", "Yes", "No", "Not sure"]
+        options: YES_NO_UNSURE
       },
       {
         field: "relevantComorbidities",
-        label: "Have you been told you have any of these?",
+        label: "是否曾被告知有下面狀況？",
         type: "checkboxes",
-        options: ["Diabetes", "Kidney disease", "Neurologic disease", "Spinal cord problem", "None of these", "Not sure"]
+        options: [
+          ["Diabetes", "糖尿病"],
+          ["Kidney disease", "腎臟病"],
+          ["Neurologic disease", "神經系統疾病"],
+          ["Spinal cord problem", "脊髓相關問題"],
+          ["None of these", "以上都沒有"],
+          ["Not sure", "不確定"]
+        ]
       },
       {
         field: "diureticAnticoagulantAwareness",
-        label: "Do you know if you take a water pill or blood thinner?",
+        label: "你是否知道自己有沒有吃利尿藥或抗凝血藥？",
         type: "select",
-        options: ["", "Yes", "No", "Not sure"]
+        options: YES_NO_UNSURE
       }
     ]
   }
@@ -450,35 +733,86 @@ const SCENARIOS = SYNTHETIC_CASES;
 
 let currentStep = 0;
 let activeScenario = "";
-let answers = emptyAnswers();
+let answers = restoreAnswers() || emptyAnswers();
 
 const mount = document.querySelector("#stepMount");
-const summaryMount = document.querySelector("#summaryMount");
 const progressBar = document.querySelector("#progressBar");
 const progressText = document.querySelector("#progressText");
 const stepNav = document.querySelector("#stepNav");
 const scenarioMount = document.querySelector("#scenarioMount");
 const readinessLabel = document.querySelector("#readinessLabel");
-const readinessMeter = document.querySelector("#readinessMeter");
 const missingCount = document.querySelector("#missingCount");
 const backButton = document.querySelector("#backButton");
 const nextButton = document.querySelector("#nextButton");
 const loadSample = document.querySelector("#loadSample");
 const resetDemo = document.querySelector("#resetDemo");
-const printSummary = document.querySelector("#printSummary");
-const copySummary = document.querySelector("#copySummary");
+const largeTextToggle = document.querySelector("#largeTextToggle");
+const contrastToggle = document.querySelector("#contrastToggle");
+const readStepButton = document.querySelector("#readStepButton");
 const toast = document.querySelector("#toast");
 
+let uiPrefs = restoreUiPrefs();
+
 function emptyAnswers() {
-  return Object.fromEntries(ANSWER_FIELDS.map((field) => [field, ARRAY_FIELDS.has(field) ? [] : ""]));
+  return Object.assign(
+    Object.fromEntries(ANSWER_FIELDS.map((field) => [field, ARRAY_FIELDS.has(field) ? [] : ""])),
+    { sourceByField: {} }
+  );
 }
 
 function normalizeAnswers(source) {
   const base = emptyAnswers();
   Object.entries(source || {}).forEach(([field, value]) => {
-    base[field] = ARRAY_FIELDS.has(field) ? (Array.isArray(value) ? value.slice() : []) : value;
+    if (field === "sourceByField" && value && typeof value === "object" && !Array.isArray(value)) {
+      base.sourceByField = Object.assign({}, value);
+      return;
+    }
+    if (ANSWER_FIELDS.includes(field)) {
+      base[field] = ARRAY_FIELDS.has(field) ? (Array.isArray(value) ? value.slice() : []) : value;
+    }
   });
   return base;
+}
+
+function restoreAnswers() {
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    return stored ? normalizeAnswers(JSON.parse(stored)) : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function restoreUiPrefs() {
+  try {
+    const stored = window.localStorage.getItem(UI_PREFS_KEY);
+    return Object.assign({ largeText: false, highContrast: false }, stored ? JSON.parse(stored) : {});
+  } catch (error) {
+    return { largeText: false, highContrast: false };
+  }
+}
+
+function persistUiPrefs() {
+  try {
+    window.localStorage.setItem(UI_PREFS_KEY, JSON.stringify(uiPrefs));
+  } catch (error) {
+    // Display preferences are optional; controls still work in the current page session.
+  }
+}
+
+function applyUiPrefs() {
+  document.documentElement.classList.toggle("large-text", Boolean(uiPrefs.largeText));
+  document.documentElement.classList.toggle("high-contrast", Boolean(uiPrefs.highContrast));
+  if (largeTextToggle) largeTextToggle.setAttribute("aria-pressed", uiPrefs.largeText ? "true" : "false");
+  if (contrastToggle) contrastToggle.setAttribute("aria-pressed", uiPrefs.highContrast ? "true" : "false");
+}
+
+function persistAnswers() {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(answers));
+  } catch (error) {
+    // Local storage may be unavailable in a locked-down browser; the demo still works in memory.
+  }
 }
 
 function escapeHtml(value) {
@@ -490,8 +824,50 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+function optionSpec(option) {
+  if (Array.isArray(option)) {
+    return { value: option[0], label: option[1] || option[0], detail: option[2] || "" };
+  }
+  if (option && typeof option === "object") {
+    return { value: option.value, label: option.label || option.value, detail: option.detail || "" };
+  }
+  return { value: option, label: VALUE_LABELS[option] || option, detail: "" };
+}
+
+function displayAnswer(value) {
+  if (Array.isArray(value)) {
+    const display = value.map((item) => displayAnswer(item)).filter((item) => item !== "尚未填寫");
+    return display.length ? display.join("、") : "尚未填寫";
+  }
+  if (!value) return "尚未填寫";
+  return VALUE_LABELS[value] || value;
+}
+
 function listAnswer(field) {
   return Array.isArray(answers[field]) ? answers[field] : [];
+}
+
+function hasFieldValue(field) {
+  const value = answers[field];
+  if (Array.isArray(value)) return value.length > 0;
+  return Boolean(value);
+}
+
+function sourceFromMode(mode) {
+  if (mode === "Patient self-filled") return "patient_self";
+  if (mode === "Family helped operate; patient answered") return "patient_with_family_operator";
+  if (mode === "Family or helper-assisted") return "family_observation";
+  return "unknown";
+}
+
+function sourceForField(field) {
+  if (answers.sourceByField && answers.sourceByField[field]) return answers.sourceByField[field];
+  if (field === "filledBy" && answers.filledBy) return "declared_on_entry";
+  return hasFieldValue(field) ? sourceFromMode(answers.filledBy) : "unknown";
+}
+
+function sourceLabel(field) {
+  return SOURCE_LABELS[sourceForField(field)] || SOURCE_LABELS.unknown;
 }
 
 function visibleFields(fields) {
@@ -503,7 +879,25 @@ function missingEntries() {
 }
 
 function setAnswer(field, value) {
-  answers = Object.assign({}, answers, { [field]: ARRAY_FIELDS.has(field) ? value.slice() : value });
+  const sourceByField = Object.assign({}, answers.sourceByField);
+  const nextValue = ARRAY_FIELDS.has(field) ? value.slice() : value;
+  if (field === "filledBy") {
+    sourceByField.filledBy = "declared_on_entry";
+    ANSWER_FIELDS.forEach((answerField) => {
+      if (answerField !== "filledBy" && hasFieldValue(answerField)) {
+        sourceByField[answerField] = sourceFromMode(nextValue);
+      }
+    });
+  } else if (Array.isArray(nextValue) ? nextValue.length : nextValue) {
+    sourceByField[field] = sourceFromMode(answers.filledBy);
+  } else {
+    delete sourceByField[field];
+  }
+  answers = Object.assign({}, answers, {
+    [field]: nextValue,
+    sourceByField
+  });
+  persistAnswers();
   render();
 }
 
@@ -524,9 +918,10 @@ function loadScenario(scenarioId) {
   const scenario = SCENARIOS.find((item) => item.id === scenarioId) || SCENARIOS[0];
   activeScenario = scenario.id;
   answers = normalizeAnswers(scenario.answers);
+  persistAnswers();
   currentStep = STEPS.length - 1;
   render();
-  showToast(`Loaded synthetic case: ${scenario.label}`);
+  showToast(`已載入示範：${scenario.shortLabel || scenario.label}`);
 }
 
 function renderScenarios() {
@@ -555,20 +950,33 @@ function renderStepNav() {
   }).join("");
 }
 
+function renderSourceNotice() {
+  if (!/family|helper/i.test(answers.filledBy)) return "";
+  return `
+    <div class="source-notice" role="note">
+      <strong>家人協助模式已標記</strong>
+      <span>疼痛、急尿、困擾程度這類「本人感受」，建議盡量由長輩本人說；家人可以補充平常觀察到的事。</span>
+    </div>
+  `;
+}
+
 function renderOptions(step) {
   return `
     <div class="option-grid" role="group" aria-label="${escapeHtml(step.title)}">
-      ${step.options.map(([value, label, detail]) => `
-        <button
-          class="option-button"
-          type="button"
-          data-option-field="${escapeHtml(step.field)}"
-          data-option-value="${escapeHtml(value)}"
-          aria-pressed="${answers[step.field] === value ? "true" : "false"}">
-          <strong>${escapeHtml(label)}</strong>
-          <span>${escapeHtml(detail)}</span>
-        </button>
-      `).join("")}
+      ${step.options.map((option) => {
+        const item = optionSpec(option);
+        return `
+          <button
+            class="option-button"
+            type="button"
+            data-option-field="${escapeHtml(step.field)}"
+            data-option-value="${escapeHtml(item.value)}"
+            aria-pressed="${answers[step.field] === item.value ? "true" : "false"}">
+            <strong>${escapeHtml(item.label)}</strong>
+            <span>${escapeHtml(item.detail)}</span>
+          </button>
+        `;
+      }).join("")}
     </div>
   `;
 }
@@ -589,16 +997,19 @@ function renderField(field) {
       <fieldset class="field wide-field checkbox-field">
         <legend>${escapeHtml(field.label)}</legend>
         <div class="checkbox-grid">
-          ${field.options.map((option) => `
-            <label class="checkbox-option">
-              <input
-                type="checkbox"
-                data-checkbox-field="${escapeHtml(field.field)}"
-                data-checkbox-value="${escapeHtml(option)}"
-                ${current.includes(option) ? "checked" : ""}>
-              <span>${escapeHtml(option)}</span>
-            </label>
-          `).join("")}
+          ${field.options.map((option) => {
+            const item = optionSpec(option);
+            return `
+              <label class="checkbox-option">
+                <input
+                  type="checkbox"
+                  data-checkbox-field="${escapeHtml(field.field)}"
+                  data-checkbox-value="${escapeHtml(item.value)}"
+                  ${current.includes(item.value) ? "checked" : ""}>
+                <span>${escapeHtml(item.label)}</span>
+              </label>
+            `;
+          }).join("")}
         </div>
       </fieldset>
     `;
@@ -608,11 +1019,15 @@ function renderField(field) {
     <div class="field">
       <label for="${escapeHtml(field.field)}">${escapeHtml(field.label)}</label>
       <select id="${escapeHtml(field.field)}" data-field="${escapeHtml(field.field)}">
-        ${field.options.map((option) => `
-          <option value="${escapeHtml(option)}" ${answers[field.field] === option ? "selected" : ""}>
-            ${option ? escapeHtml(option) : "Choose one"}
-          </option>
-        `).join("")}
+        <option value="" ${answers[field.field] ? "" : "selected"}>請選擇</option>
+        ${field.options.map((option) => {
+          const item = optionSpec(option);
+          return `
+            <option value="${escapeHtml(item.value)}" ${answers[field.field] === item.value ? "selected" : ""}>
+              ${escapeHtml(item.label)}
+            </option>
+          `;
+        }).join("")}
       </select>
     </div>
   `;
@@ -633,8 +1048,8 @@ function renderModules() {
   if (!activeDefinitions.length) {
     return `
       <div class="empty-state">
-        <h4>No conditional module is active yet.</h4>
-        <p>Complete the core screen, or leave this section empty if the concern does not need module follow-up.</p>
+        <h4>目前沒有需要追加的問題</h4>
+        <p>先完成前面的基本狀況即可；如果還有想說的事，最後可以用自己的話補充。</p>
       </div>
     `;
   }
@@ -661,51 +1076,113 @@ function renderRepair() {
   if (!missing.length) {
     return `
       <div class="empty-state">
-        <h4>No missing MVP fields.</h4>
-        <p>The summary is ready for clinician review, with the safety boundary still visible.</p>
+        <h4>目前沒有必補項目</h4>
+        <p>可以到最後一步確認內容；若想補充其他事，也可以回到「協助」那一步填寫。</p>
       </div>
     `;
   }
 
   return `
-    <div class="repair-list">
-      ${missing.map(([field, label]) => `
-        <button class="repair-item" type="button" data-go-step="${FIELD_TO_STEP[field] || 0}">
-          <span>Missing</span>
-          <strong>${escapeHtml(label)}</strong>
-          <small>Go to ${escapeHtml(STEPS[FIELD_TO_STEP[field] || 0].label)}</small>
-        </button>
-      `).join("")}
+    <div class="repair-list patient-repair-list">
+      ${missing.map(([field, label]) => {
+        const prompt = PATIENT_MISSING_PROMPTS[field] || [label, "這是目前還缺的重點資訊。"];
+        return `
+          <button class="repair-item" type="button" data-go-step="${FIELD_TO_STEP[field] || 0}">
+            <span>可以補一下</span>
+            <strong>${escapeHtml(prompt[0])}</strong>
+            <small>${escapeHtml(prompt[1])}</small>
+          </button>
+        `;
+      }).join("")}
     </div>
   `;
 }
 
-function renderReview() {
-  const summary = buildClinicianSummary(answers);
+function symptomHighlights() {
   const rows = [
-    ["Completion source", summary.intakeMode],
-    ["Chief concern", summary.chiefConcern],
-    ["Active modules", summary.activeModules.join(", ")],
-    ["Duration / bother", summary.durationBother],
-    ["Patient-reported pattern", summary.symptomPattern],
-    ["Medication/context", summary.medicines],
-    ["Nurse cues", summary.nurseCues.join("; ")],
-    ["Support needs", summary.patientConstraints.join("; ")],
-    ["Patient note", summary.patientNote]
+    ["daytimeFrequencyChange", "白天尿尿次數", answers.daytimeFrequencyChange],
+    ["nocturiaCount", "夜間起床尿尿", answers.nocturiaCount],
+    ["urgency", "突然急尿", answers.urgency],
+    ["leakage", "漏尿", answers.leakage],
+    ["painBurning", "尿痛或灼熱", answers.painBurning],
+    ["visibleBlood", "紅色/茶色尿或血塊", answers.visibleBlood],
+    ["unableToUrinate", "尿不太出來", answers.unableToUrinate],
+    ["systemicSymptoms", "發燒、發冷或腰側痛", answers.systemicSymptoms]
   ];
+  return rows
+    .filter(([, , value]) => Array.isArray(value) ? value.length : value)
+    .map(([field, label, value]) => [field, label, displayAnswer(value)]);
+}
+
+function activeModuleLabels() {
+  const modules = activeModules(answers);
+  return Object.entries(modules)
+    .filter(([, active]) => active)
+    .map(([module]) => MODULE_LABELS[module] || module);
+}
+
+function renderReview() {
+  const missing = missingEntries();
+  const modules = activeModuleLabels();
+  const highlights = symptomHighlights();
   return `
-    <div class="handoff-note">
-      <strong>${escapeHtml(summary.completionStatus.label)}</strong>
-      <span>${escapeHtml(summary.handoffNote)}</span>
-    </div>
-    <dl class="review-grid">
-      ${rows.map(([label, value]) => `
-        <div class="review-row">
-          <dt>${escapeHtml(label)}</dt>
-          <dd>${escapeHtml(value)}</dd>
+    <div class="patient-confirmation">
+      <section class="confirmation-block">
+        <h3>你剛剛整理的重點</h3>
+        <dl class="review-grid">
+          <div class="review-row">
+            <dt>資料來源</dt>
+            <dd>${escapeHtml(displayAnswer(answers.filledBy))}</dd>
+          </div>
+          <div class="review-row">
+            <dt>今天最想先說</dt>
+            <dd>${escapeHtml(displayAnswer(answers.chiefConcern))}</dd>
+          </div>
+          <div class="review-row">
+            <dt>大約多久 / 困擾程度</dt>
+            <dd>${escapeHtml(displayAnswer(answers.duration))} / ${escapeHtml(displayAnswer(answers.botherScore))}</dd>
+          </div>
+          <div class="review-row">
+            <dt>系統有追加整理的部分</dt>
+            <dd>${escapeHtml(modules.length ? modules.join("、") : "目前沒有追加題")}</dd>
+          </div>
+          <div class="review-row">
+            <dt>用藥資料</dt>
+            <dd>${escapeHtml(displayAnswer(answers.medicationListStatus))}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="confirmation-block">
+        <h3>症狀回答確認</h3>
+        <div class="answer-pills">
+          ${highlights.map(([field, label, value]) => `
+            <span>
+              <strong>${escapeHtml(label)}</strong>
+              ${escapeHtml(value)}
+              <small>${escapeHtml(sourceLabel(field))}</small>
+            </span>
+          `).join("") || "<p>尚未填寫症狀回答。</p>"}
         </div>
-      `).join("")}
-    </dl>
+      </section>
+
+      <section class="confirmation-block">
+        <h3>還可以補充的地方</h3>
+        ${missing.length ? `
+          <ul class="missing-list">
+            ${missing.map(([field, label]) => {
+              const prompt = PATIENT_MISSING_PROMPTS[field] || [label, "這是目前還缺的重點資訊。"];
+              return `<li>${escapeHtml(prompt[0])}</li>`;
+            }).join("")}
+          </ul>
+        ` : "<p>目前沒有必補項目。你仍可回前面修改或補充。</p>"}
+      </section>
+
+      <section class="confirmation-block reassurance">
+        <h3>送出前提醒</h3>
+        <p>這份整理只幫你把話說清楚，不會替你判斷疾病，也不會給治療建議。若有不好意思或不確定的地方，可以到現場再說。</p>
+      </section>
+    </div>
   `;
 }
 
@@ -714,103 +1191,82 @@ function renderStep() {
   let body = "";
   if (step.type === "options") body = renderOptions(step);
   if (step.type === "fields") body = renderFields(step);
-  if (step.type === "modules") body = renderModules(step);
-  if (step.type === "repair") body = renderRepair(step);
+  if (step.type === "modules") body = renderModules();
+  if (step.type === "repair") body = renderRepair();
   if (step.type === "review") body = renderReview();
 
   mount.innerHTML = `
     <section class="step-panel" aria-labelledby="step-title">
-      <div class="step-kicker">Step ${currentStep + 1} of ${STEPS.length}</div>
+      <div class="step-kicker">第 ${currentStep + 1} 步，共 ${STEPS.length} 步</div>
       <h2 id="step-title">${escapeHtml(step.title)}</h2>
       <p class="step-copy">${escapeHtml(step.copy)}</p>
+      ${renderSourceNotice()}
       ${body}
     </section>
   `;
 }
 
-function renderSummary() {
-  const summary = buildClinicianSummary(answers);
-  summaryMount.innerHTML = `
-    <section class="summary-section">
-      <h3>Safety boundary</h3>
-      <ul class="notice-list">
-        ${summary.safetyNotice.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ul>
-    </section>
-    <section class="summary-section">
-      <h3>Patient-provided context</h3>
-      <dl class="summary-list">
-        <div class="summary-row">
-          <dt>Completion source</dt>
-          <dd>${escapeHtml(summary.intakeMode)}</dd>
-        </div>
-        <div class="summary-row">
-          <dt>Chief concern</dt>
-          <dd>${escapeHtml(summary.chiefConcern)}</dd>
-        </div>
-        <div class="summary-row">
-          <dt>Active modules</dt>
-          <dd>${escapeHtml(summary.activeModules.join(", "))}</dd>
-        </div>
-        <div class="summary-row">
-          <dt>Duration / bother</dt>
-          <dd>${escapeHtml(summary.durationBother)}</dd>
-        </div>
-        <div class="summary-row">
-          <dt>Patient-reported pattern</dt>
-          <dd>${escapeHtml(summary.symptomPattern)}</dd>
-        </div>
-      </dl>
-    </section>
-    <section class="summary-section">
-      <h3>Priority review statements</h3>
-      <ul class="flag-list">
-        ${summary.clinicianReviewFlags.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ul>
-    </section>
-    <section class="summary-section">
-      <h3>Nurse workflow cues</h3>
-      <ul class="support-list">
-        ${summary.nurseCues.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ul>
-    </section>
-    <section class="summary-section">
-      <h3>Missing information</h3>
-      <ul class="missing-list">
-        ${summary.missingInformation.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ul>
-    </section>
-    <section class="summary-section">
-      <h3>Support needs</h3>
-      <ul class="support-list">
-        ${summary.patientConstraints.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ul>
-    </section>
-  `;
+function currentStepText() {
+  const step = STEPS[currentStep];
+  const parts = [`第 ${currentStep + 1} 步，共 ${STEPS.length} 步。`, step.title, step.copy];
+  if (step.type === "options") {
+    parts.push("可選項目：" + step.options.map((option) => optionSpec(option).label).join("、"));
+  }
+  if (step.type === "fields") {
+    parts.push("本頁題目：" + visibleFields(step.fields).map((field) => field.label).join("、"));
+  }
+  if (step.type === "modules") {
+    const modules = activeModules(answers);
+    const activeDefinitions = MODULES.filter((module) => modules[module.id]);
+    parts.push(activeDefinitions.length
+      ? "本頁會補問：" + activeDefinitions.map((module) => module.title).join("、")
+      : "目前沒有需要追加的問題。");
+  }
+  if (step.type === "repair") {
+    const missing = missingEntries();
+    parts.push(missing.length
+      ? "目前還可以補充：" + missing.map(([field, label]) => (PATIENT_MISSING_PROMPTS[field] || [label])[0]).join("、")
+      : "目前沒有必補項目。");
+  }
+  if (step.type === "review") {
+    parts.push("這一頁是送出前確認，可以回上一題修改。");
+  }
+  return parts.filter(Boolean).join(" ");
+}
+
+function readCurrentStep() {
+  if (!("speechSynthesis" in window) || typeof SpeechSynthesisUtterance === "undefined") {
+    showToast("這個瀏覽器不支援朗讀。");
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(currentStepText());
+  utterance.lang = "zh-TW";
+  utterance.rate = 0.88;
+  window.speechSynthesis.speak(utterance);
+  showToast("正在朗讀目前題目。");
 }
 
 function renderReadiness() {
   const status = completionStatus(answers);
-  const percentage = status.total ? Math.round((status.completed / status.total) * 100) : 0;
-  readinessLabel.textContent = status.label;
-  readinessMeter.style.width = `${percentage}%`;
-  readinessMeter.dataset.tone = status.tone;
+  readinessLabel.textContent = status.missingCount
+    ? "還有重點可補充"
+    : "可以進行最後確認";
   missingCount.textContent = String(status.missingCount);
 }
 
 function renderProgress() {
   const width = ((currentStep + 1) / STEPS.length) * 100;
   progressBar.style.width = `${width}%`;
-  progressText.textContent = `Step ${currentStep + 1} of ${STEPS.length}`;
+  progressText.textContent = `第 ${currentStep + 1} 步，共 ${STEPS.length} 步`;
   backButton.disabled = currentStep === 0;
-  nextButton.textContent = currentStep === STEPS.length - 1 ? "Back to first step" : "Next";
+  nextButton.textContent = currentStep === STEPS.length - 1 ? "回到第一步" : "下一步";
 }
 
 function render() {
   renderScenarios();
   renderStepNav();
   renderStep();
-  renderSummary();
   renderReadiness();
   renderProgress();
 }
@@ -854,9 +1310,17 @@ mount.addEventListener("change", (event) => {
 mount.addEventListener("input", (event) => {
   const field = event.target.closest("textarea[data-field]");
   if (!field) return;
-  answers = Object.assign({}, answers, { [field.dataset.field]: field.value });
-  renderSummary();
-  renderReadiness();
+  const sourceByField = Object.assign({}, answers.sourceByField);
+  if (field.value) {
+    sourceByField[field.dataset.field] = sourceFromMode(answers.filledBy);
+  } else {
+    delete sourceByField[field.dataset.field];
+  }
+  answers = Object.assign({}, answers, {
+    [field.dataset.field]: field.value,
+    sourceByField
+  });
+  persistAnswers();
 });
 
 stepNav.addEventListener("click", (event) => {
@@ -889,35 +1353,30 @@ loadSample.addEventListener("click", () => {
 resetDemo.addEventListener("click", () => {
   activeScenario = "";
   answers = emptyAnswers();
+  persistAnswers();
   currentStep = 0;
   render();
-  showToast("Reset synthetic intake.");
+  showToast("已重新開始。");
 });
 
-printSummary.addEventListener("click", () => {
-  window.print();
+largeTextToggle.addEventListener("click", () => {
+  uiPrefs = Object.assign({}, uiPrefs, { largeText: !uiPrefs.largeText });
+  persistUiPrefs();
+  applyUiPrefs();
+  showToast(uiPrefs.largeText ? "已切換為大字。" : "已回到一般字級。");
 });
 
-copySummary.addEventListener("click", async () => {
-  const text = summaryToText(buildClinicianSummary(answers));
-  try {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      await navigator.clipboard.writeText(text);
-    } else {
-      const textarea = document.createElement("textarea");
-      textarea.value = text;
-      textarea.setAttribute("readonly", "");
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textarea);
-    }
-    showToast("Synthetic summary copied.");
-  } catch (error) {
-    showToast("Copy failed. Use print instead.");
-  }
+contrastToggle.addEventListener("click", () => {
+  uiPrefs = Object.assign({}, uiPrefs, { highContrast: !uiPrefs.highContrast });
+  persistUiPrefs();
+  applyUiPrefs();
+  showToast(uiPrefs.highContrast ? "已切換為高對比。" : "已回到一般對比。");
 });
 
+readStepButton.addEventListener("click", () => {
+  readCurrentStep();
+});
+
+applyUiPrefs();
+persistAnswers();
 render();

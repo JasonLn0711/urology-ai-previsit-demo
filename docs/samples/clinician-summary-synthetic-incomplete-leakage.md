@@ -47,6 +47,12 @@ Support needs:
 - Prefer staff help
 - Family-assisted mode
 
+Answer source notes:
+- 本份資料含家屬/協助者參與；疼痛、急尿、困擾程度等主觀感受建議由本人確認。
+- 有主觀感受欄位標示為家屬觀察；建議現場由本人確認疼痛、急尿、困擾程度或尿不出來感受。
+- 填答開始時標記: 1
+- 家屬/協助者觀察: 14
+
 Medication/context: Not provided
 Patient note: Helper says the patient is embarrassed to discuss leakage.
 

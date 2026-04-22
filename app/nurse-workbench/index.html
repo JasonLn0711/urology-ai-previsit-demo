@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>護理補問工作台</title>
+    <link rel="stylesheet" href="../patient-demo/styles.css">
+  </head>
+  <body>
+    <header class="topbar" aria-label="護理補問工作台">
+      <a class="brand" href="../patient-demo/">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>
+          <strong>護理補問工作台</strong>
+          <small>missing-info repair</small>
+        </span>
+      </a>
+      <nav class="nav-actions" aria-label="工作入口">
+        <a class="ghost-button link-button" href="../patient-demo/">病人/家屬端</a>
+        <a class="ghost-button link-button" href="../clinician-summary/">醫師摘要</a>
+        <a class="ghost-button link-button" href="../visit-packet/">資料包</a>
+        <button class="ghost-button" id="loadIncomplete" type="button">載入缺漏示範</button>
+      </nav>
+    </header>
+
+    <main class="app-shell">
+      <section class="mvp-brief staff-brief" aria-labelledby="nurse-title">
+        <div>
+          <p class="eyebrow">自動找出該補什麼</p>
+          <h1 id="nurse-title">把缺漏變成可直接詢問的補問題</h1>
+          <p class="lead">
+            工作台讀取病人/家屬端填答，列出缺漏、資料來源提醒、需現場確認的回報，並產生可口頭補問的問題。
+          </p>
+        </div>
+        <div class="brief-visual" aria-hidden="true">
+          <img src="../../assets/bladder-flow.svg" alt="">
+        </div>
+      </section>
+
+      <section class="safety-strip" role="note" aria-label="安全邊界">
+        <span>補問只補資料。</span>
+        <span>不做診斷或治療建議。</span>
+        <span>需依院內流程確認紅旗回報。</span>
+      </section>
+
+      <section class="workspace staff-workspace" aria-label="護理補問工作區">
+        <aside class="case-rail">
+          <div class="rail-section">
+            <p class="eyebrow">完成度</p>
+            <h2 id="completionTitle">讀取中</h2>
+            <p class="staff-muted" id="completionMeta">正在整理最新填答資料。</p>
+          </div>
+          <div class="rail-section">
+            <p class="eyebrow">資料來源提醒</p>
+            <div id="sourceNotesMount" class="source-stack"></div>
+          </div>
+          <div class="rail-section boundary-note">
+            <p class="eyebrow">操作邊界</p>
+            <p>此頁協助補問與確認缺漏，不取代院內 SOP，也不輸出診斷或分流等級。</p>
+          </div>
+        </aside>
+
+        <section class="intake-panel" aria-labelledby="supplement-title">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">自動補問清單</p>
+              <h2 id="supplement-title">下一步該問什麼</h2>
+            </div>
+            <button class="secondary-button" id="refreshButton" type="button">重新整理</button>
+          </div>
+          <div id="supplementMount" class="task-stack"></div>
+        </section>
+
+        <aside class="summary-panel" aria-labelledby="review-title">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">現場確認</p>
+              <h2 id="review-title">需看見的回報</h2>
+            </div>
+          </div>
+          <div id="reviewMount" class="summary-body"></div>
+        </aside>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+
+    <script src="../shared/summary.js"></script>
+    <script src="../shared/cases.js"></script>
+    <script src="./nurse.js"></script>
+  </body>
+</html>

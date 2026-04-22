@@ -36,6 +36,12 @@ The review question is:
 
 Would this workflow reduce repeated questioning and improve previsit readiness enough to justify one more prototype cycle?
 
+The key product claim to test is role separation:
+
+- Patient/family side: helps the patient say the problem calmly, with large controls and no staff-only screens.
+- Nurse side: finds missing information, asks supplemental questions, and preserves answer source.
+- Clinician side: scans useful observations quickly without diagnostic or treatment language.
+
 The decision options are:
 
 - Continue: value and workflow fit are clear.
@@ -71,17 +77,21 @@ The decision options are:
    - no diagnosis, triage, or treatment advice
    - clinician review remains required
 3. Show the artifact map.
-4. Open the patient MVP.
-5. Load `Frequent urination at night`.
-6. Show that the storage module appears because the concern and core answers justify it.
-7. Show the clinician summary and nurse cues.
-8. Repeat with `Difficulty emptying`, focusing on neutral review statements.
-9. Repeat with `Incomplete leakage intake`, focusing on visible missing information.
-10. Repeat with `Recurrent infection context`, focusing on repeated episode history without diagnosis language.
-11. Open the reviewer workbench.
-12. Capture reviewer signals.
-13. Ask for one decision: continue, revise, narrow, or pause.
-14. Ask for one smallest next artifact.
+4. Open the patient/family demo.
+5. Show the safety strip, large-text control, high-contrast control, and read-aloud control.
+6. Confirm that the patient/family page has no nurse, physician, or reviewer navigation.
+7. Load `Frequent urination at night`.
+8. Show that the storage module appears because the concern and core answers justify it.
+9. Open the nurse workbench and show supplemental questions without changing the original answer source.
+10. Open the clinician summary and scan the chief concern, pattern, missing information, review statements, and source notes.
+11. Open the visit packet and show patient/family, nurse, and clinician pages as separated outputs.
+12. Repeat with `Difficulty emptying`, focusing on neutral review statements.
+13. Repeat with `Incomplete leakage intake`, focusing on visible missing information.
+14. Repeat with `Recurrent infection context`, focusing on repeated episode history without diagnosis language.
+15. Open the reviewer workbench.
+16. Capture reviewer signals.
+17. Ask for one decision: continue, revise, narrow, or pause.
+18. Ask for one smallest next artifact.
 
 ## Physician Prompts
 
@@ -161,6 +171,21 @@ The MVP can capture patient-reported observations, but diagnosis, triage, examin
 
 Ask which current line was useful enough to justify more scope. If no line is useful, choose revise, narrow, or pause before adding fields.
 
+### Role-Separation Checks
+
+- Which parts of this summary would save time?
+- Which parts are noise?
+- Does the clinician need the source labels in the summary, or only when answers are uncertain?
+- What information must remain physician-led?
+- Should the first real version start as patient/family self-filled, nurse-repaired, or nurse-led for selected cases?
+- Which missing fields are worth asking automatically, and which should remain for the physician?
+- Does the patient/family UI stay free of staff-only wording?
+- What would make this unacceptable from a privacy or clinical-safety perspective?
+- What is the smallest useful next artifact: question tree, mock screen, summary format, or feasibility note?
+- Should the decision be continue, revise, narrow, or pause?
+
 ## Stop Boundary
 
-Do not promise EHR integration, diagnosis, voice-first AI, autonomous triage, real patient-data use, production deployment, or treatment recommendations in this meeting.
+Do not promise EHR integration, diagnosis, triage, examination, testing, treatment advice, voice-first AI, autonomous triage, production deployment, or real patient-data use in this meeting.
+
+Stop and revise if the patient/family page exposes nurse or physician content, if family observations are indistinguishable from patient feelings, or if a staff screen turns a patient report into a medical conclusion.

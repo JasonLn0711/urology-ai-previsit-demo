@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>看診前資料包</title>
+    <link rel="stylesheet" href="../patient-demo/styles.css">
+  </head>
+  <body>
+    <header class="topbar" aria-label="看診前資料包">
+      <a class="brand" href="../patient-demo/">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>
+          <strong>看診前資料包</strong>
+          <small>role-separated export</small>
+        </span>
+      </a>
+      <nav class="nav-actions" aria-label="資料包操作">
+        <a class="ghost-button link-button" href="../patient-demo/">病人/家屬端</a>
+        <a class="ghost-button link-button" href="../nurse-workbench/">護理補問</a>
+        <a class="ghost-button link-button" href="../clinician-summary/">醫師摘要</a>
+        <button class="ghost-button" id="loadSample" type="button">載入示範</button>
+        <button class="ghost-button" id="copyPacket" type="button">複製文字</button>
+        <button class="ghost-button" id="printPacket" type="button">列印</button>
+      </nav>
+    </header>
+
+    <main class="app-shell packet-export-shell">
+      <section class="packet-export-head" aria-labelledby="packet-export-title">
+        <div>
+          <p class="eyebrow">列印 / 複製用</p>
+          <h1 id="packet-export-title">三份內容，一份資料包</h1>
+          <p class="lead">
+            同一份填答資料會分成病人確認、護理補問、醫師摘要三頁。每一頁只服務該角色的任務，避免混淆。
+          </p>
+        </div>
+      </section>
+
+      <section class="safety-strip" role="note" aria-label="資料包安全邊界">
+        <span>病人頁只做確認。</span>
+        <span>護理頁只補缺漏。</span>
+        <span>醫師頁只做看診前掃描。</span>
+      </section>
+
+      <section class="packet-export-layout" aria-label="看診前資料包內容">
+        <aside class="case-rail packet-index">
+          <div class="rail-section">
+            <p class="eyebrow">資料包狀態</p>
+            <h2 id="packetStatus">讀取中</h2>
+            <p class="staff-muted" id="packetMeta">正在整理目前瀏覽器中的填答資料。</p>
+          </div>
+          <div class="rail-section">
+            <p class="eyebrow">頁面順序</p>
+            <ol class="gate-list">
+              <li>病人/家屬確認頁</li>
+              <li>護理補問與缺漏頁</li>
+              <li>醫師看診前摘要頁</li>
+            </ol>
+          </div>
+          <div class="rail-section boundary-note">
+            <p class="eyebrow">邊界</p>
+            <p>資料包保留來源與缺漏，不做診斷、治療建議或自動分流。</p>
+          </div>
+        </aside>
+
+        <div id="packetMount" class="packet-pages"></div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+
+    <script src="../shared/summary.js"></script>
+    <script src="../shared/cases.js"></script>
+    <script src="./visit-packet.js"></script>
+  </body>
+</html>

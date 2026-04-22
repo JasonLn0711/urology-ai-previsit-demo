@@ -29,8 +29,9 @@ Priority review statements:
 - No priority review statement captured in this synthetic demo.
 
 Nurse workflow cues:
+- Completion support may be needed before clinician review.
 - Bladder diary instruction may be relevant if clinic workflow supports it.
-- Medication list may need nurse-assisted review.
+- Medication list may need nurse review or supplemental confirmation.
 
 Missing information:
 - No required MVP fields missing.
@@ -39,7 +40,12 @@ Support needs:
 - Patient self-filled
 - Mandarin with Taiwanese preferred
 - Needs large buttons
-- Needs review before clinician enters
+- Needs staff help
+
+Answer source notes:
+- 資料來源標示為本人回答；若仍有不確定答案，可由現場人員補問。
+- 填答開始時標記: 1
+- 本人回答: 23
 
 Medication/context: list readiness: Partial list only; review support: Yes; patient-reported context: Not sure; diuretic/anticoagulant awareness: Not sure
 Patient note: Patient worries about waking up repeatedly at night.

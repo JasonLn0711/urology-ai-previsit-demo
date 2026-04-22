@@ -16,8 +16,10 @@
         </span>
       </a>
       <nav class="nav-actions" aria-label="Review packet navigation">
-        <a class="ghost-button link-button" href="../patient-demo/">Patient MVP</a>
+        <a class="ghost-button link-button" href="../patient-demo/">Patient/family intake</a>
+        <a class="ghost-button link-button" href="../nurse-workbench/">Nurse Workbench</a>
         <a class="ghost-button link-button" href="../clinician-summary/">Summary View</a>
+        <a class="ghost-button link-button" href="../visit-packet/">Visit Packet</a>
         <a class="ghost-button link-button" href="../reviewer-workbench/">Reviewer Workbench</a>
       </nav>
     </header>
@@ -51,7 +53,9 @@
               <li>Open the patient MVP.</li>
               <li>Load each synthetic case.</li>
               <li>Compare against the workflow rehearsal.</li>
+              <li>Inspect the nurse missing-information workbench.</li>
               <li>Inspect the clinician summary.</li>
+              <li>Print or copy the role-separated visit packet.</li>
               <li>Capture a decision in the reviewer workbench.</li>
             </ol>
           </div>
@@ -59,8 +63,10 @@
           <div class="rail-section">
             <p class="eyebrow">Open surfaces</p>
             <div class="packet-link-list">
-              <a href="../patient-demo/">Patient MVP</a>
+              <a href="../patient-demo/">Patient/family intake</a>
+              <a href="../nurse-workbench/">Nurse workbench</a>
               <a href="../clinician-summary/">Clinician summary</a>
+              <a href="../visit-packet/">Visit packet export</a>
               <a href="../reviewer-workbench/">Reviewer workbench</a>
               <a href="../../docs/workflow-rehearsal.md">Workflow rehearsal</a>
               <a href="../../docs/mvp-review-packet.md">Markdown packet</a>
@@ -100,6 +106,10 @@
                   <tr>
                     <td><a href="../../docs/product-brief.md">Product brief</a></td>
                     <td>Intent, scope, and out-of-scope boundaries.</td>
+                  </tr>
+                  <tr>
+                    <td><a href="../../docs/role-separated-workflow.md">Role-separated workflow</a></td>
+                    <td>Patient/family, nurse, clinician, packet, and reviewer surface boundaries.</td>
                   </tr>
                   <tr>
                     <td><a href="../../docs/safety-and-privacy-boundaries.md">Safety boundaries</a></td>
@@ -154,15 +164,15 @@
               <dl class="review-grid">
                 <div class="review-row">
                   <dt>Patient/helper lens</dt>
-                  <dd>Plain wording, visible not-sure options, and no pressure to guess.</dd>
+                  <dd>Plain wording, visible not-sure options, display controls, source labeling, and no staff-only screens.</dd>
                 </div>
                 <div class="review-row">
                   <dt>Nurse lens</dt>
-                  <dd>Completion support, missing information, medication review, bladder diary, and containment cues.</dd>
+                  <dd>Missing information, supplemental questions, source notes, medication review, bladder diary, and containment cues.</dd>
                 </div>
                 <div class="review-row">
                   <dt>Clinician lens</dt>
-                  <dd>Main concern, duration, pattern, priority review statements, context, and missing information in under one minute.</dd>
+                  <dd>Main concern, duration, pattern, priority review statements, context, source attribution, and missing information in under one minute.</dd>
                 </div>
                 <div class="review-row">
                   <dt>Governance lens</dt>

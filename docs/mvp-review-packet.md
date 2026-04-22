@@ -33,8 +33,10 @@ npm test
 
 Open the demo surfaces:
 
-- Patient MVP: `http://localhost:4173/app/patient-demo/`
+- Patient/family intake: `http://localhost:4173/app/patient-demo/`
+- Nurse workbench: `http://localhost:4173/app/nurse-workbench/`
 - Clinician summary: `http://localhost:4173/app/clinician-summary/`
+- Visit packet: `http://localhost:4173/app/visit-packet/`
 - Reviewer workbench: `http://localhost:4173/app/reviewer-workbench/`
 
 ## Artifact Map
@@ -42,6 +44,7 @@ Open the demo surfaces:
 | Artifact | Use |
 | --- | --- |
 | `docs/product-brief.md` | Confirms MVP intent, scope, and out-of-scope boundaries. |
+| `docs/role-separated-workflow.md` | Explains patient/family, nurse, clinician, visit-packet, and reviewer surface boundaries. |
 | `docs/safety-and-privacy-boundaries.md` | Confirms hard safety, privacy, and wording rules. |
 | `docs/workflow-rehearsal.md` | Guides the four synthetic scenario walkthroughs. |
 | `docs/meeting-capture-template.md` | Captures case-level evidence and the final continue / revise / narrow / pause decision. |
@@ -63,10 +66,12 @@ Check whether the question flow is understandable without explanation.
 
 Look for:
 
+- no staff-only links, staff-only labels, or clinician/nurse tasks on the patient/family page
 - clear source and main-concern selection
 - plain symptom wording
 - visible `Not sure` options
 - no pressure to guess
+- large text, high contrast, and read-aloud controls
 - no overly long module when the concern does not justify it
 
 ### Nurse Lens
@@ -76,6 +81,8 @@ Check whether staff can see what needs support before the clinician encounter.
 Look for:
 
 - missing-information visibility
+- concrete supplemental questions
+- source notes distinguishing patient answer, family operation help, family observation, and nurse supplement
 - completion-support cue
 - bladder diary instruction cue
 - medication-review support cue
@@ -95,6 +102,7 @@ Look for:
 - priority review statements
 - medication/context note
 - missing information
+- answer-source attribution when family or nurse helped
 - no diagnostic or treatment language
 
 ### Product / Governance Lens
@@ -119,6 +127,8 @@ Use this exact framing:
 
 This is a synthetic-data previsit workflow MVP. It organizes patient-reported information for clinician review. It does not diagnose, triage, recommend treatment, or replace clinician judgment.
 
+It separates the patient/family intake from the nurse workbench and clinician summary. Family help is allowed, but the source of each important answer must remain visible.
+
 ### 2. Run The Four Cases
 
 Use `docs/workflow-rehearsal.md` as the case checklist.
@@ -132,7 +142,17 @@ Use `docs/workflow-rehearsal.md` as the case checklist.
 4. Recurrent infection context
    - Tests repeated-symptom history, pain/infection context, and medication/context cues without diagnosing UTI.
 
-### 3. Inspect The Summary
+### 3. Inspect Role Separation
+
+For each case, ask:
+
+- Does the patient/family page avoid staff-only language and links?
+- Can the patient or family member understand what happens next?
+- Are family observations distinguishable from patient feelings?
+- Can the nurse see the next missing item to ask?
+- Can the clinician summary stay short while preserving source attribution?
+
+### 4. Inspect The Summary
 
 For each case, ask:
 
@@ -142,17 +162,19 @@ For each case, ask:
 - What is missing but still visible?
 - Does any wording suggest diagnosis, triage, or treatment?
 
-### 4. Inspect Nursing Fit
+### 5. Inspect Nursing Fit
 
 For each case, ask:
 
 - Would staff know whether the patient needs help?
+- Would staff know exactly which missing field to supplement?
+- Would staff know whether the answer came from the patient, family, or nurse supplement?
 - Would staff know whether a medication list needs review?
 - Would a bladder diary cue fit the clinic workflow?
 - Would containment-support wording help or create extra burden?
 - Are priority review statements visible without becoming autonomous triage?
 
-### 5. Capture The Decision
+### 6. Capture The Decision
 
 Use the reviewer workbench to record:
 
@@ -162,6 +184,7 @@ Use the reviewer workbench to record:
 - workflow slot
 - staff burden
 - patient or assisted completion fit
+- source-label usefulness
 - existing process gap
 - safety boundary
 - most useful summary line
@@ -221,7 +244,7 @@ Use when:
 
 - value is real only for a smaller population or assisted workflow
 - patient self-completion is not broadly realistic
-- a nurse-assisted pilot is more credible than a general patient-facing MVP
+- a nurse-repaired or nurse-led selected-case pilot is more credible than a general patient-facing MVP
 
 Next artifact:
 
@@ -246,6 +269,8 @@ Next artifact:
 Stop and revise before any further demo claim if:
 
 - a screen implies diagnosis, triage, urgency assignment, or treatment
+- the patient/family UI exposes nurse, clinician, visit-packet, or reviewer surfaces
+- patient feelings and family observations are not distinguishable
 - a summary hides missing information
 - `Not sure` opens broad modules without a clear concern
 - reviewer cannot tell which answers came from patient/helper/staff
@@ -263,6 +288,7 @@ For each reviewer, capture:
 - missing information that matters
 - unsafe or misleading wording
 - expected workflow slot
+- whether source attribution matters in the real clinic workflow
 - staff burden concern
 - decision: continue, revise, narrow, or pause
 - smallest next artifact
@@ -273,7 +299,7 @@ After the review, there should be one of these outputs:
 
 - Continue: build the next artifact and keep the same safety boundary.
 - Revise: update wording, summary format, or question flow before adding scope.
-- Narrow: limit the MVP to nurse-assisted or one symptom module.
+- Narrow: limit the MVP to nurse-repaired selected cases or one symptom module.
 - Pause: document rejected assumptions and stop implementation work.
 
 Run `npm run review:closeout`, then use `docs/post-review-action-playbook.md` to create exactly one next artifact from the captured decision.

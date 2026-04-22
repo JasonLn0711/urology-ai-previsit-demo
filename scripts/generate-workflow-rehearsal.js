@@ -35,9 +35,10 @@ function patientWalkthrough(sampleCase, summary) {
   return [
     "1. Load this case from the synthetic scenario rail.",
     `2. Confirm source and main concern: ${summary.intakeMode}; ${summary.chiefConcern}.`,
-    `3. Confirm active conditional modules: ${activeModules(summary)}.`,
-    `4. Open Repair and confirm status: ${summary.completionStatus.label}.`,
-    "5. Open Review and compare the patient-reported pattern against the clinician summary panel."
+    "3. Confirm the patient/family page has no nurse, clinician, visit-packet, or reviewer links.",
+    `4. Confirm active conditional modules: ${activeModules(summary)}.`,
+    `5. Open the nurse workbench and confirm status: ${summary.completionStatus.label}.`,
+    "6. Compare the clinician summary against the patient-reported pattern and source notes."
   ].join("\n");
 }
 
@@ -127,6 +128,7 @@ function generate() {
     "The rehearsal asks four first-principles questions for each case:",
     "",
     "- Can the patient or helper understand what to answer?",
+    "- Does the patient/family UI avoid staff-only screens and language?",
     "- Can nursing staff see what may need support or clarification?",
     "- Can the clinician scan the summary without being misled?",
     "- Does the demo keep missing information visible instead of hiding uncertainty?",
@@ -136,14 +138,17 @@ function generate() {
     "1. Run `npm run rehearsal` after editing shared cases or summary logic.",
     "2. Open `http://localhost:4173/app/patient-demo/`.",
     "3. Load each synthetic case in the same order as below.",
-    "4. Compare the browser state with this rehearsal document.",
-    "5. Record reviewer feedback in the reviewer workbench.",
+    "4. Confirm patient/family isolation, then inspect `app/nurse-workbench/`, `app/clinician-summary/`, and `app/visit-packet/`.",
+    "5. Compare the browser state with this rehearsal document.",
+    "6. Record reviewer feedback in the reviewer workbench.",
     "",
     ...SYNTHETIC_CASES.map(caseSection),
     "## Stop Rules",
     "",
     "- Stop and revise if any page suggests diagnosis, triage, or treatment.",
     "- Stop and revise if missing fields disappear from view.",
+    "- Stop and revise if the patient/family page exposes nurse, clinician, visit-packet, or reviewer surfaces.",
+    "- Stop and revise if family observations and patient self-reports are indistinguishable.",
     "- Stop and revise if a `Not sure` answer opens large follow-up modules without a clear main concern.",
     "- Stop and revise if nurse cues require action the clinic cannot realistically perform.",
     ""
