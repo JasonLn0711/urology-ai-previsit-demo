@@ -25,6 +25,10 @@ Do not pre-fill reviewer conclusions before the meeting. The only valid pre-meet
 | `post-review-closeout.md` | Command/checklist for confirming reviewer evidence is complete before one next artifact is created. |
 | `artifact-starters/` | Evidence-gated starters for the one selected artifact after closeout passes. |
 | `decision-capture.md` | Holds the filled meeting capture template, copied reviewer record, and the selected next artifact after the review. |
+| `research-extraction-2026-04-23.md` | Source-derived demo/research implications from the updated transcript and slides; not a selected artifact. |
+| `hsu-training-requirements-2026-04-23.md` | Source-derived v1 requirements from the LINE follow-up QA file and 2024 TUA guideline. |
+| `assets/2026-04-23-hsu-sync/` | Copied 許醫師 slide deck and meeting transcript for research extraction and synthetic-demo scoping. |
+| `assets/2026-04-23-hsu-training-materials/` | Copied 許醫師 QA/rule file and TUA guideline for v1 requirement extraction. |
 
 ## Boundary
 
@@ -35,6 +39,8 @@ Do not pre-fill reviewer conclusions before the meeting. The only valid pre-meet
 - No real patient identifiers.
 - No EHR, HIS, EMR, scheduling, or messaging integration.
 - Clinician review remains required.
+- No real ID number, birthday, phone, medical-record number, appointment action, or live queue handling.
+- The doctor-provided exam-prep matrix is confirmation-only source material, not an ordering protocol.
 
 ## Completion Rule
 
