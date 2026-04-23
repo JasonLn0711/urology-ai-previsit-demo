@@ -43,6 +43,14 @@ Use `docs/mvp-review-packet.md` as the meeting entrypoint when asking a reviewer
 
 You can also open `app/patient-demo/index.html` directly in a browser.
 
+## Doctor Demo Handout
+
+Use `docs/clinician-demo-report-v1.md` when showing the concept to doctors. It includes the clinical framing, safety boundary, suggested live-demo order, and real screenshots captured from the running demo under `docs/screenshots/`.
+
+The original pre-screenshot report is preserved as `docs/clinician-demo-report-v0.md`. The unversioned `docs/clinician-demo-report.md` currently mirrors the latest v1 handout for convenience.
+
+For a live walkthrough, start the local server and open `http://localhost:4173/app/review-packet/` first, then move through patient/family intake, nurse workbench, clinician summary, and visit packet export.
+
 ## Test
 
 ```bash
