@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urology-ai-previsit.intake-record.schema.json",
+  "title": "Urology AI Previsit Canonical Intake Record",
+  "type": "object",
+  "required": [
+    "patient_input",
+    "derived_summary",
+    "missing_fields",
+    "attribution",
+    "audit_trace"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "patient_input": {
+      "type": "object",
+      "description": "Synthetic case answers or browser localStorage answers."
+    },
+    "derived_summary": {
+      "type": "object",
+      "description": "Summary output produced by core/summary."
+    },
+    "missing_fields": {
+      "type": "array",
+      "description": "Missing field objects produced by core/missing_fields."
+    },
+    "attribution": {
+      "type": "object",
+      "description": "Field-level source attribution produced by core/attribution."
+    },
+    "audit_trace": {
+      "type": "array",
+      "description": "Trace of transformations and safety checks.",
+      "items": {
+        "type": "object",
+        "required": ["event", "source"],
+        "properties": {
+          "event": { "type": "string" },
+          "source": { "type": "string" }
+        }
+      }
+    }
+  }
+}
