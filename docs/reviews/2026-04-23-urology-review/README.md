@@ -25,6 +25,7 @@ Do not pre-fill reviewer conclusions before the meeting. The only valid pre-meet
 | `post-review-closeout.md` | Command/checklist for confirming reviewer evidence is complete before one next artifact is created. |
 | `artifact-starters/` | Evidence-gated starters for the one selected artifact after closeout passes. |
 | `decision-capture.md` | Holds the filled meeting capture template, copied reviewer record, and the selected next artifact after the review. |
+| `day-note-2026-04-23.md` | Same-day work log for repo updates, verification status, benchmark additions, and next actions; not reviewer evidence. |
 | `research-extraction-2026-04-23.md` | Source-derived demo/research implications from the updated transcript and slides; not a selected artifact. |
 | `hsu-training-requirements-2026-04-23.md` | Source-derived v1 requirements from the LINE follow-up QA file and 2024 TUA guideline. |
 | `assets/2026-04-23-hsu-sync/` | Copied 許醫師 slide deck and meeting transcript for research extraction and synthetic-demo scoping. |
@@ -58,6 +59,7 @@ If any of those are missing after the meeting, leave the status as `pending foll
 ## Source Of Truth
 
 - `decision-capture.md` owns reviewer evidence and the selected next artifact.
+- `day-note-2026-04-23.md` owns same-day implementation/research work-log context only.
 - `../../post-review-action-playbook.md` owns the decision-to-artifact rules.
 - `artifact-starters/` owns the blank artifact shapes only; starters do not choose work.
 - This folder is the dated workspace. Do not create a second 2026-04-23 review folder unless the meeting is split into a separate follow-up review.
