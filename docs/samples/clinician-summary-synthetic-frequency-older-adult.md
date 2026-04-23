@@ -14,9 +14,11 @@ status: "sample"
 Urology previsit synthetic summary
 
 Safety:
-- This demo does not diagnose or recommend treatment.
+- This v1 local product preview is not for clinical use.
+- It does not diagnose, triage, recommend treatment, or place exam orders.
 - A clinician must review all information.
 - Use synthetic data only.
+- Regulatory status is not determined.
 
 Completeness: MVP fields complete for clinician review
 Active modules: storage, medication
@@ -26,7 +28,7 @@ Duration / bother: More than 1 month / bother score 7/10
 Patient-reported pattern: Storage: daytime change: Yes; daytime count: 9 to 12 times; night count: 3 or more times; urgency: Yes; urgency frequency: Most days; fluid/caffeine context: Caffeinated drinks most days, Drinks a lot near bedtime; diary feasibility: Yes, with written instructions
 
 Priority review statements:
-- No priority review statement captured in this synthetic demo.
+- No priority review statement captured in this synthetic case.
 
 Nurse workflow cues:
 - Completion support may be needed before clinician review.

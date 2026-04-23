@@ -14,9 +14,11 @@ status: "sample"
 Urology previsit synthetic summary
 
 Safety:
-- This demo does not diagnose or recommend treatment.
+- This v1 local product preview is not for clinical use.
+- It does not diagnose, triage, recommend treatment, or place exam orders.
 - A clinician must review all information.
 - Use synthetic data only.
+- Regulatory status is not determined.
 
 Completeness: 6 MVP fields still missing
 Active modules: leakage
@@ -26,7 +28,7 @@ Duration / bother: Duration not provided / bother score 4/10
 Patient-reported pattern: Leakage: past 4 weeks: Yes; frequency: Weekly; triggers: Before reaching toilet; containment: Pads or liners
 
 Priority review statements:
-- No priority review statement captured in this synthetic demo.
+- No priority review statement captured in this synthetic case.
 
 Nurse workflow cues:
 - Completion support may be needed before clinician review.

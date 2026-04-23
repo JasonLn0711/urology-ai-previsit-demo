@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Urology AI Previsit v1 MVP</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="topbar" aria-label="Urology AI Previsit v1">
+      <a class="brand" href="./index.html" aria-label="Urology AI Previsit v1 home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>
+          <strong>Urology AI Previsit v1</strong>
+          <small>safe local MVP product preview</small>
+        </span>
+      </a>
+      <nav class="nav-actions" aria-label="Related product surfaces">
+        <a href="../patient-demo/">Patient</a>
+        <a href="../nurse-workbench/">Nurse</a>
+        <a href="../clinician-summary/">Physician</a>
+        <a href="../../docs/v1-mvp-handoff-packet.md">Handoff</a>
+      </nav>
+    </header>
+
+    <main class="product-shell">
+      <section class="console-hero" aria-labelledby="v1-title">
+        <div class="hero-copy">
+          <p class="eyebrow">First product version</p>
+          <h1 id="v1-title">Physician-reviewed previsit summary for urology first visits</h1>
+          <p class="lead">
+            A synthetic-data local MVP for the 陽明小幫手 waiting-room flow, showing patient/family intake, nurse repair, physician scan, exam-prep reminders, and mock HIS-facing export without clinical use.
+          </p>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <img src="../../assets/bladder-flow.svg" alt="">
+        </div>
+      </section>
+
+      <section class="boundary-strip" role="note" aria-label="V1 safety boundary">
+        <span>Synthetic data only.</span>
+        <span>Not for clinical use.</span>
+        <span>Physician review required.</span>
+        <span>Regulatory status not determined.</span>
+      </section>
+
+      <section class="workspace" aria-label="V1 product console">
+        <aside class="case-panel" aria-labelledby="case-title">
+          <div class="panel-section">
+            <p class="eyebrow">Synthetic case</p>
+            <h2 id="case-title">Select v1 source data</h2>
+            <label class="field-label" for="caseSelect">Case</label>
+            <select id="caseSelect"></select>
+            <p class="case-meta" id="caseMeta"></p>
+          </div>
+
+          <div class="panel-section status-card" id="statusCard">
+            <p class="eyebrow">Readiness</p>
+            <strong id="completionLabel">Loading</strong>
+            <span id="completionMeta">Preparing synthetic summary.</span>
+          </div>
+
+          <div class="panel-section">
+            <p class="eyebrow">V1 package</p>
+            <ul class="package-list">
+              <li>Local browser product preview.</li>
+              <li>Mock export/API only.</li>
+              <li>No real patient identifiers.</li>
+              <li>No ID or birthday in waiting-room v1.</li>
+              <li>No live HIS writeback.</li>
+            </ul>
+          </div>
+
+          <div class="panel-section gate-card">
+            <p class="eyebrow">Hard stop</p>
+            <p>
+              Do not enter real patient data or present this screen as clinical software before privacy, security, legal, TFDA/FDA, HIS, and research review.
+            </p>
+          </div>
+        </aside>
+
+        <section class="product-panel" aria-labelledby="surface-title">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Role-separated workflow</p>
+              <h2 id="surface-title">v1 product console</h2>
+            </div>
+            <div class="action-row">
+              <button id="copyCurrent" type="button">Copy</button>
+              <button id="printPage" type="button">Print</button>
+            </div>
+          </div>
+
+          <div class="tabs" role="tablist" aria-label="V1 surfaces">
+            <button class="tab-button" id="tab-intake" type="button" role="tab" aria-controls="panel-intake" aria-selected="true" data-tab="intake">
+              <span aria-hidden="true">I</span>
+              Intake
+            </button>
+            <button class="tab-button" id="tab-nurse" type="button" role="tab" aria-controls="panel-nurse" aria-selected="false" data-tab="nurse">
+              <span aria-hidden="true">N</span>
+              Nurse
+            </button>
+            <button class="tab-button" id="tab-physician" type="button" role="tab" aria-controls="panel-physician" aria-selected="false" data-tab="physician">
+              <span aria-hidden="true">P</span>
+              Physician
+            </button>
+            <button class="tab-button" id="tab-exam" type="button" role="tab" aria-controls="panel-exam" aria-selected="false" data-tab="exam">
+              <span aria-hidden="true">E</span>
+              Exam Prep
+            </button>
+            <button class="tab-button" id="tab-export" type="button" role="tab" aria-controls="panel-export" aria-selected="false" data-tab="export">
+              <span aria-hidden="true">X</span>
+              Export
+            </button>
+            <button class="tab-button" id="tab-research" type="button" role="tab" aria-controls="panel-research" aria-selected="false" data-tab="research">
+              <span aria-hidden="true">R</span>
+              Research
+            </button>
+          </div>
+
+          <div id="panel-intake" class="tab-panel" role="tabpanel" aria-labelledby="tab-intake"></div>
+          <div id="panel-nurse" class="tab-panel" role="tabpanel" aria-labelledby="tab-nurse" hidden></div>
+          <div id="panel-physician" class="tab-panel" role="tabpanel" aria-labelledby="tab-physician" hidden></div>
+          <div id="panel-exam" class="tab-panel" role="tabpanel" aria-labelledby="tab-exam" hidden></div>
+          <div id="panel-export" class="tab-panel" role="tabpanel" aria-labelledby="tab-export" hidden></div>
+          <div id="panel-research" class="tab-panel" role="tabpanel" aria-labelledby="tab-research" hidden></div>
+        </section>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+
+    <script src="../shared/summary.js"></script>
+    <script src="../shared/cases.js"></script>
+    <script src="./v1.js"></script>
+  </body>
+</html>

@@ -14,9 +14,11 @@ status: "sample"
 Urology previsit synthetic summary
 
 Safety:
-- This demo does not diagnose or recommend treatment.
+- This v1 local product preview is not for clinical use.
+- It does not diagnose, triage, recommend treatment, or place exam orders.
 - A clinician must review all information.
 - Use synthetic data only.
+- Regulatory status is not determined.
 
 Completeness: MVP fields complete for clinician review
 Active modules: storage, pain, medication
@@ -30,7 +32,7 @@ Priority review statements:
 
 Nurse workflow cues:
 - Bladder diary instruction may be relevant if clinic workflow supports it.
-- Medication list may need nurse-assisted review.
+- Medication list may need nurse review or supplemental confirmation.
 - Priority review statements should be visible before the clinician encounter.
 
 Missing information:
@@ -41,6 +43,11 @@ Support needs:
 - Mandarin
 - Comfortable
 - Self-filled
+
+Answer source notes:
+- 資料來源標示為本人回答；若仍有不確定答案，可由現場人員補問。
+- 填答開始時標記: 1
+- 本人回答: 25
 
 Medication/context: list readiness: Can provide list; review support: No; patient-reported context: Diabetes; diuretic/anticoagulant awareness: No
 Patient note: Patient reports repeated similar episodes and wants the physician to know the pattern.

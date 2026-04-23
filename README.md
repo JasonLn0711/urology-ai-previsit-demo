@@ -1,37 +1,50 @@
-# Urology AI Previsit MVP
+# Urology AI Previsit v1 MVP
 
-A static browser MVP for a professional, patient-friendly urology previsit interview workflow.
+A static browser `v1` MVP product preview for a professional, patient-friendly urology previsit interview workflow.
 
-The first goal is discovery: show a low-friction patient/family guided-question flow, repair missing information for staff, generate a physician-facing summary, and learn whether the workflow is useful before building anything clinical or integrated.
+The current goal is a safe local product package: show a low-friction patient/family guided-question flow, repair missing information for staff, generate a physician-facing summary, show physician-confirmed exam-prep reminders, and provide mock export/API artifacts before building anything clinical or integrated.
+
+Open the v1 product console first:
+
+`http://localhost:4173/app/v1/`
+
+Verified fallback from the 2026-04-23 pull-forward build:
+
+`http://127.0.0.1:4174/app/v1/`
 
 ## What This Is
 
-- Professional static MVP using synthetic data only.
+- Professional static v1 MVP product preview using synthetic data only.
 - UI-guided questionnaire first; voice input is out of scope.
 - Separate patient/family intake, nurse missing-information workbench, and clinician summary surfaces.
+- Productized v1 console with case selector, role tabs, physician summary, exam-prep mockup, mock export/API, and research gates.
+- `陽明小幫手` waiting-room flow rules from 許醫師's QA file: already-registered flow, no ID/birthday in initial-visit intake, initial/return branch, and confirmation-only exam-prep matrix.
 - Governed core questions, conditional modules, source labeling for family-assisted answers, missing-information repair, nurse cues, and clinician summary.
 - Patient/family display controls for larger text, high contrast, and read-aloud of the current step.
 - Reviewer workbench for meeting feedback and continue / revise / narrow / pause decision capture.
 - Clinician-review summary, not diagnosis, triage, or treatment advice.
 - Patient-friendly, large-touch-target interface for urology previsit intake.
+- Not for clinical use; physician review remains required.
+- Regulatory status is not determined.
 
 ## What This Is Not
 
-- Not a medical device.
-- Not a diagnosis engine.
-- Not connected to HIS, EMR, EHR, or hospital systems.
-- Not approved for real patient data.
-- Not a replacement for a clinician.
+- No diagnosis engine, triage system, treatment recommender, or autonomous exam-ordering system.
+- No live HIS, EMR, EHR, registration, messaging, or hospital-system integration.
+- No approval for real patient data or clinical use.
+- No claim about TFDA/FDA classification before formal review.
+- No replacement for a clinician.
 
 ## Run
 
 ```bash
-cd /Users/iKev/Desktop/02_Projects_and_Code/everything_on_git/urology-ai-previsit-demo
+cd /home/jnln3799/every_on_git_ubuntu/urology-ai-previsit-demo
 python3 -m http.server 4173
 ```
 
 Open:
 
+- v1 product console: `http://localhost:4173/app/v1/`
 - Patient demo: `http://localhost:4173/app/patient-demo/`
 - Nurse workbench: `http://localhost:4173/app/nurse-workbench/`
 - Visit packet export: `http://localhost:4173/app/visit-packet/`
@@ -39,7 +52,7 @@ Open:
 - Clinician summary sample: `http://localhost:4173/app/clinician-summary/`
 - Reviewer workbench: `http://localhost:4173/app/reviewer-workbench/`
 
-Use `docs/mvp-review-packet.md` as the meeting entrypoint when asking a reviewer to judge the MVP.
+Use `docs/v1-mvp-handoff-packet.md` as the product/research handoff packet, and `docs/mvp-review-packet.md` when asking a reviewer to judge the earlier review workflow.
 
 You can also open `app/patient-demo/index.html` directly in a browser.
 
@@ -64,6 +77,11 @@ The rehearsal generator creates `docs/workflow-rehearsal.md`, a scenario-by-scen
 The smoke check verifies demo entrypoints, browser script order, shared synthetic cases, generated sample boundaries, and stale-reference cleanup.
 
 The tests check summary generation, conditional module activation, missing-information prompts, completion status, safety wording, and reviewer decision-record logic.
+
+Latest 2026-04-23 pull-forward verification:
+
+- `npm test`: `39/39`
+- `npm run smoke`: `219/219`
 
 ## Sample Outputs
 

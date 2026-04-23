@@ -255,10 +255,10 @@ test("dated review workspace stays pending until reviewer evidence exists", () =
   const combined = `${capture}\n${readme}`;
   const lower = combined.toLowerCase();
 
-  assert.match(capture, /Status: pending review/);
+  assert.match(capture, /Status: pending (review|follow-up)/);
   assert.match(capture, /Frequent urination at night/);
   assert.match(capture, /Recurrent infection context/);
-  assert.match(capture, /Selected artifact: pending review/);
+  assert.match(capture, /Selected artifact: (pending review|not selected - pending follow-up)/);
   assert.match(readme, /Do not pre-fill reviewer conclusions/);
   assert.doesNotMatch(lower, /decision: continue/);
   assert.doesNotMatch(lower, /decision: revise/);

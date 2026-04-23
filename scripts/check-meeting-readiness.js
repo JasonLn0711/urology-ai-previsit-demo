@@ -68,7 +68,7 @@ function checkRequiredFiles() {
 function checkPendingDecisionCapture() {
   const capture = read("docs/reviews/2026-04-23-urology-review/decision-capture.md");
   const lower = capture.toLowerCase();
-  record("decision capture is pending review", capture.includes("Status: pending review"));
+  record("decision capture is pending review or follow-up", /Status: pending (review|follow-up)/.test(capture));
   record("decision capture includes four-case table", ["Frequent urination at night", "Difficulty emptying", "Incomplete leakage intake", "Recurrent infection context"].every((item) => capture.includes(item)));
   record("decision capture has no prefilled decision", !/decision: continue|decision: revise|decision: narrow|decision: pause/.test(lower));
   record("decision capture keeps boundary wording", capture.includes("No diagnosis") && capture.includes("No treatment advice"));

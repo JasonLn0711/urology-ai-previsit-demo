@@ -86,6 +86,9 @@ function checkEntrypoints() {
   [
     "app/patient-demo/index.html",
     "app/patient-demo/app.js",
+    "app/v1/index.html",
+    "app/v1/styles.css",
+    "app/v1/v1.js",
     "app/review-packet/index.html",
     "app/clinician-summary/index.html",
     "app/clinician-summary/clinician.js",
@@ -99,6 +102,7 @@ function checkEntrypoints() {
     "app/shared/cases.js",
     "app/shared/review.js",
     "assets/bladder-flow.svg",
+    "docs/v1-mvp-handoff-packet.md",
     "docs/role-separated-workflow.md",
     "docs/mvp-review-packet.md",
     "docs/meeting-capture-template.md",
@@ -119,6 +123,7 @@ function checkEntrypoints() {
 
   [
     "app/patient-demo/app.js",
+    "app/v1/v1.js",
     "app/clinician-summary/clinician.js",
     "app/nurse-workbench/nurse.js",
     "app/visit-packet/visit-packet.js",
@@ -176,11 +181,43 @@ function checkBrowserScriptOrder() {
       visitAppIndex > visitCasesIndex
   );
 
+  const v1SummaryIndex = indexOf("app/v1/index.html", "../shared/summary.js");
+  const v1CasesIndex = indexOf("app/v1/index.html", "../shared/cases.js");
+  const v1AppIndex = indexOf("app/v1/index.html", "./v1.js");
+  record(
+    "v1 product console loads shared scripts before page script",
+    v1SummaryIndex > -1 &&
+      v1CasesIndex > v1SummaryIndex &&
+      v1AppIndex > v1CasesIndex
+  );
+
   record(
     "reviewer workbench loads review library before page script",
     indexOf("app/reviewer-workbench/index.html", "../shared/review.js") <
       indexOf("app/reviewer-workbench/index.html", "./reviewer.js")
   );
+}
+
+function checkV1ProductConsole() {
+  const html = read("app/v1/index.html");
+  const script = read("app/v1/v1.js");
+  const css = read("app/v1/styles.css");
+  const packet = read("docs/v1-mvp-handoff-packet.md");
+  const combined = `${html}\n${script}\n${packet}`;
+  const lower = combined.toLowerCase();
+
+  record("v1 console has product title", html.includes("Urology AI Previsit v1 MVP"));
+  record("v1 console links handoff packet", html.includes("../../docs/v1-mvp-handoff-packet.md"));
+  record("v1 console has six role tabs", ["Intake", "Nurse", "Physician", "Exam Prep", "Export", "Research"].every((label) => html.includes(label)));
+  record("v1 console uses shared synthetic cases", script.includes("SYNTHETIC_CASES") && script.includes("findCase"));
+  record("v1 console builds exam-prep reminders", script.includes("function buildExamPrepReminders"));
+  record("v1 console builds mock payload", script.includes("function buildMockPayload"));
+  record("v1 console exposes mock export only", script.includes('integrationMode: "mock_export_only"') && script.includes("liveHisWriteback: false"));
+  record("v1 console keeps no-order boundary", script.includes("orderPlaced: false") && lower.includes("no exam order is placed"));
+  record("v1 console keeps safety boundary", lower.includes("synthetic data only") && lower.includes("not for clinical use") && lower.includes("physician review required") && lower.includes("regulatory status not determined"));
+  record("v1 console does not claim TFDA/FDA status", !/not a medical device|tfda approved|fda approved|non-device status is settled/i.test(combined));
+  record("v1 console avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(lower));
+  record("v1 css keeps stable layout primitives", css.includes("grid-template-columns") && css.includes("minmax") && css.includes("aspect-ratio"));
 }
 
 function checkSyntheticCases() {
@@ -363,7 +400,7 @@ function checkDatedReviewWorkspace() {
   ].map(read).join("\n");
   const lower = `${capture}\n${readme}`.toLowerCase();
 
-  record("dated review workspace is pending", capture.includes("Status: pending review"));
+  record("dated review workspace is pending follow-up", /Status: pending (review|follow-up)/.test(capture));
   record("dated review workspace includes four cases", ["Frequent urination at night", "Difficulty emptying", "Incomplete leakage intake", "Recurrent infection context"].every((item) => capture.includes(item)));
   record("dated review workspace has no prefilled decision", !/decision: continue|decision: revise|decision: narrow|decision: pause/.test(lower));
   record("dated review workspace has no clinical advice wording", !/likely infection|probable cancer|take medication/.test(lower));
@@ -419,6 +456,7 @@ function checkNoStaleReferences() {
 function main() {
   checkEntrypoints();
   checkBrowserScriptOrder();
+  checkV1ProductConsole();
   checkSyntheticCases();
   checkGeneratedSamples();
   checkWorkflowRehearsal();

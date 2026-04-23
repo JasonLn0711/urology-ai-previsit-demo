@@ -48,7 +48,7 @@ Purpose: Checks whether frequency/nocturia details stay short while still surfac
 
 ### Priority Review Statements
 
-- No priority review statement captured in this synthetic demo.
+- No priority review statement captured in this synthetic case.
 
 ### Nurse Workflow Cues
 
@@ -148,7 +148,7 @@ Purpose: Checks whether incomplete leakage intake keeps missing information visi
 
 ### Priority Review Statements
 
-- No priority review statement captured in this synthetic demo.
+- No priority review statement captured in this synthetic case.
 
 ### Nurse Workflow Cues
 
@@ -190,9 +190,10 @@ Purpose: Checks whether frequency/nocturia details stay short while still surfac
 
 1. Load this case from the synthetic scenario rail.
 2. Confirm source and main concern: Patient self-filled; Recurrent infection concern.
-3. Confirm active conditional modules: storage, pain, medication.
-4. Open Repair and confirm status: MVP fields complete for clinician review.
-5. Open Review and compare the patient-reported pattern against the clinician summary panel.
+3. Confirm the patient/family page has no nurse, clinician, visit-packet, or reviewer links.
+4. Confirm active conditional modules: storage, pain, medication.
+5. Open the nurse workbench and confirm status: MVP fields complete for clinician review.
+6. Compare the clinician summary against the patient-reported pattern and source notes.
 
 ### Expected Summary State
 
@@ -208,7 +209,7 @@ Purpose: Checks whether frequency/nocturia details stay short while still surfac
 ### Nurse Workflow Cues
 
 - Bladder diary instruction may be relevant if clinic workflow supports it.
-- Medication list may need nurse-assisted review.
+- Medication list may need nurse review or supplemental confirmation.
 - Priority review statements should be visible before the clinician encounter.
 
 ### Missing Information

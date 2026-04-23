@@ -32,7 +32,7 @@ const LABELS = {
   No: "沒有",
   "Not sure": "不確定",
   "No required MVP fields missing.": "目前沒有必補欄位。",
-  "No priority review statement captured in this synthetic demo.": "目前沒有需特別標示的回報。"
+  "No priority review statement captured in this synthetic case.": "目前沒有需特別標示的回報。"
 };
 
 function escapeHtml(value) {

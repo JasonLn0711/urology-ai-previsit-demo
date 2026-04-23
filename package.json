@@ -2,7 +2,7 @@
   "name": "urology-ai-previsit-demo",
   "version": "0.1.0",
   "private": true,
-  "description": "Static browser MVP for a synthetic-data urology AI previsit discovery demo.",
+  "description": "Static browser v1 MVP product preview for synthetic-data urology AI previsit workflows.",
   "scripts": {
     "start": "python3 -m http.server 4173",
     "rehearsal": "node scripts/generate-workflow-rehearsal.js",
