@@ -110,17 +110,16 @@ const YES_NO_UNSURE = [
 ];
 
 const BOTHER_OPTIONS = [
-  ["0", "0 不困擾"],
   ["1", "1"],
   ["2", "2"],
   ["3", "3"],
   ["4", "4"],
-  ["5", "5 中等困擾"],
+  ["5", "5"],
   ["6", "6"],
   ["7", "7"],
   ["8", "8"],
   ["9", "9"],
-  ["10", "10 非常困擾"],
+  ["10", "10"],
   ["Not sure", "不確定"]
 ];
 
@@ -236,7 +235,7 @@ const PATIENT_MISSING_PROMPTS = {
   filledBy: ["先確認誰在回答", "這樣可以分清楚本人感受和家人觀察。"],
   chiefConcern: ["選一個今天最想先說的問題", "先抓主要困擾，後面才不會問太多不相關的問題。"],
   duration: ["補一下大約開始時間", "不知道精確日期也沒關係，選大概區間即可。"],
-  botherScore: ["選一個困擾程度", "0 是不困擾，10 是非常困擾。"],
+  botherScore: ["選一個困擾程度", "1 是很輕微，10 是非常困擾。"],
   daytimeFrequencyChange: ["白天尿尿次數有沒有變多？", "若不確定，可以選不確定。"],
   nocturiaCount: ["晚上睡著後通常起床尿尿幾次？", "只算睡著後又起床的次數。"],
   urgency: ["會不會突然很想尿、很難忍？", "用自己的感覺回答即可。"],
@@ -320,7 +319,7 @@ const STEPS = [
       {
         field: "botherScore",
         label: "目前對生活造成多大困擾？",
-        type: "select",
+        type: "scale",
         options: BOTHER_OPTIONS
       },
       {
@@ -963,7 +962,7 @@ function isAutoAdvanceQuestion() {
   if (stepSupportsQuestionFlow(step)) {
     const items = questionFlowItems(step);
     const item = items[currentQuestionIndex(step, items)];
-    return item && item.field.type === "select";
+    return item && (item.field.type === "select" || item.field.type === "scale");
   }
   return false;
 }
@@ -1139,6 +1138,54 @@ function renderField(field, options = {}) {
           }).join("")}
         </div>
       </fieldset>
+    `;
+  }
+
+  if (field.type === "scale") {
+    const numericOptions = field.options
+      .map(optionSpec)
+      .filter((item) => /^\d+$/.test(String(item.value)));
+    const unsureOption = field.options.map(optionSpec).find((item) => item.value === "Not sure");
+    return `
+      <div class="scale-answer" role="group" aria-label="${escapeHtml(field.label)}">
+        <div class="scale-endpoints" aria-hidden="true">
+          <span>1 很輕微</span>
+          <span>5 中等</span>
+          <span>10 非常困擾</span>
+        </div>
+        <div class="scale-grid">
+          ${numericOptions.map((item) => {
+            const level = Number(item.value);
+            const hue = Math.round(178 - ((level - 1) * 12));
+            const ring = `hsl(${hue} 60% 42%)`;
+            const soft = `hsl(${hue} 74% 92%)`;
+            const ink = level >= 8 ? "#6d1738" : level >= 6 ? "#604010" : "#0d4f49";
+            return `
+              <button
+                class="scale-button"
+                style="--scale-ring: ${ring}; --scale-soft: ${soft}; --scale-ink: ${ink};"
+                type="button"
+                data-option-field="${escapeHtml(field.field)}"
+                data-option-value="${escapeHtml(item.value)}"
+                data-auto-advance="${autoAdvance ? "true" : "false"}"
+                aria-pressed="${answers[field.field] === item.value ? "true" : "false"}">
+                <strong class="scale-number">${escapeHtml(item.label)}</strong>
+              </button>
+            `;
+          }).join("")}
+        </div>
+        ${unsureOption ? `
+          <button
+            class="scale-unsure-button"
+            type="button"
+            data-option-field="${escapeHtml(field.field)}"
+            data-option-value="${escapeHtml(unsureOption.value)}"
+            data-auto-advance="${autoAdvance ? "true" : "false"}"
+            aria-pressed="${answers[field.field] === unsureOption.value ? "true" : "false"}">
+            ${escapeHtml(unsureOption.label)}
+          </button>
+        ` : ""}
+      </div>
     `;
   }
 

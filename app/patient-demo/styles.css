@@ -624,6 +624,83 @@ h4 {
   font-size: 1rem;
 }
 
+.scale-answer {
+  display: grid;
+  gap: 12px;
+}
+
+.scale-endpoints {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.scale-endpoints span:nth-child(2) {
+  text-align: center;
+}
+
+.scale-endpoints span:last-child {
+  text-align: right;
+}
+
+.scale-grid {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(64px, 1fr));
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.scale-button {
+  min-height: 104px;
+  border: 2px solid var(--scale-ring);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.18)),
+    var(--scale-soft);
+  color: var(--scale-ink);
+  cursor: pointer;
+  box-shadow: inset 0 -8px 0 rgba(255, 255, 255, 0.32);
+  transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.scale-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px rgba(23, 33, 29, 0.12), inset 0 -8px 0 rgba(255, 255, 255, 0.3);
+}
+
+.scale-button[aria-pressed="true"] {
+  background: var(--scale-ring);
+  color: white;
+  box-shadow: 0 16px 30px rgba(23, 33, 29, 0.16), inset 0 0 0 3px rgba(255, 255, 255, 0.52);
+}
+
+.scale-number {
+  display: block;
+  font-size: clamp(2rem, 3vw, 2.85rem);
+  line-height: 1;
+}
+
+.scale-unsure-button {
+  min-height: 58px;
+  justify-self: start;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 12px 18px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.scale-unsure-button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
 :root.large-text .option-button,
 :root.large-text .scenario-button,
 :root.large-text .repair-item {
@@ -632,6 +709,10 @@ h4 {
 
 :root.large-text .elder-choice-button {
   min-height: 132px;
+}
+
+:root.large-text .scale-button {
+  min-height: 124px;
 }
 
 :root.large-text .field textarea,
