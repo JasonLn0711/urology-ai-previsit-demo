@@ -10,7 +10,7 @@ const root = path.resolve(__dirname, "..", "..");
 const logDir = path.join(root, "experiments", "phase1", "logs");
 
 function nowIso() {
-  return new Date().toISOString();
+  return process.env.UROLOGY_PREVISIT_EXPERIMENT_TIMESTAMP || "2026-04-23T00:00:00.000Z";
 }
 
 function experimentLog(sampleCase) {

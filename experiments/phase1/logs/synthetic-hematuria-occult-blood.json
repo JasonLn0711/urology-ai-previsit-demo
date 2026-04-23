@@ -1,7 +1,7 @@
 {
   "experiment": "phase1",
   "case_id": "synthetic-hematuria-occult-blood",
-  "created_at": "2026-04-23T10:01:40.187Z",
+  "created_at": "2026-04-23T00:00:00.000Z",
   "raw_case": {
     "id": "synthetic-hematuria-occult-blood",
     "label": "Synthetic case: visible blood / health-check occult blood",
