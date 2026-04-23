@@ -182,6 +182,12 @@
   };
 
   function answer(value) {
+    if (Array.isArray(value)) {
+      return value
+        .map((item) => (typeof item === "string" ? item.trim() : ""))
+        .filter(Boolean)
+        .join(", ");
+    }
     if (typeof value !== "string") return "";
     return value.trim();
   }
@@ -192,7 +198,7 @@
 
   function listValue(value) {
     if (Array.isArray(value)) {
-      return value.map((item) => answer(item)).filter(Boolean);
+      return value.map((item) => (typeof item === "string" ? item.trim() : "")).filter(Boolean);
     }
     const single = answer(value);
     return single ? [single] : [];
