@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>護理補問工作台</title>
-    <link rel="stylesheet" href="../patient-demo/styles.css">
+    <link rel="stylesheet" href="../shared/styles.css">
   </head>
   <body>
     <header class="topbar" aria-label="護理補問工作台">
-      <a class="brand" href="../patient-demo/">
+      <a class="brand" href="../patient/">
         <span class="brand-mark" aria-hidden="true"></span>
         <span>
           <strong>護理補問工作台</strong>
@@ -16,9 +16,9 @@
         </span>
       </a>
       <nav class="nav-actions" aria-label="工作入口">
-        <a class="ghost-button link-button" href="../patient-demo/">病人/家屬端</a>
-        <a class="ghost-button link-button" href="../clinician-summary/">醫師摘要</a>
-        <a class="ghost-button link-button" href="../visit-packet/">資料包</a>
+        <a class="ghost-button link-button" href="../patient/">病人/家屬端</a>
+        <a class="ghost-button link-button" href="../clinician/">醫師摘要</a>
+        <a class="ghost-button link-button" href="../clinician/visit-packet/">資料包</a>
         <button class="ghost-button" id="loadIncomplete" type="button">載入缺漏示範</button>
       </nav>
     </header>
@@ -33,7 +33,7 @@
           </p>
         </div>
         <div class="brief-visual" aria-hidden="true">
-          <img src="../../assets/bladder-flow.svg" alt="">
+          <img src="../shared/assets/bladder-flow.svg" alt="">
         </div>
       </section>
 
@@ -85,7 +85,13 @@
 
     <div class="toast" id="toast" role="status" hidden></div>
 
+    <script src="../../core/safety/index.js"></script>
+    <script src="../../core/attribution/index.js"></script>
+    <script src="../../core/missing_fields/index.js"></script>
+    <script src="../../core/summary/index.js"></script>
+    <script src="../../core/role_transform/index.js"></script>
     <script src="../shared/summary.js"></script>
+    <script src="../../data/synthetic_cases/index.js"></script>
     <script src="../shared/cases.js"></script>
     <script src="./nurse.js"></script>
   </body>

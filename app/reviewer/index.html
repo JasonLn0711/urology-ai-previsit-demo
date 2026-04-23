@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Reviewer Workbench</title>
-    <link rel="stylesheet" href="../patient-demo/styles.css">
+    <link rel="stylesheet" href="../shared/styles.css">
   </head>
   <body>
     <header class="topbar" aria-label="Reviewer header">
-      <a class="brand" href="../patient-demo/">
+      <a class="brand" href="../patient/">
         <span class="brand-mark" aria-hidden="true"></span>
         <span>
           <strong>Urology AI Previsit</strong>
@@ -16,9 +16,9 @@
         </span>
       </a>
       <nav class="nav-actions" aria-label="Reviewer navigation">
-        <a class="ghost-button link-button" href="../patient-demo/">Patient/family intake</a>
-        <a class="ghost-button link-button" href="../review-packet/">Review Packet</a>
-        <a class="ghost-button link-button" href="../clinician-summary/">Summary View</a>
+        <a class="ghost-button link-button" href="../patient/">Patient/family intake</a>
+        <a class="ghost-button link-button" href="../reviewer/packet/">Review Packet</a>
+        <a class="ghost-button link-button" href="../clinician/">Summary View</a>
       </nav>
     </header>
 
@@ -28,11 +28,11 @@
           <p class="eyebrow">Meeting decision capture</p>
           <h1 id="workbench-title">Reviewer workbench</h1>
           <p class="lead">
-            Convert clinician feedback into a continue, revise, narrow, or pause record without adding clinical decision behavior.
+            Convert clinician feedback into a continue, revise, or stop record without adding clinical decision behavior.
           </p>
         </div>
         <div class="brief-visual" aria-hidden="true">
-          <img src="../../assets/bladder-flow.svg" alt="">
+          <img src="../shared/assets/bladder-flow.svg" alt="">
         </div>
       </section>
 
@@ -56,7 +56,7 @@
           </div>
           <div class="rail-section boundary-note">
             <p class="eyebrow">Choices</p>
-            <p><strong>Continue</strong> means useful and bounded. <strong>Revise</strong> means the idea fits but needs redesign. <strong>Narrow</strong> means only a smaller use case fits. <strong>Pause</strong> means no safe workflow value yet.</p>
+            <p><strong>Continue</strong> means useful and bounded. <strong>Revise</strong> means the idea fits but needs redesign. <strong>Stop</strong> means no safe workflow value yet.</p>
           </div>
         </aside>
 
@@ -197,18 +197,17 @@
                   <option value="">Use decision guide</option>
                   <option value="continue">Continue</option>
                   <option value="revise">Revise</option>
-                  <option value="narrow">Narrow</option>
-                  <option value="pause">Pause</option>
+                  <option value="stop">Stop</option>
                 </select>
               </label>
               <label>
                 Smallest next artifact
                 <select data-review-field="nextArtifact">
                   <option value="">Choose one</option>
-                  <option value="Revised question tree">Revised question tree</option>
-                  <option value="One-page summary mockup">One-page summary mockup</option>
-                  <option value="Assisted workflow test">Assisted workflow test</option>
-                  <option value="Pause note with rejected assumptions">Pause note with rejected assumptions</option>
+                  <option value="Question tree revision">Question tree revision</option>
+                  <option value="One-page summary revision">One-page summary revision</option>
+                  <option value="Workflow evidence memo">Workflow evidence memo</option>
+                  <option value="Stop memo with removed assumptions">Stop memo with removed assumptions</option>
                 </select>
               </label>
             </fieldset>
@@ -238,6 +237,11 @@
 
     <div class="toast" id="toast" role="status" hidden></div>
 
+    <script src="../../core/safety/index.js"></script>
+    <script src="../../core/attribution/index.js"></script>
+    <script src="../../core/missing_fields/index.js"></script>
+    <script src="../../core/summary/index.js"></script>
+    <script src="../../core/role_transform/index.js"></script>
     <script src="../shared/review.js"></script>
     <script src="./reviewer.js"></script>
   </body>

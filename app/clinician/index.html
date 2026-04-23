@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>看診前醫師摘要</title>
-    <link rel="stylesheet" href="../patient-demo/styles.css">
+    <link rel="stylesheet" href="../shared/styles.css">
   </head>
   <body>
     <header class="topbar" aria-label="醫師摘要頁">
-      <a class="brand" href="../patient-demo/">
+      <a class="brand" href="../patient/">
         <span class="brand-mark" aria-hidden="true"></span>
         <span>
           <strong>看診前醫師摘要</strong>
@@ -16,9 +16,9 @@
         </span>
       </a>
       <nav class="nav-actions" aria-label="工作入口">
-        <a class="ghost-button link-button" href="../patient-demo/">病人/家屬端</a>
-        <a class="ghost-button link-button" href="../nurse-workbench/">護理補問</a>
-        <a class="ghost-button link-button" href="../visit-packet/">資料包</a>
+        <a class="ghost-button link-button" href="../patient/">病人/家屬端</a>
+        <a class="ghost-button link-button" href="../nurse/">護理補問</a>
+        <a class="ghost-button link-button" href="./visit-packet/">資料包</a>
         <button class="ghost-button" id="loadSample" type="button">載入示範</button>
         <button class="ghost-button" id="printSummary" type="button">列印</button>
       </nav>
@@ -34,7 +34,7 @@
           </p>
         </div>
         <div class="brief-visual" aria-hidden="true">
-          <img src="../../assets/bladder-flow.svg" alt="">
+          <img src="../shared/assets/bladder-flow.svg" alt="">
         </div>
       </section>
 
@@ -76,7 +76,13 @@
 
     <div class="toast" id="toast" role="status" hidden></div>
 
+    <script src="../../core/safety/index.js"></script>
+    <script src="../../core/attribution/index.js"></script>
+    <script src="../../core/missing_fields/index.js"></script>
+    <script src="../../core/summary/index.js"></script>
+    <script src="../../core/role_transform/index.js"></script>
     <script src="../shared/summary.js"></script>
+    <script src="../../data/synthetic_cases/index.js"></script>
     <script src="../shared/cases.js"></script>
     <script src="./clinician.js"></script>
   </body>

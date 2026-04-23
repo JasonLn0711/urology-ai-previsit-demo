@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reviewer Packet</title>
+    <link rel="stylesheet" href="../../shared/styles.css">
+  </head>
+  <body>
+    <header class="topbar" aria-label="Reviewer packet header">
+      <a class="brand" href="../../patient/">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>
+          <strong>Urology AI Previsit</strong>
+          <small>evidence review packet</small>
+        </span>
+      </a>
+      <nav class="nav-actions" aria-label="Reviewer packet navigation">
+        <a class="ghost-button link-button" href="../../patient/">Patient</a>
+        <a class="ghost-button link-button" href="../../nurse/">Nurse</a>
+        <a class="ghost-button link-button" href="../../clinician/">Clinician</a>
+        <a class="ghost-button link-button" href="../../clinician/visit-packet/">Visit Packet</a>
+        <a class="ghost-button link-button" href="../">Reviewer</a>
+      </nav>
+    </header>
+
+    <main class="app-shell">
+      <section class="mvp-brief" aria-labelledby="packet-title">
+        <div>
+          <p class="eyebrow">Reviewer entrypoint</p>
+          <h1 id="packet-title">Evidence review packet</h1>
+          <p class="lead">
+            Judge whether the workflow should continue, be revised, or stop based on synthetic case evidence, not demo polish.
+          </p>
+        </div>
+        <div class="brief-visual" aria-hidden="true">
+          <img src="../../shared/assets/bladder-flow.svg" alt="">
+        </div>
+      </section>
+
+      <section class="safety-strip" role="note" aria-label="Review boundaries">
+        <span>Synthetic data only.</span>
+        <span>No diagnosis, triage, or treatment advice.</span>
+        <span>Physician review remains required.</span>
+      </section>
+
+      <section class="workspace packet-workspace" aria-label="Evidence review packet workspace">
+        <aside class="case-rail">
+          <div class="rail-section">
+            <p class="eyebrow">Review sequence</p>
+            <h2>Run in order</h2>
+            <ol class="gate-list">
+              <li>Open the patient intake.</li>
+              <li>Load a synthetic case.</li>
+              <li>Inspect nurse missing-field repair.</li>
+              <li>Inspect clinician summary and visit packet.</li>
+              <li>Run `npm run experiment:phase1`.</li>
+              <li>Capture reviewer feedback and complete the scorecard.</li>
+            </ol>
+          </div>
+
+          <div class="rail-section boundary-note">
+            <p class="eyebrow">Stop immediately</p>
+            <p>Revise before continuing if any screen implies diagnosis, triage, treatment, real patient-data use, or hidden missing information.</p>
+          </div>
+        </aside>
+
+        <section class="intake-panel" aria-labelledby="artifact-title">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Artifacts</p>
+              <h2 id="artifact-title">What to inspect</h2>
+            </div>
+          </div>
+
+          <div class="packet-stack">
+            <section class="summary-section">
+              <h3>Role surfaces</h3>
+              <div class="packet-link-list">
+                <a href="../../patient/">Patient/family intake</a>
+                <a href="../../nurse/">Nurse checklist</a>
+                <a href="../../clinician/">Clinician summary</a>
+                <a href="../../clinician/visit-packet/">Visit packet</a>
+                <a href="../">Reviewer decision</a>
+              </div>
+            </section>
+
+            <section class="summary-section">
+              <h3>Decision documents</h3>
+              <div class="packet-link-list">
+                <a href="../../../docs/product/README.md">Product boundary</a>
+                <a href="../../../docs/safety/README.md">Safety boundary</a>
+                <a href="../../../docs/workflow/README.md">Workflow contract</a>
+                <a href="../../../docs/research/README.md">Research process</a>
+                <a href="../../../docs/reviews/README.md">Review process</a>
+                <a href="../../../experiments/phase1/plan.md">Phase 1 plan</a>
+                <a href="../../../experiments/phase1/scorecard.md">Scorecard</a>
+                <a href="../../../experiments/phase1/decision-memo.md">Decision memo</a>
+              </div>
+            </section>
+
+            <section class="summary-section">
+              <h3>Decision frame</h3>
+              <dl class="review-grid">
+                <div class="review-row">
+                  <dt>Continue</dt>
+                  <dd>Evidence supports another prototype cycle within the same safety boundary.</dd>
+                </div>
+                <div class="review-row">
+                  <dt>Revise</dt>
+                  <dd>Workflow value exists, but wording, missing-field repair, role fit, or burden needs repair.</dd>
+                </div>
+                <div class="review-row">
+                  <dt>Stop</dt>
+                  <dd>No safe or useful workflow value is demonstrated.</dd>
+                </div>
+              </dl>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

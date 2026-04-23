@@ -1244,13 +1244,12 @@ pre.summary-body {
   background: var(--accent-soft);
 }
 
-.decision-banner.pause {
+.decision-banner.stop {
   border-color: rgba(155, 63, 56, 0.35);
   background: var(--danger-soft);
 }
 
-.decision-banner.revise,
-.decision-banner.narrow {
+.decision-banner.revise {
   border-color: rgba(197, 139, 43, 0.38);
   background: var(--amber-soft);
 }
