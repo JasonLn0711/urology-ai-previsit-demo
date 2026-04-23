@@ -1,0 +1,481 @@
+{
+  "experiment": "phase1",
+  "case_id": "synthetic-incomplete-leakage",
+  "created_at": "2026-04-23T10:01:40.186Z",
+  "raw_case": {
+    "id": "synthetic-incomplete-leakage",
+    "label": "Synthetic case: incomplete leakage intake",
+    "shortLabel": "漏尿但資料不完整",
+    "meta": "會示範自動找缺漏",
+    "answers": {
+      "filledBy": "Family or helper-assisted",
+      "chiefConcern": "Leakage",
+      "duration": "",
+      "botherScore": "4",
+      "daytimeFrequencyChange": "",
+      "nocturiaCount": "Not sure",
+      "urgency": "Not sure",
+      "leakage": "Yes",
+      "painBurning": "",
+      "visibleBlood": "No",
+      "unableToUrinate": "No",
+      "systemicSymptoms": [],
+      "medicationListStatus": "",
+      "leakageFrequency": "Weekly",
+      "leakageAmount": "",
+      "leakageTriggers": [
+        "Before reaching toilet"
+      ],
+      "containmentProducts": "Pads or liners",
+      "language": "Taiwanese",
+      "deviceComfort": "Prefer staff help",
+      "supportPreference": "Family-assisted mode",
+      "notes": "Helper says the patient is embarrassed to discuss leakage."
+    }
+  },
+  "system_output": {
+    "patient_input": {
+      "filledBy": "Family or helper-assisted",
+      "chiefConcern": "Leakage",
+      "duration": "",
+      "botherScore": "4",
+      "daytimeFrequencyChange": "",
+      "nocturiaCount": "Not sure",
+      "urgency": "Not sure",
+      "leakage": "Yes",
+      "painBurning": "",
+      "visibleBlood": "No",
+      "unableToUrinate": "No",
+      "systemicSymptoms": [],
+      "medicationListStatus": "",
+      "leakageFrequency": "Weekly",
+      "leakageAmount": "",
+      "leakageTriggers": [
+        "Before reaching toilet"
+      ],
+      "containmentProducts": "Pads or liners",
+      "language": "Taiwanese",
+      "deviceComfort": "Prefer staff help",
+      "supportPreference": "Family-assisted mode",
+      "notes": "Helper says the patient is embarrassed to discuss leakage."
+    },
+    "derived_summary": {
+      "completionStatus": {
+        "completed": 11,
+        "total": 17,
+        "missingCount": 6,
+        "label": "6 MVP fields still missing",
+        "tone": "needs-review"
+      },
+      "activeModules": [
+        "leakage"
+      ],
+      "intakeMode": "Family or helper-assisted",
+      "chiefConcern": "Leakage",
+      "symptomPattern": "Leakage: past 4 weeks: Yes; frequency: Weekly; triggers: Before reaching toilet; containment: Pads or liners",
+      "durationBother": "Duration not provided / bother score 4/10",
+      "clinicianReviewFlags": [
+        "No priority review statement captured in this synthetic case."
+      ],
+      "missingInformation": [
+        "symptom duration",
+        "daytime urination change",
+        "pain or burning with urination",
+        "fever, chills, or side/back pain",
+        "medication list readiness",
+        "leakage amount"
+      ],
+      "nurseCues": [
+        "Completion support may be needed before clinician review.",
+        "Some core answers are marked not sure; staff may need to clarify them before clinician review.",
+        "Containment product or leakage-support needs should remain visible to staff."
+      ],
+      "patientConstraints": [
+        "Family or helper-assisted",
+        "Taiwanese",
+        "Prefer staff help",
+        "Family-assisted mode"
+      ],
+      "medicines": "Not provided",
+      "patientNote": "Helper says the patient is embarrassed to discuss leakage.",
+      "sourceNotes": [
+        "本份資料含家屬/協助者參與；疼痛、急尿、困擾程度等主觀感受建議由本人確認。",
+        "有主觀感受欄位標示為家屬觀察；建議現場由本人確認疼痛、急尿、困擾程度或尿不出來感受。"
+      ],
+      "fieldSources": [
+        {
+          "field": "filledBy",
+          "source": "declared_on_entry",
+          "label": "填答開始時標記"
+        },
+        {
+          "field": "chiefConcern",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "botherScore",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "nocturiaCount",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "urgency",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "leakage",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "visibleBlood",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "unableToUrinate",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "leakageFrequency",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "leakageTriggers",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "containmentProducts",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "language",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "deviceComfort",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "supportPreference",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "notes",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        }
+      ],
+      "sourceAttributionSummary": [
+        "填答開始時標記: 1",
+        "家屬/協助者觀察: 14"
+      ],
+      "attribution": {
+        "field_sources": [
+          {
+            "field": "filledBy",
+            "source": "declared_on_entry",
+            "label": "填答開始時標記"
+          },
+          {
+            "field": "chiefConcern",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "botherScore",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "nocturiaCount",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "urgency",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "leakage",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "visibleBlood",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "unableToUrinate",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "leakageFrequency",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "leakageTriggers",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "containmentProducts",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "language",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "deviceComfort",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "supportPreference",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          },
+          {
+            "field": "notes",
+            "source": "family_observation",
+            "label": "家屬/協助者觀察"
+          }
+        ],
+        "source_summary": [
+          "填答開始時標記: 1",
+          "家屬/協助者觀察: 14"
+        ],
+        "source_notes": [
+          "本份資料含家屬/協助者參與；疼痛、急尿、困擾程度等主觀感受建議由本人確認。",
+          "有主觀感受欄位標示為家屬觀察；建議現場由本人確認疼痛、急尿、困擾程度或尿不出來感受。"
+        ]
+      },
+      "handoffNote": "Patient-provided or helper-provided answers; clinician review required.",
+      "rawAnswers": {
+        "filledBy": "Family or helper-assisted",
+        "chiefConcern": "Leakage",
+        "duration": "",
+        "botherScore": "4",
+        "daytimeFrequencyChange": "",
+        "nocturiaCount": "Not sure",
+        "urgency": "Not sure",
+        "leakage": "Yes",
+        "painBurning": "",
+        "visibleBlood": "No",
+        "unableToUrinate": "No",
+        "systemicSymptoms": [],
+        "medicationListStatus": "",
+        "leakageFrequency": "Weekly",
+        "leakageAmount": "",
+        "leakageTriggers": [
+          "Before reaching toilet"
+        ],
+        "containmentProducts": "Pads or liners",
+        "language": "Taiwanese",
+        "deviceComfort": "Prefer staff help",
+        "supportPreference": "Family-assisted mode",
+        "notes": "Helper says the patient is embarrassed to discuss leakage."
+      },
+      "safetyNotice": [
+        "This v1 local product preview is not for clinical use.",
+        "It does not diagnose, triage, recommend treatment, or place exam orders.",
+        "A clinician must review all information.",
+        "Use synthetic data only.",
+        "Regulatory status is not determined."
+      ],
+      "requiresPhysicianReview": true,
+      "reviewRequiredLabel": "Requires physician review before clinical use."
+    },
+    "missing_fields": [
+      {
+        "field": "duration",
+        "label": "symptom duration"
+      },
+      {
+        "field": "daytimeFrequencyChange",
+        "label": "daytime urination change"
+      },
+      {
+        "field": "painBurning",
+        "label": "pain or burning with urination"
+      },
+      {
+        "field": "systemicSymptoms",
+        "label": "fever, chills, or side/back pain"
+      },
+      {
+        "field": "medicationListStatus",
+        "label": "medication list readiness"
+      },
+      {
+        "field": "leakageAmount",
+        "label": "leakage amount"
+      }
+    ],
+    "attribution": {
+      "field_sources": [
+        {
+          "field": "filledBy",
+          "source": "declared_on_entry",
+          "label": "填答開始時標記"
+        },
+        {
+          "field": "chiefConcern",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "botherScore",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "nocturiaCount",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "urgency",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "leakage",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "visibleBlood",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "unableToUrinate",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "leakageFrequency",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "leakageTriggers",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "containmentProducts",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "language",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "deviceComfort",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "supportPreference",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        },
+        {
+          "field": "notes",
+          "source": "family_observation",
+          "label": "家屬/協助者觀察"
+        }
+      ],
+      "source_summary": [
+        "填答開始時標記: 1",
+        "家屬/協助者觀察: 14"
+      ],
+      "source_notes": [
+        "本份資料含家屬/協助者參與；疼痛、急尿、困擾程度等主觀感受建議由本人確認。",
+        "有主觀感受欄位標示為家屬觀察；建議現場由本人確認疼痛、急尿、困擾程度或尿不出來感受。"
+      ]
+    },
+    "audit_trace": [
+      {
+        "event": "patient_input_received",
+        "source": "synthetic_or_local_storage",
+        "fields_present": [
+          "filledBy",
+          "chiefConcern",
+          "duration",
+          "botherScore",
+          "daytimeFrequencyChange",
+          "nocturiaCount",
+          "urgency",
+          "leakage",
+          "painBurning",
+          "visibleBlood",
+          "unableToUrinate",
+          "systemicSymptoms",
+          "medicationListStatus",
+          "leakageFrequency",
+          "leakageAmount",
+          "leakageTriggers",
+          "containmentProducts",
+          "language",
+          "deviceComfort",
+          "supportPreference",
+          "notes"
+        ]
+      },
+      {
+        "event": "summary_generated",
+        "source": "core/summary",
+        "requires_physician_review": true
+      },
+      {
+        "event": "missing_fields_detected",
+        "source": "core/missing_fields",
+        "missing_count": 6
+      },
+      {
+        "event": "source_attribution_applied",
+        "source": "core/attribution",
+        "attributed_field_count": 15
+      },
+      {
+        "event": "safety_checked",
+        "source": "core/safety",
+        "no_diagnosis_or_treatment_claims": true
+      }
+    ]
+  },
+  "human_feedback": {
+    "reviewer_role": "",
+    "time_saved_minutes": null,
+    "missing_field_reduction": null,
+    "clinician_trust_score": null,
+    "notes": ""
+  },
+  "failure_points": [],
+  "decision_state": "pending_human_review"
+}

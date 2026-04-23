@@ -1,0 +1,611 @@
+{
+  "experiment": "phase1",
+  "case_id": "synthetic-frequency-older-adult",
+  "created_at": "2026-04-23T10:01:40.185Z",
+  "raw_case": {
+    "id": "synthetic-frequency-older-adult",
+    "label": "Synthetic case: frequent urination at night",
+    "shortLabel": "晚上常起床尿尿",
+    "meta": "會啟動夜尿/急尿補問",
+    "answers": {
+      "filledBy": "Patient self-filled",
+      "chiefConcern": "Frequency / nocturia / urgency",
+      "duration": "More than 1 month",
+      "botherScore": "7",
+      "daytimeFrequencyChange": "Yes",
+      "nocturiaCount": "3 or more times",
+      "urgency": "Yes",
+      "leakage": "No",
+      "painBurning": "No",
+      "visibleBlood": "No",
+      "unableToUrinate": "No",
+      "systemicSymptoms": [
+        "None of these"
+      ],
+      "medicationListStatus": "Partial list only",
+      "daytimeFrequencyCount": "9 to 12 times",
+      "urgencyFrequency": "Most days",
+      "fluidCaffeineContext": [
+        "Caffeinated drinks most days",
+        "Drinks a lot near bedtime"
+      ],
+      "bladderDiaryFeasible": "Yes, with written instructions",
+      "medicationAssist": "Yes",
+      "relevantComorbidities": [
+        "Not sure"
+      ],
+      "diureticAnticoagulantAwareness": "Not sure",
+      "language": "Mandarin with Taiwanese preferred",
+      "deviceComfort": "Needs large buttons",
+      "supportPreference": "Needs staff help",
+      "notes": "Patient worries about waking up repeatedly at night."
+    }
+  },
+  "system_output": {
+    "patient_input": {
+      "filledBy": "Patient self-filled",
+      "chiefConcern": "Frequency / nocturia / urgency",
+      "duration": "More than 1 month",
+      "botherScore": "7",
+      "daytimeFrequencyChange": "Yes",
+      "nocturiaCount": "3 or more times",
+      "urgency": "Yes",
+      "leakage": "No",
+      "painBurning": "No",
+      "visibleBlood": "No",
+      "unableToUrinate": "No",
+      "systemicSymptoms": [
+        "None of these"
+      ],
+      "medicationListStatus": "Partial list only",
+      "daytimeFrequencyCount": "9 to 12 times",
+      "urgencyFrequency": "Most days",
+      "fluidCaffeineContext": [
+        "Caffeinated drinks most days",
+        "Drinks a lot near bedtime"
+      ],
+      "bladderDiaryFeasible": "Yes, with written instructions",
+      "medicationAssist": "Yes",
+      "relevantComorbidities": [
+        "Not sure"
+      ],
+      "diureticAnticoagulantAwareness": "Not sure",
+      "language": "Mandarin with Taiwanese preferred",
+      "deviceComfort": "Needs large buttons",
+      "supportPreference": "Needs staff help",
+      "notes": "Patient worries about waking up repeatedly at night."
+    },
+    "derived_summary": {
+      "completionStatus": {
+        "completed": 20,
+        "total": 20,
+        "missingCount": 0,
+        "label": "MVP fields complete for clinician review",
+        "tone": "ready"
+      },
+      "activeModules": [
+        "storage",
+        "medication"
+      ],
+      "intakeMode": "Patient self-filled",
+      "chiefConcern": "Frequency / nocturia / urgency",
+      "symptomPattern": "Storage: daytime change: Yes; daytime count: 9 to 12 times; night count: 3 or more times; urgency: Yes; urgency frequency: Most days; fluid/caffeine context: Caffeinated drinks most days, Drinks a lot near bedtime; diary feasibility: Yes, with written instructions",
+      "durationBother": "More than 1 month / bother score 7/10",
+      "clinicianReviewFlags": [
+        "No priority review statement captured in this synthetic case."
+      ],
+      "missingInformation": [
+        "No required MVP fields missing."
+      ],
+      "nurseCues": [
+        "Completion support may be needed before clinician review.",
+        "Bladder diary instruction may be relevant if clinic workflow supports it.",
+        "Medication list may need nurse review or supplemental confirmation."
+      ],
+      "patientConstraints": [
+        "Patient self-filled",
+        "Mandarin with Taiwanese preferred",
+        "Needs large buttons",
+        "Needs staff help"
+      ],
+      "medicines": "list readiness: Partial list only; review support: Yes; patient-reported context: Not sure; diuretic/anticoagulant awareness: Not sure",
+      "patientNote": "Patient worries about waking up repeatedly at night.",
+      "sourceNotes": [
+        "資料來源標示為本人回答；若仍有不確定答案，可由現場人員補問。"
+      ],
+      "fieldSources": [
+        {
+          "field": "filledBy",
+          "source": "declared_on_entry",
+          "label": "填答開始時標記"
+        },
+        {
+          "field": "chiefConcern",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "duration",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "botherScore",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "daytimeFrequencyChange",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "nocturiaCount",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "urgency",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "leakage",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "painBurning",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "visibleBlood",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "unableToUrinate",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "systemicSymptoms",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "medicationListStatus",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "daytimeFrequencyCount",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "urgencyFrequency",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "fluidCaffeineContext",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "bladderDiaryFeasible",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "medicationAssist",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "relevantComorbidities",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "diureticAnticoagulantAwareness",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "language",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "deviceComfort",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "supportPreference",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "notes",
+          "source": "patient_self",
+          "label": "本人回答"
+        }
+      ],
+      "sourceAttributionSummary": [
+        "填答開始時標記: 1",
+        "本人回答: 23"
+      ],
+      "attribution": {
+        "field_sources": [
+          {
+            "field": "filledBy",
+            "source": "declared_on_entry",
+            "label": "填答開始時標記"
+          },
+          {
+            "field": "chiefConcern",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "duration",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "botherScore",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "daytimeFrequencyChange",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "nocturiaCount",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "urgency",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "leakage",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "painBurning",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "visibleBlood",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "unableToUrinate",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "systemicSymptoms",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "medicationListStatus",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "daytimeFrequencyCount",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "urgencyFrequency",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "fluidCaffeineContext",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "bladderDiaryFeasible",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "medicationAssist",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "relevantComorbidities",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "diureticAnticoagulantAwareness",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "language",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "deviceComfort",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "supportPreference",
+            "source": "patient_self",
+            "label": "本人回答"
+          },
+          {
+            "field": "notes",
+            "source": "patient_self",
+            "label": "本人回答"
+          }
+        ],
+        "source_summary": [
+          "填答開始時標記: 1",
+          "本人回答: 23"
+        ],
+        "source_notes": [
+          "資料來源標示為本人回答；若仍有不確定答案，可由現場人員補問。"
+        ]
+      },
+      "handoffNote": "Patient-provided or helper-provided answers; clinician review required.",
+      "rawAnswers": {
+        "filledBy": "Patient self-filled",
+        "chiefConcern": "Frequency / nocturia / urgency",
+        "duration": "More than 1 month",
+        "botherScore": "7",
+        "daytimeFrequencyChange": "Yes",
+        "nocturiaCount": "3 or more times",
+        "urgency": "Yes",
+        "leakage": "No",
+        "painBurning": "No",
+        "visibleBlood": "No",
+        "unableToUrinate": "No",
+        "systemicSymptoms": [
+          "None of these"
+        ],
+        "medicationListStatus": "Partial list only",
+        "daytimeFrequencyCount": "9 to 12 times",
+        "urgencyFrequency": "Most days",
+        "fluidCaffeineContext": [
+          "Caffeinated drinks most days",
+          "Drinks a lot near bedtime"
+        ],
+        "bladderDiaryFeasible": "Yes, with written instructions",
+        "medicationAssist": "Yes",
+        "relevantComorbidities": [
+          "Not sure"
+        ],
+        "diureticAnticoagulantAwareness": "Not sure",
+        "language": "Mandarin with Taiwanese preferred",
+        "deviceComfort": "Needs large buttons",
+        "supportPreference": "Needs staff help",
+        "notes": "Patient worries about waking up repeatedly at night."
+      },
+      "safetyNotice": [
+        "This v1 local product preview is not for clinical use.",
+        "It does not diagnose, triage, recommend treatment, or place exam orders.",
+        "A clinician must review all information.",
+        "Use synthetic data only.",
+        "Regulatory status is not determined."
+      ],
+      "requiresPhysicianReview": true,
+      "reviewRequiredLabel": "Requires physician review before clinical use."
+    },
+    "missing_fields": [],
+    "attribution": {
+      "field_sources": [
+        {
+          "field": "filledBy",
+          "source": "declared_on_entry",
+          "label": "填答開始時標記"
+        },
+        {
+          "field": "chiefConcern",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "duration",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "botherScore",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "daytimeFrequencyChange",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "nocturiaCount",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "urgency",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "leakage",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "painBurning",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "visibleBlood",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "unableToUrinate",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "systemicSymptoms",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "medicationListStatus",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "daytimeFrequencyCount",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "urgencyFrequency",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "fluidCaffeineContext",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "bladderDiaryFeasible",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "medicationAssist",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "relevantComorbidities",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "diureticAnticoagulantAwareness",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "language",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "deviceComfort",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "supportPreference",
+          "source": "patient_self",
+          "label": "本人回答"
+        },
+        {
+          "field": "notes",
+          "source": "patient_self",
+          "label": "本人回答"
+        }
+      ],
+      "source_summary": [
+        "填答開始時標記: 1",
+        "本人回答: 23"
+      ],
+      "source_notes": [
+        "資料來源標示為本人回答；若仍有不確定答案，可由現場人員補問。"
+      ]
+    },
+    "audit_trace": [
+      {
+        "event": "patient_input_received",
+        "source": "synthetic_or_local_storage",
+        "fields_present": [
+          "filledBy",
+          "chiefConcern",
+          "duration",
+          "botherScore",
+          "daytimeFrequencyChange",
+          "nocturiaCount",
+          "urgency",
+          "leakage",
+          "painBurning",
+          "visibleBlood",
+          "unableToUrinate",
+          "systemicSymptoms",
+          "medicationListStatus",
+          "daytimeFrequencyCount",
+          "urgencyFrequency",
+          "fluidCaffeineContext",
+          "bladderDiaryFeasible",
+          "medicationAssist",
+          "relevantComorbidities",
+          "diureticAnticoagulantAwareness",
+          "language",
+          "deviceComfort",
+          "supportPreference",
+          "notes"
+        ]
+      },
+      {
+        "event": "summary_generated",
+        "source": "core/summary",
+        "requires_physician_review": true
+      },
+      {
+        "event": "missing_fields_detected",
+        "source": "core/missing_fields",
+        "missing_count": 0
+      },
+      {
+        "event": "source_attribution_applied",
+        "source": "core/attribution",
+        "attributed_field_count": 24
+      },
+      {
+        "event": "safety_checked",
+        "source": "core/safety",
+        "no_diagnosis_or_treatment_claims": true
+      }
+    ]
+  },
+  "human_feedback": {
+    "reviewer_role": "",
+    "time_saved_minutes": null,
+    "missing_field_reduction": null,
+    "clinician_trust_score": null,
+    "notes": ""
+  },
+  "failure_points": [],
+  "decision_state": "pending_human_review"
+}

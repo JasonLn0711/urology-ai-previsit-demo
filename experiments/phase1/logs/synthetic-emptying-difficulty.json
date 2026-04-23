@@ -1,0 +1,621 @@
+{
+  "experiment": "phase1",
+  "case_id": "synthetic-emptying-difficulty",
+  "created_at": "2026-04-23T10:01:40.186Z",
+  "raw_case": {
+    "id": "synthetic-emptying-difficulty",
+    "label": "Synthetic case: difficulty emptying bladder",
+    "shortLabel": "尿不太出來",
+    "meta": "會啟動排尿困難補問",
+    "answers": {
+      "filledBy": "Family helped operate; patient answered",
+      "chiefConcern": "Difficulty emptying or weak stream",
+      "duration": "1 to 4 weeks",
+      "botherScore": "8",
+      "daytimeFrequencyChange": "No",
+      "nocturiaCount": "1 time",
+      "urgency": "No",
+      "leakage": "No",
+      "painBurning": "No",
+      "visibleBlood": "No",
+      "unableToUrinate": "Yes",
+      "currentlyUnableToUrinate": "No",
+      "systemicSymptoms": [
+        "None of these"
+      ],
+      "medicationListStatus": "Not sure",
+      "weakStream": "Yes",
+      "straining": "Yes",
+      "intermittency": "Yes",
+      "incompleteEmptying": "Yes",
+      "medicationAssist": "Yes",
+      "relevantComorbidities": [
+        "Not sure"
+      ],
+      "diureticAnticoagulantAwareness": "Not sure",
+      "language": "Mandarin",
+      "deviceComfort": "Can use phone with help",
+      "supportPreference": "Family-assisted mode",
+      "notes": "Patient says flow is weak and sometimes cannot start."
+    }
+  },
+  "system_output": {
+    "patient_input": {
+      "filledBy": "Family helped operate; patient answered",
+      "chiefConcern": "Difficulty emptying or weak stream",
+      "duration": "1 to 4 weeks",
+      "botherScore": "8",
+      "daytimeFrequencyChange": "No",
+      "nocturiaCount": "1 time",
+      "urgency": "No",
+      "leakage": "No",
+      "painBurning": "No",
+      "visibleBlood": "No",
+      "unableToUrinate": "Yes",
+      "currentlyUnableToUrinate": "No",
+      "systemicSymptoms": [
+        "None of these"
+      ],
+      "medicationListStatus": "Not sure",
+      "weakStream": "Yes",
+      "straining": "Yes",
+      "intermittency": "Yes",
+      "incompleteEmptying": "Yes",
+      "medicationAssist": "Yes",
+      "relevantComorbidities": [
+        "Not sure"
+      ],
+      "diureticAnticoagulantAwareness": "Not sure",
+      "language": "Mandarin",
+      "deviceComfort": "Can use phone with help",
+      "supportPreference": "Family-assisted mode",
+      "notes": "Patient says flow is weak and sometimes cannot start."
+    },
+    "derived_summary": {
+      "completionStatus": {
+        "completed": 20,
+        "total": 20,
+        "missingCount": 0,
+        "label": "MVP fields complete for clinician review",
+        "tone": "ready"
+      },
+      "activeModules": [
+        "voiding",
+        "medication"
+      ],
+      "intakeMode": "Family helped operate; patient answered",
+      "chiefConcern": "Difficulty emptying or weak stream",
+      "symptomPattern": "Voiding/emptying: trouble/inability: Yes; happening now: No; weak stream: Yes; straining: Yes; stopping/starting: Yes; incomplete emptying: Yes",
+      "durationBother": "1 to 4 weeks / bother score 8/10",
+      "clinicianReviewFlags": [
+        "Reports trouble or inability to urinate."
+      ],
+      "missingInformation": [
+        "No required MVP fields missing."
+      ],
+      "nurseCues": [
+        "Completion support may be needed before clinician review.",
+        "Medication list may need nurse review or supplemental confirmation.",
+        "Priority review statements should be visible before the clinician encounter."
+      ],
+      "patientConstraints": [
+        "Family helped operate; patient answered",
+        "Mandarin",
+        "Can use phone with help",
+        "Family-assisted mode"
+      ],
+      "medicines": "list readiness: Not sure; review support: Yes; patient-reported context: Not sure; diuretic/anticoagulant awareness: Not sure",
+      "patientNote": "Patient says flow is weak and sometimes cannot start.",
+      "sourceNotes": [
+        "本份資料含家屬/協助者參與；疼痛、急尿、困擾程度等主觀感受建議由本人確認。"
+      ],
+      "fieldSources": [
+        {
+          "field": "filledBy",
+          "source": "declared_on_entry",
+          "label": "填答開始時標記"
+        },
+        {
+          "field": "chiefConcern",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "duration",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "botherScore",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "daytimeFrequencyChange",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "nocturiaCount",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "urgency",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "leakage",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "painBurning",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "visibleBlood",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "unableToUrinate",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "currentlyUnableToUrinate",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "systemicSymptoms",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "medicationListStatus",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "weakStream",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "straining",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "intermittency",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "incompleteEmptying",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "medicationAssist",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "relevantComorbidities",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "diureticAnticoagulantAwareness",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "language",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "deviceComfort",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "supportPreference",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "notes",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        }
+      ],
+      "sourceAttributionSummary": [
+        "填答開始時標記: 1",
+        "本人回答，家屬協助操作: 24"
+      ],
+      "attribution": {
+        "field_sources": [
+          {
+            "field": "filledBy",
+            "source": "declared_on_entry",
+            "label": "填答開始時標記"
+          },
+          {
+            "field": "chiefConcern",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "duration",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "botherScore",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "daytimeFrequencyChange",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "nocturiaCount",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "urgency",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "leakage",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "painBurning",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "visibleBlood",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "unableToUrinate",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "currentlyUnableToUrinate",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "systemicSymptoms",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "medicationListStatus",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "weakStream",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "straining",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "intermittency",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "incompleteEmptying",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "medicationAssist",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "relevantComorbidities",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "diureticAnticoagulantAwareness",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "language",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "deviceComfort",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "supportPreference",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          },
+          {
+            "field": "notes",
+            "source": "patient_with_family_operator",
+            "label": "本人回答，家屬協助操作"
+          }
+        ],
+        "source_summary": [
+          "填答開始時標記: 1",
+          "本人回答，家屬協助操作: 24"
+        ],
+        "source_notes": [
+          "本份資料含家屬/協助者參與；疼痛、急尿、困擾程度等主觀感受建議由本人確認。"
+        ]
+      },
+      "handoffNote": "Patient-provided or helper-provided answers; clinician review required.",
+      "rawAnswers": {
+        "filledBy": "Family helped operate; patient answered",
+        "chiefConcern": "Difficulty emptying or weak stream",
+        "duration": "1 to 4 weeks",
+        "botherScore": "8",
+        "daytimeFrequencyChange": "No",
+        "nocturiaCount": "1 time",
+        "urgency": "No",
+        "leakage": "No",
+        "painBurning": "No",
+        "visibleBlood": "No",
+        "unableToUrinate": "Yes",
+        "currentlyUnableToUrinate": "No",
+        "systemicSymptoms": [
+          "None of these"
+        ],
+        "medicationListStatus": "Not sure",
+        "weakStream": "Yes",
+        "straining": "Yes",
+        "intermittency": "Yes",
+        "incompleteEmptying": "Yes",
+        "medicationAssist": "Yes",
+        "relevantComorbidities": [
+          "Not sure"
+        ],
+        "diureticAnticoagulantAwareness": "Not sure",
+        "language": "Mandarin",
+        "deviceComfort": "Can use phone with help",
+        "supportPreference": "Family-assisted mode",
+        "notes": "Patient says flow is weak and sometimes cannot start."
+      },
+      "safetyNotice": [
+        "This v1 local product preview is not for clinical use.",
+        "It does not diagnose, triage, recommend treatment, or place exam orders.",
+        "A clinician must review all information.",
+        "Use synthetic data only.",
+        "Regulatory status is not determined."
+      ],
+      "requiresPhysicianReview": true,
+      "reviewRequiredLabel": "Requires physician review before clinical use."
+    },
+    "missing_fields": [],
+    "attribution": {
+      "field_sources": [
+        {
+          "field": "filledBy",
+          "source": "declared_on_entry",
+          "label": "填答開始時標記"
+        },
+        {
+          "field": "chiefConcern",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "duration",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "botherScore",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "daytimeFrequencyChange",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "nocturiaCount",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "urgency",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "leakage",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "painBurning",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "visibleBlood",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "unableToUrinate",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "currentlyUnableToUrinate",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "systemicSymptoms",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "medicationListStatus",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "weakStream",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "straining",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "intermittency",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "incompleteEmptying",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "medicationAssist",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "relevantComorbidities",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "diureticAnticoagulantAwareness",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "language",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "deviceComfort",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "supportPreference",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        },
+        {
+          "field": "notes",
+          "source": "patient_with_family_operator",
+          "label": "本人回答，家屬協助操作"
+        }
+      ],
+      "source_summary": [
+        "填答開始時標記: 1",
+        "本人回答，家屬協助操作: 24"
+      ],
+      "source_notes": [
+        "本份資料含家屬/協助者參與；疼痛、急尿、困擾程度等主觀感受建議由本人確認。"
+      ]
+    },
+    "audit_trace": [
+      {
+        "event": "patient_input_received",
+        "source": "synthetic_or_local_storage",
+        "fields_present": [
+          "filledBy",
+          "chiefConcern",
+          "duration",
+          "botherScore",
+          "daytimeFrequencyChange",
+          "nocturiaCount",
+          "urgency",
+          "leakage",
+          "painBurning",
+          "visibleBlood",
+          "unableToUrinate",
+          "currentlyUnableToUrinate",
+          "systemicSymptoms",
+          "medicationListStatus",
+          "weakStream",
+          "straining",
+          "intermittency",
+          "incompleteEmptying",
+          "medicationAssist",
+          "relevantComorbidities",
+          "diureticAnticoagulantAwareness",
+          "language",
+          "deviceComfort",
+          "supportPreference",
+          "notes"
+        ]
+      },
+      {
+        "event": "summary_generated",
+        "source": "core/summary",
+        "requires_physician_review": true
+      },
+      {
+        "event": "missing_fields_detected",
+        "source": "core/missing_fields",
+        "missing_count": 0
+      },
+      {
+        "event": "source_attribution_applied",
+        "source": "core/attribution",
+        "attributed_field_count": 25
+      },
+      {
+        "event": "safety_checked",
+        "source": "core/safety",
+        "no_diagnosis_or_treatment_claims": true
+      }
+    ]
+  },
+  "human_feedback": {
+    "reviewer_role": "",
+    "time_saved_minutes": null,
+    "missing_field_reduction": null,
+    "clinician_trust_score": null,
+    "notes": ""
+  },
+  "failure_points": [],
+  "decision_state": "pending_human_review"
+}
