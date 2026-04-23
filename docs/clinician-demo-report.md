@@ -8,7 +8,7 @@
 
 # 0️⃣ 醫師展示建議與實機操作畫面
 
-建議把本文件當作「醫師討論 handout」，不是產品銷售簡報。會議時先給醫師看前 10 分鐘重點：安全邊界、病人端、護理補問、醫師摘要與下一步問題；若時間允許，再往後翻到醫學依據、風險控制與導入方式。
+會議時先給醫師看前 10 分鐘重點：安全邊界、病人端、護理補問、醫師摘要與下一步問題；若時間允許，再往後翻到醫學依據、風險控制與導入方式。
 
 現場展示時建議同時打開：
 
@@ -19,27 +19,43 @@
 - 醫師摘要：`http://localhost:4173/app/clinician-summary/`
 - 角色分離資料包：`http://localhost:4173/app/visit-packet/`
 
-如果現場網路、投影或瀏覽器臨時出問題，可以直接使用下列實機截圖說明流程。以下畫面皆由 demo app 實際載入合成案例產生；不含真實病人資料。
+如果現場網路、投影或瀏覽器臨時出問題，可以直接使用下列實機截圖說明流程。以下畫面皆由 demo app 實際載入合成案例產生；不含真實病人資料。建議講解順序先以病人/家屬端為主，確認長者如何開始、填答、量化困擾與最後確認；再進入護理、醫師與資料包畫面。
 
-圖 A：醫師討論入口，先確認本 demo 的 review-only 邊界、展示順序與決策選項。
+## 病人 / 家屬端畫面
 
-![MVP review packet entrypoint](screenshots/01-review-packet-entry.png)
+圖 A：病人/家屬端起始畫面，先用大字、高對比與清楚的開始按鈕降低填答壓力。
 
-圖 B：病人/家屬端載入「晚上常起床尿尿」合成案例後，顯示最後確認頁、資料來源與症狀重點。
+![Patient start screen before intake begins](screenshots/01-patient-start.png)
 
-![Patient and family intake with frequency/nocturia sample loaded](screenshots/02-patient-family-intake-frequency.png)
+圖 B：開始填答後，上方介紹區自動收起，讓題目往頁面上方移動；「今天最想先說哪一個問題？」保留複選與下一步。
 
-圖 C：護理補問工作台載入「漏尿但資料不完整」合成案例後，把缺漏欄位轉成可直接詢問的補問題。
+![Patient active filling screen with chief concern choices](screenshots/02-patient-chief-concern-active.png)
 
-![Nurse missing-information repair workbench](screenshots/03-nurse-missing-info-repair.png)
+圖 C：「目前對生活造成多大困擾？」改為 1 到 10 的量化程度列，讓長者能直接用大方塊點選痛點程度。
 
-圖 D：醫師摘要載入「晚上常起床尿尿」合成案例後，呈現主訴、病程/困擾、啟動模組、用藥資料、來源與缺漏。
+![Patient bother scale with 1 to 10 options](screenshots/03-patient-bother-scale.png)
 
-![Clinician previsit summary with synthetic frequency sample](screenshots/04-clinician-summary-frequency.png)
+圖 D：進入最後確認時，上方介紹區恢復，病人可以回頭檢查資料來源、症狀重點與送出前內容。
 
-圖 E：角色分離資料包把同一份填答拆成病人確認、護理補問與醫師摘要三個不同用途頁面。
+![Patient final confirmation with intro restored](screenshots/04-patient-final-confirmation.png)
 
-![Role-separated visit packet export](screenshots/05-visit-packet-role-separated.png)
+## 醫療人員與會議畫面
+
+圖 E：護理補問工作台載入「漏尿但資料不完整」合成案例後，把缺漏欄位轉成可直接詢問的補問題。
+
+![Nurse missing-information repair workbench](screenshots/05-nurse-missing-info-repair.png)
+
+圖 F：醫師摘要載入「晚上常起床尿尿」合成案例後，呈現主訴、病程/困擾、啟動模組、用藥資料、來源與缺漏。
+
+![Clinician previsit summary with synthetic frequency sample](screenshots/06-clinician-summary-frequency.png)
+
+圖 G：角色分離資料包把同一份填答拆成病人確認、護理補問與醫師摘要三個不同用途頁面。
+
+![Role-separated visit packet export](screenshots/07-visit-packet-role-separated.png)
+
+圖 H：醫師討論入口，先確認本 demo 的 review-only 邊界、展示順序與決策選項。
+
+![MVP review packet entrypoint](screenshots/08-review-packet-entry.png)
 
 建議會議中只問一個核心問題：
 
