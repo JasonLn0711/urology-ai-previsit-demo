@@ -1461,7 +1461,13 @@ function renderProgress() {
   }
 }
 
+function renderPageMode() {
+  const isFilling = currentStep > 0 && currentStep < STEPS.length - 1;
+  document.documentElement.classList.toggle("patient-flow-active", isFilling);
+}
+
 function render() {
+  renderPageMode();
   renderScenarios();
   renderStepNav();
   renderStep();

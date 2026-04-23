@@ -1326,6 +1326,19 @@ pre.summary-body {
   grid-template-columns: minmax(240px, 0.5fr) minmax(520px, 1.5fr);
 }
 
+:root.patient-flow-active .patient-brief,
+:root.patient-flow-active .patient-strip {
+  display: none;
+}
+
+:root.patient-flow-active .patient-app {
+  padding-top: 14px;
+}
+
+:root.patient-flow-active .patient-workspace {
+  margin-top: 0;
+}
+
 .patient-help,
 .patient-intake {
   box-shadow: 0 12px 30px rgba(23, 33, 29, 0.09);
