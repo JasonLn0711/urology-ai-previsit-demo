@@ -48,6 +48,8 @@ test("workflow rehearsal covers all synthetic cases without clinical advice", ()
   assert.match(rehearsal, /synthetic-emptying-difficulty/);
   assert.match(rehearsal, /synthetic-incomplete-leakage/);
   assert.match(rehearsal, /synthetic-recurrent-infection-context/);
+  assert.match(rehearsal, /synthetic-hematuria-occult-blood/);
+  assert.match(rehearsal, /visible-blood or occult-blood context stays descriptive/);
   assert.match(rehearsal, /Patient Flow Check/);
   assert.match(rehearsal, /Nurse Workflow Cues/);
   assert.match(rehearsal, /Reviewer Questions/);

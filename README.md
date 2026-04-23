@@ -10,7 +10,7 @@ Open the v1 product console first:
 
 Verified fallback from the 2026-04-23 pull-forward build:
 
-`http://127.0.0.1:4174/app/v1/`
+`http://127.0.0.1:4176/app/v1/`
 
 ## What This Is
 
@@ -54,6 +54,20 @@ Open:
 
 Use `docs/v1-mvp-handoff-packet.md` as the product/research handoff packet, and `docs/mvp-review-packet.md` when asking a reviewer to judge the earlier review workflow.
 
+For the next research step, use the Phase 0 synthetic clinician/nurse review packet:
+
+- Pre-session readiness check: `npm run phase0:check`
+- `docs/research/v1-phase0-reviewer-ask.md`
+- `docs/research/v1-phase0-review-session-script.md`
+- `docs/research/v1-phase0-review-capture.md`
+- `docs/research/v1-phase-0-clinician-review-protocol.md`
+- `docs/research/v1-priority-flow-shortlist.md`
+- `docs/research/v1-priority-flow-review-worksheet.md`
+- `docs/research/v1-review-scorecard.md`
+- `docs/research/v1-phase0-analysis-template.md`
+- `docs/research/v1-phase0-decision-memo-template.md`
+- `docs/research/v1-governance-gate-register.md`
+
 You can also open `app/patient-demo/index.html` directly in a browser.
 
 ## Doctor Demo Handout
@@ -70,18 +84,22 @@ For a live walkthrough, start the local server and open `http://localhost:4173/a
 npm run rehearsal
 npm run smoke
 npm test
+npm run phase0:check
 ```
 
 The rehearsal generator creates `docs/workflow-rehearsal.md`, a scenario-by-scenario walkthrough for checking patient flow, nurse cues, clinician summary usefulness, and reviewer questions.
 
 The smoke check verifies demo entrypoints, browser script order, shared synthetic cases, generated sample boundaries, and stale-reference cleanup.
 
+The Phase 0 readiness check runs smoke/tests, verifies the five-case research packet and live capture sheet, and checks the local `app/v1/` route while the static server is running. If you are using another port, run it as `UROLOGY_PREVISIT_BASE_URL=http://127.0.0.1:4176 npm run phase0:check`.
+
 The tests check summary generation, conditional module activation, missing-information prompts, completion status, safety wording, and reviewer decision-record logic.
 
 Latest 2026-04-23 pull-forward verification:
 
-- `npm test`: `39/39`
-- `npm run smoke`: `219/219`
+- `npm test`: `40/40`
+- `npm run smoke`: `269/269`
+- `UROLOGY_PREVISIT_BASE_URL=http://127.0.0.1:4176 npm run phase0:check`: `76/76`
 
 ## Sample Outputs
 

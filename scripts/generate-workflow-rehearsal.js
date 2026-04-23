@@ -25,6 +25,9 @@ function scenarioPurpose(summary) {
   if (summary.activeModules.includes("voiding")) {
     return "Checks whether voiding and emptying symptoms are visible without the system assigning urgency, diagnosis, or treatment.";
   }
+  if (summary.activeModules.includes("hematuria")) {
+    return "Checks whether visible-blood or occult-blood context stays descriptive without cancer inference, reassurance, or automatic exam ordering.";
+  }
   if (summary.activeModules.includes("leakage")) {
     return "Checks whether incomplete leakage intake keeps missing information visible and preserves staff-support needs.";
   }

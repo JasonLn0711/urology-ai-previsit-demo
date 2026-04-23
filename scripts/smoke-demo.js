@@ -103,6 +103,17 @@ function checkEntrypoints() {
     "app/shared/review.js",
     "assets/bladder-flow.svg",
     "docs/v1-mvp-handoff-packet.md",
+    "docs/research/README.md",
+    "docs/research/v1-phase-0-clinician-review-protocol.md",
+    "docs/research/v1-phase0-review-session-script.md",
+    "docs/research/v1-phase0-reviewer-ask.md",
+    "docs/research/v1-phase0-review-capture.md",
+    "docs/research/v1-priority-flow-shortlist.md",
+    "docs/research/v1-priority-flow-review-worksheet.md",
+    "docs/research/v1-review-scorecard.md",
+    "docs/research/v1-phase0-analysis-template.md",
+    "docs/research/v1-phase0-decision-memo-template.md",
+    "docs/research/v1-governance-gate-register.md",
     "docs/role-separated-workflow.md",
     "docs/mvp-review-packet.md",
     "docs/meeting-capture-template.md",
@@ -118,7 +129,8 @@ function checkEntrypoints() {
     "docs/reviews/2026-04-23-urology-review/artifact-starters/pause-note-with-rejected-assumptions.md",
     "docs/reviews/2026-04-23-urology-review/decision-capture.md",
     "docs/workflow-rehearsal.md",
-    "docs/samples/README.md"
+    "docs/samples/README.md",
+    "scripts/check-phase0-readiness.js"
   ].forEach(assertFile);
 
   [
@@ -134,6 +146,7 @@ function checkEntrypoints() {
     "scripts/generate-workflow-rehearsal.js",
     "scripts/generate-samples.js",
     "scripts/check-meeting-readiness.js",
+    "scripts/check-phase0-readiness.js",
     "scripts/check-review-closeout.js",
     "scripts/check-selected-artifact.js",
     "scripts/smoke-demo.js"
@@ -220,8 +233,52 @@ function checkV1ProductConsole() {
   record("v1 css keeps stable layout primitives", css.includes("grid-template-columns") && css.includes("minmax") && css.includes("aspect-ratio"));
 }
 
+function checkResearchPacket() {
+  const packageJson = JSON.parse(read("package.json"));
+  const readme = read("docs/research/README.md");
+  const protocol = read("docs/research/v1-phase-0-clinician-review-protocol.md");
+  const sessionScript = read("docs/research/v1-phase0-review-session-script.md");
+  const reviewerAsk = read("docs/research/v1-phase0-reviewer-ask.md");
+  const capture = read("docs/research/v1-phase0-review-capture.md");
+  const shortlist = read("docs/research/v1-priority-flow-shortlist.md");
+  const worksheet = read("docs/research/v1-priority-flow-review-worksheet.md");
+  const scorecard = read("docs/research/v1-review-scorecard.md");
+  const analysis = read("docs/research/v1-phase0-analysis-template.md");
+  const memo = read("docs/research/v1-phase0-decision-memo-template.md");
+  const gates = read("docs/research/v1-governance-gate-register.md");
+  const handoff = read("docs/v1-mvp-handoff-packet.md");
+  const combined = `${readme}\n${protocol}\n${sessionScript}\n${reviewerAsk}\n${capture}\n${shortlist}\n${worksheet}\n${scorecard}\n${analysis}\n${memo}\n${gates}\n${handoff}`;
+  const lower = combined.toLowerCase();
+  const proposedFlows = ["頻尿或夜尿", "小便困難或尿不出來", "血尿或健檢發現潛血"];
+
+  record("research packet declares Phase 0", protocol.includes("V1 Phase 0 Clinician Review Protocol") && readme.includes("Research Packet"));
+  record("research packet has readiness command", packageJson.scripts["phase0:check"] === "node scripts/check-phase0-readiness.js" && readme.includes("npm run phase0:check"));
+  record("research packet links v1 route", protocol.includes("http://localhost:4173/app/v1/"));
+  record("research packet has reviewer ask", reviewerAsk.includes("Short LINE Draft") && reviewerAsk.includes("30-45"));
+  record("research packet has session script", sessionScript.includes("Opening Script") && sessionScript.includes("Run Sheet"));
+  record("research packet has live capture sheet", capture.includes("Five-Case Summary Review") && capture.includes("Governance Gate Triggers") && proposedFlows.every((flow) => capture.includes(flow)));
+  record("research packet has priority flow shortlist", proposedFlows.every((flow) => shortlist.includes(flow)) && shortlist.includes("planning default"));
+  record("research packet has priority flow worksheet", ["Flow A", "Flow B", "Flow C"].every((flow) => worksheet.includes(flow)) && proposedFlows.every((flow) => worksheet.includes(flow)));
+  record("research packet routes flow materials", readme.includes("v1-priority-flow-shortlist.md") && readme.includes("v1-priority-flow-review-worksheet.md") && sessionScript.includes("v1-priority-flow-shortlist.md"));
+  record("research packet routes live capture", readme.includes("v1-phase0-review-capture.md") && sessionScript.includes("v1-phase0-review-capture.md") && analysis.includes("v1-phase0-review-capture.md"));
+  record("research packet has scorecard decision choices", ["Continue", "Revise", "Narrow", "Pause", "Governance review before next step"].every((item) => scorecard.includes(item)));
+  record("research packet scorecard links flow worksheet", scorecard.includes("v1-priority-flow-review-worksheet.md") && proposedFlows.every((flow) => scorecard.includes(flow)));
+  record("research packet has analysis template", analysis.includes("Quantitative Summary") && analysis.includes("Recommended Next Artifact"));
+  record("research packet has decision memo template", memo.includes("Decision statement") && memo.includes("Rejected Or Deferred Changes"));
+  record("research packet requires boundary confirmation", scorecard.includes("Boundary Confirmation") && scorecard.includes("Synthetic data only."));
+  record("research packet includes governance gates", ["Funding", "IP / patent", "Privacy/security", "HIS / information office", "Regulatory"].every((item) => gates.includes(item)));
+  record("research packet keeps mock/export boundary", gates.includes("v1 remains export/mock API only") || gates.includes("export/mock API only"));
+  record("handoff packet points to Phase 0 research", handoff.includes("Next Research Step: Phase 0 Review") && handoff.includes("docs/research/v1-review-scorecard.md"));
+  record("handoff packet points to priority flow materials", handoff.includes("docs/research/v1-priority-flow-shortlist.md") && handoff.includes("docs/research/v1-priority-flow-review-worksheet.md"));
+  record("research packet keeps safety boundary", lower.includes("synthetic data only") && lower.includes("not for clinical use") && lower.includes("physician review required") && lower.includes("regulatory status not determined"));
+  record("research packet forbids real identifiers", lower.includes("no real patient identifiers") && lower.includes("id numbers") && lower.includes("birthdays"));
+  record("research packet avoids classification claims", !/tfda approved|fda approved|non-device status is settled|not a medical device/.test(lower));
+  record("research packet avoids clinical advice wording", !/likely infection|probable cancer|take medication/.test(lower));
+}
+
 function checkSyntheticCases() {
-  record("four synthetic cases available", SYNTHETIC_CASES.length === 4);
+  record("five synthetic cases available", SYNTHETIC_CASES.length === 5);
+  record("hematuria priority synthetic case available", Boolean(SYNTHETIC_CASES.find((sampleCase) => sampleCase.id === "synthetic-hematuria-occult-blood")));
 
   for (const sampleCase of SYNTHETIC_CASES) {
     record(`${sampleCase.id}: labeled synthetic`, /^Synthetic case:/.test(sampleCase.label));
@@ -457,6 +514,7 @@ function main() {
   checkEntrypoints();
   checkBrowserScriptOrder();
   checkV1ProductConsole();
+  checkResearchPacket();
   checkSyntheticCases();
   checkGeneratedSamples();
   checkWorkflowRehearsal();

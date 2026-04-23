@@ -230,6 +230,54 @@ Purpose: Checks whether frequency/nocturia details stay short while still surfac
 - Would nursing staff know what, if anything, to clarify before the clinician enters?
 - Is the bladder diary cue useful in this clinic workflow?
 
+## Synthetic case: visible blood / health-check occult blood
+
+Case id: `synthetic-hematuria-occult-blood`
+
+Purpose: Checks whether visible-blood or occult-blood context stays descriptive without cancer inference, reassurance, or automatic exam ordering.
+
+### Patient Flow Check
+
+1. Load this case from the synthetic scenario rail.
+2. Confirm source and main concern: Patient self-filled; Visible blood or health-check occult blood.
+3. Confirm the patient/family page has no nurse, clinician, visit-packet, or reviewer links.
+4. Confirm active conditional modules: hematuria, medication.
+5. Open the nurse workbench and confirm status: MVP fields complete for clinician review.
+6. Compare the clinician summary against the patient-reported pattern and source notes.
+
+### Expected Summary State
+
+- Completeness: MVP fields complete for clinician review
+- Active modules: hematuria, medication
+- Duration / bother: Within 1 week / bother score 5/10
+- Patient-reported pattern: Visible blood/clots: seen by patient: Yes; pattern: One recent episode; health-check urine test also mentioned occult blood; clots: No; with: No pain or burning, No fever or chills
+
+### Priority Review Statements
+
+- Reports visible blood or clots in urine.
+
+### Nurse Workflow Cues
+
+- Medication list may need nurse review or supplemental confirmation.
+- Priority review statements should be visible before the clinician encounter.
+
+### Missing Information
+
+- No required MVP fields missing.
+
+### Clinician Summary Check
+
+- Medication/context: list readiness: Can provide list; review support: No; patient-reported context: Not sure; diuretic/anticoagulant awareness: Not sure
+- Patient note: Patient wants to ask whether the visible color change and health-check result should be reviewed together.
+- Handoff: Patient-provided or helper-provided answers; clinician review required.
+
+### Reviewer Questions
+
+- Would a clinician read this summary before entering the room?
+- Which line is clinically useful and which line is noise?
+- Does any wording imply diagnosis, triage, or treatment?
+- Would nursing staff know what, if anything, to clarify before the clinician enters?
+
 ## Stop Rules
 
 - Stop and revise if any page suggests diagnosis, triage, or treatment.

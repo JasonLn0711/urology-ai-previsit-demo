@@ -134,6 +134,45 @@
         supportPreference: "Self-filled",
         notes: "Patient reports repeated similar episodes and wants the physician to know the pattern."
       }
+    },
+    {
+      id: "synthetic-hematuria-occult-blood",
+      label: "Synthetic case: visible blood / health-check occult blood",
+      shortLabel: "血尿或健檢潛血",
+      meta: "會啟動血尿/健檢潛血 review flow",
+      answers: {
+        filledBy: "Patient self-filled",
+        chiefConcern: "Visible blood or health-check occult blood",
+        duration: "Within 1 week",
+        botherScore: "5",
+        daytimeFrequencyChange: "No",
+        nocturiaCount: "1 time",
+        urgency: "No",
+        leakage: "No",
+        painBurning: "No",
+        visibleBlood: "Yes",
+        unableToUrinate: "No",
+        systemicSymptoms: ["None of these"],
+        medicationListStatus: "Can provide list",
+        hematuriaPattern: "One recent episode; health-check urine test also mentioned occult blood",
+        bloodClots: "No",
+        hematuriaCoSymptoms: ["No pain or burning", "No fever or chills"],
+        medicationAssist: "No",
+        relevantComorbidities: ["Not sure"],
+        diureticAnticoagulantAwareness: "Not sure",
+        language: "Mandarin",
+        deviceComfort: "Comfortable",
+        supportPreference: "Self-filled",
+        notes: "Patient wants to ask whether the visible color change and health-check result should be reviewed together.",
+        sourceByField: {
+          filledBy: "declared_on_entry",
+          chiefConcern: "patient_self",
+          visibleBlood: "patient_self",
+          hematuriaPattern: "patient_self",
+          bloodClots: "patient_self",
+          medicationListStatus: "patient_self"
+        }
+      }
     }
   ];
 

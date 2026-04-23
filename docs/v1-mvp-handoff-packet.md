@@ -4,7 +4,7 @@ Date: 2026-04-23
 Deadline: 2026-04-30
 Product route: `http://localhost:4173/app/v1/`
 
-Current verified local fallback on 2026-04-23: `http://127.0.0.1:4174/app/v1/`
+Current verified local fallback on 2026-04-23: `http://127.0.0.1:4176/app/v1/`
 
 ## Product Position
 
@@ -56,7 +56,7 @@ The LINE follow-up materials add concrete doctor/hospital rules:
 
 ## What To Show
 
-1. Open `http://localhost:4173/app/v1/`, or `http://127.0.0.1:4174/app/v1/` if the default port is occupied.
+1. Open `http://localhost:4173/app/v1/`, or `http://127.0.0.1:4176/app/v1/` if the default port is occupied.
 2. Select each synthetic case.
 3. Inspect `Intake`, `Nurse`, `Physician`, `Exam Prep`, `Export`, and `Research`.
 4. Copy the physician summary and mock JSON payload.
@@ -64,12 +64,13 @@ The LINE follow-up materials add concrete doctor/hospital rules:
 
 ## Current Build Status
 
-As of `2026-04-23 15:14`, the v1 pull-forward build is implemented from the meeting transcript, 許醫師 QA/rules, and 2024 TUA guideline source materials.
+As of `2026-04-23`, the v1 pull-forward build is implemented from the meeting transcript, 許醫師 QA/rules, and 2024 TUA guideline source materials, with five synthetic cases and a Phase 0 live review capture sheet.
 
 Passed checks:
 
-- `npm test`: `39/39`
-- `npm run smoke`: `219/219`
+- `npm test`: `40/40`
+- `npm run smoke`: `269/269`
+- `UROLOGY_PREVISIT_BASE_URL=http://127.0.0.1:4176 npm run phase0:check`: `76/76`, covering the v1 route, five synthetic cases, live capture sheet, scorecard, priority-flow worksheet, safety boundaries, smoke checks, and tests
 - Planning knowledge validation: `27` metadata notes / `27` catalog entries
 - Planning W18 agenda views for the week and days `2026-04-27` through `2026-04-30`
 - `git diff --check` in both planning and demo repos
@@ -79,7 +80,7 @@ Calendar caveat: Google Calendar write/search was blocked by connector/tool avai
 ## Acceptance Checklist
 
 - [ ] `app/v1/` loads from the static server.
-- [ ] All four synthetic cases are selectable.
+- [ ] All five synthetic cases are selectable, including the Phase 0 hematuria / occult-blood review case.
 - [ ] Waiting-room rules show no ID/birthday and no real queue/registration behavior.
 - [ ] Physician summary shows chief concern, duration / bother, symptom domains, missing information, medication context, and source attribution.
 - [ ] Exam-prep mockup uses `confirm` / `consider` language and clearly states no order is placed.
@@ -121,6 +122,41 @@ The 2024 TUA guideline supports previsit history, structured questionnaires, voi
 | Regulatory | What claims are allowed externally? | TFDA/FDA/legal review before any non-device or clinical-use statement. |
 | Research | What metric proves value? | Minutes saved, summary usefulness, missing-field reduction, repeated-question count, staff burden, workflow slot. |
 | Hospital workflow | Who approves waiting-room QR, NHI-card handoff wording, and nurse workflow? | Clinic nurse lead, outpatient operations owner, information office, and 許醫師 sign-off. |
+
+## Next Research Step: Phase 0 Review
+
+The next major work is a synthetic-only clinician/nurse review, not more feature building.
+
+Before asking for reviewer time, start the local server and run:
+
+```bash
+UROLOGY_PREVISIT_BASE_URL=http://127.0.0.1:4176 npm run phase0:check
+```
+
+Use:
+
+- `docs/research/v1-phase-0-clinician-review-protocol.md`
+- `docs/research/v1-phase0-review-session-script.md`
+- `docs/research/v1-phase0-reviewer-ask.md`
+- `docs/research/v1-phase0-review-capture.md`
+- `docs/research/v1-priority-flow-shortlist.md`
+- `docs/research/v1-priority-flow-review-worksheet.md`
+- `docs/research/v1-review-scorecard.md`
+- `docs/research/v1-phase0-analysis-template.md`
+- `docs/research/v1-phase0-decision-memo-template.md`
+- `docs/research/v1-governance-gate-register.md`
+
+Phase 0 should produce:
+
+- first three complaint flows for the next v1 refinement
+- line-level useful / noisy / unsafe summary notes
+- nurse/staff burden notes
+- approved or revised exam-prep wording
+- one decision: continue, revise, narrow, pause, or governance review before next step
+
+No real patient data, clinical-use workflow, or HIS connection is allowed in Phase 0.
+
+The proposed first three flows for review are `頻尿或夜尿`, `小便困難或尿不出來`, and `血尿或健檢發現潛血`. They are planning defaults only; 許醫師 can replace them before or during the review.
 
 ## Follow-Up Evidence To Request
 

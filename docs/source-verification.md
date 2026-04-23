@@ -95,6 +95,30 @@ The selected-artifact readiness check is:
 
 It should run only after one starter has been filled with reviewer evidence. It fails while placeholders remain or the review-only safety boundary is missing.
 
+The v1 Phase 0 research packet is:
+
+`docs/research/`
+
+It contains the synthetic-only clinician/nurse review protocol, scorecard, and governance gate register. It should be used after opening `app/v1/` and before any real-data pilot, HIS discussion, or production claim.
+
+The Phase 0 pre-session readiness check is:
+
+`npm run phase0:check`
+
+It verifies the v1 route, five synthetic cases, live capture sheet, scorecard, priority-flow worksheet, safety boundaries, smoke checks, and tests while the static server is running. If another local port is in use, set `UROLOGY_PREVISIT_BASE_URL` to that server before running the command.
+
+The practical use order is:
+
+1. run `npm run phase0:check`
+2. send `docs/research/v1-phase0-reviewer-ask.md`
+3. run `docs/research/v1-phase0-review-session-script.md`
+4. capture live evidence in `docs/research/v1-phase0-review-capture.md`
+5. confirm or revise `docs/research/v1-priority-flow-shortlist.md`
+6. fill `docs/research/v1-review-scorecard.md` and `docs/research/v1-priority-flow-review-worksheet.md`
+7. analyze with `docs/research/v1-phase0-analysis-template.md`
+8. decide with `docs/research/v1-phase0-decision-memo-template.md`
+9. update `docs/research/v1-governance-gate-register.md`
+
 The role-separated architecture note is:
 
 `docs/role-separated-workflow.md`
