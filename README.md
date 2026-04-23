@@ -19,6 +19,7 @@ Verified fallback from the 2026-04-23 pull-forward build:
 - Separate patient/family intake, nurse missing-information workbench, and clinician summary surfaces.
 - Productized v1 console with case selector, role tabs, physician summary, exam-prep mockup, mock export/API, and research gates.
 - `陽明小幫手` waiting-room flow rules from 許醫師's QA file: already-registered flow, no ID/birthday in initial-visit intake, initial/return branch, and confirmation-only exam-prep matrix.
+- Current-system benchmark table for doctor-provided `聯醫小幫手` / `陽明小幫手` links; use synthetic inputs or screenshots only.
 - Governed core questions, conditional modules, source labeling for family-assisted answers, missing-information repair, nurse cues, and clinician summary.
 - Patient/family display controls for larger text, high contrast, and read-aloud of the current step.
 - Reviewer workbench for meeting feedback and continue / revise / narrow / pause decision capture.
@@ -33,6 +34,8 @@ Verified fallback from the 2026-04-23 pull-forward build:
 - No live HIS, EMR, EHR, registration, messaging, or hospital-system integration.
 - No approval for real patient data or clinical use.
 - No claim about TFDA/FDA classification before formal review.
+- No copying current Argon/vendor behavior without permission.
+- No local/on-prem deployment, hardware/RAG acceleration, or hospital-network installation in v1.
 - No replacement for a clinician.
 
 ## Run
@@ -60,6 +63,7 @@ For the next research step, use the Phase 0 synthetic clinician/nurse review pac
 - `docs/research/v1-phase0-reviewer-ask.md`
 - `docs/research/v1-phase0-review-session-script.md`
 - `docs/research/v1-phase0-review-capture.md`
+- `docs/research/v1-current-system-benchmark-table.md`
 - `docs/research/v1-phase-0-clinician-review-protocol.md`
 - `docs/research/v1-priority-flow-shortlist.md`
 - `docs/research/v1-priority-flow-review-worksheet.md`
@@ -91,7 +95,7 @@ The rehearsal generator creates `docs/workflow-rehearsal.md`, a scenario-by-scen
 
 The smoke check verifies demo entrypoints, browser script order, shared synthetic cases, generated sample boundaries, and stale-reference cleanup.
 
-The Phase 0 readiness check runs smoke/tests, verifies the five-case research packet and live capture sheet, and checks the local `app/v1/` route while the static server is running. If you are using another port, run it as `UROLOGY_PREVISIT_BASE_URL=http://127.0.0.1:4176 npm run phase0:check`.
+The Phase 0 readiness check runs smoke/tests, verifies the five-case research packet, current-system benchmark table, and live capture sheet, and checks the local `app/v1/` route while the static server is running. If you are using another port, run it as `UROLOGY_PREVISIT_BASE_URL=http://127.0.0.1:4176 npm run phase0:check`.
 
 The tests check summary generation, conditional module activation, missing-information prompts, completion status, safety wording, and reviewer decision-record logic.
 
@@ -99,7 +103,7 @@ Latest 2026-04-23 pull-forward verification:
 
 - `npm test`: `40/40`
 - `npm run smoke`: `269/269`
-- `UROLOGY_PREVISIT_BASE_URL=http://127.0.0.1:4176 npm run phase0:check`: `76/76`
+- `UROLOGY_PREVISIT_BASE_URL=http://127.0.0.1:4176 npm run phase0:check`: `81/81`
 
 ## Sample Outputs
 

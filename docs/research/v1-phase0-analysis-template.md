@@ -10,6 +10,7 @@ Decision:
 Source files:
 
 - Live capture: `v1-phase0-review-capture.md`
+- Current-system benchmark: `v1-current-system-benchmark-table.md`
 - Scorecard: `v1-review-scorecard.md`
 - Flow worksheet: `v1-priority-flow-review-worksheet.md`
 - Gate register: `v1-governance-gate-register.md`
@@ -40,6 +41,10 @@ Do not count:
 | Noisy-line count |  |  |
 | Missing-field count |  |  |
 | Priority complaint flows selected |  |  |
+| Current-system functions to match |  |  |
+| Current-system functions to omit |  |  |
+| Current-system functions to defer |  |  |
+| Current-system functions needing governance review |  |  |
 
 ## Qualitative Findings
 
@@ -92,6 +97,19 @@ If the reviewer changes these, record the change and why.
 | 健檢發現腎臟水泡或腫瘤 |  |  |  |
 | 小便有泡泡 |  |  |  |
 
+## Current-System Benchmark
+
+Use `v1-current-system-benchmark-table.md` as the source for this section.
+
+| Benchmark item | Decision: match / omit / defer / governance review | Evidence | Next action |
+| --- | --- | --- | --- |
+| `聯醫小幫手` preliminary suggestions / exam direction |  |  |  |
+| `陽明小幫手` waiting-room intake |  |  |  |
+| registration help |  |  |  |
+| return-visit questioning |  |  |  |
+| waiting-flow explanation |  |  |  |
+| cloud vs local/on-prem deployment |  |  |  |
+
 ## Decision Rule
 
 Choose one.
@@ -135,6 +153,8 @@ Use if the next step requires:
 - IP/vendor review
 - regulatory classification review
 - IRB or hospital research approval
+- copying current Argon/vendor behavior
+- local/on-prem deployment, hardware procurement, or hospital-network installation
 
 ## Recommended Next Artifact
 

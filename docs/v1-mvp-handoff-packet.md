@@ -21,6 +21,19 @@ It is meant to show the workflow and decision gates before clinical deployment:
 - research and commercialization decision gates
 - `陽明小幫手` waiting-room flow rules from 許醫師's QA file
 
+## Current System Benchmark Links
+
+Doctor/hospital-provided Argon links:
+
+| Current app | Link | Public metadata observed |
+| --- | --- | --- |
+| `聯醫小幫手` | `https://chat.argon.chat/visitor?guid=rmw6oqqxgy` | Helps users understand urinary abnormalities, stones, or health-check abnormalities, and mentions preliminary suggestions / exam direction. |
+| `陽明小幫手` | `https://chat.argon.chat/visitor?guid=avp6dg160g` | Outpatient physician assistant for registration, return-visit questioning, and waiting-flow explanation. |
+
+Use these as benchmark references only. Do not copy runtime behavior, enter real patient data, or treat public metadata as regulatory clearance.
+
+Immediate implication: v1 should remain stricter than the current public wording. `初步建議` and `檢查方向` should be reviewed as physician/nurse-confirmed wording before any product surface uses them.
+
 ## Boundary
 
 - Synthetic data only.
@@ -66,12 +79,16 @@ The LINE follow-up materials add concrete doctor/hospital rules:
 
 As of `2026-04-23`, the v1 pull-forward build is implemented from the meeting transcript, 許醫師 QA/rules, and 2024 TUA guideline source materials, with five synthetic cases and a Phase 0 live review capture sheet.
 
+Same-day implementation/research work log:
+
+- `docs/reviews/2026-04-23-urology-review/day-note-2026-04-23.md`
+
 Passed checks:
 
 - `npm test`: `40/40`
 - `npm run smoke`: `269/269`
-- `UROLOGY_PREVISIT_BASE_URL=http://127.0.0.1:4176 npm run phase0:check`: `76/76`, covering the v1 route, five synthetic cases, live capture sheet, scorecard, priority-flow worksheet, safety boundaries, smoke checks, and tests
-- Planning knowledge validation: `27` metadata notes / `27` catalog entries
+- `UROLOGY_PREVISIT_BASE_URL=http://127.0.0.1:4176 npm run phase0:check`: `81/81`, covering the v1 route, five synthetic cases, live capture sheet, current-system benchmark table, scorecard, priority-flow worksheet, safety boundaries, smoke checks, and tests
+- Planning knowledge validation: `28` metadata notes / `28` catalog entries
 - Planning W18 agenda views for the week and days `2026-04-27` through `2026-04-30`
 - `git diff --check` in both planning and demo repos
 
@@ -122,6 +139,8 @@ The 2024 TUA guideline supports previsit history, structured questionnaires, voi
 | Regulatory | What claims are allowed externally? | TFDA/FDA/legal review before any non-device or clinical-use statement. |
 | Research | What metric proves value? | Minutes saved, summary usefulness, missing-field reduction, repeated-question count, staff burden, workflow slot. |
 | Hospital workflow | Who approves waiting-room QR, NHI-card handoff wording, and nurse workflow? | Clinic nurse lead, outpatient operations owner, information office, and 許醫師 sign-off. |
+| Current-system benchmark | Which functions must match or differ from `聯醫小幫手` / `陽明小幫手`? | Synthetic screen-share, screenshots, or walkthrough with no real patient data. |
+| Local/on-prem deployment | Is local deployment a Phase 1 requirement or a later option? | Cloud-vs-local security review, hardware support owner, encryption/logging model, maintenance owner. |
 
 ## Next Research Step: Phase 0 Review
 
@@ -139,6 +158,7 @@ Use:
 - `docs/research/v1-phase0-review-session-script.md`
 - `docs/research/v1-phase0-reviewer-ask.md`
 - `docs/research/v1-phase0-review-capture.md`
+- `docs/research/v1-current-system-benchmark-table.md`
 - `docs/research/v1-priority-flow-shortlist.md`
 - `docs/research/v1-priority-flow-review-worksheet.md`
 - `docs/research/v1-review-scorecard.md`
@@ -149,6 +169,7 @@ Use:
 Phase 0 should produce:
 
 - first three complaint flows for the next v1 refinement
+- benchmark comparison against current `聯醫小幫手` / `陽明小幫手`
 - line-level useful / noisy / unsafe summary notes
 - nurse/staff burden notes
 - approved or revised exam-prep wording
@@ -160,9 +181,13 @@ The proposed first three flows for review are `頻尿或夜尿`, `小便困難�
 
 ## Follow-Up Evidence To Request
 
+- screenshot or screen-share walkthrough of both current Argon app flows with synthetic inputs only
 - top three priority flows from the 12 QA complaint categories
 - persona preference: `小許醫師 / Annie專科護理師` or neutral physician/nurse labels
 - wording approval for the 12 source-derived exam-prep reminders
+- whether `初步建議` / `檢查方向` is intentional wording or should be replaced with confirmation-only wording
+- whether registration help, return-visit questioning, and waiting-flow explanation are required for v1 or later phases
+- cloud vs local/on-prem deployment expectation
 - 10-seat and 100-seat vendor quotes
 - patent status and implementation-space constraints
 - whether any vendor agreement creates conflict-of-interest or exclusivity limits

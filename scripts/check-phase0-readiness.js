@@ -24,6 +24,7 @@ const requiredFiles = [
   "docs/research/v1-phase0-review-session-script.md",
   "docs/research/v1-phase0-reviewer-ask.md",
   "docs/research/v1-phase0-review-capture.md",
+  "docs/research/v1-current-system-benchmark-table.md",
   "docs/research/v1-priority-flow-shortlist.md",
   "docs/research/v1-priority-flow-review-worksheet.md",
   "docs/research/v1-review-scorecard.md",
@@ -40,6 +41,7 @@ const requiredRoutes = [
   "/docs/v1-mvp-handoff-packet.md",
   "/docs/research/",
   "/docs/research/v1-phase0-review-capture.md",
+  "/docs/research/v1-current-system-benchmark-table.md",
   "/docs/research/v1-review-scorecard.md",
   "/docs/research/v1-priority-flow-review-worksheet.md",
   "/docs/research/v1-phase0-analysis-template.md"
@@ -180,14 +182,18 @@ function checkResearchRouting() {
   const analysis = read("docs/research/v1-phase0-analysis-template.md");
   const scorecard = read("docs/research/v1-review-scorecard.md");
   const worksheet = read("docs/research/v1-priority-flow-review-worksheet.md");
+  const benchmark = read("docs/research/v1-current-system-benchmark-table.md");
   const handoff = read("docs/v1-mvp-handoff-packet.md");
   const sourceTrace = read("docs/source-verification.md");
-  const combined = `${readme}\n${sessionScript}\n${analysis}\n${scorecard}\n${worksheet}\n${handoff}\n${sourceTrace}`;
+  const combined = `${readme}\n${sessionScript}\n${analysis}\n${scorecard}\n${worksheet}\n${benchmark}\n${handoff}\n${sourceTrace}`;
 
   record("research README points to readiness command", readme.includes("npm run phase0:check"));
   record("session script routes live capture", sessionScript.includes("v1-phase0-review-capture.md"));
   record("analysis template routes live capture", analysis.includes("v1-phase0-review-capture.md"));
   record("scorecard routes priority worksheet", scorecard.includes("v1-priority-flow-review-worksheet.md"));
+  record("research packet includes current-system benchmark table", readme.includes("v1-current-system-benchmark-table.md"));
+  record("benchmark table includes both current Argon links", benchmark.includes("rmw6oqqxgy") && benchmark.includes("avp6dg160g"));
+  record("benchmark table uses match/omit/defer/governance decisions", ["match", "omit", "defer", "governance review"].every((word) => benchmark.toLowerCase().includes(word)));
   record("handoff packet points to readiness command", handoff.includes("npm run phase0:check"));
   record("source trace points to readiness command", sourceTrace.includes("npm run phase0:check"));
   record("research materials include priority flows", priorityFlows.every((flow) => combined.includes(flow)));

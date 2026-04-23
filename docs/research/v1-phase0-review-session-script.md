@@ -19,6 +19,7 @@ The session should produce evidence, not approval to deploy.
 - Open: `docs/research/v1-phase0-review-capture.md`.
 - Open: `docs/research/v1-review-scorecard.md`.
 - Open: `docs/research/v1-governance-gate-register.md`.
+- Prepare benchmark links or screenshots for `聯醫小幫手` and `陽明小幫手` using synthetic inputs only.
 - Prepare a timer for physician summary read time.
 - Confirm no real patient data will be entered or discussed.
 
@@ -67,7 +68,22 @@ Ask:
 - Which intake fields are useful before physician entry?
 - Which fields should be removed, hidden, or moved to nurse/physician review?
 
-### 0:10-0:17 Nurse Review
+### 0:10-0:15 Current-System Benchmark
+
+Open the benchmark links or screenshots only if no real patient data is shown:
+
+- `聯醫小幫手`: `https://chat.argon.chat/visitor?guid=rmw6oqqxgy`
+- `陽明小幫手`: `https://chat.argon.chat/visitor?guid=avp6dg160g`
+
+Ask:
+
+- Which current-system functions must v1 match?
+- Which current-system functions should v1 intentionally omit?
+- Is `初步建議` / `檢查方向` acceptable, or should v1 keep `醫師/護理師確認用提醒` wording?
+- Does `陽明小幫手` require registration help, return-visit questioning, or waiting-flow explanation in v1?
+- Are any current-system flows vendor/IP/patent protected and not safe to copy?
+
+### 0:15-0:22 Nurse Review
 
 Open `Nurse`.
 
@@ -79,7 +95,7 @@ Ask the nurse/staff reviewer, or ask 許醫師 to answer from clinic workflow if
 - Is the NHI-card/nurse handoff wording right?
 - What would make staff reject this workflow?
 
-### 0:17-0:27 Physician Summary
+### 0:22-0:32 Physician Summary
 
 Open `Physician`.
 
@@ -97,7 +113,7 @@ Ask:
 - What can be deleted?
 - What is missing before you enter the room?
 
-### 0:27-0:35 Priority Flows And Exam Prep
+### 0:32-0:38 Priority Flows And Exam Prep
 
 Open `Exam Prep`.
 
@@ -109,7 +125,7 @@ Ask:
 - Which reminders should be hidden until nurse/physician review?
 - Does anything sound like the system ordered a test?
 
-### 0:35-0:40 Export / Mock API
+### 0:38-0:42 Export / Mock API
 
 Open `Export`.
 
@@ -120,7 +136,7 @@ Ask:
 - Does the JSON wrongly imply live writeback?
 - Who must approve any future export/API discussion?
 
-### 0:40-0:45 Decision
+### 0:42-0:45 Decision
 
 Choose one:
 
@@ -135,6 +151,7 @@ Ask:
 - What is the smallest next artifact?
 - Who should review it?
 - What must not be built yet?
+- Should the next artifact be a benchmark-difference table, revised v1 flow, return-visit synthetic case, or governance note?
 
 ## Stop Rules
 

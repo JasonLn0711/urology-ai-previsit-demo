@@ -65,6 +65,12 @@ The dated review workspace for the 2026-04-23 meeting is:
 
 It must remain `pending review` until real reviewer evidence is captured.
 
+The same-day implementation and research work log is:
+
+`docs/reviews/2026-04-23-urology-review/day-note-2026-04-23.md`
+
+It captures what changed in the repo on 2026-04-23, current verification status, and next actions. It is not reviewer evidence and does not select a post-review artifact.
+
 The pre-meeting readiness check is:
 
 `npm run meeting:check`
@@ -101,6 +107,13 @@ The v1 Phase 0 research packet is:
 
 It contains the synthetic-only clinician/nurse review protocol, scorecard, and governance gate register. It should be used after opening `app/v1/` and before any real-data pilot, HIS discussion, or production claim.
 
+The current-system benchmark links are:
+
+- `聯醫小幫手`: `https://chat.argon.chat/visitor?guid=rmw6oqqxgy`
+- `陽明小幫手`: `https://chat.argon.chat/visitor?guid=avp6dg160g`
+
+Public metadata suggests `聯醫小幫手` includes preliminary suggestions / exam direction wording, while `陽明小幫手` includes registration, return-visit questioning, and waiting-flow explanation. Treat these as benchmark references, not specifications to copy. Do not enter real patient data or copy runtime behavior without permission.
+
 The Phase 0 pre-session readiness check is:
 
 `npm run phase0:check`
@@ -110,14 +123,15 @@ It verifies the v1 route, five synthetic cases, live capture sheet, scorecard, p
 The practical use order is:
 
 1. run `npm run phase0:check`
-2. send `docs/research/v1-phase0-reviewer-ask.md`
-3. run `docs/research/v1-phase0-review-session-script.md`
-4. capture live evidence in `docs/research/v1-phase0-review-capture.md`
-5. confirm or revise `docs/research/v1-priority-flow-shortlist.md`
-6. fill `docs/research/v1-review-scorecard.md` and `docs/research/v1-priority-flow-review-worksheet.md`
-7. analyze with `docs/research/v1-phase0-analysis-template.md`
-8. decide with `docs/research/v1-phase0-decision-memo-template.md`
-9. update `docs/research/v1-governance-gate-register.md`
+2. prepare the current-system benchmark links or screenshots with synthetic inputs only
+3. send `docs/research/v1-phase0-reviewer-ask.md`
+4. run `docs/research/v1-phase0-review-session-script.md`
+5. capture live evidence in `docs/research/v1-phase0-review-capture.md`
+6. confirm or revise `docs/research/v1-priority-flow-shortlist.md`
+7. fill `docs/research/v1-review-scorecard.md` and `docs/research/v1-priority-flow-review-worksheet.md`
+8. analyze with `docs/research/v1-phase0-analysis-template.md`
+9. decide with `docs/research/v1-phase0-decision-memo-template.md`
+10. update `docs/research/v1-governance-gate-register.md`
 
 The role-separated architecture note is:
 

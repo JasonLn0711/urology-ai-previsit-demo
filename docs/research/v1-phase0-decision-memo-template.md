@@ -36,6 +36,8 @@ Decision statement:
 | Nurse repair burden | unvalidated |  |
 | Exam-prep wording | source-derived draft |  |
 | Export/mock API | mock discussion artifact |  |
+| Current-system benchmark | unvalidated |  |
+| Cloud vs local/on-prem expectation | unvalidated |  |
 | Governance gates | open |  |
 
 ## Accepted Changes
@@ -60,6 +62,8 @@ Still true after the review:
 - regulatory status not determined
 - no diagnosis, triage, treatment advice, risk/probability output, or autonomous exam ordering
 - no live HIS, EMR, EHR, registration, queue, messaging, cloud, or hospital integration
+- no copying current Argon app internals without permission
+- no local/on-prem deployment claim unless security, maintenance, and hospital owners approve
 
 ## Governance Owners To Identify
 
@@ -73,6 +77,8 @@ Still true after the review:
 | Regulatory |  |  |
 | IRB / research ethics |  |  |
 | Nurse/staff operations |  |  |
+| Current-system benchmark / Argon app permission |  |  |
+| Cloud vs local/on-prem architecture |  |  |
 
 ## Next Artifact
 
@@ -94,3 +100,5 @@ Stop again if:
 - wording drifts into diagnosis, treatment, triage, or ordering
 - IP/vendor boundaries remain unclear
 - no nurse/staff workflow reviewer can validate burden
+- the next build requires copying current Argon app behavior before permission is clear
+- local/on-prem or hardware/RAG acceleration becomes a deliverable before security and maintenance owners are named

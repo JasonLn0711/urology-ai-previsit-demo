@@ -18,6 +18,9 @@ The next major research step is Phase 0 clinician/nurse review. Any step beyond 
 | Vendor relationship | Open | Clarify 創智動能 agreement, exclusivity, data ownership, derivative work, and confidentiality limits. |
 | Privacy/security | Open | Identify hospital owner and lawful path before real medical/health data collection. |
 | HIS / information office | Open | Identify first acceptable integration depth; v1 remains export/mock API only. |
+| Current-system benchmark | Open | Review `聯醫小幫手` / `陽明小幫手` with synthetic inputs only and decide what v1 should match, omit, or avoid copying. |
+| Cloud vs local/on-prem deployment | Open | Decide whether local deployment is a Phase 1 requirement or later option; identify security, encryption, logging, and maintenance owner. |
+| Hardware/RAG acceleration / local box | Deferred | Treat Phison/AISSD/large-VRAM/local-machine ideas as experiments, not v1 dependencies. |
 | Regulatory | Open | Review intended use and claims before any TFDA/FDA/non-device/clinical-use statement. |
 | IRB / research ethics | Open | Determine whether human-subjects/IRB review is needed before patient, staff, or workflow data collection beyond expert synthetic review. |
 | Nurse/staff operations | Open | Validate nurse repair prompts, NHI-card handoff, and waiting-room burden with clinic staff. |
@@ -28,7 +31,7 @@ The next major research step is Phase 0 clinician/nurse review. Any step beyond 
 | Phase | Allowed | Not allowed |
 | --- | --- | --- |
 | Phase 0: synthetic clinician/nurse review | Synthetic cases, expert review, scorecard, line-level wording notes. | Real patient data, real identifiers, live HIS, production workflow. |
-| Phase 1: pilot-readiness review | Governance packet, draft consent/IRB/privacy questions, approved first three flows, system architecture options. | Real collection until governance owners approve. |
+| Phase 1: pilot-readiness review | Governance packet, current-system benchmark table, draft consent/IRB/privacy questions, approved first three flows, system architecture options. | Real collection until governance owners approve; hardware/local deployment treated as optional architecture experiment only. |
 | Phase 2: supervised pilot, if approved | Only what hospital/IRB/privacy/security/HIS owners approve. | Scope creep beyond approved protocol. |
 
 ## Regulatory Review Notes
@@ -52,3 +55,5 @@ Do not use these references to claim v1 status. They only define questions that 
 5. Who owns HIS/export/API conversation?
 6. What funding path replaces the current personal subsidy?
 7. What evidence threshold allows moving from synthetic expert review to pilot-readiness review?
+8. Which current-system functions must v1 match, and which must remain out of scope?
+9. Is local/on-prem deployment required for Phase 1, and who maintains it?

@@ -11,8 +11,9 @@ Use this as a LINE or email draft for 許醫師 / 吳老師.
 1. 醫師摘要是否看得下去、用得上
 2. 護理補問/候診區流程會不會增加負擔
 3. 12 類主訴裡，哪 3 類最值得先做下一版
-4. 檢查前置提醒哪些 wording 可以保留，哪些要等醫師/護理師確認後才出現
-5. 專利/創智動能/聯醫資訊或資安這些界線，哪些需要先避開
+4. 現在的聯醫小幫手/陽明小幫手哪些功能 v1 要對齊，哪些要刻意先不做
+5. 檢查前置提醒哪些 wording 可以保留，哪些要等醫師/護理師確認後才出現
+6. 專利/創智動能/聯醫資訊或資安這些界線，哪些需要先避開
 
 如果方便，也想請一位熟悉門診流程的護理師或同仁一起看 10-15 分鐘，主要判斷補問是否真的可行。完成後我會只整理成 review scorecard 和下一步 decision，不會把它寫成已可上線或已通過法規。
 ```
@@ -30,6 +31,7 @@ Use this as a LINE or email draft for 許醫師 / 吳老師.
 - [ ] Ask 許醫師 for a 30-45 minute review slot.
 - [ ] Ask whether a nurse or clinic staff member can join for the nurse-repair section.
 - [ ] Ask him to confirm or replace the provisional first three complaint flows.
+- [ ] Ask whether the current `聯醫小幫手` / `陽明小幫手` flows can be reviewed through screenshots or synthetic/no-real-data screen-share.
 - [ ] Ask whether to use named personas or neutral role labels.
 - [ ] Ask for patent/vendor boundaries before any post-v1 implementation.
 - [ ] Re-state that v1 is synthetic-only and not clinical deployment.
@@ -39,6 +41,7 @@ Use this as a LINE or email draft for 許醫師 / 吳老師.
 If sharing files before the review, send only:
 
 - v1 handoff packet
+- current-system benchmark table
 - Phase 0 review scorecard
 - governance gate register
 

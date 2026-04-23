@@ -85,6 +85,28 @@ Decision on first-three default:
 
 ```
 
+## Current-System Benchmark Evidence
+
+Use only synthetic inputs, screenshots, or screen-share. Do not enter or record real patient data.
+
+| Benchmark item | Reviewer note |
+| --- | --- |
+| `聯醫小幫手` functions that v1 should match |  |
+| `聯醫小幫手` functions that v1 should intentionally omit |  |
+| `陽明小幫手` functions that v1 should match |  |
+| `陽明小幫手` functions that v1 should intentionally omit |  |
+| Is `初步建議` / `檢查方向` acceptable wording? |  |
+| Should v1 include registration help? |  |
+| Should v1 include return-visit questioning beyond the rule card? |  |
+| Should v1 include waiting-flow explanation? |  |
+| Vendor/IP/patent behavior not safe to copy |  |
+
+Benchmark decision:
+
+```text
+
+```
+
 ## Nurse / Staff Workflow Evidence
 
 | Question | Evidence |
@@ -134,6 +156,8 @@ Mark any gate that blocks the next step.
 | Vendor contract / exclusivity |  |  |
 | Privacy/security |  |  |
 | HIS / information office |  |  |
+| Cloud vs local/on-prem deployment |  |  |
+| Hardware/RAG acceleration |  |  |
 | TFDA/FDA/regulatory wording |  |  |
 | IRB / research protocol |  |  |
 | Nurse/staff operations |  |  |

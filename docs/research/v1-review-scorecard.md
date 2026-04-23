@@ -32,6 +32,7 @@ Use `1` low / poor and `5` high / excellent, except burden where `5` means too b
 | Physician summary usefulness |  |  |
 | Exam-prep wording safety |  |  |
 | Export/mock API usefulness for discussion |  |  |
+| Current-system benchmark clarity |  |  |
 | Staff burden, where 5 is too burdensome |  |  |
 | Overall continue value |  |  |
 
@@ -95,6 +96,19 @@ After choosing the first three, fill:
 
 `docs/research/v1-priority-flow-review-worksheet.md`
 
+## Current-System Benchmark
+
+Use `docs/research/v1-current-system-benchmark-table.md`.
+
+| Question | Reviewer answer |
+| --- | --- |
+| Which current `聯醫小幫手` / `陽明小幫手` functions must v1 match? |  |
+| Which current functions should v1 intentionally omit? |  |
+| Which functions belong to Phase 1 or later? |  |
+| Which items require governance review before implementation? |  |
+| Is `初步建議` / `檢查方向` acceptable wording, or should v1 stay confirmation-only? |  |
+| Is any current app behavior vendor/IP/confidential and not safe to copy? |  |
+
 ## Governance Gate Notes
 
 | Gate | Reviewer note | Owner to ask |
@@ -107,6 +121,8 @@ After choosing the first three, fill:
 | TFDA/FDA/regulatory wording |  |  |
 | IRB / research protocol |  |  |
 | Nurse/staff operations |  |  |
+| Current-system benchmark / Argon app permission |  |  |
+| Cloud vs local/on-prem deployment |  |  |
 
 ## Decision
 
