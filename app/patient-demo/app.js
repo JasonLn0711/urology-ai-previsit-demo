@@ -9,6 +9,7 @@ const STORAGE_KEY = "urologyPrevisitAnswers";
 const UI_PREFS_KEY = "urologyPrevisitUiPrefs";
 
 const ARRAY_FIELDS = new Set([
+  "chiefConcern",
   "systemicSymptoms",
   "fluidCaffeineContext",
   "leakageTriggers",
@@ -282,9 +283,10 @@ const STEPS = [
   {
     id: "concern",
     label: "主要問題",
-    title: "今天最想先說哪一個問題？",
-    copy: "選最接近的就好。若不完全符合，可以選其他，最後再補充。",
+    title: "今天最想先說哪一些問題？",
+    copy: "可以選一個，也可以選多個。選好後再按下一步，避免太早跳走。",
     type: "options",
+    multiple: true,
     field: "chiefConcern",
     options: [
       ["Frequency / nocturia / urgency", "尿很頻繁、晚上常起床、突然很急", "例如白天一直跑廁所、晚上起床尿尿、很難忍。"],
@@ -734,6 +736,7 @@ const SCENARIOS = SYNTHETIC_CASES;
 let currentStep = 0;
 let activeScenario = "";
 let answers = restoreAnswers() || emptyAnswers();
+let questionCursors = {};
 
 const mount = document.querySelector("#stepMount");
 const progressBar = document.querySelector("#progressBar");
@@ -768,7 +771,7 @@ function normalizeAnswers(source) {
       return;
     }
     if (ANSWER_FIELDS.includes(field)) {
-      base[field] = ARRAY_FIELDS.has(field) ? (Array.isArray(value) ? value.slice() : []) : value;
+      base[field] = ARRAY_FIELDS.has(field) ? (Array.isArray(value) ? value.slice() : (value ? [value] : [])) : value;
     }
   });
   return base;
@@ -874,13 +877,104 @@ function visibleFields(fields) {
   return fields.filter((field) => !field.when || field.when(answers));
 }
 
+function stepSupportsQuestionFlow(step) {
+  return step && (step.type === "fields" || step.type === "modules");
+}
+
+function questionFlowItems(step) {
+  if (!stepSupportsQuestionFlow(step)) return [];
+  if (step.type === "fields") {
+    return visibleFields(step.fields).map((field) => ({ field }));
+  }
+  const modules = activeModules(answers);
+  return MODULES
+    .filter((module) => modules[module.id])
+    .flatMap((module) => visibleFields(module.fields).map((field) => ({ field, module })));
+}
+
+function currentQuestionIndex(step, items = questionFlowItems(step)) {
+  const rawIndex = Number(questionCursors[step.id] || 0);
+  const maxIndex = Math.max(items.length - 1, 0);
+  const index = Math.min(Math.max(rawIndex, 0), maxIndex);
+  questionCursors[step.id] = index;
+  return index;
+}
+
+function focusQuestionPanel() {
+  window.requestAnimationFrame(() => {
+    document.querySelector(".patient-intake")?.scrollIntoView({ block: "start" });
+  });
+}
+
+function setStepIndex(stepIndex, options = {}) {
+  currentStep = Math.min(Math.max(stepIndex, 0), STEPS.length - 1);
+  const step = STEPS[currentStep];
+  if (stepSupportsQuestionFlow(step)) {
+    const items = questionFlowItems(step);
+    if (options.position === "last") {
+      questionCursors[step.id] = Math.max(items.length - 1, 0);
+    } else if (options.position === "firstMissing") {
+      const missingIndex = items.findIndex((item) => !hasFieldValue(item.field.field));
+      questionCursors[step.id] = missingIndex >= 0 ? missingIndex : 0;
+    } else if (typeof questionCursors[step.id] !== "number") {
+      questionCursors[step.id] = 0;
+    }
+  }
+}
+
+function advanceQuestionOrStep() {
+  const step = STEPS[currentStep];
+  if (stepSupportsQuestionFlow(step)) {
+    const items = questionFlowItems(step);
+    const index = currentQuestionIndex(step, items);
+    if (index < items.length - 1) {
+      questionCursors[step.id] = index + 1;
+      render();
+      focusQuestionPanel();
+      return;
+    }
+  }
+  setStepIndex(currentStep === STEPS.length - 1 ? 0 : currentStep + 1, { position: "firstMissing" });
+  render();
+  focusQuestionPanel();
+}
+
+function goBackQuestionOrStep() {
+  const step = STEPS[currentStep];
+  if (stepSupportsQuestionFlow(step)) {
+    const index = currentQuestionIndex(step);
+    if (index > 0) {
+      questionCursors[step.id] = index - 1;
+      render();
+      focusQuestionPanel();
+      return;
+    }
+  }
+  if (currentStep > 0) {
+    setStepIndex(currentStep - 1, { position: "last" });
+    render();
+    focusQuestionPanel();
+  }
+}
+
+function isAutoAdvanceQuestion() {
+  const step = STEPS[currentStep];
+  if (step.type === "options") return !step.multiple;
+  if (stepSupportsQuestionFlow(step)) {
+    const items = questionFlowItems(step);
+    const item = items[currentQuestionIndex(step, items)];
+    return item && item.field.type === "select";
+  }
+  return false;
+}
+
 function missingEntries() {
   return missingFieldEntries(answers);
 }
 
-function setAnswer(field, value) {
+function setAnswer(field, value, options = {}) {
   const sourceByField = Object.assign({}, answers.sourceByField);
-  const nextValue = ARRAY_FIELDS.has(field) ? value.slice() : value;
+  const nextValue = ARRAY_FIELDS.has(field) ? (Array.isArray(value) ? value.slice() : (value ? [value] : [])) : value;
   if (field === "filledBy") {
     sourceByField.filledBy = "declared_on_entry";
     ANSWER_FIELDS.forEach((answerField) => {
@@ -898,7 +992,7 @@ function setAnswer(field, value) {
     sourceByField
   });
   persistAnswers();
-  render();
+  if (options.render !== false) render();
 }
 
 function toggleCheckbox(field, value, checked) {
@@ -918,6 +1012,7 @@ function loadScenario(scenarioId) {
   const scenario = SCENARIOS.find((item) => item.id === scenarioId) || SCENARIOS[0];
   activeScenario = scenario.id;
   answers = normalizeAnswers(scenario.answers);
+  questionCursors = {};
   persistAnswers();
   currentStep = STEPS.length - 1;
   render();
@@ -961,16 +1056,45 @@ function renderSourceNotice() {
 }
 
 function renderOptions(step) {
+  if (step.multiple) {
+    const current = listAnswer(step.field);
+    return `
+      <fieldset class="elder-question-card checkbox-field">
+        <legend>${escapeHtml(step.title)}</legend>
+        <p class="question-guidance">可以複選。選好後，再按下方的「下一步」。</p>
+        <div class="checkbox-grid elder-choice-grid">
+          ${step.options.map((option) => {
+            const item = optionSpec(option);
+            return `
+              <label class="checkbox-option elder-checkbox-option">
+                <input
+                  type="checkbox"
+                  data-checkbox-field="${escapeHtml(step.field)}"
+                  data-checkbox-value="${escapeHtml(item.value)}"
+                  ${current.includes(item.value) ? "checked" : ""}>
+                <span>
+                  <strong>${escapeHtml(item.label)}</strong>
+                  ${item.detail ? `<small>${escapeHtml(item.detail)}</small>` : ""}
+                </span>
+              </label>
+            `;
+          }).join("")}
+        </div>
+      </fieldset>
+    `;
+  }
+
   return `
-    <div class="option-grid" role="group" aria-label="${escapeHtml(step.title)}">
+    <div class="option-grid elder-choice-grid" role="group" aria-label="${escapeHtml(step.title)}">
       ${step.options.map((option) => {
         const item = optionSpec(option);
         return `
           <button
-            class="option-button"
+            class="option-button elder-choice-button"
             type="button"
             data-option-field="${escapeHtml(step.field)}"
             data-option-value="${escapeHtml(item.value)}"
+            data-auto-advance="true"
             aria-pressed="${answers[step.field] === item.value ? "true" : "false"}">
             <strong>${escapeHtml(item.label)}</strong>
             <span>${escapeHtml(item.detail)}</span>
@@ -981,10 +1105,12 @@ function renderOptions(step) {
   `;
 }
 
-function renderField(field) {
+function renderField(field, options = {}) {
+  const autoAdvance = options.autoAdvance !== false;
+
   if (field.type === "textarea") {
     return `
-      <div class="field wide-field">
+      <div class="field wide-field elder-text-field">
         <label for="${escapeHtml(field.field)}">${escapeHtml(field.label)}</label>
         <textarea id="${escapeHtml(field.field)}" data-field="${escapeHtml(field.field)}" placeholder="${escapeHtml(field.placeholder || "")}">${escapeHtml(answers[field.field])}</textarea>
       </div>
@@ -996,17 +1122,18 @@ function renderField(field) {
     return `
       <fieldset class="field wide-field checkbox-field">
         <legend>${escapeHtml(field.label)}</legend>
-        <div class="checkbox-grid">
+        <p class="question-guidance">可以複選。選好後，再按下方的「下一題」。</p>
+        <div class="checkbox-grid elder-choice-grid">
           ${field.options.map((option) => {
             const item = optionSpec(option);
             return `
-              <label class="checkbox-option">
+              <label class="checkbox-option elder-checkbox-option">
                 <input
                   type="checkbox"
                   data-checkbox-field="${escapeHtml(field.field)}"
                   data-checkbox-value="${escapeHtml(item.value)}"
                   ${current.includes(item.value) ? "checked" : ""}>
-                <span>${escapeHtml(item.label)}</span>
+                <span><strong>${escapeHtml(item.label)}</strong></span>
               </label>
             `;
           }).join("")}
@@ -1016,36 +1143,58 @@ function renderField(field) {
   }
 
   return `
-    <div class="field">
-      <label for="${escapeHtml(field.field)}">${escapeHtml(field.label)}</label>
-      <select id="${escapeHtml(field.field)}" data-field="${escapeHtml(field.field)}">
-        <option value="" ${answers[field.field] ? "" : "selected"}>請選擇</option>
+    <div class="option-grid elder-choice-grid" role="group" aria-label="${escapeHtml(field.label)}">
         ${field.options.map((option) => {
           const item = optionSpec(option);
           return `
-            <option value="${escapeHtml(item.value)}" ${answers[field.field] === item.value ? "selected" : ""}>
-              ${escapeHtml(item.label)}
-            </option>
+            <button
+              class="option-button elder-choice-button"
+              type="button"
+              data-option-field="${escapeHtml(field.field)}"
+              data-option-value="${escapeHtml(item.value)}"
+              data-auto-advance="${autoAdvance ? "true" : "false"}"
+              aria-pressed="${answers[field.field] === item.value ? "true" : "false"}">
+              <strong>${escapeHtml(item.label)}</strong>
+            </button>
           `;
         }).join("")}
-      </select>
     </div>
   `;
 }
 
 function renderFields(step) {
+  const items = questionFlowItems(step);
+  if (!items.length) {
+    return `
+      <div class="empty-state">
+        <h4>目前沒有需要填的題目</h4>
+        <p>可以按下一步繼續。</p>
+      </div>
+    `;
+  }
+  const index = currentQuestionIndex(step, items);
+  return renderQuestionFlowCard(step, items[index], index, items.length);
+}
+
+function renderQuestionFlowCard(step, item, index, total) {
+  const field = item.field;
+  const prompt = PATIENT_MISSING_PROMPTS[field.field] || [field.label, ""];
   return `
-    <div class="field-grid">
-      ${visibleFields(step.fields).map(renderField).join("")}
-    </div>
+    <section class="elder-question-card" aria-labelledby="elder-question-title">
+      <div class="question-progress">題組內第 ${index + 1} 題，共 ${total} 題</div>
+      ${item.module ? `<p class="question-module-label">${escapeHtml(item.module.title)}</p>` : ""}
+      <h3 id="elder-question-title">${escapeHtml(field.label)}</h3>
+      <p class="question-guidance">${escapeHtml(prompt[1] || "請選最接近的答案。")}</p>
+      ${renderField(field)}
+    </section>
   `;
 }
 
 function renderModules() {
-  const modules = activeModules(answers);
-  const activeDefinitions = MODULES.filter((module) => modules[module.id]);
+  const step = STEPS[currentStep];
+  const items = questionFlowItems(step);
 
-  if (!activeDefinitions.length) {
+  if (!items.length) {
     return `
       <div class="empty-state">
         <h4>目前沒有需要追加的問題</h4>
@@ -1054,21 +1203,8 @@ function renderModules() {
     `;
   }
 
-  return `
-    <div class="module-stack">
-      ${activeDefinitions.map((module) => `
-        <section class="module-card" aria-label="${escapeHtml(module.title)}">
-          <div class="module-head">
-            <h3>${escapeHtml(module.title)}</h3>
-            <p>${escapeHtml(module.copy)}</p>
-          </div>
-          <div class="field-grid">
-            ${visibleFields(module.fields).map(renderField).join("")}
-          </div>
-        </section>
-      `).join("")}
-    </div>
-  `;
+  const index = currentQuestionIndex(step, items);
+  return renderQuestionFlowCard(step, items[index], index, items.length);
 }
 
 function renderRepair() {
@@ -1210,16 +1346,20 @@ function currentStepText() {
   const step = STEPS[currentStep];
   const parts = [`第 ${currentStep + 1} 步，共 ${STEPS.length} 步。`, step.title, step.copy];
   if (step.type === "options") {
-    parts.push("可選項目：" + step.options.map((option) => optionSpec(option).label).join("、"));
+    parts.push((step.multiple ? "可以複選：" : "點選後會自動進到下一題：") + step.options.map((option) => optionSpec(option).label).join("、"));
   }
   if (step.type === "fields") {
-    parts.push("本頁題目：" + visibleFields(step.fields).map((field) => field.label).join("、"));
+    const items = questionFlowItems(step);
+    const item = items[currentQuestionIndex(step, items)];
+    if (item) {
+      parts.push(`目前題目：${item.field.label}`);
+    }
   }
   if (step.type === "modules") {
-    const modules = activeModules(answers);
-    const activeDefinitions = MODULES.filter((module) => modules[module.id]);
-    parts.push(activeDefinitions.length
-      ? "本頁會補問：" + activeDefinitions.map((module) => module.title).join("、")
+    const items = questionFlowItems(step);
+    const item = items[currentQuestionIndex(step, items)];
+    parts.push(item
+      ? `目前補問題目：${item.module ? item.module.title + "，" : ""}${item.field.label}`
       : "目前沒有需要追加的問題。");
   }
   if (step.type === "repair") {
@@ -1257,10 +1397,21 @@ function renderReadiness() {
 
 function renderProgress() {
   const width = ((currentStep + 1) / STEPS.length) * 100;
+  const step = STEPS[currentStep];
+  const flowItems = questionFlowItems(step);
+  const flowIndex = currentQuestionIndex(step, flowItems);
+  const hideNext = isAutoAdvanceQuestion();
   progressBar.style.width = `${width}%`;
   progressText.textContent = `第 ${currentStep + 1} 步，共 ${STEPS.length} 步`;
-  backButton.disabled = currentStep === 0;
-  nextButton.textContent = currentStep === STEPS.length - 1 ? "回到第一步" : "下一步";
+  backButton.disabled = currentStep === 0 && (!stepSupportsQuestionFlow(step) || flowIndex === 0);
+  nextButton.hidden = hideNext;
+  if (currentStep === STEPS.length - 1) {
+    nextButton.textContent = "回到第一步";
+  } else if (stepSupportsQuestionFlow(step) && flowItems.length && flowIndex < flowItems.length - 1) {
+    nextButton.textContent = "下一題";
+  } else {
+    nextButton.textContent = "下一步";
+  }
 }
 
 function render() {
@@ -1284,14 +1435,20 @@ function showToast(message) {
 mount.addEventListener("click", (event) => {
   const option = event.target.closest("[data-option-field]");
   if (option) {
-    setAnswer(option.dataset.optionField, option.dataset.optionValue);
+    setAnswer(option.dataset.optionField, option.dataset.optionValue, { render: false });
+    if (option.dataset.autoAdvance === "true") {
+      advanceQuestionOrStep();
+    } else {
+      render();
+    }
     return;
   }
 
   const repair = event.target.closest("[data-go-step]");
   if (repair) {
-    currentStep = Number(repair.dataset.goStep);
+    setStepIndex(Number(repair.dataset.goStep), { position: "firstMissing" });
     render();
+    focusQuestionPanel();
   }
 });
 
@@ -1326,8 +1483,9 @@ mount.addEventListener("input", (event) => {
 stepNav.addEventListener("click", (event) => {
   const stepButton = event.target.closest("[data-step-index]");
   if (!stepButton) return;
-  currentStep = Number(stepButton.dataset.stepIndex);
+  setStepIndex(Number(stepButton.dataset.stepIndex), { position: "firstMissing" });
   render();
+  focusQuestionPanel();
 });
 
 scenarioMount.addEventListener("click", (event) => {
@@ -1337,13 +1495,11 @@ scenarioMount.addEventListener("click", (event) => {
 });
 
 backButton.addEventListener("click", () => {
-  currentStep = Math.max(0, currentStep - 1);
-  render();
+  goBackQuestionOrStep();
 });
 
 nextButton.addEventListener("click", () => {
-  currentStep = currentStep === STEPS.length - 1 ? 0 : currentStep + 1;
-  render();
+  advanceQuestionOrStep();
 });
 
 loadSample.addEventListener("click", () => {
@@ -1353,6 +1509,7 @@ loadSample.addEventListener("click", () => {
 resetDemo.addEventListener("click", () => {
   activeScenario = "";
   answers = emptyAnswers();
+  questionCursors = {};
   persistAnswers();
   currentStep = 0;
   render();
