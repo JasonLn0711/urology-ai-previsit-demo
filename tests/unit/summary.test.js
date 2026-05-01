@@ -30,3 +30,31 @@ test("hematuria case stays observational and activates hematuria context", () =>
   assert.match(text, /occult blood/);
   assert.doesNotMatch(text, /cancer|risk score|order placed/);
 });
+
+test("supports multiple selected main urinary concerns", () => {
+  const summary = buildClinicianSummary({
+    filledBy: "Patient self-filled",
+    chiefConcern: ["Leakage", "Visible blood or clots"],
+    duration: "1 to 7 days",
+    botherScore: "6",
+    daytimeFrequencyChange: "No",
+    nocturiaCount: "1 time",
+    urgency: "No",
+    leakage: "Yes",
+    painBurning: "No",
+    visibleBlood: "Yes",
+    unableToUrinate: "No",
+    systemicSymptoms: ["None of these"],
+    medicationListStatus: "Can provide list",
+    leakageFrequency: "Weekly",
+    leakageAmount: "Small amount",
+    leakageTriggers: ["Before reaching toilet"],
+    containmentProducts: "Pads or liners",
+    hematuriaPattern: "One time",
+    bloodClots: "No"
+  });
+
+  assert.equal(summary.chiefConcern, "Leakage, Visible blood or clots");
+  assert.ok(summary.activeModules.includes("leakage"));
+  assert.ok(summary.activeModules.includes("hematuria"));
+});

@@ -233,7 +233,7 @@ const VALUE_LABELS = {
 
 const PATIENT_MISSING_PROMPTS = {
   filledBy: ["先確認誰在回答", "這樣可以分清楚本人感受和家人觀察。"],
-  chiefConcern: ["選一個今天最想先說的問題", "先抓主要困擾，後面才不會問太多不相關的問題。"],
+  chiefConcern: ["選一個或多個今天最想先說的問題", "先抓主要困擾，後面才不會問太多不相關的問題。"],
   duration: ["補一下大約開始時間", "不知道精確日期也沒關係，選大概區間即可。"],
   botherScore: ["選一個困擾程度", "1 是很輕微，10 是非常困擾。"],
   daytimeFrequencyChange: ["白天尿尿次數有沒有變多？", "若不確定，可以選不確定。"],
@@ -251,7 +251,7 @@ const PATIENT_MISSING_PROMPTS = {
   bladderDiaryFeasible: ["如果需要，能不能記幾天排尿狀況？", "這不是現在一定要做，只是先確認是否方便。"],
   leakageFrequency: ["漏尿大約多常發生？", "選最接近的頻率即可。"],
   leakageAmount: ["漏尿量大約多少？", "用幾滴、少量、會濕等方式回答即可。"],
-  leakageTriggers: ["什麼情況比較容易漏尿？", "可以複選，也可以選不確定。"],
+  leakageTriggers: ["最常在什麼情況漏尿？", "選最接近的一項，也可以選不確定。"],
   containmentProducts: ["目前有沒有使用護墊、尿布或其他用品？", "不想回答可以選暫時不想回答。"],
   weakStream: ["尿流有沒有變細、變弱？", "用自己的觀察回答即可。"],
   straining: ["尿尿時是否常需要用力？", "若不確定，可以選不確定。"],
@@ -379,7 +379,7 @@ const STEPS = [
       },
       {
         field: "systemicSymptoms",
-        label: "最近有沒有以下情況？",
+        label: "最近最需要先讓團隊知道的是哪一項？",
         type: "checkboxes",
         options: [
           ["Fever", "發燒"],
@@ -506,7 +506,7 @@ const MODULES = [
       },
       {
         field: "fluidCaffeineContext",
-        label: "下面哪些情況可能有關？",
+        label: "下面哪一項最可能有關？",
         type: "checkboxes",
         options: [
           ["Caffeinated drinks most days", "常喝咖啡、茶或含咖啡因飲料"],
@@ -561,7 +561,7 @@ const MODULES = [
       },
       {
         field: "leakageTriggers",
-        label: "什麼情況比較容易漏尿？",
+        label: "最常在什麼情況漏尿？",
         type: "checkboxes",
         options: [
           ["Before reaching toilet", "來不及到廁所"],
@@ -641,7 +641,7 @@ const MODULES = [
       },
       {
         field: "hematuriaCoSymptoms",
-        label: "同時有沒有下面情況？",
+        label: "同時最明顯的是哪一項？",
         type: "checkboxes",
         options: [
           ["Pain or burning", "疼痛或灼熱"],
@@ -709,7 +709,7 @@ const MODULES = [
       },
       {
         field: "relevantComorbidities",
-        label: "是否曾被告知有下面狀況？",
+        label: "下面哪一項最需要先告訴團隊？",
         type: "checkboxes",
         options: [
           ["Diabetes", "糖尿病"],

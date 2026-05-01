@@ -185,7 +185,8 @@
   }
 
   function hasConcern(answers, fragment) {
-    return lower(answers && answers.chiefConcern).includes(fragment);
+    const needle = fragment.toLowerCase();
+    return listValue(answers && answers.chiefConcern).some((item) => item.toLowerCase().includes(needle));
   }
 
   function activeModules(answers) {

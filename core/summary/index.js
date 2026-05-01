@@ -231,7 +231,7 @@
       completionStatus: status,
       activeModules: moduleNames.length ? moduleNames : ["core only"],
       intakeMode: answer(safeAnswers.filledBy) || "Not provided",
-      chiefConcern: answer(safeAnswers.chiefConcern) || "Not provided",
+      chiefConcern: formatList(safeAnswers.chiefConcern, "Not provided"),
       symptomPattern: symptomPattern(safeAnswers),
       durationBother: durationBother(safeAnswers),
       clinicianReviewFlags: flags.length ? flags : [NEUTRAL_EMPTY_FLAG],
