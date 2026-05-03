@@ -17,6 +17,14 @@ It is designed to show whether structured patient or family answers can become a
 
 The system is a workflow evidence prototype. It is not clinical software, not a diagnosis engine, not a treatment recommender, and not connected to HIS/EHR systems.
 
+## Future Direction Signal
+
+The 2026-05-03 余總 LINE image/message frames `Urgent care intake kiosk with AI triage` as a possible ultimate target, while saying the practical start can be `協助醫生問診`.
+
+For this repository, that means the current product remains the start point: structured urology intake, nurse repair, clinician summary, visit packet, and reviewer evidence. Urgent-care triage, queue reprioritization, risk scoring, and direct HIS connection are future governance / integration topics, not current implementation scope.
+
+Reference: `docs/research/future-urgent-care-ai-triage-reference-2026-05-03.md`.
+
 ## Removed From The Old Demo
 
 - The old all-in-one `app/v1` console was removed because it duplicated role surfaces.

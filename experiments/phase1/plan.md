@@ -36,3 +36,13 @@ If the system uses one canonical intake record, centralized summary logic, field
 - Stop if source attribution is missing from clinician-facing output.
 - Stop if missing fields are hidden or silently converted into conclusions.
 - Stop if the reviewer cannot tell that physician review is required.
+
+## 2026-05-03 Future-Triage Reference
+
+余總's `Urgent care intake kiosk with AI triage` reference is a future-direction signal, not a Phase 1 feature request.
+
+Phase 1 may ask one reviewer-facing question:
+
+> If this workflow later becomes a Taiwan-local urgent-care or clinic-intake system, which parts should stay as physician history-taking support, and which parts would require separate triage, HIS, privacy/security, or regulatory governance?
+
+Do not add risk scores, urgency labels, queue ordering, or HIS fields to Phase 1 logs before a separate decision memo explicitly approves that scope.
