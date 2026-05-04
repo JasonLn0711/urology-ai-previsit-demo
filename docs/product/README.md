@@ -4,6 +4,8 @@ This repository is a local, synthetic-data clinical workflow evidence system for
 
 It is designed to show whether structured patient or family answers can become a clinician-readable summary, nurse repair checklist, visit packet, and reviewer decision record without crossing into diagnosis, triage, treatment advice, or autonomous ordering.
 
+Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate from 許醫師's current `陽明小幫手` prototype name, which remains benchmark/source context only.
+
 ## Entry Points
 
 - Patient/family intake: `http://localhost:4173/app/patient/`

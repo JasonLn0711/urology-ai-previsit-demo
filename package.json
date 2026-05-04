@@ -1,5 +1,5 @@
 {
-  "name": "urology-ai-previsit-demo",
+  "name": "uroprevisit-navigator-demo",
   "version": "0.2.0",
   "private": true,
   "description": "Synthetic-data urology previsit workflow evidence system.",

@@ -1,8 +1,10 @@
-# Urology AI Previsit Evidence System
+# 泌尿預診導航 Evidence System
 
 This repository turns a static demo into a verifiable clinical workflow evidence system.
 
 It uses synthetic urology previsit cases and local browser answers to produce role-separated outputs: patient confirmation, nurse missing-field repair, clinician summary, visit packet, and reviewer decision evidence.
+
+Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate from 許醫師's current `陽明小幫手` prototype name, which should be treated as benchmark/source context only.
 
 ## What This Is
 

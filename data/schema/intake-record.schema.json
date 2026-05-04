@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urology-ai-previsit.intake-record.schema.json",
-  "title": "Urology AI Previsit Canonical Intake Record",
+  "$id": "uroprevisit-navigator.intake-record.schema.json",
+  "title": "泌尿預診導航 Canonical Intake Record",
   "type": "object",
   "required": [
     "patient_input",
