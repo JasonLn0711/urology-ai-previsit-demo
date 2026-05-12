@@ -6,6 +6,12 @@ It is designed to show whether structured patient or family answers can become a
 
 Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate from 許醫師's current `陽明小幫手` prototype name, which remains benchmark/source context only.
 
+## Project Ownership
+
+The primary collaboration context is the urology previsit project with the Taipei City Hospital Beitou Branch urology director. This repo should evolve only when that urology project has a new product, review, safety, or workflow requirement.
+
+The Huicheng / imedtac AI-triage kiosk lane is a separate project with its own execution repo at `../ai-triage-kiosk-demo/`. Huicheng work may reuse this repo as a reference, but should not modify this repo unless the change is independently needed for the urology previsit project.
+
 ## Entry Points
 
 - Patient/family intake: `http://localhost:4173/app/patient/`

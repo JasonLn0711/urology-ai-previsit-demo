@@ -12,6 +12,12 @@ Jason used the current urology previsit demo as a reference during the company s
 
 This does not change this repository's implementation scope. It only records that the current urology workflow can serve as a technical and workflow reference for a separate future kiosk / urgent-care triage discussion.
 
+The two projects are separate:
+
+- This repository is for the urology previsit collaboration with the Taipei City Hospital Beitou Branch urology director.
+- Huicheng / imedtac AI-triage kiosk work belongs in `../ai-triage-kiosk-demo/`.
+- Future Huicheng work may borrow patterns and lessons from this repository, but should not modify this repository unless there is a separate urology-side reason to do so.
+
 ## Company-Side Product Facts
 
 - 慧誠 has a self-service vital-sign kiosk.

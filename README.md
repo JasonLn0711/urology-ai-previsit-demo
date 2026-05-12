@@ -6,6 +6,12 @@ It uses synthetic urology previsit cases and local browser answers to produce ro
 
 Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate from 許醫師's current `陽明小幫手` prototype name, which should be treated as benchmark/source context only.
 
+## Project Ownership Rule
+
+This project is the urology previsit collaboration with the Taipei City Hospital Beitou Branch urology director. The Huicheng / imedtac AI-triage kiosk work is a separate later project from Prof. Wu's adjacent collaboration thread.
+
+Huicheng may borrow architecture, interaction patterns, and safety lessons from this repository, but Huicheng requirements or implementation should not drive changes here. Future Huicheng work belongs in `../ai-triage-kiosk-demo/` unless a separate urology-side discussion explicitly asks for this repository to change.
+
 ## What This Is
 
 - A local, static, synthetic-data workflow prototype.
