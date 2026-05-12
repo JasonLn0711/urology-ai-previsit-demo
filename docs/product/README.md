@@ -9,6 +9,7 @@ Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate 
 ## Entry Points
 
 - Patient/family intake: `http://localhost:4173/app/patient/`
+- Patient/family short intake: `http://localhost:4173/app/patient-short/`
 - Nurse checklist: `http://localhost:4173/app/nurse/`
 - Clinician summary: `http://localhost:4173/app/clinician/`
 - Visit packet: `http://localhost:4173/app/clinician/visit-packet/`
@@ -18,6 +19,10 @@ Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate 
 ## Product Boundary
 
 The system is a workflow evidence prototype. It is not clinical software, not a diagnosis engine, not a treatment recommender, and not connected to HIS/EHR systems.
+
+## Short Demo UX Boundary
+
+`app/patient-short/` is the fast walkthrough surface. It keeps the same safety boundary as the full intake while optimizing for a short visible demo: fewer patient-facing topics, one-click auto-advance where safe, left-side progress on desktop, and explicit multi-judgment progress so users can see when a topic has several sub-questions.
 
 ## Future Direction Signal
 

@@ -30,6 +30,7 @@ npm start
 Open:
 
 - Patient/family intake: `http://localhost:4173/app/patient/`
+- Patient/family short intake: `http://localhost:4173/app/patient-short/`
 - Nurse checklist: `http://localhost:4173/app/nurse/`
 - Clinician summary: `http://localhost:4173/app/clinician/`
 - Visit packet: `http://localhost:4173/app/clinician/visit-packet/`
@@ -67,7 +68,7 @@ Repository primitives:
 
 - Input: `data/synthetic_cases`, browser `localStorage`
 - Transformation: `core/summary`, `core/missing_fields`, `core/attribution`, `core/role_transform`, `core/safety`
-- Role UI: `app/patient`, `app/nurse`, `app/clinician`, `app/reviewer`
+- Role UI: `app/patient`, `app/patient-short`, `app/nurse`, `app/clinician`, `app/reviewer`
 - Evidence: `experiments/phase1`
 - Governance: `core/safety`, `docs/safety`
 

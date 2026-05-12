@@ -65,6 +65,8 @@ function checkStructure() {
   [
     "app/patient/index.html",
     "app/patient/app.js",
+    "app/patient-short/index.html",
+    "app/patient-short/app.js",
     "app/nurse/index.html",
     "app/nurse/nurse.js",
     "app/clinician/index.html",
@@ -119,6 +121,7 @@ function checkScripts() {
     "app/shared/summary.js",
     "app/shared/cases.js",
     "app/shared/review.js",
+    "app/patient-short/app.js",
     "scripts/checks/smoke-demo.js",
     "scripts/generators/generate-workflow-rehearsal.js",
     "scripts/generators/generate-samples.js",
@@ -130,6 +133,7 @@ function checkScripts() {
 function checkBrowserScriptOrder() {
   const pages = [
     "app/patient/index.html",
+    "app/patient-short/index.html",
     "app/nurse/index.html",
     "app/clinician/index.html",
     "app/clinician/visit-packet/index.html"
