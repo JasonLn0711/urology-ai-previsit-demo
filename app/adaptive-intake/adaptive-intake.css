@@ -1,0 +1,19 @@
+.adaptive-shell .lead {
+  max-width: 76ch;
+}
+
+.adaptive-proof strong:nth-of-type(2) {
+  color: var(--accent-strong);
+}
+
+.adaptive-workspace .ranking-item em {
+  color: var(--muted);
+  display: block;
+  font-size: 0.78rem;
+  font-style: normal;
+  margin-top: 0.25rem;
+}
+
+.adaptive-workspace .state-summary .muted-copy + .muted-copy {
+  margin-top: 0.4rem;
+}
