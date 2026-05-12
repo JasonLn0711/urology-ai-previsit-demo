@@ -18,6 +18,9 @@ Huicheng may borrow architecture, interaction patterns, and safety lessons from 
 - A validation harness for summary usefulness, missing-field repair, source attribution, and safety language.
 - A role-separated UI with one shared data contract and one pure logic layer.
 - An experiment system for logs, scorecards, and decision memos.
+- A Version 2 ASR-ready adaptive-question demo that shows how
+  embedding-style retrieval over a governed question bank can choose the next
+  reasonable clarification or follow-up question.
 
 ## What This Is Not
 
@@ -37,6 +40,7 @@ Open:
 
 - Patient/family intake: `http://localhost:4173/app/patient/`
 - Patient/family short intake: `http://localhost:4173/app/patient-short/`
+- Version 2 adaptive intake: `http://localhost:4173/app/adaptive-intake/`
 - Nurse checklist: `http://localhost:4173/app/nurse/`
 - Clinician summary: `http://localhost:4173/app/clinician/`
 - Visit packet: `http://localhost:4173/app/clinician/visit-packet/`
@@ -74,7 +78,9 @@ Repository primitives:
 
 - Input: `data/synthetic_cases`, browser `localStorage`
 - Transformation: `core/summary`, `core/missing_fields`, `core/attribution`, `core/role_transform`, `core/safety`
-- Role UI: `app/patient`, `app/patient-short`, `app/nurse`, `app/clinician`, `app/reviewer`
+- Adaptive questioning: `core/adaptive_questioning`
+  with governed question-bank metadata, an ambiguity gate, and deterministic ranking before ordinary question selection
+- Role UI: `app/patient`, `app/patient-short`, `app/adaptive-intake`, `app/nurse`, `app/clinician`, `app/reviewer`
 - Evidence: `experiments/phase1`
 - Governance: `core/safety`, `docs/safety`
 
@@ -91,6 +97,13 @@ The code enforces:
 ## Key Docs
 
 - Product boundary: `docs/product/README.md`
+- V2 canonical spec: `docs/urology-ai-previsit-demo-v2-spec.md`
+- V1 to V2 change log: `docs/v1-to-v2-change-log.md`
+- Adaptive questioning design: `docs/adaptive-questioning-design.md`
+- Ambiguity handling: `docs/ambiguity-handling.md`
+- Question-bank schema: `docs/question-bank-schema.md`
+- V2 safety boundary: `docs/safety-boundary.md`
+- Five-minute demo script: `docs/demo-script-5min.md`
 - Safety boundary: `docs/safety/README.md`
 - Workflow/data contract: `docs/workflow/README.md`
 - Research process: `docs/research/README.md`

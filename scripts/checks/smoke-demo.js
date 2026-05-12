@@ -6,6 +6,7 @@ const { spawnSync } = require("node:child_process");
 const { SYNTHETIC_CASES } = require("../../data/synthetic_cases");
 const previsit = require("../../app/shared/summary");
 const { validateIntakeRecord } = require("../../data/schema/intake-record");
+const adaptive = require("../../core/adaptive_questioning");
 
 const root = path.resolve(__dirname, "..", "..");
 const checks = [];
@@ -67,6 +68,9 @@ function checkStructure() {
     "app/patient/app.js",
     "app/patient-short/index.html",
     "app/patient-short/app.js",
+    "app/adaptive-intake/index.html",
+    "app/adaptive-intake/adaptive-intake.js",
+    "app/adaptive-intake/adaptive-intake.css",
     "app/nurse/index.html",
     "app/nurse/nurse.js",
     "app/clinician/index.html",
@@ -83,6 +87,12 @@ function checkStructure() {
     "core/missing_fields/index.js",
     "core/attribution/index.js",
     "core/role_transform/index.js",
+    "core/adaptive_questioning/index.js",
+    "core/adaptive_questioning/questionBank.js",
+    "core/adaptive_questioning/extractFacts.js",
+    "core/adaptive_questioning/detectAmbiguity.js",
+    "core/adaptive_questioning/scoring.js",
+    "core/adaptive_questioning/rankQuestions.js",
     "core/safety/index.js",
     "data/synthetic_cases/index.js",
     "data/schema/intake-record.js",
@@ -90,6 +100,13 @@ function checkStructure() {
     "experiments/phase1/plan.md",
     "experiments/phase1/scorecard.md",
     "experiments/phase1/decision-memo.md",
+    "docs/urology-ai-previsit-demo-v2-spec.md",
+    "docs/v1-to-v2-change-log.md",
+    "docs/adaptive-questioning-design.md",
+    "docs/ambiguity-handling.md",
+    "docs/question-bank-schema.md",
+    "docs/safety-boundary.md",
+    "docs/demo-script-5min.md",
     "docs/product/README.md",
     "docs/safety/README.md",
     "docs/workflow/README.md",
@@ -122,6 +139,13 @@ function checkScripts() {
     "app/shared/cases.js",
     "app/shared/review.js",
     "app/patient-short/app.js",
+    "app/adaptive-intake/adaptive-intake.js",
+    "core/adaptive_questioning/questionBank.js",
+    "core/adaptive_questioning/extractFacts.js",
+    "core/adaptive_questioning/detectAmbiguity.js",
+    "core/adaptive_questioning/scoring.js",
+    "core/adaptive_questioning/rankQuestions.js",
+    "core/adaptive_questioning/index.js",
     "scripts/checks/smoke-demo.js",
     "scripts/generators/generate-workflow-rehearsal.js",
     "scripts/generators/generate-samples.js",
@@ -148,6 +172,21 @@ function checkBrowserScriptOrder() {
     record(`${page}: core loads before shared adapter`, safety > -1 && summary > safety);
     record(`${page}: data loads before cases adapter`, cases > -1 && html.indexOf("shared/cases.js") > cases);
   }
+
+  const adaptive = read("app/adaptive-intake/index.html");
+  record(
+    "app/adaptive-intake/index.html: adaptive modules load before aggregate engine",
+    adaptive.indexOf("core/adaptive_questioning/questionBank.js") > -1 &&
+      adaptive.indexOf("core/adaptive_questioning/extractFacts.js") > adaptive.indexOf("core/adaptive_questioning/questionBank.js") &&
+      adaptive.indexOf("core/adaptive_questioning/detectAmbiguity.js") > adaptive.indexOf("core/adaptive_questioning/extractFacts.js") &&
+      adaptive.indexOf("core/adaptive_questioning/scoring.js") > adaptive.indexOf("core/adaptive_questioning/detectAmbiguity.js") &&
+      adaptive.indexOf("core/adaptive_questioning/rankQuestions.js") > adaptive.indexOf("core/adaptive_questioning/scoring.js") &&
+      adaptive.indexOf("core/adaptive_questioning/index.js") > adaptive.indexOf("core/adaptive_questioning/rankQuestions.js")
+  );
+  record(
+    "app/adaptive-intake/index.html: adaptive engine loads before page app",
+    adaptive.indexOf("./adaptive-intake.js") > adaptive.indexOf("core/adaptive_questioning/index.js")
+  );
 }
 
 function checkCoreContract() {
@@ -164,6 +203,44 @@ function checkCoreContract() {
       !/likely infection|probable cancer|take medication|diagnosed with|you have/.test(text)
     );
   }
+}
+
+function checkAdaptiveQuestioningContract() {
+  const nocturia = adaptive.rankQuestions({
+    transcript: "我最近晚上一直起來尿，而且有時候突然很急。",
+    answers: {},
+    askedQuestionIds: [],
+    questionBank: adaptive.QUESTION_BANK
+  });
+  record(
+    "adaptive smoke: nocturia picks quantification",
+    ["nocturia_count", "daytime_frequency"].includes(nocturia.selected.question.id),
+    nocturia.selected.question.id
+  );
+
+  const vaguePain = adaptive.rankQuestions({
+    transcript: "我下面痛，但我說不清楚是哪裡。",
+    answers: {},
+    askedQuestionIds: [],
+    questionBank: adaptive.QUESTION_BANK
+  });
+  record("adaptive smoke: unclear below pain asks location clarification", vaguePain.selected.question.id === "clarify_pain_location", vaguePain.selected.question.id);
+
+  const hematuria = adaptive.rankQuestions({
+    transcript: "我看到尿液紅紅的，好像有血尿。",
+    answers: {},
+    askedQuestionIds: [],
+    questionBank: adaptive.QUESTION_BANK
+  });
+  record("adaptive smoke: hematuria remains boundary-safe", hematuria.selected.question.id === "visible_blood" && !/診斷|治療|癌症/.test(hematuria.selected.question.text), hematuria.selected.question.id);
+
+  const repeated = adaptive.rankQuestions({
+    transcript: "我晚上一直起來尿。",
+    answers: { nocturiaCount: "3 次以上" },
+    askedQuestionIds: ["nocturia_count"],
+    questionBank: adaptive.QUESTION_BANK
+  });
+  record("adaptive smoke: already asked question is penalized", repeated.selected.question.id !== "nocturia_count", repeated.selected.question.id);
 }
 
 function checkDocsAndExperiments() {
@@ -199,5 +276,6 @@ checkStructure();
 checkScripts();
 checkBrowserScriptOrder();
 checkCoreContract();
+checkAdaptiveQuestioningContract();
 checkDocsAndExperiments();
 printResults();

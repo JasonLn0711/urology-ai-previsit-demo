@@ -16,6 +16,7 @@ The Huicheng / imedtac AI-triage kiosk lane is a separate project with its own e
 
 - Patient/family intake: `http://localhost:4173/app/patient/`
 - Patient/family short intake: `http://localhost:4173/app/patient-short/`
+- Version 2 adaptive intake: `http://localhost:4173/app/adaptive-intake/`
 - Nurse checklist: `http://localhost:4173/app/nurse/`
 - Clinician summary: `http://localhost:4173/app/clinician/`
 - Visit packet: `http://localhost:4173/app/clinician/visit-packet/`
@@ -29,6 +30,48 @@ The system is a workflow evidence prototype. It is not clinical software, not a 
 ## Short Demo UX Boundary
 
 `app/patient-short/` is the fast walkthrough surface. It keeps the same safety boundary as the full intake while optimizing for a short visible demo: fewer patient-facing topics, one-click auto-advance where safe, left-side progress on desktop, and explicit multi-judgment progress so users can see when a topic has several sub-questions.
+
+## Version 2 Adaptive Question Boundary
+
+`app/adaptive-intake/` is the Version 2 demo surface for the 2026-05 Prof. Wu /
+Lianyi ASR + embedding-model discussion. It explicitly upgrades the fixed-path
+questionnaire demo into an ASR-ready adaptive questioning demo. It does not put
+an LLM into the demo runtime. The core claim is narrower and more controllable:
+
+- use ASR or typed text as the input layer;
+- detect ambiguous patient descriptions before retrieval;
+- ask a clarification question when the patient says things like `下面痛` or
+  `尿尿怪怪的`;
+- convert the current answer state into an embedding-style retrieval state after
+  ambiguity is low enough;
+- rank a governed urology question bank with semantic fit, unanswered
+  information gaps, clinical workflow value, ambiguity reduction, and safety
+  priority;
+- show the selected next question plus the top candidate ranking and reasons.
+
+This is not a free-form chatbot. Questions still come from the governed question
+bank, and the ranking evidence is visible so reviewers can see why the next
+question was selected.
+
+The product distinction is:
+
+- v1: fixed questionnaire; the patient follows the system.
+- v2: adaptive question navigation; the system follows the patient's current
+  state and asks the next question that reduces uncertainty.
+
+The hospital-facing message is:
+
+> V2 的 AI 價值不是聊天，而是每次回答後動態決定下一題。
+
+Supporting docs:
+
+- `docs/urology-ai-previsit-demo-v2-spec.md`
+- `docs/v1-to-v2-change-log.md`
+- `docs/adaptive-questioning-design.md`
+- `docs/ambiguity-handling.md`
+- `docs/question-bank-schema.md`
+- `docs/safety-boundary.md`
+- `docs/demo-script-5min.md`
 
 ## Future Direction Signal
 
