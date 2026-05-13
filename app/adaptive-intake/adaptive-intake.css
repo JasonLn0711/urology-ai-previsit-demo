@@ -17,3 +17,56 @@
 .adaptive-workspace .state-summary .muted-copy + .muted-copy {
   margin-top: 0.4rem;
 }
+
+.version-pill {
+  align-items: center;
+  background: #0f172a;
+  border: 1px solid #0f172a;
+  border-radius: 999px;
+  color: #f8fafc;
+  display: inline-flex;
+  font-size: 0.78rem;
+  font-weight: 800;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+@media (max-width: 840px) {
+  .adaptive-shell .mvp-brief {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .adaptive-demo-page h1 {
+    font-size: 2.25rem;
+    line-height: 1.08;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .adaptive-shell .lead {
+    margin-top: 12px;
+    font-size: 1rem;
+  }
+
+  .adaptive-proof {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 460px) {
+  .adaptive-demo-page h1 {
+    font-size: 2rem;
+  }
+
+  .adaptive-proof {
+    padding: 14px;
+  }
+
+  .adaptive-proof strong,
+  .adaptive-proof span {
+    padding: 10px 12px;
+  }
+}

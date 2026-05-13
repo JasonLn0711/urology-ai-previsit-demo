@@ -1,4 +1,5 @@
 const { QUESTION_BANK, rankQuestions, FIELD_LABELS } = window.UrologyAdaptiveQuestioning;
+const VERSION = window.UroPrevisitVersion || { versionLabel: "v2.0.0" };
 
 const STORAGE_KEY = "urologyAdaptiveDemoState";
 
@@ -15,6 +16,7 @@ const computeButton = document.querySelector("#computeButton");
 const asrButton = document.querySelector("#asrButton");
 const asrStatus = document.querySelector("#asrStatus");
 const resetDemo = document.querySelector("#resetDemo");
+const versionBadge = document.querySelector("#versionBadge");
 const loadNocturia = document.querySelector("#loadNocturia");
 const loadPain = document.querySelector("#loadPain");
 const loadBlood = document.querySelector("#loadBlood");
@@ -121,6 +123,10 @@ function loadSample(name) {
 }
 
 function render() {
+  if (versionBadge) {
+    versionBadge.textContent = VERSION.versionLabel;
+    versionBadge.title = `${VERSION.product || "UroPrevisit Navigator"} ${VERSION.stage || "demo"}`;
+  }
   transcriptInput.value = state.transcript || transcriptInput.value;
   renderFacts();
   renderQuestion();
