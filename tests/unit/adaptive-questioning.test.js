@@ -90,6 +90,7 @@ test("adaptive ranking asks symptom-type clarification before vague urinary retr
 });
 
 test("adaptive question bank exposes governed metadata required for v2 explanation", () => {
+  assert.ok(QUESTION_BANK.length >= 40);
   for (const question of QUESTION_BANK) {
     assert.ok(question.id);
     assert.ok(question.text);
@@ -103,7 +104,36 @@ test("adaptive question bank exposes governed metadata required for v2 explanati
     assert.equal(typeof question.redFlag, "boolean");
     assert.ok(Array.isArray(question.nextUsefulWhen));
     assert.ok(Array.isArray(question.avoidWhen));
+    assert.ok(question.answerType);
+    assert.ok(Array.isArray(question.options));
+    assert.ok(question.explanationTemplate);
   }
+});
+
+test("adaptive ranking supports English demo cases from the v2 spec", () => {
+  const nocturia = rankQuestions({
+    transcript: "I wake up many times at night to pee.",
+    answers: {},
+    askedQuestionIds: [],
+    questionBank: QUESTION_BANK
+  });
+  assert.ok(["nocturia_count", "duration"].includes(nocturia.selected.question.id));
+
+  const dysuria = rankQuestions({
+    transcript: "It burns when I pee.",
+    answers: {},
+    askedQuestionIds: [],
+    questionBank: QUESTION_BANK
+  });
+  assert.ok(["pain_burning", "duration", "pain_timing", "systemic_symptoms", "fever_chills"].includes(dysuria.selected.question.id));
+
+  const vaguePain = rankQuestions({
+    transcript: "I feel pain down there.",
+    answers: {},
+    askedQuestionIds: [],
+    questionBank: QUESTION_BANK
+  });
+  assert.equal(vaguePain.selected.question.type, "clarification");
 });
 
 test("adaptive ranking resumes normal retrieval after ambiguity clarification is answered", () => {

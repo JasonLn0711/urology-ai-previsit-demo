@@ -48,6 +48,9 @@ function dependencyAllowed(question, answers = {}, symptoms = []) {
   if (question.id === "leakage_trigger") return hasAnswer(answers, "leakage") || symptoms.includes("leakage");
   if (question.id === "current_retention") return hasAnswer(answers, "unableToUrinate") || symptoms.includes("retention");
   if (question.id === "hematuria_pattern") return hasAnswer(answers, "visibleBlood") || symptoms.includes("hematuria");
+  if (question.id === "visible_blood_color") return hasAnswer(answers, "visibleBlood") || symptoms.includes("hematuria");
+  if (question.id === "urgency_hold_time") return hasAnswer(answers, "urgency") || symptoms.includes("urgency");
+  if (question.id === "nocturia_sleep_impact") return hasAnswer(answers, "nocturiaCount") || symptoms.includes("nocturia");
   return true;
 }
 
@@ -56,13 +59,15 @@ function scoreQuestion({ question, stateText, symptoms, answers, asked, activeAm
   const isOtherQuestionDuringAmbiguity = activeAmbiguity && question.id !== activeAmbiguity.questionId;
   const semantic = Math.max(semanticSimilarity(stateText, question), symptomMatchScore(symptoms, question));
   const missingInfo = missingInfoScore(question, answers);
-  const ambiguityReduction = isClarificationForActiveAmbiguity ? 1 : (question.ambiguityReduction || question.clarificationValue || (question.ambiguityType ? 0.15 : 0));
+  const inactiveClarification = question.ambiguityType && !isClarificationForActiveAmbiguity;
+  const ambiguityReduction = isClarificationForActiveAmbiguity ? 1 : (inactiveClarification ? 0.05 : (question.ambiguityReduction || question.clarificationValue || 0));
   const workflow = question.clinicalWorkflowValue || question.workflowValue || 0;
   const safety = question.safetyPriority || 0;
   const alreadyAskedPenalty = asked.has(question.id) ? 1 : 0;
   const answeredPenalty = (question.asksFor || []).every((field) => hasAnswer(answers, field)) ? 0.72 : 0;
   const dependencyPenalty = dependencyAllowed(question, answers, symptoms) ? 0 : 0.45;
   const ambiguityPenalty = isOtherQuestionDuringAmbiguity ? 0.65 : 0;
+  const inactiveClarificationPenalty = inactiveClarification ? 0.55 : 0;
   const outOfScopePenalty = question.safetyLevel === "out_of_scope" ? 1 : 0;
   const score = (semantic * weights.semantic) +
     (missingInfo * weights.missingInfo) +
@@ -73,6 +78,7 @@ function scoreQuestion({ question, stateText, symptoms, answers, asked, activeAm
     answeredPenalty -
     dependencyPenalty -
     ambiguityPenalty -
+    inactiveClarificationPenalty -
     outOfScopePenalty;
   const reasons = buildReasons({
     question,
@@ -88,6 +94,7 @@ function scoreQuestion({ question, stateText, symptoms, answers, asked, activeAm
     answeredPenalty,
     dependencyPenalty,
     ambiguityPenalty,
+    inactiveClarificationPenalty,
     outOfScopePenalty
   });
   return {
@@ -118,6 +125,7 @@ function buildReasons({
   answeredPenalty,
   dependencyPenalty,
   ambiguityPenalty,
+  inactiveClarificationPenalty,
   outOfScopePenalty
 }) {
   const reasons = [];
@@ -134,6 +142,7 @@ function buildReasons({
   if (answeredPenalty) reasons.push("對應欄位已有答案，因此降權");
   if (dependencyPenalty) reasons.push("前置資訊尚不足，因此暫緩");
   if (outOfScopePenalty) reasons.push("超出此 demo 的門診前整理範圍，因此排除");
+  if (inactiveClarificationPenalty) reasons.push("沒有 active ambiguity，因此釐清題降權");
   if (!reasons.length) reasons.push("作為一般背景補問候選");
   return reasons;
 }

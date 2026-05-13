@@ -13,7 +13,27 @@ const FIELD_LABELS = {
   systemicSymptoms: "發燒、發冷或腰側痛",
   visibleBlood: "血尿或血塊",
   hematuriaPattern: "血尿型態",
+  painLocationDetail: "疼痛詳細位置",
+  painTiming: "疼痛發生時間",
+  lowerAbdominalPain: "下腹疼痛或壓迫",
+  flankPain: "腰側或背側疼痛",
+  feverChills: "發燒或發冷",
+  symptomStartPattern: "症狀起始方式",
+  nocturiaSleepImpact: "夜尿睡眠影響",
+  fluidContext: "飲水或咖啡因背景",
+  daytimeUrgencyImpact: "急尿日間影響",
+  incompleteEmptying: "尿不乾淨感",
+  weakStream: "尿流變弱",
+  straining: "排尿需用力",
+  stoneHistory: "結石病史",
+  utiHistory: "泌尿感染病史",
+  urologicSurgeryHistory: "泌尿手術病史",
+  diabetesKidneyHistory: "糖尿病或腎臟病史",
   medicationListStatus: "用藥資料",
+  newMedicationContext: "近期新藥",
+  clinicianPriority: "最希望醫師知道的事",
+  closingReview: "結尾補充",
+  painBurningConflict: "尿痛矛盾釐清",
   painLocationClarification: "疼痛位置釐清",
   urinarySymptomClarification: "泌尿症狀類型釐清"
 };
@@ -30,17 +50,19 @@ const CORE_FIELDS = [
 ];
 
 const SYMPTOM_KEYWORDS = {
-  frequency: ["頻尿", "一直尿", "一直跑廁所", "白天", "次數", "frequent"],
-  nocturia: ["夜尿", "晚上", "睡覺", "起來尿", "night", "nocturia"],
-  urgency: ["急", "忍不住", "來不及", "urgency", "rush"],
+  frequency: ["頻尿", "一直尿", "一直跑廁所", "白天", "次數", "frequent", "often"],
+  nocturia: ["夜尿", "晚上", "睡覺", "起來尿", "night", "nocturia", "wake up"],
+  urgency: ["急", "忍不住", "來不及", "urgency", "rush", "urgent"],
   leakage: ["漏尿", "滲", "護墊", "尿失禁", "leak", "incontinence"],
-  voiding: ["尿不出來", "尿流", "排尿困難", "用力", "weak stream"],
+  voiding: ["尿不出來", "尿流", "排尿困難", "用力", "weak stream", "slow stream"],
   retention: ["完全尿不出來", "卡住", "retention"],
-  pain: ["痛", "刺痛", "灼熱", "burning", "pain"],
+  pain: ["痛", "刺痛", "灼熱", "burning", "burns", "pain", "hurts"],
   infection: ["感染", "發燒", "發冷", "抗生素", "fever", "chills"],
   hematuria: ["血尿", "紅色尿", "茶色尿", "血塊", "blood", "clot"],
+  flank_pain: ["腰痛", "腰側", "背痛", "flank", "back pain"],
+  lower_abdominal_pain: ["下腹", "膀胱", "小腹", "lower abdomen"],
   red_flag: ["發燒", "發冷", "腰痛", "尿不出來", "血塊", "fever", "clot"],
-  context: ["藥", "藥袋", "病史", "糖尿病", "腎臟病", "medication"]
+  context: ["藥", "藥袋", "藥單", "病史", "糖尿病", "腎臟病", "medication", "history"]
 };
 
 function normalizeText(value) {
