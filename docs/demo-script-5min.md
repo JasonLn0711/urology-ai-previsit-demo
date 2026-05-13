@@ -1,5 +1,8 @@
 # Five-Minute Demo Script
 
+For the full freeze checklist, expected three-case engine outputs, and backup
+recording plan, use `docs/v2-demo-freeze-runbook.md`.
+
 ## 0:00-0:30 Opening
 
 Version 1 was a fixed questionnaire flow. It proved that we could build a safe previsit intake interface.
@@ -96,4 +99,3 @@ Close with:
 ## Backup Line If ASR Fails
 
 ASR is the input layer, not the medical reasoning layer. For the live demo, typed input shows the same transcript-to-next-question pipeline and is the intended fallback.
-

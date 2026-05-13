@@ -72,6 +72,9 @@ Supporting docs:
 - `docs/question-bank-schema.md`
 - `docs/safety-boundary.md`
 - `docs/demo-script-5min.md`
+- `docs/v2-demo-freeze-runbook.md`
+- `docs/v2-first-principles-readiness-audit.md`
+- `docs/v2-post-demo-decision-capture.md`
 
 ## Future Direction Signal
 

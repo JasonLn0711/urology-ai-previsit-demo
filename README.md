@@ -6,6 +6,8 @@ It uses synthetic urology previsit cases and local browser answers to produce ro
 
 Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate from 許醫師's current `陽明小幫手` prototype name, which should be treated as benchmark/source context only.
 
+Current product version: `v2.0.0`.
+
 ## Project Ownership Rule
 
 This project is the urology previsit collaboration with the Taipei City Hospital Beitou Branch urology director. The Huicheng / imedtac AI-triage kiosk work is a separate later project from Prof. Wu's adjacent collaboration thread.
@@ -54,11 +56,30 @@ npm run rehearsal
 npm run samples
 npm run experiment:phase1
 npm run experiment:check
+npm run version:check
+npm run demo:v2-freeze
 npm run smoke
 npm test
 ```
 
 The experiment command writes case logs to `experiments/phase1/logs/`. Fill the human feedback fields, update `experiments/phase1/scorecard.md`, then complete `experiments/phase1/decision-memo.md`.
+
+## Version Management
+
+This repo uses product semantic versioning for demo traceability:
+
+```text
+vMAJOR.MINOR.PATCH
+```
+
+Before finishing any meaningful change, update the version and changelog:
+
+```bash
+npm run version:bump -- patch "Short change summary"
+npm run version:check
+```
+
+Use `minor` for new demo capability and `major` for product-claim, safety-boundary, or workflow-contract changes. See `docs/versioning-policy.md`.
 
 ## Architecture
 
@@ -80,6 +101,7 @@ Repository primitives:
 - Transformation: `core/summary`, `core/missing_fields`, `core/attribution`, `core/role_transform`, `core/safety`
 - Adaptive questioning: `core/adaptive_questioning`
   with governed question-bank metadata, an ambiguity gate, and deterministic ranking before ordinary question selection
+- Governed V2 question bank export: `data/question_bank/urology_adaptive_bank.js`
 - Role UI: `app/patient`, `app/patient-short`, `app/adaptive-intake`, `app/nurse`, `app/clinician`, `app/reviewer`
 - Evidence: `experiments/phase1`
 - Governance: `core/safety`, `docs/safety`
@@ -97,6 +119,8 @@ The code enforces:
 ## Key Docs
 
 - Product boundary: `docs/product/README.md`
+- Versioning policy: `docs/versioning-policy.md`
+- Changelog: `docs/CHANGELOG.md`
 - V2 canonical spec: `docs/urology-ai-previsit-demo-v2-spec.md`
 - V1 to V2 change log: `docs/v1-to-v2-change-log.md`
 - Adaptive questioning design: `docs/adaptive-questioning-design.md`
@@ -104,6 +128,9 @@ The code enforces:
 - Question-bank schema: `docs/question-bank-schema.md`
 - V2 safety boundary: `docs/safety-boundary.md`
 - Five-minute demo script: `docs/demo-script-5min.md`
+- V2 freeze runbook: `docs/v2-demo-freeze-runbook.md`
+- V2 first-principles readiness audit: `docs/v2-first-principles-readiness-audit.md`
+- V2 post-demo decision capture: `docs/v2-post-demo-decision-capture.md`
 - Safety boundary: `docs/safety/README.md`
 - Workflow/data contract: `docs/workflow/README.md`
 - Research process: `docs/research/README.md`

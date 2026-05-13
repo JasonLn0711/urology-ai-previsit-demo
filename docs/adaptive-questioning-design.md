@@ -64,7 +64,17 @@ core/adaptive_questioning/
   detectAmbiguity.js
   scoring.js
   rankQuestions.js
+  constants.js
+  normalize.js
+  state.js
+  ambiguity.js
+  retrieve.js
+  rank.js
+  explain.js
   index.js
+
+data/question_bank/
+  urology_adaptive_bank.js
 ```
 
 The browser demo lives in:
@@ -93,7 +103,10 @@ Each exported question should expose:
   safetyPriority,
   redFlag,
   nextUsefulWhen,
-  avoidWhen
+  avoidWhen,
+  answerType,
+  options,
+  explanationTemplate
 }
 ```
 
@@ -159,4 +172,3 @@ vague complaint -> location clarification -> timing -> associated symptoms -> sa
 ```
 
 This is the strongest V2 demo case because it shows that the system does not over-trust similarity when patient wording is unclear.
-

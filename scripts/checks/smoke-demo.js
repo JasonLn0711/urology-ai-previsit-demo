@@ -83,16 +83,26 @@ function checkStructure() {
     "app/shared/summary.js",
     "app/shared/cases.js",
     "app/shared/review.js",
+    "core/version/index.js",
     "core/summary/index.js",
     "core/missing_fields/index.js",
     "core/attribution/index.js",
     "core/role_transform/index.js",
     "core/adaptive_questioning/index.js",
     "core/adaptive_questioning/questionBank.js",
+    "core/adaptive_questioning/constants.js",
+    "core/adaptive_questioning/normalize.js",
+    "core/adaptive_questioning/state.js",
+    "core/adaptive_questioning/ambiguity.js",
+    "core/adaptive_questioning/retrieve.js",
+    "core/adaptive_questioning/rank.js",
+    "core/adaptive_questioning/explain.js",
     "core/adaptive_questioning/extractFacts.js",
     "core/adaptive_questioning/detectAmbiguity.js",
     "core/adaptive_questioning/scoring.js",
     "core/adaptive_questioning/rankQuestions.js",
+    "data/question_bank/urology_adaptive_bank.js",
+    "VERSION.json",
     "core/safety/index.js",
     "data/synthetic_cases/index.js",
     "data/schema/intake-record.js",
@@ -106,7 +116,12 @@ function checkStructure() {
     "docs/ambiguity-handling.md",
     "docs/question-bank-schema.md",
     "docs/safety-boundary.md",
+    "docs/CHANGELOG.md",
+    "docs/versioning-policy.md",
     "docs/demo-script-5min.md",
+    "docs/v2-demo-freeze-runbook.md",
+    "docs/v2-first-principles-readiness-audit.md",
+    "docs/v2-post-demo-decision-capture.md",
     "docs/product/README.md",
     "docs/safety/README.md",
     "docs/workflow/README.md",
@@ -138,15 +153,27 @@ function checkScripts() {
     "app/shared/summary.js",
     "app/shared/cases.js",
     "app/shared/review.js",
+    "core/version/index.js",
     "app/patient-short/app.js",
     "app/adaptive-intake/adaptive-intake.js",
     "core/adaptive_questioning/questionBank.js",
+    "core/adaptive_questioning/constants.js",
+    "core/adaptive_questioning/normalize.js",
+    "core/adaptive_questioning/state.js",
+    "core/adaptive_questioning/ambiguity.js",
+    "core/adaptive_questioning/retrieve.js",
+    "core/adaptive_questioning/rank.js",
+    "core/adaptive_questioning/explain.js",
     "core/adaptive_questioning/extractFacts.js",
     "core/adaptive_questioning/detectAmbiguity.js",
     "core/adaptive_questioning/scoring.js",
     "core/adaptive_questioning/rankQuestions.js",
     "core/adaptive_questioning/index.js",
+    "data/question_bank/urology_adaptive_bank.js",
+    "scripts/checks/check-version.js",
     "scripts/checks/smoke-demo.js",
+    "scripts/checks/v2-demo-freeze.js",
+    "scripts/version/bump-version.js",
     "scripts/generators/generate-workflow-rehearsal.js",
     "scripts/generators/generate-samples.js",
     "scripts/experiment/run-phase1.js",
@@ -176,7 +203,8 @@ function checkBrowserScriptOrder() {
   const adaptive = read("app/adaptive-intake/index.html");
   record(
     "app/adaptive-intake/index.html: adaptive modules load before aggregate engine",
-    adaptive.indexOf("core/adaptive_questioning/questionBank.js") > -1 &&
+    adaptive.indexOf("core/version/index.js") > -1 &&
+      adaptive.indexOf("core/adaptive_questioning/questionBank.js") > adaptive.indexOf("core/version/index.js") &&
       adaptive.indexOf("core/adaptive_questioning/extractFacts.js") > adaptive.indexOf("core/adaptive_questioning/questionBank.js") &&
       adaptive.indexOf("core/adaptive_questioning/detectAmbiguity.js") > adaptive.indexOf("core/adaptive_questioning/extractFacts.js") &&
       adaptive.indexOf("core/adaptive_questioning/scoring.js") > adaptive.indexOf("core/adaptive_questioning/detectAmbiguity.js") &&
@@ -187,6 +215,7 @@ function checkBrowserScriptOrder() {
     "app/adaptive-intake/index.html: adaptive engine loads before page app",
     adaptive.indexOf("./adaptive-intake.js") > adaptive.indexOf("core/adaptive_questioning/index.js")
   );
+  record("app/adaptive-intake/index.html: version badge visible", /versionBadge/.test(adaptive));
 }
 
 function checkCoreContract() {

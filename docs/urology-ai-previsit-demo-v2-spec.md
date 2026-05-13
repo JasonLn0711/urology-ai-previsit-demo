@@ -266,6 +266,16 @@ core/adaptive_questioning/
   detectAmbiguity.js
   scoring.js
   rankQuestions.js
+  constants.js
+  normalize.js
+  state.js
+  ambiguity.js
+  retrieve.js
+  rank.js
+  explain.js
+
+data/question_bank/
+  urology_adaptive_bank.js
 
 docs/
   urology-ai-previsit-demo-v2-spec.md
@@ -277,7 +287,11 @@ docs/
   demo-script-5min.md
 ```
 
-The implemented module names are intentionally descriptive and match the current browser-only architecture. Future refactors may split them into `state`, `normalize`, `retrieve`, `rank`, and `explain` modules if the engine grows.
+`questionBank.js` remains the canonical browser-runtime bank. The
+`data/question_bank/urology_adaptive_bank.js` file re-exports the same governed
+bank so the spec-shaped data path does not drift from the route used in the
+demo. The `normalize`, `state`, `ambiguity`, `retrieve`, `rank`, and `explain`
+modules are thin adapters around the existing deterministic engine.
 
 ## 7. Main Route
 
@@ -451,7 +465,7 @@ closing
 
 ## 11. Urology Question Categories
 
-The first governed bank should cover:
+The first governed bank should include at least 40 questions and cover:
 
 ```text
 chief complaint
@@ -1012,4 +1026,3 @@ Core value:
 模糊時先澄清。
 全程不診斷。
 ```
-
