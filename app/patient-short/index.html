@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>安心看診前整理 - 10 題內短版</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+  </head>
+  <body class="short-demo-page">
+    <header class="topbar patient-topbar" aria-label="看診前短版整理">
+      <a class="brand" href="./index.html" aria-label="安心看診前整理短版首頁">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>
+          <strong>安心看診前整理</strong>
+          <small>10 題內短版</small>
+        </span>
+      </a>
+      <nav class="nav-actions" aria-label="示範操作">
+        <button class="ghost-button" id="loadSample" type="button">載入示範</button>
+        <button class="ghost-button" id="resetDemo" type="button">重新開始</button>
+        <div class="demo-mode-switch" aria-label="Demo 模式">
+          <a aria-current="page" href="./">快速展示</a>
+          <a href="../patient/">完整整理</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="app-shell patient-app">
+      <section class="mvp-brief patient-brief" aria-labelledby="mvp-title">
+        <div>
+          <p class="eyebrow">泌尿科看診前短版</p>
+          <h1 id="mvp-title">用 9 個重點，先把今天最需要說清楚的事整理好</h1>
+          <p class="lead">
+            這個短版優先收集主訴、病程、困擾程度、警示症狀、用藥與資料來源。答案只作為門診前整理，不做診斷、分流或治療建議。
+          </p>
+        </div>
+        <div class="brief-visual" aria-hidden="true">
+          <img src="../shared/assets/bladder-flow.svg" alt="">
+        </div>
+      </section>
+
+      <section class="safety-strip patient-strip" role="note" aria-label="使用提醒">
+        <span>可以選「不確定」，不用猜。</span>
+        <span>這是 synthetic demo，可接續護理、醫師與 reviewer 頁面。</span>
+        <span>若現在尿不出來、發燒或看到血尿，現場仍需由醫療人員確認。</span>
+      </section>
+
+      <section class="workspace patient-workspace" aria-label="短版填答區">
+        <aside class="case-rail patient-help" aria-labelledby="help-title">
+          <div class="rail-section">
+            <p class="eyebrow">短版定位</p>
+            <h2 id="help-title">適合 2-3 分鐘展示</h2>
+            <ol class="gate-list">
+              <li>先跑完短版 9 題。</li>
+              <li>直接切到護理端看缺漏補齊。</li>
+              <li>再切到醫師摘要或 visit packet。</li>
+            </ol>
+          </div>
+
+          <div class="rail-section">
+            <p class="eyebrow">填答進度</p>
+            <div class="step-nav side-step-nav" id="stepNav" aria-label="短版題目"></div>
+          </div>
+
+          <div class="rail-section">
+            <p class="eyebrow">下一步入口</p>
+            <div class="shortcut-list">
+              <a href="../nurse/">護理端</a>
+              <a href="../clinician/">醫師摘要</a>
+              <a href="../clinician/visit-packet/">Visit packet</a>
+              <a href="../reviewer/">Reviewer</a>
+            </div>
+          </div>
+        </aside>
+
+        <section class="intake-panel patient-intake" aria-labelledby="intake-title">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">短版問答</p>
+              <h2 id="intake-title">9 題完成</h2>
+            </div>
+            <div class="readiness" aria-live="polite">
+              <span id="readinessLabel">尚未完成</span>
+              <strong><span id="answeredCount">0</span>/9 題</strong>
+            </div>
+          </div>
+
+          <div class="progress-shell" aria-label="填答進度">
+            <div class="progress-track">
+              <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <p id="progressText">第 1 題，共 9 題</p>
+          </div>
+
+          <form id="shortForm" class="question-flow">
+            <div id="questionMount"></div>
+            <div class="flow-actions">
+              <button class="secondary-button" id="backButton" type="button">上一題</button>
+              <button class="primary-button" id="nextButton" type="button">下一題</button>
+            </div>
+          </form>
+        </section>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+
+    <script src="../../core/safety/index.js"></script>
+    <script src="../../core/attribution/index.js"></script>
+    <script src="../../core/missing_fields/index.js"></script>
+    <script src="../../core/summary/index.js"></script>
+    <script src="../../core/role_transform/index.js"></script>
+    <script src="../shared/summary.js"></script>
+    <script src="../../data/synthetic_cases/index.js"></script>
+    <script src="../shared/cases.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

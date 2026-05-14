@@ -1,23 +1,26 @@
 {
-  "name": "urology-ai-previsit-demo",
-  "version": "0.1.0",
+  "name": "uroprevisit-navigator-demo",
+  "version": "2.0.0",
   "private": true,
-  "description": "Static browser MVP for a synthetic-data urology AI previsit discovery demo.",
+  "description": "Synthetic-data urology previsit workflow evidence system.",
   "scripts": {
     "start": "python3 -m http.server 4173",
-    "rehearsal": "node scripts/generate-workflow-rehearsal.js",
-    "samples": "node scripts/generate-samples.js",
-    "meeting:check": "node scripts/check-meeting-readiness.js",
-    "review:closeout": "node scripts/check-review-closeout.js",
-    "artifact:check": "node scripts/check-selected-artifact.js",
-    "smoke": "node scripts/smoke-demo.js",
+    "rehearsal": "node scripts/generators/generate-workflow-rehearsal.js",
+    "samples": "node scripts/generators/generate-samples.js",
+    "experiment:phase1": "node scripts/experiment/run-phase1.js",
+    "experiment:check": "node scripts/experiment/check-phase1.js",
+    "version:bump": "node scripts/version/bump-version.js",
+    "version:check": "node scripts/checks/check-version.js",
+    "demo:v2-freeze": "npm run version:check && node scripts/checks/v2-demo-freeze.js",
+    "smoke": "node scripts/checks/smoke-demo.js",
     "test": "node --test"
   },
   "keywords": [
     "urology",
     "previsit",
-    "health-literacy",
-    "synthetic-data"
+    "clinical-workflow",
+    "synthetic-data",
+    "evidence"
   ],
   "license": "UNLICENSED"
 }
