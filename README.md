@@ -1,5 +1,6 @@
 # Urology AI Previsit MVP
 
+<img src="http://estruyf-github.azurewebsites.net/api/VisitorHit?user=JasonLn0711&repo=urology-ai-previsit-demo&countColor=%237B1E7B" alt="Visitor count"/>
 A static browser MVP for a professional, patient-friendly urology previsit interview workflow.
 
 The first goal is discovery: show a low-friction guided-question flow, repair missing information, generate a physician-facing summary, and learn whether the workflow is useful before building anything clinical or integrated.
