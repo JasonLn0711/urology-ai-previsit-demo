@@ -962,7 +962,7 @@ function renderConfirmation() {
       <div class="handoff-actions" aria-label="接續 demo">
         <a class="primary-button link-button" href="../nurse/">看護理端補齊</a>
         <a class="secondary-button link-button" href="../clinician/">看醫師摘要</a>
-        <a class="secondary-button link-button" href="../clinician/visit-packet/">看 Visit packet</a>
+        <a class="secondary-button link-button" href="../clinician/visit-packet/">看診前資料包</a>
       </div>
     </section>
   `;

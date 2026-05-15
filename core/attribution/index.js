@@ -102,8 +102,8 @@
       acc[item.source] = (acc[item.source] || 0) + 1;
       return acc;
     }, {});
-    const lines = Object.entries(counts).map(([source, count]) => `${sourceLabel(source)}: ${count}`);
-    return lines.length ? lines : ["No answered fields with source attribution."];
+    const lines = Object.entries(counts).map(([source, count]) => `${sourceLabel(source)}：${count}`);
+    return lines.length ? lines : ["目前沒有可標示來源的已回答欄位。"];
   }
 
   function sourceNotes(answers) {

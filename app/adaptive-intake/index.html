@@ -1,36 +1,32 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UroPrevisit Navigator V2 - Adaptive Question Demo</title>
+    <title>泌尿預診導航 V2 - 自適應問答示範</title>
     <link rel="stylesheet" href="../shared/styles.css">
     <link rel="stylesheet" href="./adaptive-intake.css">
   </head>
   <body class="adaptive-demo-page">
-    <header class="topbar patient-topbar" aria-label="UroPrevisit Navigator V2">
-      <a class="brand" href="./index.html" aria-label="UroPrevisit Navigator V2 home">
+    <header class="topbar patient-topbar" aria-label="泌尿預診導航 V2">
+      <a class="brand" href="./index.html" aria-label="泌尿預診導航 V2 首頁">
         <span class="brand-mark" aria-hidden="true"></span>
         <span>
-          <strong data-i18n="brandTitle">UroPrevisit Navigator V2</strong>
-          <small data-i18n="brandSubtitle">Guided next-question selection</small>
+          <strong data-i18n="brandTitle">泌尿預診導航 V2</strong>
+          <small data-i18n="brandSubtitle">受治理的下一題推薦</small>
         </span>
       </a>
-      <nav class="nav-actions" aria-label="Demo actions">
-        <span class="version-pill" id="versionBadge">v2.0.4</span>
-        <button class="ghost-button" id="loadNocturia" type="button" data-i18n="sampleNocturia">Night urination</button>
-        <button class="ghost-button" id="loadPain" type="button" data-i18n="samplePain">Burning pain</button>
-        <button class="ghost-button" id="loadBlood" type="button" data-i18n="sampleBlood">Blood in urine</button>
-        <button class="ghost-button" id="loadVaguePain" type="button" data-i18n="sampleVaguePain">Unclear pain</button>
-        <button class="ghost-button" id="loadVagueUrinary" type="button" data-i18n="sampleVagueUrinary">Unclear urinary issue</button>
-        <button class="ghost-button" id="resetDemo" type="button" data-i18n="reset">Reset</button>
-        <div class="language-switch" role="group" aria-label="Language">
-          <button class="tool-button" id="langEn" type="button" data-lang-option="en" aria-pressed="true">English</button>
-          <button class="tool-button" id="langZh" type="button" data-lang-option="zh" aria-pressed="false">繁中</button>
-        </div>
-        <div class="demo-mode-switch" aria-label="Demo mode">
-          <a aria-current="page" href="./">V2 Adaptive</a>
-          <a href="../patient-short/" data-i18n="shortMode">Short form</a>
+      <nav class="nav-actions" aria-label="示範操作">
+        <span class="version-pill" id="versionBadge">v2.0.6</span>
+        <button class="ghost-button" id="loadNocturia" type="button" data-i18n="sampleNocturia">夜尿案例</button>
+        <button class="ghost-button" id="loadPain" type="button" data-i18n="samplePain">尿痛案例</button>
+        <button class="ghost-button" id="loadBlood" type="button" data-i18n="sampleBlood">血尿案例</button>
+        <button class="ghost-button" id="loadVaguePain" type="button" data-i18n="sampleVaguePain">疼痛不清楚</button>
+        <button class="ghost-button" id="loadVagueUrinary" type="button" data-i18n="sampleVagueUrinary">尿尿怪怪</button>
+        <button class="ghost-button" id="resetDemo" type="button" data-i18n="reset">重新開始</button>
+        <div class="demo-mode-switch" aria-label="示範模式">
+          <a aria-current="page" href="./">V2 自適應問答</a>
+          <a href="../patient-short/" data-i18n="shortMode">短版問答</a>
         </div>
       </nav>
     </header>
@@ -38,41 +34,41 @@
     <main class="app-shell adaptive-shell">
       <section class="mvp-brief patient-brief" aria-labelledby="mvp-title">
         <div>
-          <p class="eyebrow" data-i18n="heroEyebrow">Version 2 demo</p>
-          <h1 id="mvp-title" data-i18n="heroTitle">Ask the next useful question, not every question.</h1>
+          <p class="eyebrow" data-i18n="heroEyebrow">V2 示範</p>
+          <h1 id="mvp-title" data-i18n="heroTitle">問下一個最有用的問題，而不是每題都問。</h1>
           <p class="lead" data-i18n="heroLead">
-            The demo turns a patient statement into a state, then selects one governed follow-up question. ASR is optional. The ranking engine does not diagnose or recommend treatment.
+            系統把病人說法轉成狀態，再從受治理題庫選出一題補問。ASR 可選；排序引擎不診斷、不建議治療。
           </p>
         </div>
-        <div class="adaptive-proof" aria-label="Demo logic">
-          <strong data-i18n="proofV1">v1 fixed form</strong>
-          <span data-i18n="proofV1Detail">Patient follows the form</span>
-          <strong>v2 adaptive navigation</strong>
-          <span data-i18n="proofV2Detail">System follows the patient state</span>
-          <strong>ASR / typed input</strong>
-          <span>Ambiguity gate</span>
-          <strong>Embedding-style retrieval</strong>
-          <span data-i18n="proofNext">Next question</span>
+        <div class="adaptive-proof" aria-label="示範邏輯">
+          <strong data-i18n="proofV1">V1 固定問卷</strong>
+          <span data-i18n="proofV1Detail">病人跟著表單走</span>
+          <strong>V2 自適應問答</strong>
+          <span data-i18n="proofV2Detail">系統跟著病人狀態走</span>
+          <strong>ASR / 文字輸入</strong>
+          <span>模糊說法閘門</span>
+          <strong>語意檢索</strong>
+          <span data-i18n="proofNext">下一題</span>
         </div>
       </section>
 
-      <section class="workspace adaptive-workspace" aria-label="Adaptive intake demo">
+      <section class="workspace adaptive-workspace" aria-label="自適應看診前問答示範">
         <aside class="case-rail adaptive-input-panel" aria-labelledby="input-title">
           <div class="rail-section">
-            <p class="eyebrow" data-i18n="inputEyebrow">Input</p>
-            <h2 id="input-title" data-i18n="inputTitle">Patient statement</h2>
-            <p class="panel-copy" data-i18n="inputCopy">Type or paste what the patient said. ASR is optional.</p>
-            <label class="adaptive-label" for="transcriptInput" data-i18n="transcriptLabel">Current statement</label>
-            <textarea id="transcriptInput" class="adaptive-transcript" rows="8" placeholder="Example: I wake up several times at night to pee."></textarea>
+            <p class="eyebrow" data-i18n="inputEyebrow">輸入</p>
+            <h2 id="input-title" data-i18n="inputTitle">病人說法</h2>
+            <p class="panel-copy" data-i18n="inputCopy">可貼上病人說的話；ASR 只是可選輸入。</p>
+            <label class="adaptive-label" for="transcriptInput" data-i18n="transcriptLabel">目前說法</label>
+            <textarea id="transcriptInput" class="adaptive-transcript" rows="8" placeholder="例如：我最近晚上一直起來尿，有時候突然很急。"></textarea>
             <div class="adaptive-actions">
-              <button class="secondary-button" id="asrButton" type="button" data-i18n="startAsr">Start ASR</button>
-              <button class="primary-button" id="computeButton" type="button" data-i18n="computeNext">Find next question</button>
+              <button class="secondary-button" id="asrButton" type="button" data-i18n="startAsr">開始 ASR</button>
+              <button class="primary-button" id="computeButton" type="button" data-i18n="computeNext">找下一題</button>
             </div>
-            <p class="asr-status" id="asrStatus" role="status" data-i18n="asrIdle">ASR is off. Typed input is the fallback.</p>
+            <p class="asr-status" id="asrStatus" role="status" data-i18n="asrIdle">ASR 未啟動；可用文字輸入。</p>
           </div>
 
           <div class="rail-section">
-            <p class="eyebrow" data-i18n="answeredEyebrow">Answered</p>
+            <p class="eyebrow" data-i18n="answeredEyebrow">已回答</p>
             <div id="answeredFacts" class="fact-list"></div>
           </div>
         </aside>
@@ -80,12 +76,12 @@
         <section class="intake-panel adaptive-question-panel" aria-labelledby="question-title">
           <div class="panel-head">
             <div>
-              <p class="eyebrow" data-i18n="nextEyebrow">Next question</p>
-              <h2 id="question-title">Waiting</h2>
+              <p class="eyebrow" data-i18n="nextEyebrow">下一題</p>
+              <h2 id="question-title">等待</h2>
             </div>
             <div class="readiness" aria-live="polite">
-              <span id="turnLabel">Turn 0</span>
-              <strong id="scoreLabel">Not ranked</strong>
+              <span id="turnLabel">第 0 輪</span>
+              <strong id="scoreLabel">尚未排序</strong>
             </div>
           </div>
 
@@ -94,20 +90,20 @@
 
         <aside class="summary-panel adaptive-rationale-panel" aria-labelledby="rationale-title">
           <div class="rail-section">
-            <p class="eyebrow" data-i18n="rankingEyebrow">Ranking</p>
-            <h2 id="rationale-title" data-i18n="rankingTitle">Why this question?</h2>
-            <p class="panel-copy" data-i18n="rankingCopy">The system ranks governed questions by fit, missing information, workflow value, ambiguity, and safety.</p>
+            <p class="eyebrow" data-i18n="rankingEyebrow">排序</p>
+            <h2 id="rationale-title" data-i18n="rankingTitle">為什麼選這題？</h2>
+            <p class="panel-copy" data-i18n="rankingCopy">系統依照語意符合、缺口、流程價值、模糊度與安全邊界排序。</p>
           </div>
           <div class="rail-section">
-            <p class="eyebrow" data-i18n="stateEyebrow">State</p>
+            <p class="eyebrow" data-i18n="stateEyebrow">狀態</p>
             <div id="stateSummary" class="state-summary"></div>
           </div>
           <div class="rail-section">
-            <p class="eyebrow">Ambiguity gate</p>
+            <p class="eyebrow">模糊說法閘門</p>
             <div id="ambiguityMount" class="ambiguity-status"></div>
           </div>
           <div class="rail-section">
-            <p class="eyebrow">Top 3 candidates</p>
+            <p class="eyebrow">前三個候選題</p>
             <div id="rankingMount" class="ranking-list"></div>
           </div>
         </aside>

@@ -76,35 +76,35 @@
         "completed": 20,
         "total": 20,
         "missingCount": 0,
-        "label": "MVP fields complete for clinician review",
+        "label": "核心欄位已足夠醫療人員檢視",
         "tone": "ready"
       },
       "activeModules": [
         "voiding",
         "medication"
       ],
-      "intakeMode": "Family helped operate; patient answered",
-      "chiefConcern": "Difficulty emptying or weak stream",
-      "symptomPattern": "Voiding/emptying: trouble/inability: Yes; happening now: No; weak stream: Yes; straining: Yes; stopping/starting: Yes; incomplete emptying: Yes",
-      "durationBother": "1 to 4 weeks / bother score 8/10",
+      "intakeMode": "家屬協助操作，本人回答",
+      "chiefConcern": "排尿困難或尿流弱",
+      "symptomPattern": "排尿困難：尿不出來/排尿困難：有; 目前仍發生：沒有; 尿流弱：有; 需用力：有; 斷斷續續：有; 尿不乾淨感：有",
+      "durationBother": "1 到 4 週 / 困擾程度 8/10",
       "clinicianReviewFlags": [
-        "Reports trouble or inability to urinate."
+        "病人回報排尿困難或曾尿不出來。"
       ],
       "missingInformation": [
-        "No required MVP fields missing."
+        "目前沒有必補核心欄位。"
       ],
       "nurseCues": [
-        "Completion support may be needed before clinician review.",
-        "Medication list may need nurse review or supplemental confirmation.",
-        "Priority review statements should be visible before the clinician encounter."
+        "醫療人員檢視前，可能需要先確認填答協助需求。",
+        "用藥資料可能需要護理端協助確認。",
+        "需現場確認的病人回報應在看診前可見。"
       ],
       "patientConstraints": [
-        "Family helped operate; patient answered",
-        "Mandarin",
-        "Can use phone with help",
-        "Family-assisted mode"
+        "家屬協助操作，本人回答",
+        "國語",
+        "有人協助就可以",
+        "家屬協助"
       ],
-      "medicines": "list readiness: Not sure; review support: Yes; patient-reported context: Not sure; diuretic/anticoagulant awareness: Not sure",
+      "medicines": "用藥資料：不確定; 確認協助：有; 病人回報背景：不確定; 利尿劑/抗凝血藥物認知：不確定",
       "patientNote": "Patient says flow is weak and sometimes cannot start.",
       "sourceNotes": [
         "本份資料含家屬/協助者參與；疼痛、急尿、困擾程度等主觀感受建議由本人確認。"
@@ -237,8 +237,8 @@
         }
       ],
       "sourceAttributionSummary": [
-        "填答開始時標記: 1",
-        "本人回答，家屬協助操作: 24"
+        "填答開始時標記：1",
+        "本人回答，家屬協助操作：24"
       ],
       "attribution": {
         "field_sources": [
@@ -369,14 +369,14 @@
           }
         ],
         "source_summary": [
-          "填答開始時標記: 1",
-          "本人回答，家屬協助操作: 24"
+          "填答開始時標記：1",
+          "本人回答，家屬協助操作：24"
         ],
         "source_notes": [
           "本份資料含家屬/協助者參與；疼痛、急尿、困擾程度等主觀感受建議由本人確認。"
         ]
       },
-      "handoffNote": "Patient-provided or helper-provided answers; clinician review required.",
+      "handoffNote": "本資料來自病人、家屬或現場補問；仍需醫療人員確認。",
       "rawAnswers": {
         "filledBy": "Family helped operate; patient answered",
         "chiefConcern": "Difficulty emptying or weak stream",
@@ -409,14 +409,14 @@
         "notes": "Patient says flow is weak and sometimes cannot start."
       },
       "safetyNotice": [
-        "This v1 local product preview is not for clinical use.",
-        "It does not diagnose, triage, recommend treatment, or place exam orders.",
-        "A clinician must review all information.",
-        "Use synthetic data only.",
-        "Regulatory status is not determined."
+        "這是本機產品示範，不可作為臨床使用。",
+        "系統不做診斷、分流、治療建議或檢查開立。",
+        "所有資訊仍需由醫療人員確認。",
+        "僅使用合成資料示範。",
+        "法規與正式上線狀態尚未確認。"
       ],
       "requiresPhysicianReview": true,
-      "reviewRequiredLabel": "Requires physician review before clinical use."
+      "reviewRequiredLabel": "臨床使用前必須由醫療人員確認。"
     },
     "missing_fields": [],
     "attribution": {
@@ -548,8 +548,8 @@
         }
       ],
       "source_summary": [
-        "填答開始時標記: 1",
-        "本人回答，家屬協助操作: 24"
+        "填答開始時標記：1",
+        "本人回答，家屬協助操作：24"
       ],
       "source_notes": [
         "本份資料含家屬/協助者參與；疼痛、急尿、困擾程度等主觀感受建議由本人確認。"

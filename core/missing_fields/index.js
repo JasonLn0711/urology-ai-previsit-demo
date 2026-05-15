@@ -17,19 +17,19 @@
   } = attribution;
 
   const CORE_REQUIRED_FIELDS = [
-    ["filledBy", "who is filling this out"],
-    ["chiefConcern", "main urinary concern"],
-    ["duration", "symptom duration"],
-    ["botherScore", "bother score"],
-    ["daytimeFrequencyChange", "daytime urination change"],
-    ["nocturiaCount", "nighttime urination count"],
-    ["urgency", "sudden hard-to-hold urgency"],
-    ["leakage", "urine leakage in the past 4 weeks"],
-    ["painBurning", "pain or burning with urination"],
-    ["visibleBlood", "visible blood or clots"],
-    ["unableToUrinate", "trouble or inability to urinate"],
-    ["systemicSymptoms", "fever, chills, or side/back pain"],
-    ["medicationListStatus", "medication list readiness"]
+    ["filledBy", "填答者來源"],
+    ["chiefConcern", "主要泌尿困擾"],
+    ["duration", "症狀持續時間"],
+    ["botherScore", "困擾程度"],
+    ["daytimeFrequencyChange", "白天尿尿次數變化"],
+    ["nocturiaCount", "夜間起床尿尿次數"],
+    ["urgency", "突然急尿且難以忍住"],
+    ["leakage", "最近 4 週漏尿"],
+    ["painBurning", "尿尿疼痛或灼熱"],
+    ["visibleBlood", "可見血尿或血塊"],
+    ["unableToUrinate", "排尿困難或尿不出來"],
+    ["systemicSymptoms", "發燒、發冷或腰側痛"],
+    ["medicationListStatus", "用藥資料準備狀態"]
   ];
 
   const SUPPLEMENTAL_PROMPTS = {
@@ -241,46 +241,46 @@
     const modules = activeModules(answers || {});
 
     if (isYes(answers && answers.unableToUrinate)) {
-      fields.push(["currentlyUnableToUrinate", "whether trouble urinating is happening now"]);
+      fields.push(["currentlyUnableToUrinate", "目前是否仍尿不出來"]);
     }
 
     if (modules.storage) {
-      fields.push(["daytimeFrequencyCount", "daytime urination count range"]);
-      fields.push(["urgencyFrequency", "urgency frequency"]);
-      fields.push(["fluidCaffeineContext", "fluid or caffeine context"]);
-      fields.push(["bladderDiaryFeasible", "bladder diary feasibility"]);
+      fields.push(["daytimeFrequencyCount", "白天尿尿次數區間"]);
+      fields.push(["urgencyFrequency", "急尿發生頻率"]);
+      fields.push(["fluidCaffeineContext", "喝水或咖啡因背景"]);
+      fields.push(["bladderDiaryFeasible", "排尿日誌可行性"]);
     }
 
     if (modules.leakage) {
-      fields.push(["leakageFrequency", "leakage frequency"]);
-      fields.push(["leakageAmount", "leakage amount"]);
-      fields.push(["leakageTriggers", "leakage triggers"]);
-      fields.push(["containmentProducts", "pads, diapers, or containment needs"]);
+      fields.push(["leakageFrequency", "漏尿頻率"]);
+      fields.push(["leakageAmount", "漏尿量"]);
+      fields.push(["leakageTriggers", "漏尿情境"]);
+      fields.push(["containmentProducts", "護墊、尿布或其他用品需求"]);
     }
 
     if (modules.voiding) {
-      fields.push(["weakStream", "weak stream"]);
-      fields.push(["straining", "straining to urinate"]);
-      fields.push(["incompleteEmptying", "feeling of incomplete emptying"]);
+      fields.push(["weakStream", "尿流變弱"]);
+      fields.push(["straining", "排尿需用力"]);
+      fields.push(["incompleteEmptying", "尿不乾淨感"]);
     }
 
     if (modules.hematuria) {
-      fields.push(["hematuriaPattern", "visible blood pattern"]);
-      fields.push(["bloodClots", "blood clots"]);
+      fields.push(["hematuriaPattern", "可見血尿發生模式"]);
+      fields.push(["bloodClots", "血塊"]);
     }
 
     if (modules.pain) {
-      fields.push(["painFrequency", "pain or burning pattern"]);
-      fields.push(["infectionEpisodeHistory", "recent infection or antibiotic history"]);
+      fields.push(["painFrequency", "疼痛或灼熱發生時機"]);
+      fields.push(["infectionEpisodeHistory", "近期類似就醫或抗生素經驗"]);
       if (containsValue(answers && answers.systemicSymptoms, "side or back pain")) {
-        fields.push(["flankPainScore", "side or back pain score"]);
+        fields.push(["flankPainScore", "腰側痛強度"]);
       }
     }
 
     if (modules.medication) {
-      fields.push(["medicationAssist", "medication review support need"]);
-      fields.push(["relevantComorbidities", "patient-reported medical context"]);
-      fields.push(["diureticAnticoagulantAwareness", "water pill or blood thinner awareness"]);
+      fields.push(["medicationAssist", "用藥確認是否需協助"]);
+      fields.push(["relevantComorbidities", "病人回報的病史背景"]);
+      fields.push(["diureticAnticoagulantAwareness", "利尿劑或抗凝血藥物認知"]);
     }
 
     const seen = new Set();
@@ -308,8 +308,8 @@
       total: required.length,
       missingCount: missing.length,
       label: missing.length
-        ? `${missing.length} MVP fields still missing`
-        : "MVP fields complete for clinician review",
+        ? `${missing.length} 個核心欄位仍待補齊`
+        : "核心欄位已足夠醫療人員檢視",
       tone: missing.length ? "needs-review" : "ready"
     };
   }

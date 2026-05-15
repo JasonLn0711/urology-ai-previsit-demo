@@ -94,34 +94,34 @@
         "completed": 18,
         "total": 18,
         "missingCount": 0,
-        "label": "MVP fields complete for clinician review",
+        "label": "核心欄位已足夠醫療人員檢視",
         "tone": "ready"
       },
       "activeModules": [
         "hematuria",
         "medication"
       ],
-      "intakeMode": "Patient self-filled",
+      "intakeMode": "本人回答",
       "chiefConcern": "Visible blood or health-check occult blood",
-      "symptomPattern": "Visible blood/clots: seen by patient: Yes; pattern: One recent episode; health-check urine test also mentioned occult blood; clots: No; with: No pain or burning, No fever or chills",
-      "durationBother": "Within 1 week / bother score 5/10",
+      "symptomPattern": "可見血尿/血塊：病人看到：有; 發生模式：One recent episode; health-check urine test also mentioned occult blood; 血塊：沒有; 合併回報：No pain or burning、No fever or chills",
+      "durationBother": "Within 1 week / 困擾程度 5/10",
       "clinicianReviewFlags": [
-        "Reports visible blood or clots in urine."
+        "病人回報曾看到血尿或血塊。"
       ],
       "missingInformation": [
-        "No required MVP fields missing."
+        "目前沒有必補核心欄位。"
       ],
       "nurseCues": [
-        "Medication list may need nurse review or supplemental confirmation.",
-        "Priority review statements should be visible before the clinician encounter."
+        "用藥資料可能需要護理端協助確認。",
+        "需現場確認的病人回報應在看診前可見。"
       ],
       "patientConstraints": [
-        "Patient self-filled",
-        "Mandarin",
-        "Comfortable",
-        "Self-filled"
+        "本人回答",
+        "國語",
+        "可以自己操作",
+        "自己填"
       ],
-      "medicines": "list readiness: Can provide list; review support: No; patient-reported context: Not sure; diuretic/anticoagulant awareness: Not sure",
+      "medicines": "用藥資料：可提供藥單; 確認協助：沒有; 病人回報背景：不確定; 利尿劑/抗凝血藥物認知：不確定",
       "patientNote": "Patient wants to ask whether the visible color change and health-check result should be reviewed together.",
       "sourceNotes": [
         "資料來源標示為本人回答；若仍有不確定答案，可由現場人員補問。"
@@ -244,8 +244,8 @@
         }
       ],
       "sourceAttributionSummary": [
-        "填答開始時標記: 1",
-        "本人回答: 22"
+        "填答開始時標記：1",
+        "本人回答：22"
       ],
       "attribution": {
         "field_sources": [
@@ -366,14 +366,14 @@
           }
         ],
         "source_summary": [
-          "填答開始時標記: 1",
-          "本人回答: 22"
+          "填答開始時標記：1",
+          "本人回答：22"
         ],
         "source_notes": [
           "資料來源標示為本人回答；若仍有不確定答案，可由現場人員補問。"
         ]
       },
-      "handoffNote": "Patient-provided or helper-provided answers; clinician review required.",
+      "handoffNote": "本資料來自病人、家屬或現場補問；仍需醫療人員確認。",
       "rawAnswers": {
         "filledBy": "Patient self-filled",
         "chiefConcern": "Visible blood or health-check occult blood",
@@ -415,14 +415,14 @@
         }
       },
       "safetyNotice": [
-        "This v1 local product preview is not for clinical use.",
-        "It does not diagnose, triage, recommend treatment, or place exam orders.",
-        "A clinician must review all information.",
-        "Use synthetic data only.",
-        "Regulatory status is not determined."
+        "這是本機產品示範，不可作為臨床使用。",
+        "系統不做診斷、分流、治療建議或檢查開立。",
+        "所有資訊仍需由醫療人員確認。",
+        "僅使用合成資料示範。",
+        "法規與正式上線狀態尚未確認。"
       ],
       "requiresPhysicianReview": true,
-      "reviewRequiredLabel": "Requires physician review before clinical use."
+      "reviewRequiredLabel": "臨床使用前必須由醫療人員確認。"
     },
     "missing_fields": [],
     "attribution": {
@@ -544,8 +544,8 @@
         }
       ],
       "source_summary": [
-        "填答開始時標記: 1",
-        "本人回答: 22"
+        "填答開始時標記：1",
+        "本人回答：22"
       ],
       "source_notes": [
         "資料來源標示為本人回答；若仍有不確定答案，可由現場人員補問。"

@@ -144,8 +144,9 @@ function checkSafetyText() {
   const app = read("app/adaptive-intake/adaptive-intake.js");
   record("UI includes version badge", /versionBadge/.test(html));
   record("UI keeps safety boundary out of the visible reminder strip", !/Synthetic demo only|No diagnosis, treatment, or triage/.test(html));
-  record("UI defaults to American English document language", /<html lang="en">/.test(html));
-  record("UI includes Traditional Chinese language switch", /data-lang-option="zh"/.test(html));
+  record("UI defaults to Taiwan Traditional Chinese document language", /<html lang="zh-Hant">/.test(html));
+  record("UI does not expose an English language switch", !/data-lang-option="en"|>English</.test(html));
+  record("UI exposes Taiwan Traditional Chinese adaptive copy", /泌尿預診導航 V2|找下一題|模糊說法閘門/.test(html));
   record("UI tells multi-select users to press Next", /Select all that apply, then press Next|勾選完畢後請按下一步/.test(app));
   record("UI has multi-select submit control", /data-submit-multi/.test(app));
 }
@@ -164,7 +165,7 @@ async function checkRoute() {
   const response = await request(baseUrl);
   record(`adaptive route returns HTTP 200: ${baseUrl}`, response.ok && response.statusCode === 200, response.error || `status=${response.statusCode}`);
   if (response.ok) {
-    record("adaptive route has V2 title", /泌尿預診導航 V2|Adaptive Question Demo/.test(response.body));
+    record("adaptive route has V2 Traditional Chinese title", /泌尿預診導航 V2/.test(response.body));
     record("adaptive route has typed fallback input", /transcriptInput/.test(response.body));
     record("adaptive route loads adaptive page script", /adaptive-intake\.js/.test(response.body));
   }

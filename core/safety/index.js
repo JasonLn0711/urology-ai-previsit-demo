@@ -7,14 +7,14 @@
   }
 })(typeof globalThis !== "undefined" ? globalThis : this, function safetyFactory() {
   const SAFETY_NOTICE = [
-    "This v1 local product preview is not for clinical use.",
-    "It does not diagnose, triage, recommend treatment, or place exam orders.",
-    "A clinician must review all information.",
-    "Use synthetic data only.",
-    "Regulatory status is not determined."
+    "這是本機產品示範，不可作為臨床使用。",
+    "系統不做診斷、分流、治療建議或檢查開立。",
+    "所有資訊仍需由醫療人員確認。",
+    "僅使用合成資料示範。",
+    "法規與正式上線狀態尚未確認。"
   ];
 
-  const PHYSICIAN_REVIEW_LABEL = "Requires physician review before clinical use.";
+  const PHYSICIAN_REVIEW_LABEL = "臨床使用前必須由醫療人員確認。";
 
   const UNSAFE_LANGUAGE_PATTERNS = [
     /\byou have\b/i,

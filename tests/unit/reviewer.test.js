@@ -37,7 +37,7 @@ test("review record keeps safety boundary and avoids clinical advice", () => {
   const text = reviewRecordToText(record).toLowerCase();
 
   assert.equal(record.decision, "continue");
-  assert.match(text, /no diagnosis/);
-  assert.match(text, /no treatment advice/);
+  assert.match(text, /不做診斷/);
+  assert.match(text, /不提供治療建議/);
   assert.doesNotMatch(text, /likely infection|take medication/);
 });

@@ -21,7 +21,8 @@ const MODULE_LABELS = {
   voiding: "排尿困難",
   hematuria: "可見血尿/血塊",
   pain: "疼痛或發燒相關",
-  medication: "用藥補充"
+  medication: "用藥補充",
+  "core only": "核心欄位"
 };
 
 const ARRAY_FIELDS = new Set([
@@ -258,7 +259,7 @@ function render() {
   completionTitle.textContent = status.missingCount
     ? `${status.missingCount} 項待補`
     : "重點欄位已完成";
-  completionMeta.textContent = `${status.completed}/${status.total} required fields captured.`;
+  completionMeta.textContent = `已完成 ${status.completed}/${status.total} 個核心欄位。`;
 
   sourceNotesMount.innerHTML = checklist.sourceNotes.map((note) => `
     <div class="source-card">

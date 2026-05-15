@@ -27,12 +27,12 @@ test("missing field detection includes core and conditional leakage fields", () 
     containmentProducts: "Pads or liners"
   });
 
-  assert.ok(missing.includes("symptom duration"));
-  assert.ok(missing.includes("daytime urination change"));
-  assert.ok(missing.includes("pain or burning with urination"));
-  assert.ok(missing.includes("fever, chills, or side/back pain"));
-  assert.ok(missing.includes("medication list readiness"));
-  assert.ok(missing.includes("leakage amount"));
+  assert.ok(missing.includes("症狀持續時間"));
+  assert.ok(missing.includes("白天尿尿次數變化"));
+  assert.ok(missing.includes("尿尿疼痛或灼熱"));
+  assert.ok(missing.includes("發燒、發冷或腰側痛"));
+  assert.ok(missing.includes("用藥資料準備狀態"));
+  assert.ok(missing.includes("漏尿量"));
 });
 
 test("not-sure answers alone do not open full symptom modules", () => {

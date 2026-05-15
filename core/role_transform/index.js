@@ -49,14 +49,63 @@
   const DECISIONS = ["continue", "revise", "stop"];
 
   const SIGNAL_LABELS = {
-    workflowPain: "Repeated-question pain",
-    summaryUsefulness: "Summary usefulness",
-    staffBurden: "Staff burden",
-    patientFit: "Patient or assisted completion",
-    safetyBoundary: "Safety boundary",
-    workflowSlot: "Workflow slot",
-    existingProcess: "Existing process"
+    workflowPain: "重複詢問痛點",
+    summaryUsefulness: "摘要可用性",
+    staffBurden: "人員負擔",
+    patientFit: "病人或協助填答可行性",
+    safetyBoundary: "安全邊界",
+    workflowSlot: "流程位置",
+    existingProcess: "既有流程"
   };
+
+  const REVIEW_VALUE_LABELS = {
+    continue: "繼續",
+    revise: "修正",
+    stop: "停止",
+    unknown: "未填",
+    supporting: "支持",
+    blocking: "阻擋",
+    uncertain: "不明確",
+    clear: "明確",
+    mixed: "混合或不明確",
+    no: "沒有",
+    "would-read": "看診時會讀",
+    "needs-rewrite": "方向有用，但格式需重寫",
+    "needs-wording": "需要改文字",
+    exists: "有實際流程位置",
+    none: "沒有流程位置",
+    acceptable: "可接受",
+    unacceptable: "不可接受",
+    "self-filled": "自行填答可行",
+    "assisted-only": "僅適合協助填答",
+    unrealistic: "填答不實際",
+    "not-sufficient": "既有流程仍有缺口",
+    sufficient: "既有流程可能已足夠",
+    Physician: "醫師",
+    Nurse: "護理人員",
+    "Patient advocate": "病人代表",
+    "Product / workflow reviewer": "產品/流程審閱者",
+    "Governance reviewer": "治理審閱者",
+    Other: "其他",
+    "Question tree revision": "題目流程修正版",
+    "One-page summary revision": "單頁摘要修正版",
+    "Workflow evidence memo": "流程證據備忘錄",
+    "Stop memo with removed assumptions": "停止備忘錄與假設移除紀錄"
+  };
+
+  const MODULE_LABELS = {
+    storage: "儲尿相關",
+    leakage: "漏尿",
+    voiding: "排尿困難",
+    hematuria: "可見血尿/血塊",
+    pain: "疼痛或發燒相關",
+    medication: "用藥補充",
+    "core only": "核心欄位"
+  };
+
+  function displayReviewValue(value) {
+    return REVIEW_VALUE_LABELS[value] || value;
+  }
 
   function buildNurseChecklist(answers) {
     const safeAnswers = answers || {};
@@ -85,22 +134,22 @@
     const clinicianSummary = buildClinicianSummary(safeAnswers);
     const nurseChecklist = buildNurseChecklist(safeAnswers);
     const packet = withSafetyEnvelope({
-      title: "Urology previsit role-separated packet",
+      title: "泌尿科看診前分角色資料包",
       patientPage: {
-        title: "Patient and family confirmation",
+        title: "病人與家屬確認頁",
         audience: "patient-family",
         rows: [
-          ["Completion source", clinicianSummary.intakeMode],
-          ["Main concern", clinicianSummary.chiefConcern],
-          ["Duration / bother", clinicianSummary.durationBother],
-          ["Medication readiness", medicineContext(safeAnswers)],
-          ["Optional note", clinicianSummary.patientNote]
+          ["填答來源", clinicianSummary.intakeMode],
+          ["主訴", clinicianSummary.chiefConcern],
+          ["病程 / 困擾", clinicianSummary.durationBother],
+          ["用藥資料準備", medicineContext(safeAnswers)],
+          ["補充說明", clinicianSummary.patientNote]
         ],
         missingInformation: clinicianSummary.missingInformation,
         sourceNotes: clinicianSummary.sourceNotes
       },
       nursePage: {
-        title: "Nurse missing-information repair",
+        title: "護理缺漏補問頁",
         audience: "nurse",
         completionStatus: nurseChecklist.completionStatus,
         supplementalQuestions: nurseChecklist.supplementalQuestions,
@@ -109,16 +158,16 @@
         priorityReviewFlags: nurseChecklist.priorityReviewFlags
       },
       clinicianPage: {
-        title: "Clinician previsit scan",
+        title: "醫師看診前掃描頁",
         audience: "clinician",
         rows: [
-          ["Completion source", clinicianSummary.intakeMode],
-          ["Main concern", clinicianSummary.chiefConcern],
-          ["Active modules", clinicianSummary.activeModules.join(", ")],
-          ["Duration / bother", clinicianSummary.durationBother],
-          ["Patient-reported pattern", clinicianSummary.symptomPattern],
-          ["Medication/context", clinicianSummary.medicines],
-          ["Patient note", clinicianSummary.patientNote]
+          ["填答來源", clinicianSummary.intakeMode],
+          ["主訴", clinicianSummary.chiefConcern],
+          ["啟動模組", clinicianSummary.activeModules.map((module) => MODULE_LABELS[module] || module).join("、")],
+          ["病程 / 困擾", clinicianSummary.durationBother],
+          ["病人回報型態", clinicianSummary.symptomPattern],
+          ["用藥 / 背景", clinicianSummary.medicines],
+          ["病人補充", clinicianSummary.patientNote]
         ],
         priorityReviewFlags: clinicianSummary.clinicianReviewFlags,
         missingInformation: clinicianSummary.missingInformation,
@@ -136,27 +185,27 @@
     const text = [
       packet.title,
       "",
-      "Safety:",
+      "安全邊界：",
       ...packet.safetyNotice.map((item) => `- ${item}`),
       `- ${packet.reviewRequiredLabel}`,
       "",
       `[${packet.patientPage.title}]`,
-      ...packet.patientPage.rows.map(([label, value]) => `${label}: ${value}`),
-      "Missing or uncertain:",
+      ...packet.patientPage.rows.map(([label, value]) => `${label}：${value}`),
+      "缺漏或不確定資訊：",
       ...packet.patientPage.missingInformation.map((item) => `- ${item}`),
       "",
       `[${packet.nursePage.title}]`,
-      `Completion: ${packet.nursePage.completionStatus.label}`,
-      "Supplemental questions:",
+      `完成度：${packet.nursePage.completionStatus.label}`,
+      "補問題：",
       ...packet.nursePage.supplementalQuestions.map((item) => `- ${item.ask}`),
-      "Workflow cues:",
+      "工作提醒：",
       ...packet.nursePage.workflowCues.map((item) => `- ${item}`),
       "",
       `[${packet.clinicianPage.title}]`,
-      ...packet.clinicianPage.rows.map(([label, value]) => `${label}: ${value}`),
-      "Priority review statements:",
+      ...packet.clinicianPage.rows.map(([label, value]) => `${label}：${value}`),
+      "需現場確認的病人回報：",
       ...packet.clinicianPage.priorityReviewFlags.map((item) => `- ${item}`),
-      "Answer source attribution:",
+      "答案來源分布：",
       ...packet.clinicianPage.sourceAttributionSummary.map((item) => `- ${item}`)
     ].join("\n");
     assertSafeLanguage(text, "visit packet text");
@@ -238,7 +287,7 @@
         role: "reviewer",
         source: "canonical_record",
         view: {
-          decision_question: "Continue, revise, or stop this workflow based on evidence.",
+          decision_question: "請依證據判斷此流程要繼續、修正或停止。",
           canonical_record: buildCanonicalRecord(answers)
         }
       };
@@ -277,12 +326,12 @@
 
   function blockingSignals(inputs) {
     const blockers = [];
-    if (text(inputs.safetyBoundary) === "unacceptable") blockers.push("Safety boundary is unacceptable.");
-    if (text(inputs.workflowSlot) === "none") blockers.push("No workflow slot exists.");
-    if (text(inputs.summaryUsefulness) === "no") blockers.push("Clinician would not read the summary.");
-    if (text(inputs.staffBurden) === "unacceptable") blockers.push("Staff burden is unacceptable.");
-    if (text(inputs.patientFit) === "unrealistic") blockers.push("Patient or assisted completion is unrealistic.");
-    if (text(inputs.existingProcess) === "sufficient") blockers.push("Existing process may already be sufficient.");
+    if (text(inputs.safetyBoundary) === "unacceptable") blockers.push("安全邊界不可接受。");
+    if (text(inputs.workflowSlot) === "none") blockers.push("目前沒有可落地的流程位置。");
+    if (text(inputs.summaryUsefulness) === "no") blockers.push("醫師不會閱讀這份摘要。");
+    if (text(inputs.staffBurden) === "unacceptable") blockers.push("人員負擔不可接受。");
+    if (text(inputs.patientFit) === "unrealistic") blockers.push("病人或協助填答不實際。");
+    if (text(inputs.existingProcess) === "sufficient") blockers.push("既有流程可能已經足夠。");
     return blockers;
   }
 
@@ -318,27 +367,27 @@
       decision: decision || suggestion,
       reviewerDecision: decision,
       suggestedDecision: suggestion,
-      reviewerRole: text(safeInputs.reviewerRole) || "Not recorded",
+      reviewerRole: displayReviewValue(text(safeInputs.reviewerRole)) || "未記錄",
       blockers,
       evidence: evidenceRows(safeInputs),
       meetingEvidence: [
-        ["Most useful summary line", text(safeInputs.mostUsefulLine) || "Not recorded"],
-        ["Noisiest or riskiest line", text(safeInputs.noisiestLine) || "Not recorded"],
-        ["Missing information that matters", text(safeInputs.missingInformation) || "Not recorded"],
-        ["Unsafe or misleading wording", text(safeInputs.unsafeWording) || "None recorded"],
-        ["Expected workflow slot", text(safeInputs.expectedWorkflowSlot) || "Not recorded"],
-        ["Staff burden concern", text(safeInputs.staffBurdenConcern) || "Not recorded"],
-        ["Case-specific evidence", text(safeInputs.caseEvidence) || "Not recorded"]
+        ["最有用的摘要句", text(safeInputs.mostUsefulLine) || "未記錄"],
+        ["最吵或風險最高的句子", text(safeInputs.noisiestLine) || "未記錄"],
+        ["重要但缺少的資訊", text(safeInputs.missingInformation) || "未記錄"],
+        ["不安全或易誤導文字", text(safeInputs.unsafeWording) || "未記錄"],
+        ["預期流程位置", text(safeInputs.expectedWorkflowSlot) || "未記錄"],
+        ["人員負擔疑慮", text(safeInputs.staffBurdenConcern) || "未記錄"],
+        ["案例層級證據", text(safeInputs.caseEvidence) || "未記錄"]
       ],
-      nextArtifact: text(safeInputs.nextArtifact) || "Not selected",
-      reviewerNotes: text(safeInputs.reviewerNotes) || "No reviewer notes.",
-      productQuestion: "Would a real clinic adopt this because it improves readiness without adding unacceptable burden?",
+      nextArtifact: displayReviewValue(text(safeInputs.nextArtifact)) || "未選擇",
+      reviewerNotes: text(safeInputs.reviewerNotes) || "沒有審閱備註。",
+      productQuestion: "真實診間是否會採用此流程，因為它改善看診準備且沒有增加不可接受的負擔？",
       safetyBoundary: [
-        "No diagnosis.",
-        "No triage.",
-        "No treatment advice.",
-        "No real patient data during discovery.",
-        "Clinician review remains required."
+        "不做診斷。",
+        "不做分流。",
+        "不提供治療建議。",
+        "探索階段不使用真實病人資料。",
+        "仍需醫療人員確認。"
       ]
     });
     assertSafeLanguage(record, "review record");
@@ -347,27 +396,27 @@
 
   function reviewRecordToText(record) {
     const output = [
-      "Urology previsit MVP reviewer record",
+      "泌尿科看診前示範審閱紀錄",
       "",
-      `Reviewer role: ${record.reviewerRole}`,
-      `Reviewer decision: ${record.reviewerDecision || "Not explicitly selected"}`,
-      `Decision guide: ${record.suggestedDecision}`,
-      `Recorded decision: ${record.decision}`,
-      `Next artifact: ${record.nextArtifact}`,
+      `審閱角色：${record.reviewerRole}`,
+      `審閱者選擇：${record.reviewerDecision ? displayReviewValue(record.reviewerDecision) : "未明確選擇"}`,
+      `決策建議：${displayReviewValue(record.suggestedDecision)}`,
+      `紀錄決策：${displayReviewValue(record.decision)}`,
+      `下一個產物：${record.nextArtifact}`,
       "",
-      "Evidence signals:",
-      ...record.evidence.map((item) => `- ${item.label}: ${item.value} (${item.status})`),
+      "證據訊號：",
+      ...record.evidence.map((item) => `- ${item.label}：${displayReviewValue(item.value)}（${displayReviewValue(item.status)}）`),
       "",
-      "Meeting evidence:",
-      ...record.meetingEvidence.map(([label, value]) => `- ${label}: ${value}`),
+      "會議證據：",
+      ...record.meetingEvidence.map(([label, value]) => `- ${label}：${value}`),
       "",
-      "Blockers:",
-      ...(record.blockers.length ? record.blockers.map((item) => `- ${item}`) : ["- No hard blockers recorded."]),
+      "阻擋因素：",
+      ...(record.blockers.length ? record.blockers.map((item) => `- ${item}`) : ["- 目前沒有硬性阻擋因素。"]),
       "",
-      "Safety boundary:",
+      "安全邊界：",
       ...record.safetyBoundary.map((item) => `- ${item}`),
       "",
-      "Reviewer notes:",
+      "審閱備註：",
       record.reviewerNotes
     ].join("\n");
     assertSafeLanguage(output, "review text");

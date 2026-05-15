@@ -15,7 +15,7 @@ test("synthetic cases build bounded clinician summaries", () => {
 
     assert.equal(summary.requiresPhysicianReview, true);
     assert.ok(summary.fieldSources.length > 0);
-    assert.match(text, /clinician review required|clinician must review|requires physician review/);
+    assert.match(text, /醫療人員確認|臨床使用前必須由醫療人員確認/);
     assert.doesNotMatch(text, /likely infection|probable cancer|take medication|diagnosed with|you have/);
   }
 });
@@ -26,7 +26,7 @@ test("hematuria case stays observational and activates hematuria context", () =>
 
   assert.ok(summary.activeModules.includes("hematuria"));
   assert.ok(summary.activeModules.includes("medication"));
-  assert.match(text, /visible blood/);
+  assert.match(text, /可見血尿|血尿/);
   assert.match(text, /occult blood/);
   assert.doesNotMatch(text, /cancer|risk score|order placed/);
 });
@@ -54,7 +54,7 @@ test("supports multiple selected main urinary concerns", () => {
     bloodClots: "No"
   });
 
-  assert.equal(summary.chiefConcern, "Leakage, Visible blood or clots");
+  assert.equal(summary.chiefConcern, "漏尿、可見血尿或血塊");
   assert.ok(summary.activeModules.includes("leakage"));
   assert.ok(summary.activeModules.includes("hematuria"));
 });

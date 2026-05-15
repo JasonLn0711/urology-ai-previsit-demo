@@ -1,34 +1,34 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Reviewer Workbench</title>
+    <title>審閱工作台</title>
     <link rel="stylesheet" href="../shared/styles.css">
   </head>
   <body>
-    <header class="topbar" aria-label="Reviewer header">
+    <header class="topbar" aria-label="審閱工作台">
       <a class="brand" href="../patient/">
         <span class="brand-mark" aria-hidden="true"></span>
         <span>
           <strong>泌尿預診導航</strong>
-          <small>Reviewer workbench</small>
+          <small>審閱工作台</small>
         </span>
       </a>
-      <nav class="nav-actions" aria-label="Reviewer navigation">
-        <a class="ghost-button link-button" href="../patient/">Patient/family intake</a>
-        <a class="ghost-button link-button" href="../reviewer/packet/">Review Packet</a>
-        <a class="ghost-button link-button" href="../clinician/">Summary View</a>
+      <nav class="nav-actions" aria-label="審閱頁面導覽">
+        <a class="ghost-button link-button" href="../patient/">病人/家屬端</a>
+        <a class="ghost-button link-button" href="../reviewer/packet/">審閱資料包</a>
+        <a class="ghost-button link-button" href="../clinician/">醫師摘要</a>
       </nav>
     </header>
 
     <main class="app-shell">
       <section class="mvp-brief" aria-labelledby="workbench-title">
         <div>
-          <p class="eyebrow">Meeting decision capture</p>
-          <h1 id="workbench-title">Reviewer workbench</h1>
+          <p class="eyebrow">會議決策紀錄</p>
+          <h1 id="workbench-title">審閱工作台</h1>
           <p class="lead">
-            Convert clinician feedback into a continue, revise, or stop record without adding clinical decision behavior.
+            將醫療團隊回饋整理成「繼續、修正或停止」紀錄；本頁不加入任何臨床決策功能。
           </p>
         </div>
         <div class="brief-visual" aria-hidden="true">
@@ -36,185 +36,185 @@
         </div>
       </section>
 
-      <section class="safety-strip" role="note" aria-label="Safety boundaries">
-        <span>This workbench captures reviewer judgment.</span>
-        <span>It does not diagnose, triage, or recommend treatment.</span>
-        <span>Use synthetic data only.</span>
+      <section class="safety-strip" role="note" aria-label="安全邊界">
+        <span>本頁只記錄審閱判斷。</span>
+        <span>不做診斷、分流或治療建議。</span>
+        <span>僅使用合成資料。</span>
       </section>
 
-      <section class="workspace reviewer-workspace" aria-label="Reviewer decision workspace">
+      <section class="workspace reviewer-workspace" aria-label="審閱決策工作區">
         <aside class="case-rail">
           <div class="rail-section">
-            <p class="eyebrow">Decision gate</p>
-            <h2>How to use</h2>
+            <p class="eyebrow">決策閘門</p>
+            <h2>使用順序</h2>
             <ol class="gate-list">
-              <li>Run the patient MVP with a synthetic case.</li>
-              <li>Show the clinician summary.</li>
-              <li>Capture reviewer signals here.</li>
-              <li>Copy the record into the meeting notes.</li>
+              <li>用合成案例跑病人端。</li>
+              <li>查看醫師摘要。</li>
+              <li>在這裡記錄審閱訊號。</li>
+              <li>將紀錄放入會議筆記。</li>
             </ol>
           </div>
           <div class="rail-section boundary-note">
-            <p class="eyebrow">Choices</p>
-            <p><strong>Continue</strong> means useful and bounded. <strong>Revise</strong> means the idea fits but needs redesign. <strong>Stop</strong> means no safe workflow value yet.</p>
+            <p class="eyebrow">選項</p>
+            <p><strong>繼續</strong>代表有用且仍在邊界內。<strong>修正</strong>代表方向可行但需要重設計。<strong>停止</strong>代表尚未展現安全且有用的流程價值。</p>
           </div>
         </aside>
 
         <section class="intake-panel" aria-labelledby="review-form-title">
           <div class="panel-head">
             <div>
-              <p class="eyebrow">Reviewer input</p>
-              <h2 id="review-form-title">Decision signals</h2>
+              <p class="eyebrow">審閱輸入</p>
+              <h2 id="review-form-title">決策訊號</h2>
             </div>
           </div>
 
           <form class="reviewer-form" id="reviewerForm">
             <fieldset>
-              <legend>Reviewer identity</legend>
+              <legend>審閱者身分</legend>
               <label>
-                Reviewer role
+                審閱角色
                 <select data-review-field="reviewerRole">
-                  <option value="">Choose one</option>
-                  <option value="Physician">Physician</option>
-                  <option value="Nurse">Nurse</option>
-                  <option value="Patient advocate">Patient advocate</option>
-                  <option value="Product / workflow reviewer">Product / workflow reviewer</option>
-                  <option value="Governance reviewer">Governance reviewer</option>
-                  <option value="Other">Other</option>
+                  <option value="">請選擇</option>
+                  <option value="Physician">醫師</option>
+                  <option value="Nurse">護理人員</option>
+                  <option value="Patient advocate">病人代表</option>
+                  <option value="Product / workflow reviewer">產品/流程審閱者</option>
+                  <option value="Governance reviewer">治理審閱者</option>
+                  <option value="Other">其他</option>
                 </select>
               </label>
             </fieldset>
 
             <fieldset>
-              <legend>Workflow value</legend>
+              <legend>流程價值</legend>
               <label>
-                Repeated-question pain
+                重複詢問痛點
                 <select data-review-field="workflowPain">
-                  <option value="">Choose one</option>
-                  <option value="clear">Clear</option>
-                  <option value="mixed">Mixed or unclear</option>
-                  <option value="no">No meaningful repeated-question pain</option>
+                  <option value="">請選擇</option>
+                  <option value="clear">明確</option>
+                  <option value="mixed">混合或不明確</option>
+                  <option value="no">沒有明顯重複詢問痛點</option>
                 </select>
               </label>
               <label>
-                Summary usefulness
+                摘要可用性
                 <select data-review-field="summaryUsefulness">
-                  <option value="">Choose one</option>
-                  <option value="would-read">Would read in the visit</option>
-                  <option value="needs-rewrite">Useful idea, wrong format</option>
-                  <option value="no">Would not read</option>
+                  <option value="">請選擇</option>
+                  <option value="would-read">看診時會讀</option>
+                  <option value="needs-rewrite">方向有用，但格式需重寫</option>
+                  <option value="no">不會讀</option>
                 </select>
               </label>
               <label>
-                Workflow slot
+                流程位置
                 <select data-review-field="workflowSlot">
-                  <option value="">Choose one</option>
-                  <option value="exists">A realistic slot exists</option>
-                  <option value="unclear">Workflow slot unclear</option>
-                  <option value="none">No workflow slot</option>
+                  <option value="">請選擇</option>
+                  <option value="exists">有實際流程位置</option>
+                  <option value="unclear">流程位置不明確</option>
+                  <option value="none">沒有流程位置</option>
                 </select>
               </label>
             </fieldset>
 
             <fieldset>
-              <legend>Adoption reality</legend>
+              <legend>採用現實</legend>
               <label>
-                Staff burden
+                人員負擔
                 <select data-review-field="staffBurden">
-                  <option value="">Choose one</option>
-                  <option value="acceptable">Acceptable</option>
-                  <option value="unclear">Unclear</option>
-                  <option value="unacceptable">Unacceptable</option>
+                  <option value="">請選擇</option>
+                  <option value="acceptable">可接受</option>
+                  <option value="unclear">不明確</option>
+                  <option value="unacceptable">不可接受</option>
                 </select>
               </label>
               <label>
-                Patient or assisted completion
+                病人或協助填答
                 <select data-review-field="patientFit">
-                  <option value="">Choose one</option>
-                  <option value="self-filled">Self-filled seems realistic</option>
-                  <option value="mixed">Mixed self-filled and assisted</option>
-                  <option value="assisted-only">Assisted-only seems realistic</option>
-                  <option value="unrealistic">Completion seems unrealistic</option>
+                  <option value="">請選擇</option>
+                  <option value="self-filled">自行填答可行</option>
+                  <option value="mixed">自行與協助填答並存</option>
+                  <option value="assisted-only">僅適合協助填答</option>
+                  <option value="unrealistic">填答不實際</option>
                 </select>
               </label>
               <label>
-                Existing process
+                既有流程
                 <select data-review-field="existingProcess">
-                  <option value="">Choose one</option>
-                  <option value="not-sufficient">Existing process leaves a gap</option>
-                  <option value="unclear">Unclear</option>
-                  <option value="sufficient">Existing process may be sufficient</option>
+                  <option value="">請選擇</option>
+                  <option value="not-sufficient">既有流程仍有缺口</option>
+                  <option value="unclear">不明確</option>
+                  <option value="sufficient">既有流程可能已足夠</option>
                 </select>
               </label>
             </fieldset>
 
             <fieldset>
-              <legend>Meeting evidence</legend>
+              <legend>會議證據</legend>
               <label>
-                Most useful summary line
-                <textarea data-review-field="mostUsefulLine" placeholder="One line the reviewer would actually read or use."></textarea>
+                最有用的摘要句
+                <textarea data-review-field="mostUsefulLine" placeholder="審閱者真的會讀或使用的一句話。"></textarea>
               </label>
               <label>
-                Noisiest or riskiest line
-                <textarea data-review-field="noisiestLine" placeholder="One line to remove, rewrite, or demote."></textarea>
+                最吵或風險最高的句子
+                <textarea data-review-field="noisiestLine" placeholder="需要移除、重寫或降級的一句話。"></textarea>
               </label>
               <label>
-                Missing information that matters
-                <textarea data-review-field="missingInformation" placeholder="Information the reviewer expected but did not see."></textarea>
+                重要但缺少的資訊
+                <textarea data-review-field="missingInformation" placeholder="審閱者預期看到、但目前沒有看到的資訊。"></textarea>
               </label>
               <label>
-                Unsafe or misleading wording
-                <textarea data-review-field="unsafeWording" placeholder="Boundary wording to revise, or write none."></textarea>
+                不安全或易誤導文字
+                <textarea data-review-field="unsafeWording" placeholder="需要修正的邊界文字；若沒有請寫無。"></textarea>
               </label>
               <label>
-                Expected workflow slot
-                <textarea data-review-field="expectedWorkflowSlot" placeholder="Before visit, check-in, nurse rooming, physician room, or none."></textarea>
+                預期流程位置
+                <textarea data-review-field="expectedWorkflowSlot" placeholder="看診前、報到、護理評估、診間，或沒有。"></textarea>
               </label>
               <label>
-                Staff burden concern
-                <textarea data-review-field="staffBurdenConcern" placeholder="What extra work this creates, or none."></textarea>
+                人員負擔疑慮
+                <textarea data-review-field="staffBurdenConcern" placeholder="這會增加什麼額外工作；若沒有請寫無。"></textarea>
               </label>
               <label class="wide-field">
-                Case-specific evidence
-                <textarea data-review-field="caseEvidence" placeholder="Capture case-level notes for frequency/nocturia, emptying, leakage, and recurrent infection."></textarea>
+                案例層級證據
+                <textarea data-review-field="caseEvidence" placeholder="記錄頻尿/夜尿、排尿困難、漏尿與反覆感染相關案例觀察。"></textarea>
               </label>
             </fieldset>
 
             <fieldset>
-              <legend>Boundary and next action</legend>
+              <legend>邊界與下一步</legend>
               <label>
-                Safety boundary
+                安全邊界
                 <select data-review-field="safetyBoundary">
-                  <option value="">Choose one</option>
-                  <option value="acceptable">Acceptable</option>
-                  <option value="needs-wording">Needs wording changes</option>
-                  <option value="unacceptable">Unacceptable</option>
+                  <option value="">請選擇</option>
+                  <option value="acceptable">可接受</option>
+                  <option value="needs-wording">需要改文字</option>
+                  <option value="unacceptable">不可接受</option>
                 </select>
               </label>
               <label>
-                Reviewer decision
+                審閱決策
                 <select data-review-field="decision">
-                  <option value="">Use decision guide</option>
-                  <option value="continue">Continue</option>
-                  <option value="revise">Revise</option>
-                  <option value="stop">Stop</option>
+                  <option value="">使用系統建議</option>
+                  <option value="continue">繼續</option>
+                  <option value="revise">修正</option>
+                  <option value="stop">停止</option>
                 </select>
               </label>
               <label>
-                Smallest next artifact
+                最小下一個產物
                 <select data-review-field="nextArtifact">
-                  <option value="">Choose one</option>
-                  <option value="Question tree revision">Question tree revision</option>
-                  <option value="One-page summary revision">One-page summary revision</option>
-                  <option value="Workflow evidence memo">Workflow evidence memo</option>
-                  <option value="Stop memo with removed assumptions">Stop memo with removed assumptions</option>
+                  <option value="">請選擇</option>
+                  <option value="Question tree revision">題目流程修正版</option>
+                  <option value="One-page summary revision">單頁摘要修正版</option>
+                  <option value="Workflow evidence memo">流程證據備忘錄</option>
+                  <option value="Stop memo with removed assumptions">停止備忘錄與假設移除紀錄</option>
                 </select>
               </label>
             </fieldset>
 
             <label class="wide-field">
-              Reviewer notes
-              <textarea data-review-field="reviewerNotes" placeholder="Capture useful, noisy, unsafe, missing, and next-review comments."></textarea>
+              審閱備註
+              <textarea data-review-field="reviewerNotes" placeholder="記錄有用、干擾、不安全、缺漏與下次審閱意見。"></textarea>
             </label>
           </form>
         </section>
@@ -222,14 +222,14 @@
         <aside class="summary-panel" aria-labelledby="record-title">
           <div class="panel-head">
             <div>
-              <p class="eyebrow">Decision record</p>
-              <h2 id="record-title">Output</h2>
+              <p class="eyebrow">決策紀錄</p>
+              <h2 id="record-title">輸出</h2>
             </div>
           </div>
           <div id="decisionMount" class="decision-output" aria-live="polite"></div>
           <div class="summary-actions">
-            <button class="secondary-button" id="copyRecord" type="button">Copy Record</button>
-            <button class="secondary-button" id="printRecord" type="button">Print</button>
+            <button class="secondary-button" id="copyRecord" type="button">複製紀錄</button>
+            <button class="secondary-button" id="printRecord" type="button">列印</button>
           </div>
         </aside>
       </section>

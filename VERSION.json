@@ -1,12 +1,12 @@
 {
-  "version": "2.0.4",
-  "versionLabel": "v2.0.4",
+  "version": "2.0.6",
+  "versionLabel": "v2.0.6",
   "product": "UroPrevisit Navigator",
   "track": "urology-ai-previsit-demo",
   "stage": "demo-freeze-candidate",
   "releasedAt": "2026-05-12",
   "updatedAt": "2026-05-15",
-  "summary": "Align sample buttons with V2 demo script",
+  "summary": "Localize Taiwan hospital interfaces",
   "safetyBoundary": [
     "synthetic data only",
     "no diagnosis",
@@ -16,6 +16,7 @@
     "no HIS/EMR/EHR integration"
   ],
   "verificationCommands": [
+    "npm run demo:ready",
     "npm run version:check",
     "npm run demo:v2-freeze",
     "npm run smoke",

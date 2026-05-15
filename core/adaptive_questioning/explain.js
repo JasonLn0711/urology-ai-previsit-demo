@@ -3,7 +3,7 @@ function explainSelection(rankingResult = {}) {
   const selected = rankingResult.selected;
   if (!selected) {
     return {
-      selectedReason: "No governed question could be selected.",
+      selectedReason: "目前沒有可選的受治理題目。",
       matchedFacts: [],
       missingSlotsFilled: [],
       ambiguityNotes: [],
@@ -18,7 +18,7 @@ function explainSelection(rankingResult = {}) {
     matchedFacts: selected.reasons.filter((reason) => reason.includes("語意狀態符合") || reason.includes("語意接近")),
     missingSlotsFilled: selected.question.asksFor || [],
     ambiguityNotes: selected.reasons.filter((reason) => reason.includes("釐清") || reason.includes("模糊")),
-    safetyNotes: selected.question.redFlag ? ["Needs clinician review; no diagnosis or treatment advice is generated."] : [],
+    safetyNotes: selected.question.redFlag ? ["需醫療人員確認；系統不產生診斷或治療建議。"] : [],
     skippedReasons: (rankingResult.ranked || [])
       .filter((item) => item.id !== selected.id)
       .flatMap((item) => item.reasons.filter((reason) => reason.includes("降權") || reason.includes("暫緩") || reason.includes("已問過")))

@@ -2,6 +2,32 @@
 
 This changelog records meaningful product, demo, safety, question-bank, and evidence-system changes.
 
+## v2.0.6 - 2026-05-15
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Localize Taiwan hospital interfaces
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run demo:ready`
+
+## v2.0.5 - 2026-05-15
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Simplify demo readiness flow
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run demo:ready`
+
 ## v2.0.4 - 2026-05-15
 
 Stage: `demo-freeze-candidate`

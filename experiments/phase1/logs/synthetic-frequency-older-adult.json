@@ -80,35 +80,35 @@
         "completed": 20,
         "total": 20,
         "missingCount": 0,
-        "label": "MVP fields complete for clinician review",
+        "label": "核心欄位已足夠醫療人員檢視",
         "tone": "ready"
       },
       "activeModules": [
         "storage",
         "medication"
       ],
-      "intakeMode": "Patient self-filled",
-      "chiefConcern": "Frequency / nocturia / urgency",
-      "symptomPattern": "Storage: daytime change: Yes; daytime count: 9 to 12 times; night count: 3 or more times; urgency: Yes; urgency frequency: Most days; fluid/caffeine context: Caffeinated drinks most days, Drinks a lot near bedtime; diary feasibility: Yes, with written instructions",
-      "durationBother": "More than 1 month / bother score 7/10",
+      "intakeMode": "本人回答",
+      "chiefConcern": "頻尿 / 夜尿 / 急尿",
+      "symptomPattern": "儲尿相關：白天次數變化：有; 白天次數：9 到 12 次; 夜間起床尿尿：3 次以上; 急尿：有; 急尿頻率：大多數日子; 喝水/咖啡因背景：常喝咖啡、茶或含咖啡因飲料、睡前常喝較多水; 排尿日誌可行性：可以，但需要清楚說明",
+      "durationBother": "超過 1 個月 / 困擾程度 7/10",
       "clinicianReviewFlags": [
-        "No priority review statement captured in this synthetic case."
+        "此合成案例目前沒有需特別標示的病人回報。"
       ],
       "missingInformation": [
-        "No required MVP fields missing."
+        "目前沒有必補核心欄位。"
       ],
       "nurseCues": [
-        "Completion support may be needed before clinician review.",
-        "Bladder diary instruction may be relevant if clinic workflow supports it.",
-        "Medication list may need nurse review or supplemental confirmation."
+        "醫療人員檢視前，可能需要先確認填答協助需求。",
+        "若院內流程支援，可由現場人員說明排尿日誌。",
+        "用藥資料可能需要護理端協助確認。"
       ],
       "patientConstraints": [
-        "Patient self-filled",
-        "Mandarin with Taiwanese preferred",
-        "Needs large buttons",
-        "Needs staff help"
+        "本人回答",
+        "國語，可搭配台語",
+        "需要大按鈕、大字",
+        "到現場請人員協助"
       ],
-      "medicines": "list readiness: Partial list only; review support: Yes; patient-reported context: Not sure; diuretic/anticoagulant awareness: Not sure",
+      "medicines": "用藥資料：只記得部分; 確認協助：有; 病人回報背景：不確定; 利尿劑/抗凝血藥物認知：不確定",
       "patientNote": "Patient worries about waking up repeatedly at night.",
       "sourceNotes": [
         "資料來源標示為本人回答；若仍有不確定答案，可由現場人員補問。"
@@ -236,8 +236,8 @@
         }
       ],
       "sourceAttributionSummary": [
-        "填答開始時標記: 1",
-        "本人回答: 23"
+        "填答開始時標記：1",
+        "本人回答：23"
       ],
       "attribution": {
         "field_sources": [
@@ -363,14 +363,14 @@
           }
         ],
         "source_summary": [
-          "填答開始時標記: 1",
-          "本人回答: 23"
+          "填答開始時標記：1",
+          "本人回答：23"
         ],
         "source_notes": [
           "資料來源標示為本人回答；若仍有不確定答案，可由現場人員補問。"
         ]
       },
-      "handoffNote": "Patient-provided or helper-provided answers; clinician review required.",
+      "handoffNote": "本資料來自病人、家屬或現場補問；仍需醫療人員確認。",
       "rawAnswers": {
         "filledBy": "Patient self-filled",
         "chiefConcern": "Frequency / nocturia / urgency",
@@ -405,14 +405,14 @@
         "notes": "Patient worries about waking up repeatedly at night."
       },
       "safetyNotice": [
-        "This v1 local product preview is not for clinical use.",
-        "It does not diagnose, triage, recommend treatment, or place exam orders.",
-        "A clinician must review all information.",
-        "Use synthetic data only.",
-        "Regulatory status is not determined."
+        "這是本機產品示範，不可作為臨床使用。",
+        "系統不做診斷、分流、治療建議或檢查開立。",
+        "所有資訊仍需由醫療人員確認。",
+        "僅使用合成資料示範。",
+        "法規與正式上線狀態尚未確認。"
       ],
       "requiresPhysicianReview": true,
-      "reviewRequiredLabel": "Requires physician review before clinical use."
+      "reviewRequiredLabel": "臨床使用前必須由醫療人員確認。"
     },
     "missing_fields": [],
     "attribution": {
@@ -539,8 +539,8 @@
         }
       ],
       "source_summary": [
-        "填答開始時標記: 1",
-        "本人回答: 23"
+        "填答開始時標記：1",
+        "本人回答：23"
       ],
       "source_notes": [
         "資料來源標示為本人回答；若仍有不確定答案，可由現場人員補問。"

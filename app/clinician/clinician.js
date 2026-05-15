@@ -53,7 +53,8 @@ const MODULE_LABELS = {
   voiding: "排尿困難",
   hematuria: "可見血尿/血塊",
   pain: "疼痛或發燒相關",
-  medication: "用藥補充"
+  medication: "用藥補充",
+  "core only": "核心欄位"
 };
 
 function escapeHtml(value) {
@@ -99,7 +100,7 @@ function sourceLookup(fieldSources) {
 
 function listItem(label, value, field, sources) {
   if (!value || (Array.isArray(value) && value.length === 0)) return "";
-  const source = sources[field] || "Source not marked";
+  const source = sources[field] || "未標記來源";
   return `
     <li>
       <strong>${escapeHtml(label)}</strong>
@@ -180,7 +181,7 @@ function render() {
   statusTitle.textContent = status.missingCount
     ? `${status.missingCount} 項仍可補齊`
     : "重點欄位已完成";
-  statusMeta.textContent = `${status.completed}/${status.total} required fields captured.`;
+  statusMeta.textContent = `已完成 ${status.completed}/${status.total} 個核心欄位。`;
 
   sourceMount.innerHTML = `
     <div class="source-card">

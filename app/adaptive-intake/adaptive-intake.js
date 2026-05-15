@@ -1,9 +1,9 @@
 const { QUESTION_BANK, rankQuestions, FIELD_LABELS } = window.UrologyAdaptiveQuestioning;
-const VERSION = window.UroPrevisitVersion || { versionLabel: "v2.0.4" };
+const VERSION = window.UroPrevisitVersion || { versionLabel: "v2.0.6" };
 
 const STORAGE_KEY = "urologyAdaptiveDemoState";
 const LANGUAGE_KEY = "urologyAdaptiveDemoLanguage";
-const DEFAULT_LANGUAGE = "en";
+const DEFAULT_LANGUAGE = "zh";
 
 const UI_COPY = {
   en: {
@@ -82,30 +82,30 @@ const UI_COPY = {
     sampleNocturia: "夜尿案例",
     samplePain: "尿痛案例",
     sampleBlood: "血尿案例",
-    sampleVaguePain: "下面痛",
+    sampleVaguePain: "疼痛不清楚",
     sampleVagueUrinary: "尿尿怪怪",
     reset: "重新開始",
-    shortMode: "短版",
-    heroEyebrow: "Version 2 demo",
+    shortMode: "短版問答",
+    heroEyebrow: "V2 示範",
     heroTitle: "問下一個最有用的問題，而不是每題都問。",
-    heroLead: "系統把病人說法轉成狀態，再從受治理題庫選出一題補問。ASR 可選；ranking engine 不診斷、不建議治療。",
-    proofV1: "v1 固定問卷",
+    heroLead: "系統把病人說法轉成狀態，再從受治理題庫選出一題補問。ASR 可選；排序引擎不診斷、不建議治療。",
+    proofV1: "V1 固定問卷",
     proofV1Detail: "病人跟著表單走",
     proofV2Detail: "系統跟著病人狀態走",
     proofNext: "下一題",
     inputEyebrow: "輸入",
     inputTitle: "病人說法",
-    inputCopy: "可貼上文字；ASR 只是可選輸入。",
+    inputCopy: "可貼上病人說的話；ASR 只是可選輸入。",
     transcriptLabel: "目前說法",
     transcriptPlaceholder: "例如：我最近晚上一直起來尿，有時候突然很急。",
     startAsr: "開始 ASR",
     stopAsr: "停止 ASR",
     computeNext: "找下一題",
-    asrIdle: "ASR 未啟動；可用 typed input。",
-    asrUnsupported: "此瀏覽器不支援 Web Speech；請使用 typed input。",
-    asrListening: "ASR 聆聽中；typed input 仍可使用。",
+    asrIdle: "ASR 未啟動；可用文字輸入。",
+    asrUnsupported: "此瀏覽器不支援 Web Speech；請使用文字輸入。",
+    asrListening: "ASR 聆聽中；文字輸入仍可使用。",
     asrStopped: "ASR 已停止；可找下一題。",
-    asrError: "ASR 發生錯誤；請改用 typed input。",
+    asrError: "ASR 發生錯誤；請改用文字輸入。",
     answeredEyebrow: "已回答",
     answeredEmpty: "尚未回答任何欄位。",
     nextEyebrow: "下一題",
@@ -132,11 +132,11 @@ const UI_COPY = {
     missingFields: "仍缺資訊",
     none: "暫無",
     notChecked: "尚未檢查。",
-    clearEnough: "Clear enough",
+    clearEnough: "描述已足夠",
     clearEnoughBody: "目前描述可進入一般題庫排序。",
-    matched: "matched",
-    selected: "selected",
-    downranked: "downranked / skipped",
+    matched: "符合",
+    selected: "已選",
+    downranked: "降權或略過",
     turn: "第",
     components: {
       semantic: "語意",
@@ -482,12 +482,7 @@ function restoreState() {
 }
 
 function restoreLanguage() {
-  try {
-    const stored = window.localStorage.getItem(LANGUAGE_KEY);
-    return stored === "zh" ? "zh" : DEFAULT_LANGUAGE;
-  } catch (error) {
-    return DEFAULT_LANGUAGE;
-  }
+  return DEFAULT_LANGUAGE;
 }
 
 function persistState() {
@@ -576,9 +571,9 @@ function reasonText(reason, question) {
 }
 
 function setLanguage(nextLanguage) {
-  language = nextLanguage === "zh" ? "zh" : "en";
+  language = "zh";
   persistLanguage();
-  if (recognition) recognition.lang = language === "zh" ? "zh-TW" : "en-US";
+  if (recognition) recognition.lang = "zh-TW";
   render();
 }
 
@@ -691,13 +686,15 @@ function renderQuestion() {
 
   const question = state.current.question;
   questionTitle.textContent = questionText(question);
-  scoreLabel.textContent = `score ${state.current.score.toFixed(2)}`;
+  scoreLabel.textContent = language === "en"
+    ? `score ${state.current.score.toFixed(2)}`
+    : `分數 ${state.current.score.toFixed(2)}`;
   questionMount.innerHTML = `
     <div class="selected-question-card">
       <p class="eyebrow">${escapeHtml(t("selectedQuestion"))}</p>
       <h3>${escapeHtml(questionText(question))}</h3>
       <p>${escapeHtml(questionValue(question))}</p>
-      <div class="component-grid" aria-label="Score components">
+      <div class="component-grid" aria-label="${escapeHtml(language === "en" ? "Score components" : "分數組成")}">
         ${component(t("components").semantic, state.current.components.semantic)}
         ${component(t("components").missingInfo, state.current.components.missingInfo)}
         ${component(t("components").workflow, state.current.components.workflow)}
@@ -729,7 +726,7 @@ function renderAnswerControl(question) {
   if (isMultiChoice(question)) {
     return `
       <p class="answer-instruction">${escapeHtml(t("multiHint"))}</p>
-      <div class="answer-grid multi-answer-grid" role="group" aria-label="Answer options">
+      <div class="answer-grid multi-answer-grid" role="group" aria-label="${escapeHtml(language === "en" ? "Answer options" : "回答選項")}">
         ${question.options.map((option, index) => `
           <button class="option-button adaptive-answer-button multi-option-button" type="button" data-multi-option="${escapeHtml(option)}" aria-pressed="false">
             <strong>${escapeHtml(optionText(question, option, index))}</strong>
@@ -742,7 +739,7 @@ function renderAnswerControl(question) {
 
   return `
     <p class="answer-instruction">${escapeHtml(t("singleHint"))}</p>
-    <div class="answer-grid" role="group" aria-label="Answer options">
+    <div class="answer-grid" role="group" aria-label="${escapeHtml(language === "en" ? "Answer options" : "回答選項")}">
       ${question.options.map((option, index) => `
         <button class="option-button adaptive-answer-button" type="button" data-answer-value="${escapeHtml(option)}">
           <strong>${escapeHtml(optionText(question, option, index))}</strong>
@@ -775,7 +772,7 @@ function renderRanking() {
         <span>#${index + 1}</span>
         <strong>${escapeHtml(questionText(item.question))}</strong>
       </div>
-      <small>score ${item.score.toFixed(2)} | fit ${item.components.semantic} | gap ${item.components.missingInfo}</small>
+      <small>${escapeHtml(language === "en" ? "score" : "分數")} ${item.score.toFixed(2)} | ${escapeHtml(language === "en" ? "fit" : "語意")} ${item.components.semantic} | ${escapeHtml(language === "en" ? "gap" : "缺口")} ${item.components.missingInfo}</small>
       <em>${index === 0 ? t("selected") : t("downranked")}</em>
       <ul>
         ${item.reasons.slice(0, 2).map((reason) => `<li>${escapeHtml(reasonText(reason, item.question))}</li>`).join("")}

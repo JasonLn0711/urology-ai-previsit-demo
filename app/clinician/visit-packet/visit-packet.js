@@ -31,6 +31,7 @@ const LABELS = {
   Yes: "有",
   No: "沒有",
   "Not sure": "不確定",
+  "目前沒有必補核心欄位。": "目前沒有必補欄位。",
   "No required MVP fields missing.": "目前沒有必補欄位。",
   "No priority review statement captured in this synthetic case.": "目前沒有需特別標示的回報。"
 };
@@ -189,7 +190,7 @@ function render() {
   const packet = buildVisitPacket(answers);
   const missingCount = packet.nursePage.completionStatus.missingCount;
   packetStatus.textContent = missingCount ? `${missingCount} 項待補` : "資料包可列印";
-  packetMeta.textContent = `${packet.nursePage.completionStatus.completed}/${packet.nursePage.completionStatus.total} required fields captured.`;
+  packetMeta.textContent = `已完成 ${packet.nursePage.completionStatus.completed}/${packet.nursePage.completionStatus.total} 個核心欄位。`;
   packetMount.innerHTML = [
     renderPatientPage(packet),
     renderNursePage(packet),

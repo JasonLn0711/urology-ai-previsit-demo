@@ -47,8 +47,8 @@ test("summary output includes safety envelope and physician review flag", () => 
   const text = summaryToText(summary).toLowerCase();
 
   assert.equal(summary.requiresPhysicianReview, true);
-  assert.match(text, /not for clinical use/);
-  assert.match(text, /does not diagnose, triage, recommend treatment, or place exam orders/);
-  assert.match(text, /requires physician review/);
+  assert.match(text, /不可作為臨床使用/);
+  assert.match(text, /不做診斷、分流、治療建議或檢查開立/);
+  assert.match(text, /臨床使用前必須由醫療人員確認/);
   assert.doesNotMatch(text, /you have|diagnosed with|likely|probable|take medication/);
 });

@@ -8,7 +8,7 @@ It uses synthetic urology previsit cases and local browser answers to produce ro
 
 Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate from 許醫師's current `陽明小幫手` prototype name, which should be treated as benchmark/source context only.
 
-Current product version: `v2.0.4`.
+Current product version: `v2.0.6`.
 
 ## Project Ownership Rule
 
@@ -34,37 +34,43 @@ Huicheng may borrow architecture, interaction patterns, and safety lessons from 
 - Not approved for real patient data.
 - Not a replacement for physician review.
 
-## Run In One Command
+## Demo Mainline
 
 ```bash
 npm start
 ```
 
-Open:
+Open the primary demo route:
 
-- Patient/family intake: `http://localhost:4173/app/patient/`
-- Patient/family short intake: `http://localhost:4173/app/patient-short/`
 - Version 2 adaptive intake: `http://localhost:4173/app/adaptive-intake/`
-- Nurse checklist: `http://localhost:4173/app/nurse/`
-- Clinician summary: `http://localhost:4173/app/clinician/`
-- Visit packet: `http://localhost:4173/app/clinician/visit-packet/`
-- Reviewer decision: `http://localhost:4173/app/reviewer/`
+
+Fallback routes:
+
+- Short intake: `http://localhost:4173/app/patient-short/`
 - Reviewer packet: `http://localhost:4173/app/reviewer/packet/`
 
-## Evaluate
+The first-principles demo claim is narrow:
+
+```text
+After each patient answer, the system selects the next most useful governed question from the current patient state.
+```
+
+## Demo Ready Check
+
+```bash
+npm run demo:ready
+```
+
+This single command runs version checks, unit tests, smoke checks, the V2 freeze gate, and whitespace checks.
+
+The older experiment commands remain available for deeper review:
 
 ```bash
 npm run rehearsal
 npm run samples
 npm run experiment:phase1
 npm run experiment:check
-npm run version:check
-npm run demo:v2-freeze
-npm run smoke
-npm test
 ```
-
-The experiment command writes case logs to `experiments/phase1/logs/`. Fill the human feedback fields, update `experiments/phase1/scorecard.md`, then complete `experiments/phase1/decision-memo.md`.
 
 ## Version Management
 
@@ -78,7 +84,7 @@ Before finishing any meaningful change, update the version and changelog:
 
 ```bash
 npm run version:bump -- patch "Short change summary"
-npm run version:check
+npm run demo:ready
 ```
 
 Use `minor` for new demo capability and `major` for product-claim, safety-boundary, or workflow-contract changes. See `docs/versioning-policy.md`.
@@ -118,28 +124,13 @@ The code enforces:
 - visible missing fields
 - `requiresPhysicianReview: true` on generated outputs
 
-## Key Docs
+## Active Docs
 
-- Product boundary: `docs/product/README.md`
-- Versioning policy: `docs/versioning-policy.md`
-- Changelog: `docs/CHANGELOG.md`
-- V2 canonical spec: `docs/urology-ai-previsit-demo-v2-spec.md`
-- V1 to V2 change log: `docs/v1-to-v2-change-log.md`
-- Adaptive questioning design: `docs/adaptive-questioning-design.md`
-- Ambiguity handling: `docs/ambiguity-handling.md`
-- Question-bank schema: `docs/question-bank-schema.md`
-- V2 safety boundary: `docs/safety-boundary.md`
-- Five-minute demo script: `docs/demo-script-5min.md`
-- V2 freeze runbook: `docs/v2-demo-freeze-runbook.md`
-- V2 first-principles readiness audit: `docs/v2-first-principles-readiness-audit.md`
-- V2 post-demo decision capture: `docs/v2-post-demo-decision-capture.md`
-- Safety boundary: `docs/safety/README.md`
-- Workflow/data contract: `docs/workflow/README.md`
-- Research process: `docs/research/README.md`
-- Reviewer decision process: `docs/reviews/README.md`
-- Phase 1 plan: `experiments/phase1/plan.md`
-- Phase 1 scorecard: `experiments/phase1/scorecard.md`
-- Phase 1 decision memo: `experiments/phase1/decision-memo.md`
+- Demo runbook: `docs/v2-demo-freeze-runbook.md`
+- Post-demo decision capture: `docs/v2-post-demo-decision-capture.md`
+- Full docs routing: `docs/README.md`
+
+Everything else under `docs/` and `experiments/` is reference evidence unless the runbook routes you there.
 
 ## Cleanup Summary
 
