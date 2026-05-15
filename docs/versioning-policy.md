@@ -98,10 +98,7 @@ Before finishing any meaningful change, run:
 
 ```bash
 npm run version:bump -- patch "Short change summary"
-npm run version:check
-npm run demo:v2-freeze
-npm run smoke
-npm test
+npm run demo:ready
 ```
 
 Use `minor` or `major` instead of `patch` when the bump rules require it.

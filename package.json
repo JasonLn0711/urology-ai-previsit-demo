@@ -11,6 +11,7 @@
     "experiment:check": "node scripts/experiment/check-phase1.js",
     "version:bump": "node scripts/version/bump-version.js",
     "version:check": "node scripts/checks/check-version.js",
+    "demo:ready": "npm run version:check && npm test && npm run smoke && npm run demo:v2-freeze && git diff --check",
     "demo:v2-freeze": "npm run version:check && node scripts/checks/v2-demo-freeze.js",
     "smoke": "node scripts/checks/smoke-demo.js",
     "test": "node --test"
