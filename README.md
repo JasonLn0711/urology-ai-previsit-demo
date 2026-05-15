@@ -8,7 +8,7 @@ It uses synthetic urology previsit cases and local browser answers to produce ro
 
 Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate from 許醫師's current `陽明小幫手` prototype name, which should be treated as benchmark/source context only.
 
-Current product version: `v2.1.0`.
+Current product version: `v2.2.0`.
 
 ## Project Ownership Rule
 
@@ -24,6 +24,9 @@ Huicheng may borrow architecture, interaction patterns, and safety lessons from 
 - An experiment system for logs, scorecards, and decision memos.
 - A simplified Taiwan hospital patient intake screen with click or voice answer
   submission, visible answer confirmation, and 30-second final supplement.
+- A local ASR backend that uses the existing
+  `SoybeanMilk/faster-whisper-Breeze-ASR-25` model on RTX GPU with
+  `compute_type=int8` and no CPU fallback.
 - A Version 2 ASR-ready adaptive-question demo that shows how
   embedding-style retrieval over a governed compact previsit question bank can
   choose the next reasonable clarification or follow-up question within 12
@@ -38,6 +41,14 @@ Huicheng may borrow architecture, interaction patterns, and safety lessons from 
 - Not a replacement for physician review.
 
 ## Demo Mainline
+
+Start the local RTX ASR server in one terminal:
+
+```bash
+npm run asr:local
+```
+
+Start the static demo server in another terminal:
 
 ```bash
 npm start
@@ -65,6 +76,12 @@ npm run demo:ready
 ```
 
 This single command runs version checks, unit tests, smoke checks, the V2 freeze gate, and whitespace checks.
+
+For ASR-specific hardware/model validation:
+
+```bash
+npm run asr:check
+```
 
 The older experiment commands remain available for deeper review:
 
@@ -112,6 +129,8 @@ Repository primitives:
 - Transformation: `core/summary`, `core/missing_fields`, `core/attribution`, `core/role_transform`, `core/safety`
 - Adaptive questioning: `core/adaptive_questioning`
 - Voice answer matching: `core/speech_answer_matching`
+- Local RTX ASR client/server: `app/shared/local-asr-client.js`,
+  `scripts/asr/local_faster_whisper_server.py`
   with governed question-bank metadata, an ambiguity gate, and deterministic ranking before ordinary question selection
 - Governed V2 question bank export: `data/question_bank/urology_adaptive_bank.js`
   (`QUESTION_BANK` is the compact 12-question runtime bank;
@@ -133,6 +152,7 @@ The code enforces:
 ## Active Docs
 
 - Demo runbook: `docs/v2-demo-freeze-runbook.md`
+- Local RTX ASR runbook: `docs/local-asr-rtx.md`
 - Post-demo decision capture: `docs/v2-post-demo-decision-capture.md`
 - Full docs routing: `docs/README.md`
 

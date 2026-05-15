@@ -1,12 +1,12 @@
 {
-  "version": "2.1.0",
-  "versionLabel": "v2.1.0",
+  "version": "2.2.0",
+  "versionLabel": "v2.2.0",
   "product": "UroPrevisit Navigator",
   "track": "urology-ai-previsit-demo",
   "stage": "demo-freeze-candidate",
   "releasedAt": "2026-05-12",
   "updatedAt": "2026-05-15",
-  "summary": "Add compact 12-question previsit bank",
+  "summary": "Add RTX-only local Breeze ASR",
   "safetyBoundary": [
     "synthetic data only",
     "no diagnosis",

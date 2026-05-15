@@ -2,6 +2,25 @@
 
 This changelog records meaningful product, demo, safety, question-bank, and evidence-system changes.
 
+## v2.2.0 - 2026-05-15
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Add RTX-only local Breeze ASR
+- Add a local ASR server for the existing
+  `SoybeanMilk/faster-whisper-Breeze-ASR-25` snapshot.
+- Require `device=cuda`, `compute_type=int8`, RTX GPU detection, and
+  `noCpuFallback: true` for ASR startup and browser responses.
+- Route adaptive intake and short patient voice input through the local ASR
+  endpoint instead of browser Web Speech.
+
+### Versioning
+
+- Bump type: `minor`
+- Verification command to run before freeze or commit: `npm run version:check`
+
 ## v2.1.0 - 2026-05-15
 
 Stage: `demo-freeze-candidate`

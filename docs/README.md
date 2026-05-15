@@ -8,12 +8,14 @@ Read these first:
 
 - `../README.md`
 - `v2-demo-freeze-runbook.md`
+- `local-asr-rtx.md`
 - `v2-post-demo-decision-capture.md`
 
 The active operating command is:
 
 ```bash
 npm run demo:ready
+npm run asr:check
 ```
 
 The active browser route is:
