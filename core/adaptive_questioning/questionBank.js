@@ -221,6 +221,7 @@ const RAW_QUESTION_BANK = [
     safetyPriority: 0.78,
     nextUsefulWhen: ["使用者提到尿痛、感染疑慮、發燒、發冷或腰側痛"],
     skipWhen: ["已經回答 systemicSymptoms"],
+    answerType: "multi_choice",
     options: ["發燒", "發冷", "腰部兩側痛", "以上都沒有", "不確定"]
   },
   {
@@ -528,6 +529,7 @@ const RAW_QUESTION_BANK = [
     safetyPriority: 0.7,
     nextUsefulWhen: ["已知道看見紅色、茶色尿或血塊"],
     skipWhen: ["尚未知道是否血尿", "已經回答 visibleBloodColor"],
+    answerType: "multi_choice",
     options: ["粉紅", "鮮紅", "茶色或深色", "有血塊", "不確定"]
   },
   {
@@ -613,6 +615,7 @@ const RAW_QUESTION_BANK = [
     safetyPriority: 0.18,
     nextUsefulWhen: ["核心主訴初步清楚後，補足慢性病背景"],
     skipWhen: ["已經回答 diabetesKidneyHistory"],
+    answerType: "multi_choice",
     options: ["沒有", "有糖尿病", "有腎臟病", "其他慢性病", "不確定"]
   },
   {
@@ -630,6 +633,7 @@ const RAW_QUESTION_BANK = [
     safetyPriority: 0.14,
     nextUsefulWhen: ["核心症狀已初步清楚後，補足近期用藥變化"],
     skipWhen: ["已經回答 newMedicationContext"],
+    answerType: "multi_choice",
     options: ["沒有", "有開始新藥", "有停藥或調藥", "不確定"]
   },
   {

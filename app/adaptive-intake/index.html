@@ -1,32 +1,36 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>泌尿預診導航 V2 - Adaptive Question Demo</title>
+    <title>UroPrevisit Navigator V2 - Adaptive Question Demo</title>
     <link rel="stylesheet" href="../shared/styles.css">
     <link rel="stylesheet" href="./adaptive-intake.css">
   </head>
   <body class="adaptive-demo-page">
-    <header class="topbar patient-topbar" aria-label="泌尿預診導航 V2">
-      <a class="brand" href="./index.html" aria-label="泌尿預診導航 V2 首頁">
+    <header class="topbar patient-topbar" aria-label="UroPrevisit Navigator V2">
+      <a class="brand" href="./index.html" aria-label="UroPrevisit Navigator V2 home">
         <span class="brand-mark" aria-hidden="true"></span>
         <span>
-          <strong>泌尿預診導航 V2</strong>
-          <small>ASR + embedding-style 下一題推薦</small>
+          <strong data-i18n="brandTitle">UroPrevisit Navigator V2</strong>
+          <small data-i18n="brandSubtitle">Guided next-question selection</small>
         </span>
       </a>
-      <nav class="nav-actions" aria-label="示範操作">
-        <span class="version-pill" id="versionBadge">v2.0.0</span>
-        <button class="ghost-button" id="loadNocturia" type="button">夜尿案例</button>
-        <button class="ghost-button" id="loadPain" type="button">尿痛案例</button>
-        <button class="ghost-button" id="loadBlood" type="button">血尿案例</button>
-        <button class="ghost-button" id="loadVaguePain" type="button">下面痛</button>
-        <button class="ghost-button" id="loadVagueUrinary" type="button">尿尿怪怪</button>
-        <button class="ghost-button" id="resetDemo" type="button">重新開始</button>
-        <div class="demo-mode-switch" aria-label="Demo 模式">
+      <nav class="nav-actions" aria-label="Demo actions">
+        <span class="version-pill" id="versionBadge">v2.0.3</span>
+        <button class="ghost-button" id="loadNocturia" type="button" data-i18n="sampleNocturia">Night urination</button>
+        <button class="ghost-button" id="loadPain" type="button" data-i18n="samplePain">Burning pain</button>
+        <button class="ghost-button" id="loadBlood" type="button" data-i18n="sampleBlood">Blood in urine</button>
+        <button class="ghost-button" id="loadVaguePain" type="button" data-i18n="sampleVaguePain">Unclear pain</button>
+        <button class="ghost-button" id="loadVagueUrinary" type="button" data-i18n="sampleVagueUrinary">Unclear urinary issue</button>
+        <button class="ghost-button" id="resetDemo" type="button" data-i18n="reset">Reset</button>
+        <div class="language-switch" role="group" aria-label="Language">
+          <button class="tool-button" id="langEn" type="button" data-lang-option="en" aria-pressed="true">English</button>
+          <button class="tool-button" id="langZh" type="button" data-lang-option="zh" aria-pressed="false">繁中</button>
+        </div>
+        <div class="demo-mode-switch" aria-label="Demo mode">
           <a aria-current="page" href="./">V2 Adaptive</a>
-          <a href="../patient-short/">短版</a>
+          <a href="../patient-short/" data-i18n="shortMode">Short form</a>
         </div>
       </nav>
     </header>
@@ -34,50 +38,41 @@
     <main class="app-shell adaptive-shell">
       <section class="mvp-brief patient-brief" aria-labelledby="mvp-title">
         <div>
-          <p class="eyebrow">Version 2 demo</p>
-          <h1 id="mvp-title">每一題都由系統計算後選出，而不是固定問卷順序</h1>
-          <p class="lead">
-            這個版本不把 LLM 放進 runtime。ASR 只負責輸入，系統把病人回答轉成狀態，再用受治理題庫與 embedding/RAG-style ranking 選出下一題，讓病人少被亂問、少重複回答、感覺系統有聽懂。
+          <p class="eyebrow" data-i18n="heroEyebrow">Version 2 demo</p>
+          <h1 id="mvp-title" data-i18n="heroTitle">Ask the next useful question, not every question.</h1>
+          <p class="lead" data-i18n="heroLead">
+            The demo turns a patient statement into a state, then selects one governed follow-up question. ASR is optional. The ranking engine does not diagnose or recommend treatment.
           </p>
         </div>
-        <div class="adaptive-proof" aria-label="Demo 邏輯">
-          <strong>v1 固定問卷</strong>
-          <span>病人跟著系統走</span>
+        <div class="adaptive-proof" aria-label="Demo logic">
+          <strong data-i18n="proofV1">v1 fixed form</strong>
+          <span data-i18n="proofV1Detail">Patient follows the form</span>
           <strong>v2 adaptive navigation</strong>
-          <span>系統跟著病人狀態走</span>
+          <span data-i18n="proofV2Detail">System follows the patient state</span>
           <strong>ASR / typed input</strong>
           <span>Ambiguity gate</span>
           <strong>Embedding-style retrieval</strong>
-          <span>下一題推薦</span>
+          <span data-i18n="proofNext">Next question</span>
         </div>
-      </section>
-
-      <section class="safety-strip patient-strip" role="note" aria-label="使用提醒">
-        <span>這是 synthetic demo，不使用真實病人資料。</span>
-        <span>Embedding 找相關性，rules 控制安全邊界。</span>
-        <span>LLM 不在 demo runtime；下一題由本地 ranking engine 決定。</span>
-        <span>輸出只協助門診前整理，不做診斷、治療或分流。</span>
       </section>
 
       <section class="workspace adaptive-workspace" aria-label="Adaptive intake demo">
         <aside class="case-rail adaptive-input-panel" aria-labelledby="input-title">
           <div class="rail-section">
-            <p class="eyebrow">輸入層</p>
-            <h2 id="input-title">ASR 或 typed input</h2>
-            <p class="panel-copy">
-              會議時可以直接貼文字；若瀏覽器支援 Web Speech，也可以用 ASR 示範。
-            </p>
-            <label class="adaptive-label" for="transcriptInput">使用者目前說法</label>
-            <textarea id="transcriptInput" class="adaptive-transcript" rows="8" placeholder="例如：我最近晚上一直起來尿，有時候突然很急，怕來不及到廁所。"></textarea>
+            <p class="eyebrow" data-i18n="inputEyebrow">Input</p>
+            <h2 id="input-title" data-i18n="inputTitle">Patient statement</h2>
+            <p class="panel-copy" data-i18n="inputCopy">Type or paste what the patient said. ASR is optional.</p>
+            <label class="adaptive-label" for="transcriptInput" data-i18n="transcriptLabel">Current statement</label>
+            <textarea id="transcriptInput" class="adaptive-transcript" rows="8" placeholder="Example: I wake up several times at night to pee."></textarea>
             <div class="adaptive-actions">
-              <button class="secondary-button" id="asrButton" type="button">開始 ASR</button>
-              <button class="primary-button" id="computeButton" type="button">計算下一題</button>
+              <button class="secondary-button" id="asrButton" type="button" data-i18n="startAsr">Start ASR</button>
+              <button class="primary-button" id="computeButton" type="button" data-i18n="computeNext">Find next question</button>
             </div>
-            <p class="asr-status" id="asrStatus" role="status">ASR 未啟動；typed input 可作為備援。</p>
+            <p class="asr-status" id="asrStatus" role="status" data-i18n="asrIdle">ASR is off. Typed input is the fallback.</p>
           </div>
 
           <div class="rail-section">
-            <p class="eyebrow">已回答欄位</p>
+            <p class="eyebrow" data-i18n="answeredEyebrow">Answered</p>
             <div id="answeredFacts" class="fact-list"></div>
           </div>
         </aside>
@@ -85,12 +80,12 @@
         <section class="intake-panel adaptive-question-panel" aria-labelledby="question-title">
           <div class="panel-head">
             <div>
-              <p class="eyebrow">系統選出的下一題</p>
-              <h2 id="question-title">等待計算</h2>
+              <p class="eyebrow" data-i18n="nextEyebrow">Next question</p>
+              <h2 id="question-title">Waiting</h2>
             </div>
             <div class="readiness" aria-live="polite">
-              <span id="turnLabel">第 0 輪</span>
-              <strong id="scoreLabel">尚未排序</strong>
+              <span id="turnLabel">Turn 0</span>
+              <strong id="scoreLabel">Not ranked</strong>
             </div>
           </div>
 
@@ -99,14 +94,12 @@
 
         <aside class="summary-panel adaptive-rationale-panel" aria-labelledby="rationale-title">
           <div class="rail-section">
-            <p class="eyebrow">AI 使用方式</p>
-            <h2 id="rationale-title">候選題排序證據</h2>
-            <p class="panel-copy">
-              v1 是固定流程問卷；v2 是 ASR-ready adaptive questioning。系統每收到一次回答，就重新計算目前資訊狀態，從受治理泌尿題庫中選出下一個最能減少模糊性的問題。右側顯示的是可解釋 ranking，不是 LLM 自由生成問題。
-            </p>
+            <p class="eyebrow" data-i18n="rankingEyebrow">Ranking</p>
+            <h2 id="rationale-title" data-i18n="rankingTitle">Why this question?</h2>
+            <p class="panel-copy" data-i18n="rankingCopy">The system ranks governed questions by fit, missing information, workflow value, ambiguity, and safety.</p>
           </div>
           <div class="rail-section">
-            <p class="eyebrow">推論狀態</p>
+            <p class="eyebrow" data-i18n="stateEyebrow">State</p>
             <div id="stateSummary" class="state-summary"></div>
           </div>
           <div class="rail-section">
