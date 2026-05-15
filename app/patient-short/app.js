@@ -640,7 +640,7 @@ async function transcribeVoiceBlob(field, blob) {
     voiceFeedback = {
       field: field.field,
       accepted: false,
-      message: "本機 Breeze ASR 未成功。請確認 npm run asr:local 已啟動，且後端使用 RTX GPU/int8；本系統不使用 CPU 推論。"
+      message: "本機 ASR 未成功；請確認 npm run asr:local 已啟動且使用 RTX/int8。"
     };
     render();
   } finally {

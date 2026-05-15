@@ -57,7 +57,7 @@ const UI_COPY = {
     asrNoMatch: "Heard speech, but it did not match this question's visible options.",
     asrError: "Local ASR failed. Confirm npm run asr:local is running with RTX/int8.",
     asrCaptureError: "Browser microphone or recorder failed.",
-    asrBackendError: "Local ASR request failed.",
+    asrBackendError: "Local ASR failed. Confirm npm run asr:local is running with RTX/int8.",
     answeredEyebrow: "Answered",
     answeredEmpty: "No answers yet.",
     nextEyebrow: "Next question",
@@ -138,7 +138,7 @@ const UI_COPY = {
     asrNoMatch: "有聽到語音，但沒有可靠對上本題畫面上的選項。",
     asrError: "本機 ASR 未成功；請確認 npm run asr:local 已啟動且使用 RTX/int8。",
     asrCaptureError: "瀏覽器麥克風或錄音器啟動失敗。",
-    asrBackendError: "本機 ASR 轉錄請求失敗。",
+    asrBackendError: "本機 ASR 未成功；請確認 npm run asr:local 已啟動且使用 RTX/int8。",
     answeredEyebrow: "已回答",
     answeredEmpty: "尚未回答任何欄位。",
     nextEyebrow: "下一題",
@@ -1138,6 +1138,7 @@ function scheduleNextAsrCapture() {
 }
 
 function asrFailureText(error, fallbackKey = "asrError") {
+  if (fallbackKey === "asrError" || fallbackKey === "asrBackendError") return t(fallbackKey);
   const message = String(error?.message || "").trim();
   if (!message) return t(fallbackKey);
   return `${t(fallbackKey)} ${language === "en" ? "Detail" : "細節"}：${message}`;
