@@ -141,9 +141,13 @@ function checkSafetyText() {
   }
 
   const html = read("app/adaptive-intake/index.html");
+  const app = read("app/adaptive-intake/adaptive-intake.js");
   record("UI includes version badge", /versionBadge/.test(html));
-  record("UI includes no-LLM runtime boundary", /LLM 不在 demo runtime|LLM/.test(html));
-  record("UI includes no diagnosis/treatment boundary", /不做診斷、治療/.test(html));
+  record("UI keeps safety boundary out of the visible reminder strip", !/Synthetic demo only|No diagnosis, treatment, or triage/.test(html));
+  record("UI defaults to American English document language", /<html lang="en">/.test(html));
+  record("UI includes Traditional Chinese language switch", /data-lang-option="zh"/.test(html));
+  record("UI tells multi-select users to press Next", /Select all that apply, then press Next|勾選完畢後請按下一步/.test(app));
+  record("UI has multi-select submit control", /data-submit-multi/.test(app));
 }
 
 function checkRunbook() {

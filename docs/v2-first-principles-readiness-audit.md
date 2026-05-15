@@ -25,7 +25,7 @@ For the `2026-05-19` meeting, credibility depends on five things:
 | P0 | Render the route in a real browser | Unit tests do not prove text is readable or controls respond | Use Browser plugin when available; otherwise use local browser/Playwright fallback |
 | P0 | Keep typed input as the official fallback | ASR failure should not become demo failure | Runbook positions ASR as input layer only |
 | P0 | Control claim language | Hospital stakeholders will hear risk before novelty | Use `AI-guided previsit question navigation`, not chatbot/doctor/triage |
-| P0 | Make the demo version visible and testable | Stakeholders need to know which exact evidence state was shown | Added `VERSION.json`, visible `v2.0.0` badge, changelog, and `npm run version:check` |
+| P0 | Make the demo version visible and testable | Stakeholders need to know which exact evidence state was shown | Added `VERSION.json`, visible version badge, changelog, and `npm run version:check` |
 | P0 | Prepare a backup recording | Live demo risk is never zero | Record the three-case flow before freeze |
 | P1 | Prepare a one-page meeting brief | The audience needs the product boundary in one glance | Use `docs/demo-script-5min.md` and this audit as source |
 | P1 | Prepare a post-demo decision capture | Otherwise feedback becomes vague and non-actionable | Added `docs/v2-post-demo-decision-capture.md` |
