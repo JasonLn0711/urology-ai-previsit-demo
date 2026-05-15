@@ -88,6 +88,7 @@ function checkStructure() {
     "core/missing_fields/index.js",
     "core/attribution/index.js",
     "core/role_transform/index.js",
+    "core/speech_answer_matching/index.js",
     "core/adaptive_questioning/index.js",
     "core/adaptive_questioning/questionBank.js",
     "core/adaptive_questioning/constants.js",
@@ -148,6 +149,7 @@ function checkScripts() {
     "core/missing_fields/index.js",
     "core/summary/index.js",
     "core/role_transform/index.js",
+    "core/speech_answer_matching/index.js",
     "data/schema/intake-record.js",
     "data/synthetic_cases/index.js",
     "app/shared/summary.js",
@@ -199,6 +201,13 @@ function checkBrowserScriptOrder() {
     record(`${page}: core loads before shared adapter`, safety > -1 && summary > safety);
     record(`${page}: data loads before cases adapter`, cases > -1 && html.indexOf("shared/cases.js") > cases);
   }
+
+  const patientShort = read("app/patient-short/index.html");
+  record(
+    "app/patient-short/index.html: speech matcher loads before page app",
+    patientShort.indexOf("core/speech_answer_matching/index.js") > -1 &&
+      patientShort.indexOf("./app.js") > patientShort.indexOf("core/speech_answer_matching/index.js")
+  );
 
   const adaptive = read("app/adaptive-intake/index.html");
   record(
