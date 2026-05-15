@@ -2,6 +2,45 @@
 
 This changelog records meaningful product, demo, safety, question-bank, and evidence-system changes.
 
+## v2.0.3 - 2026-05-13
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Compact answered facts row layout
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run version:check`
+
+## v2.0.2 - 2026-05-13
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Simplify adaptive intake page chrome
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run version:check`
+
+## v2.0.1 - 2026-05-13
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- American English default bilingual adaptive intake UI
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run version:check`
+
 ## v2.0.0 - 2026-05-12
 
 Stage: `demo-freeze-candidate`

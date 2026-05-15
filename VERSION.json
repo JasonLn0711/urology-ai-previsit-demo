@@ -1,12 +1,12 @@
 {
-  "version": "2.0.0",
-  "versionLabel": "v2.0.0",
+  "version": "2.0.3",
+  "versionLabel": "v2.0.3",
   "product": "UroPrevisit Navigator",
   "track": "urology-ai-previsit-demo",
   "stage": "demo-freeze-candidate",
   "releasedAt": "2026-05-12",
-  "updatedAt": "2026-05-12",
-  "summary": "V2 adaptive-questioning demo with governed question-bank retrieval, deterministic ranking, ambiguity handling, and executable freeze checks.",
+  "updatedAt": "2026-05-13",
+  "summary": "Compact answered facts row layout",
   "safetyBoundary": [
     "synthetic data only",
     "no diagnosis",

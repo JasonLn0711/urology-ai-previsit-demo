@@ -48,7 +48,7 @@ http://localhost:4173/app/adaptive-intake/
 Current product version:
 
 ```text
-v2.0.0
+v2.0.3
 ```
 
 Keep these fallback routes ready:
@@ -76,7 +76,7 @@ Expected current baseline:
 npm run version:check: 10/10
 npm test: 35/35
 npm run smoke: 150/150
-npm run demo:v2-freeze: 734/734
+npm run demo:v2-freeze: 738/738
 adaptive route: HTTP 200
 question bank: 41 governed questions
 ```
@@ -157,7 +157,7 @@ This is the strongest V2 behavior. When patient wording is unclear, the system d
 ## Five-Minute Recording Flow
 
 1. Open with the v1 -> v2 contrast.
-2. State the visible product version: `UroPrevisit Navigator v2.0.0`.
+2. State the visible product version: `UroPrevisit Navigator v2.0.3`.
 3. State the safety boundary: synthetic demo, no diagnosis, no treatment, no free-form medical question generation, no LLM runtime.
 4. Run Case A and point to detected state, missing fields, selected question, and top 3 candidates.
 5. Run Case B and point to governed follow-up plus safety-boundary wording.
