@@ -150,15 +150,15 @@ const UI_COPY = {
 
 const SAMPLE_TRANSCRIPTS = {
   en: {
-    nocturia: "I wake up several times at night to pee. During the day I also go often, and sometimes the urge comes suddenly.",
-    pain: "It burns when I pee. Last night I also felt feverish and had pain on both sides of my lower back.",
+    nocturia: "I wake up several times at night to pee.",
+    pain: "It burns when I pee.",
     blood: "I saw red urine today and maybe a small blood clot. I am not sure what it means.",
     vaguePain: "I feel pain down there, but I am not sure exactly where.",
     vagueUrinary: "Urination feels weird and uncomfortable, but I am not sure how to explain it."
   },
   zh: {
-    nocturia: "我最近晚上一直起來尿，通常一個晚上會醒來好幾次。有時候白天也一直跑廁所，而且突然很急，怕來不及到廁所。",
-    pain: "這幾天尿尿會刺痛，有灼熱感，昨天晚上好像有點發燒，也覺得腰兩側不太舒服。",
+    nocturia: "我最近晚上會起來尿，有時候白天也常跑廁所，而且突然很急。",
+    pain: "尿尿會刺痛，有灼熱感。",
     blood: "我今天看到尿液有點紅紅的，好像也有一點血塊，不確定是不是血尿，所以想先問清楚。",
     vaguePain: "我下面會痛，但我說不太清楚是哪裡痛。",
     vagueUrinary: "我尿尿怪怪的，怪怪不舒服，但不知道怎麼講。"
