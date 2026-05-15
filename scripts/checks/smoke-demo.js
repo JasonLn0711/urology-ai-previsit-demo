@@ -32,7 +32,11 @@ function assertNoPath(relativePath) {
 }
 
 function assertCompiles(relativePath) {
-  const result = spawnSync(process.execPath, ["-c", relPath(relativePath)], { encoding: "utf8" });
+  const command = relativePath.endsWith(".py") ? "python3" : process.execPath;
+  const args = relativePath.endsWith(".py")
+    ? ["-m", "py_compile", relPath(relativePath)]
+    : ["-c", relPath(relativePath)];
+  const result = spawnSync(command, args, { encoding: "utf8" });
   record(`script compiles: ${relativePath}`, result.status === 0, result.stderr || result.stdout);
 }
 
@@ -89,6 +93,7 @@ function checkStructure() {
     "core/attribution/index.js",
     "core/role_transform/index.js",
     "core/speech_answer_matching/index.js",
+    "app/shared/local-asr-client.js",
     "core/adaptive_questioning/index.js",
     "core/adaptive_questioning/questionBank.js",
     "core/adaptive_questioning/constants.js",
@@ -176,6 +181,7 @@ function checkScripts() {
     "scripts/checks/smoke-demo.js",
     "scripts/checks/v2-demo-freeze.js",
     "scripts/version/bump-version.js",
+    "scripts/asr/local_faster_whisper_server.py",
     "scripts/generators/generate-workflow-rehearsal.js",
     "scripts/generators/generate-samples.js",
     "scripts/experiment/run-phase1.js",
@@ -206,6 +212,7 @@ function checkBrowserScriptOrder() {
   record(
     "app/patient-short/index.html: speech matcher loads before page app",
     patientShort.indexOf("core/speech_answer_matching/index.js") > -1 &&
+      patientShort.indexOf("shared/local-asr-client.js") > patientShort.indexOf("core/speech_answer_matching/index.js") &&
       patientShort.indexOf("./app.js") > patientShort.indexOf("core/speech_answer_matching/index.js")
   );
 
@@ -225,6 +232,8 @@ function checkBrowserScriptOrder() {
     adaptive.indexOf("./adaptive-intake.js") > adaptive.indexOf("core/adaptive_questioning/index.js")
   );
   record("app/adaptive-intake/index.html: version badge visible", /versionBadge/.test(adaptive));
+  record("local ASR server is RTX-only", /DEVICE = "cuda"/.test(read("scripts/asr/local_faster_whisper_server.py")) && /COMPUTE_TYPE = "int8"/.test(read("scripts/asr/local_faster_whisper_server.py")) && /noCpuFallback/.test(read("scripts/asr/local_faster_whisper_server.py")));
+  record("local ASR client loaded before adaptive app", adaptive.indexOf("shared/local-asr-client.js") > -1 && adaptive.indexOf("./adaptive-intake.js") > adaptive.indexOf("shared/local-asr-client.js"));
 }
 
 function checkCoreContract() {

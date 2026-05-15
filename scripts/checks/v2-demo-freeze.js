@@ -55,6 +55,8 @@ function checkFiles() {
     "app/adaptive-intake/adaptive-intake.css",
     "core/adaptive_questioning/questionBank.js",
     "data/question_bank/urology_adaptive_bank.js",
+    "app/shared/local-asr-client.js",
+    "scripts/asr/local_faster_whisper_server.py",
     "VERSION.json",
     "core/version/index.js",
     "docs/CHANGELOG.md",
@@ -157,6 +159,7 @@ function checkSafetyText() {
   record("UI does not expose an English language switch", !/data-lang-option="en"|>English</.test(html));
   record("UI exposes Taiwan Traditional Chinese adaptive copy", /泌尿預診導航 V2|找下一題|模糊說法閘門/.test(html));
   record("UI exposes 12-question compact previsit framing", /12 題內門診前問診|最多 12 題/.test(html) && /新版 12 題內題庫/.test(app));
+  record("UI routes ASR through local Breeze endpoint", /UrologyLocalAsr/.test(read("app/shared/local-asr-client.js")) && /本機 Breeze ASR|RTX\/int8/.test(app));
   record("UI tells multi-select users to press Next", /Select all that apply, then press Next|勾選完畢後請按下一步/.test(app));
   record("UI has multi-select submit control", /data-submit-multi/.test(app));
 }

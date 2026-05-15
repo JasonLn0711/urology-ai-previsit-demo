@@ -1,5 +1,6 @@
 const { QUESTION_BANK, rankQuestions, FIELD_LABELS } = window.UrologyAdaptiveQuestioning;
-const VERSION = window.UroPrevisitVersion || { versionLabel: "v2.1.0" };
+const VERSION = window.UroPrevisitVersion || { versionLabel: "v2.2.0" };
+const LOCAL_ASR = window.UrologyLocalAsr;
 const MAX_PREVISIT_QUESTIONS = window.UrologyAdaptiveQuestioning.MAX_PREVISIT_QUESTIONS || 12;
 
 const STORAGE_KEY = "urologyAdaptiveDemoState";
@@ -27,17 +28,17 @@ const UI_COPY = {
     proofBudget: "12-question cap",
     inputEyebrow: "Input",
     inputTitle: "Patient statement",
-    inputCopy: "Type or paste what the patient said. ASR is optional.",
+    inputCopy: "Type or paste what the patient said. Local ASR uses Breeze on RTX GPU/int8.",
     transcriptLabel: "Current statement",
     transcriptPlaceholder: "Example: I wake up several times at night to pee.",
     startAsr: "Start ASR",
     stopAsr: "Stop ASR",
     computeNext: "Find next question",
-    asrIdle: "ASR is off. Typed input is the fallback.",
-    asrUnsupported: "This browser does not support Web Speech. Use typed input.",
-    asrListening: "ASR is listening. Typed input still works.",
-    asrStopped: "ASR stopped. You can find the next question.",
-    asrError: "ASR had an error. Use typed input.",
+    asrIdle: "Local Breeze ASR requires npm run asr:local and RTX GPU/int8.",
+    asrUnsupported: "This browser cannot record audio for local ASR. Use typed input.",
+    asrListening: "Recording for local Breeze ASR. Press Stop ASR to transcribe.",
+    asrStopped: "Recording stopped. Transcribing with local RTX/int8 ASR.",
+    asrError: "Local ASR failed. Confirm npm run asr:local is running with RTX/int8.",
     answeredEyebrow: "Answered",
     answeredEmpty: "No answers yet.",
     nextEyebrow: "Next question",
@@ -101,17 +102,17 @@ const UI_COPY = {
     proofBudget: "最多 12 題",
     inputEyebrow: "輸入",
     inputTitle: "病人說法",
-    inputCopy: "可貼上病人說的話；ASR 只是可選輸入。",
+    inputCopy: "可貼上病人說的話；本機 ASR 使用 Breeze 模型與 RTX GPU/int8。",
     transcriptLabel: "目前說法",
     transcriptPlaceholder: "例如：我最近晚上一直起來尿，有時候突然很急。",
     startAsr: "開始 ASR",
     stopAsr: "停止 ASR",
     computeNext: "找下一題",
-    asrIdle: "ASR 未啟動；可用文字輸入。",
-    asrUnsupported: "此瀏覽器不支援 Web Speech；請使用文字輸入。",
-    asrListening: "ASR 聆聽中；文字輸入仍可使用。",
-    asrStopped: "ASR 已停止；可找下一題。",
-    asrError: "ASR 發生錯誤；請改用文字輸入。",
+    asrIdle: "本機 Breeze ASR 需要先啟動 npm run asr:local，並使用 RTX GPU/int8。",
+    asrUnsupported: "此瀏覽器無法錄音給本機 ASR；請使用文字輸入。",
+    asrListening: "正在錄音給本機 Breeze ASR；按停止 ASR 後轉文字。",
+    asrStopped: "錄音已停止，正在用本機 RTX/int8 ASR 轉文字。",
+    asrError: "本機 ASR 未成功；請確認 npm run asr:local 已啟動且使用 RTX/int8。",
     answeredEyebrow: "已回答",
     answeredEmpty: "尚未回答任何欄位。",
     nextEyebrow: "下一題",
@@ -476,7 +477,9 @@ const languageButtons = Array.from(document.querySelectorAll("[data-lang-option]
 
 let state = restoreState();
 let language = restoreLanguage();
-let recognition = null;
+let asrRecorder = null;
+let asrStream = null;
+let asrChunks = [];
 let listening = false;
 
 function emptyState() {
@@ -592,7 +595,6 @@ function reasonText(reason, question) {
 function setLanguage(nextLanguage) {
   language = "zh";
   persistLanguage();
-  if (recognition) recognition.lang = "zh-TW";
   render();
 }
 
@@ -895,38 +897,86 @@ function toggleMultiOption(button) {
   updateMultiNextState();
 }
 
-function setupAsr() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
+function stopAsrTracks() {
+  if (asrStream) {
+    asrStream.getTracks().forEach((track) => track.stop());
+  }
+  asrStream = null;
+}
+
+async function transcribeAdaptiveAudio(blob) {
+  try {
+    asrStatus.textContent = t("asrStopped");
+    const result = await LOCAL_ASR.transcribeBlob(blob, { mode: "adaptive-intake" });
+    const text = String(result.text || "").trim();
+    transcriptInput.value = text;
+    state.transcript = text;
+    persistState();
+    asrStatus.textContent = text
+      ? `我聽到：${text}`
+      : "本機 ASR 沒有聽到可用文字；請再試一次或使用文字輸入。";
+  } catch (error) {
+    asrStatus.textContent = t("asrError");
+  } finally {
+    listening = false;
+    asrButton.textContent = t("startAsr");
+    stopAsrTracks();
+  }
+}
+
+async function startAsrCapture() {
+  if (!LOCAL_ASR || !LOCAL_ASR.supported()) {
     asrButton.disabled = true;
     asrStatus.textContent = t("asrUnsupported");
     return;
   }
-  recognition = new SpeechRecognition();
-  recognition.lang = language === "zh" ? "zh-TW" : "en-US";
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.onstart = () => {
+
+  try {
+    asrStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    asrChunks = [];
+    asrRecorder = new MediaRecorder(asrStream);
+    const mimeType = asrRecorder.mimeType || "audio/webm";
+    asrRecorder.ondataavailable = (event) => {
+      if (event.data && event.data.size > 0) asrChunks.push(event.data);
+    };
+    asrRecorder.onstop = () => {
+      const blob = new Blob(asrChunks, { type: mimeType });
+      asrRecorder = null;
+      transcribeAdaptiveAudio(blob);
+    };
+    asrRecorder.start();
     listening = true;
     asrButton.textContent = t("stopAsr");
     asrStatus.textContent = t("asrListening");
-  };
-  recognition.onend = () => {
-    listening = false;
-    asrButton.textContent = t("startAsr");
-    asrStatus.textContent = t("asrStopped");
-  };
-  recognition.onerror = () => {
+  } catch (error) {
     asrStatus.textContent = t("asrError");
-  };
-  recognition.onresult = (event) => {
-    const text = Array.from(event.results)
-      .map((result) => result[0]?.transcript || "")
-      .join("");
-    transcriptInput.value = text;
-    state.transcript = text;
-    persistState();
-  };
+    stopAsrTracks();
+  }
+}
+
+function stopAsrCapture() {
+  if (asrRecorder && asrRecorder.state !== "inactive") {
+    asrRecorder.stop();
+    return;
+  }
+  listening = false;
+  asrButton.textContent = t("startAsr");
+  stopAsrTracks();
+}
+
+function setupAsr() {
+  if (!LOCAL_ASR || !LOCAL_ASR.supported()) {
+    asrButton.disabled = true;
+    asrStatus.textContent = t("asrUnsupported");
+    return;
+  }
+  LOCAL_ASR.health()
+    .then((health) => {
+      asrStatus.textContent = `本機 ASR 就緒：${health.gpuNames.join("、")} / ${health.computeType}`;
+    })
+    .catch(() => {
+      asrStatus.textContent = t("asrIdle");
+    });
 }
 
 computeButton.addEventListener("click", computeNext);
@@ -972,11 +1022,10 @@ questionMount.addEventListener("click", (event) => {
   }
 });
 asrButton.addEventListener("click", () => {
-  if (!recognition) return;
   if (listening) {
-    recognition.stop();
+    stopAsrCapture();
   } else {
-    recognition.start();
+    startAsrCapture();
   }
 });
 

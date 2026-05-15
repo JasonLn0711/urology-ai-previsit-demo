@@ -1,10 +1,12 @@
 const { completionStatus } = window.UrologyPrevisit;
 const { SYNTHETIC_CASES } = window.UrologyCases;
 const { matchSpeechAnswer } = window.UrologySpeechAnswerMatching;
+const LOCAL_ASR = window.UrologyLocalAsr;
 
 const STORAGE_KEY = "urologyPrevisitAnswers";
 const QUESTION_TOTAL = 9;
 const VOICE_SUPPLEMENT_SECONDS = 30;
+const VOICE_CHOICE_SECONDS = 6;
 const EXCLUSIVE_CHECKBOX_VALUES = new Set(["None of these", "Not sure", "Prefer not to answer"]);
 
 const ARRAY_FIELDS = new Set([
@@ -496,7 +498,9 @@ let currentIndex = 0;
 let answers = restoreAnswers() || emptyAnswers();
 let autoAdvanceTimer = null;
 let fieldCursors = {};
-let voiceRecognition = null;
+let voiceRecorder = null;
+let voiceStream = null;
+let voiceChunks = [];
 let voiceFieldName = "";
 let voiceTranscript = "";
 let voiceFeedback = null;
@@ -504,6 +508,7 @@ let voiceCountdown = 0;
 let voiceCountdownTimer = null;
 let voiceStopTimer = null;
 let isVoiceListening = false;
+let voiceTranscribingField = "";
 
 const mount = document.querySelector("#questionMount");
 const progressBar = document.querySelector("#progressBar");
@@ -576,23 +581,8 @@ function displayAnswer(value) {
   return VALUE_LABELS[value] || value;
 }
 
-function speechRecognitionConstructor() {
-  return window.SpeechRecognition || window.webkitSpeechRecognition;
-}
-
 function speechRecognitionAvailable() {
-  return Boolean(speechRecognitionConstructor());
-}
-
-function createSpeechRecognition(continuous) {
-  const Recognition = speechRecognitionConstructor();
-  if (!Recognition) return null;
-  const recognition = new Recognition();
-  recognition.lang = "zh-TW";
-  recognition.continuous = Boolean(continuous);
-  recognition.interimResults = true;
-  recognition.maxAlternatives = 3;
-  return recognition;
+  return Boolean(LOCAL_ASR && LOCAL_ASR.supported());
 }
 
 function clearVoiceTimers() {
@@ -604,18 +594,61 @@ function clearVoiceTimers() {
 
 function stopVoiceListening() {
   clearVoiceTimers();
-  const recognition = voiceRecognition;
-  voiceRecognition = null;
+  const recorder = voiceRecorder;
+  voiceRecorder = null;
   isVoiceListening = false;
   voiceCountdown = 0;
-  if (!recognition) return;
-  recognition.onresult = null;
-  recognition.onerror = null;
-  recognition.onend = null;
+  if (recorder && recorder.state !== "inactive") {
+    recorder.onstop = null;
+    try {
+      recorder.stop();
+    } catch (error) {
+      // MediaRecorder can already be inactive when the user changes questions.
+    }
+  }
+  if (voiceStream) {
+    voiceStream.getTracks().forEach((track) => track.stop());
+    voiceStream = null;
+  }
+}
+
+function stopVoiceRecordingForSubmit() {
+  clearVoiceTimers();
+  if (voiceRecorder && voiceRecorder.state !== "inactive") {
+    voiceRecorder.stop();
+    return;
+  }
+  stopVoiceListening();
+}
+
+async function transcribeVoiceBlob(field, blob) {
+  voiceTranscribingField = field.field;
+  isVoiceListening = false;
+  render();
   try {
-    recognition.stop();
+    const result = await LOCAL_ASR.transcribeBlob(blob, {
+      mode: field.type === "textarea" ? "supplement" : "visible-option",
+      field: field.field,
+      question: field.label || "",
+      options: speechOptionsForField(field)
+    });
+    voiceTranscribingField = "";
+    voiceTranscript = String(result.text || "").trim();
+    handleVoiceTranscript(field, voiceTranscript, result.acousticScores || result.optionScores);
   } catch (error) {
-    // Some browser engines throw if recognition is already stopped.
+    voiceTranscribingField = "";
+    voiceFeedback = {
+      field: field.field,
+      accepted: false,
+      message: "本機 Breeze ASR 未成功。請確認 npm run asr:local 已啟動，且後端使用 RTX GPU/int8；本系統不使用 CPU 推論。"
+    };
+    render();
+  } finally {
+    voiceTranscribingField = "";
+    if (voiceStream) {
+      voiceStream.getTracks().forEach((track) => track.stop());
+      voiceStream = null;
+    }
   }
 }
 
@@ -638,14 +671,15 @@ function voiceHint(field) {
 }
 
 function voiceStatusText(field) {
+  if (voiceTranscribingField === field.field) {
+    return "正在用本機 Breeze ASR（RTX/int8）轉文字。";
+  }
   if (isVoiceListening && voiceFieldName === field.field) {
-    if (field.type === "textarea") {
-      return `正在聽，剩下 ${voiceCountdown || VOICE_SUPPLEMENT_SECONDS} 秒`;
-    }
-    return "正在聽，請直接說答案";
+    const seconds = voiceCountdown || (field.type === "textarea" ? VOICE_SUPPLEMENT_SECONDS : VOICE_CHOICE_SECONDS);
+    return `正在錄音，剩下 ${seconds} 秒`;
   }
   if (!speechRecognitionAvailable()) {
-    return "此瀏覽器不支援語音輸入，可以直接點選。";
+    return "此瀏覽器無法錄音給本機 ASR，可以直接點選。";
   }
   return voiceHint(field);
 }
@@ -753,12 +787,7 @@ function startVoiceForField(fieldName) {
   const field = currentField();
   if (!field || field.field !== fieldName) return;
   if (isVoiceListening && voiceFieldName === fieldName) {
-    if (field.type === "textarea") {
-      applyVoiceSupplement(field, voiceTranscript);
-    } else {
-      stopVoiceListening();
-      render();
-    }
+    stopVoiceRecordingForSubmit();
     return;
   }
 
@@ -767,86 +796,52 @@ function startVoiceForField(fieldName) {
     voiceFeedback = {
       field: field.field,
       accepted: false,
-      message: "此瀏覽器目前不能使用語音輸入，請直接點選答案。"
+      message: "此瀏覽器目前無法錄音給本機 ASR，請直接點選答案。"
     };
     render();
     return;
   }
 
   const isText = field.type === "textarea";
-  const recognition = createSpeechRecognition(isText);
-  if (!recognition) return;
-  voiceRecognition = recognition;
   voiceFieldName = field.field;
   voiceTranscript = "";
   voiceFeedback = null;
-  isVoiceListening = true;
-  voiceCountdown = isText ? VOICE_SUPPLEMENT_SECONDS : 0;
+  voiceCountdown = isText ? VOICE_SUPPLEMENT_SECONDS : VOICE_CHOICE_SECONDS;
 
-  recognition.onresult = (event) => {
-    const parts = [];
-    let hasFinal = false;
-    for (let index = 0; index < event.results.length; index += 1) {
-      const result = event.results[index];
-      parts.push(result[0].transcript);
-      if (result.isFinal) hasFinal = true;
-    }
-    voiceTranscript = parts.join(" ").trim();
-    if (!isText && hasFinal) {
-      handleVoiceTranscript(field, voiceTranscript);
-      return;
-    }
-    render();
-  };
-
-  recognition.onerror = () => {
-    voiceFeedback = {
-      field: field.field,
-      accepted: false,
-      message: "語音輸入沒有成功啟動，請直接點選答案或再試一次。"
-    };
-    stopVoiceListening();
-    render();
-  };
-
-  recognition.onend = () => {
-    if (!isVoiceListening || voiceFieldName !== field.field) return;
-    if (isText) return;
-    isVoiceListening = false;
-    voiceRecognition = null;
-    if (voiceTranscript) {
-      handleVoiceTranscript(field, voiceTranscript);
-    } else {
-      voiceFeedback = {
-        field: field.field,
-        accepted: false,
-        message: "沒有收到聲音，請再按一次或直接點選答案。"
+  navigator.mediaDevices.getUserMedia({ audio: true })
+    .then((stream) => {
+      voiceStream = stream;
+      voiceChunks = [];
+      voiceRecorder = new MediaRecorder(stream);
+      const mimeType = voiceRecorder.mimeType || "audio/webm";
+      voiceRecorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) voiceChunks.push(event.data);
       };
-      render();
-    }
-  };
-
-  try {
-    recognition.start();
-    if (isText) {
+      voiceRecorder.onstop = () => {
+        const blob = new Blob(voiceChunks, { type: mimeType });
+        voiceRecorder = null;
+        transcribeVoiceBlob(field, blob);
+      };
+      voiceRecorder.start();
+      isVoiceListening = true;
       voiceCountdownTimer = window.setInterval(() => {
         voiceCountdown = Math.max(voiceCountdown - 1, 0);
         render();
       }, 1000);
       voiceStopTimer = window.setTimeout(() => {
-        applyVoiceSupplement(field, voiceTranscript);
-      }, VOICE_SUPPLEMENT_SECONDS * 1000);
-    }
-    render();
-  } catch (error) {
-    voiceFeedback = {
-      field: field.field,
-      accepted: false,
-      message: "語音輸入暫時無法使用，請直接點選答案。"
-    };
-    stopVoiceListening();
-    render();
-  }
+        stopVoiceRecordingForSubmit();
+      }, voiceCountdown * 1000);
+      render();
+    })
+    .catch(() => {
+      voiceFeedback = {
+        field: field.field,
+        accepted: false,
+        message: "本機 ASR 錄音沒有成功啟動，請直接點選答案或確認瀏覽器麥克風權限。"
+      };
+      stopVoiceListening();
+      render();
+    });
 }
 
 function sourceFromMode(mode) {
