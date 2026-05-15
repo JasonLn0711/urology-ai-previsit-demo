@@ -1,13 +1,13 @@
 (function initUroPrevisitVersion(globalScope) {
   const VERSION = {
-      "version": "2.0.3",
-      "versionLabel": "v2.0.3",
+      "version": "2.0.4",
+      "versionLabel": "v2.0.4",
       "product": "UroPrevisit Navigator",
       "track": "urology-ai-previsit-demo",
       "stage": "demo-freeze-candidate",
       "releasedAt": "2026-05-12",
-      "updatedAt": "2026-05-13",
-      "summary": "Compact answered facts row layout",
+      "updatedAt": "2026-05-15",
+      "summary": "Align sample buttons with V2 demo script",
       "safetyBoundary": [
           "synthetic data only",
           "no diagnosis",

@@ -1,5 +1,5 @@
 const { QUESTION_BANK, rankQuestions, FIELD_LABELS } = window.UrologyAdaptiveQuestioning;
-const VERSION = window.UroPrevisitVersion || { versionLabel: "v2.0.3" };
+const VERSION = window.UroPrevisitVersion || { versionLabel: "v2.0.4" };
 
 const STORAGE_KEY = "urologyAdaptiveDemoState";
 const LANGUAGE_KEY = "urologyAdaptiveDemoLanguage";

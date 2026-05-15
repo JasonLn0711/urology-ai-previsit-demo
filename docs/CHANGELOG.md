@@ -2,6 +2,19 @@
 
 This changelog records meaningful product, demo, safety, question-bank, and evidence-system changes.
 
+## v2.0.4 - 2026-05-15
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Align sample buttons with V2 demo script
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run version:check`
+
 ## v2.0.3 - 2026-05-13
 
 Stage: `demo-freeze-candidate`
