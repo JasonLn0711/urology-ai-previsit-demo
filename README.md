@@ -8,7 +8,7 @@ It uses synthetic urology previsit cases and local browser answers to produce ro
 
 Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate from 許醫師's current `陽明小幫手` prototype name, which should be treated as benchmark/source context only.
 
-Current product version: `v2.0.6`.
+Current product version: `v2.0.7`.
 
 ## Project Ownership Rule
 
@@ -22,6 +22,8 @@ Huicheng may borrow architecture, interaction patterns, and safety lessons from 
 - A validation harness for summary usefulness, missing-field repair, source attribution, and safety language.
 - A role-separated UI with one shared data contract and one pure logic layer.
 - An experiment system for logs, scorecards, and decision memos.
+- A simplified Taiwan hospital patient intake screen with click or voice answer
+  submission, visible answer confirmation, and 30-second final supplement.
 - A Version 2 ASR-ready adaptive-question demo that shows how
   embedding-style retrieval over a governed question bank can choose the next
   reasonable clarification or follow-up question.
@@ -46,7 +48,7 @@ Open the primary demo route:
 
 Fallback routes:
 
-- Short intake: `http://localhost:4173/app/patient-short/`
+- Short click-or-voice patient intake: `http://localhost:4173/app/patient-short/`
 - Reviewer packet: `http://localhost:4173/app/reviewer/packet/`
 
 The first-principles demo claim is narrow:
@@ -108,6 +110,7 @@ Repository primitives:
 - Input: `data/synthetic_cases`, browser `localStorage`
 - Transformation: `core/summary`, `core/missing_fields`, `core/attribution`, `core/role_transform`, `core/safety`
 - Adaptive questioning: `core/adaptive_questioning`
+- Voice answer matching: `core/speech_answer_matching`
   with governed question-bank metadata, an ambiguity gate, and deterministic ranking before ordinary question selection
 - Governed V2 question bank export: `data/question_bank/urology_adaptive_bank.js`
 - Role UI: `app/patient`, `app/patient-short`, `app/adaptive-intake`, `app/nurse`, `app/clinician`, `app/reviewer`

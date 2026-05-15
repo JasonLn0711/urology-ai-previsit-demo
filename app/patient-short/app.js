@@ -1,8 +1,11 @@
 const { completionStatus } = window.UrologyPrevisit;
 const { SYNTHETIC_CASES } = window.UrologyCases;
+const { matchSpeechAnswer } = window.UrologySpeechAnswerMatching;
 
 const STORAGE_KEY = "urologyPrevisitAnswers";
 const QUESTION_TOTAL = 9;
+const VOICE_SUPPLEMENT_SECONDS = 30;
+const EXCLUSIVE_CHECKBOX_VALUES = new Set(["None of these", "Not sure", "Prefer not to answer"]);
 
 const ARRAY_FIELDS = new Set([
   "chiefConcern",
@@ -481,9 +484,9 @@ const QUESTIONS = [
       },
       {
         field: "notes",
-        label: "還有什麼想先補充？可以留空。",
+        label: "還有什麼想補充給醫師知道？",
         type: "textarea",
-        placeholder: "例如：最擔心晚上一直醒來、漏尿不好意思說、或家人觀察到最近走路變慢。"
+        placeholder: "可以簡短說明，也可以留空。"
       }
     ]
   }
@@ -493,6 +496,14 @@ let currentIndex = 0;
 let answers = restoreAnswers() || emptyAnswers();
 let autoAdvanceTimer = null;
 let fieldCursors = {};
+let voiceRecognition = null;
+let voiceFieldName = "";
+let voiceTranscript = "";
+let voiceFeedback = null;
+let voiceCountdown = 0;
+let voiceCountdownTimer = null;
+let voiceStopTimer = null;
+let isVoiceListening = false;
 
 const mount = document.querySelector("#questionMount");
 const progressBar = document.querySelector("#progressBar");
@@ -563,6 +574,279 @@ function displayAnswer(value) {
   }
   if (!value) return "尚未填寫";
   return VALUE_LABELS[value] || value;
+}
+
+function speechRecognitionConstructor() {
+  return window.SpeechRecognition || window.webkitSpeechRecognition;
+}
+
+function speechRecognitionAvailable() {
+  return Boolean(speechRecognitionConstructor());
+}
+
+function createSpeechRecognition(continuous) {
+  const Recognition = speechRecognitionConstructor();
+  if (!Recognition) return null;
+  const recognition = new Recognition();
+  recognition.lang = "zh-TW";
+  recognition.continuous = Boolean(continuous);
+  recognition.interimResults = true;
+  recognition.maxAlternatives = 3;
+  return recognition;
+}
+
+function clearVoiceTimers() {
+  window.clearInterval(voiceCountdownTimer);
+  window.clearTimeout(voiceStopTimer);
+  voiceCountdownTimer = null;
+  voiceStopTimer = null;
+}
+
+function stopVoiceListening() {
+  clearVoiceTimers();
+  const recognition = voiceRecognition;
+  voiceRecognition = null;
+  isVoiceListening = false;
+  voiceCountdown = 0;
+  if (!recognition) return;
+  recognition.onresult = null;
+  recognition.onerror = null;
+  recognition.onend = null;
+  try {
+    recognition.stop();
+  } catch (error) {
+    // Some browser engines throw if recognition is already stopped.
+  }
+}
+
+function speechOptionsForField(field) {
+  if (!field) return [];
+  if (field.type === "scale") {
+    return field.options.map((value) => [value, displayAnswer(value)]);
+  }
+  return (field.options || []).map(([value, label]) => [value, label]);
+}
+
+function voiceHint(field) {
+  if (field.type === "textarea") {
+    return "請簡短補充。30 秒後會自動送出。";
+  }
+  if (field.type === "checkboxes") {
+    return "可以一次說多個答案，例如「發燒、發冷」。";
+  }
+  return "請說出畫面上的其中一個答案。";
+}
+
+function voiceStatusText(field) {
+  if (isVoiceListening && voiceFieldName === field.field) {
+    if (field.type === "textarea") {
+      return `正在聽，剩下 ${voiceCountdown || VOICE_SUPPLEMENT_SECONDS} 秒`;
+    }
+    return "正在聽，請直接說答案";
+  }
+  if (!speechRecognitionAvailable()) {
+    return "此瀏覽器不支援語音輸入，可以直接點選。";
+  }
+  return voiceHint(field);
+}
+
+function renderVoiceFeedback(field) {
+  if (!voiceFeedback || voiceFeedback.field !== field.field) return "";
+  const tone = voiceFeedback.accepted ? "accepted" : "needs-repeat";
+  return `
+    <div class="voice-result ${tone}" role="status">
+      <strong>${voiceFeedback.accepted ? "已送出" : "沒有聽清楚"}</strong>
+      <span>${escapeHtml(voiceFeedback.message)}</span>
+    </div>
+  `;
+}
+
+function renderVoicePanel(field) {
+  const active = isVoiceListening && voiceFieldName === field.field;
+  const isText = field.type === "textarea";
+  const label = active
+    ? (isText ? "停止並送出" : "停止聆聽")
+    : (isText ? "開始 30 秒補充" : "用說的回答");
+  return `
+    <div class="voice-answer-panel ${active ? "listening" : ""}" data-voice-panel="${escapeHtml(field.field)}">
+      <div class="voice-answer-copy">
+        <strong>${isText ? "語音補充" : "語音回答"}</strong>
+        <span>${escapeHtml(voiceStatusText(field))}</span>
+      </div>
+      <button
+        class="secondary-button voice-button"
+        type="button"
+        data-voice-field="${escapeHtml(field.field)}"
+        ${speechRecognitionAvailable() ? "" : "disabled"}>
+        ${escapeHtml(label)}
+      </button>
+      ${active && voiceTranscript ? `<p class="voice-transcript">我聽到：${escapeHtml(voiceTranscript)}</p>` : ""}
+      ${renderVoiceFeedback(field)}
+    </div>
+  `;
+}
+
+function matchedLabels(result) {
+  return (result.labels || result.values || []).map((item) => displayAnswer(item)).filter(Boolean);
+}
+
+function applyVoiceChoice(field, transcript, acousticScores) {
+  const result = matchSpeechAnswer({
+    transcript,
+    options: speechOptionsForField(field),
+    mode: field.type === "checkboxes" ? "multi" : "single",
+    acousticScores
+  });
+
+  if (!result.accepted) {
+    voiceFeedback = {
+      field: field.field,
+      accepted: false,
+      message: `我聽到「${transcript || "空白"}」，但沒有足夠把握對應到畫面上的答案。請再說一次或直接點選。`
+    };
+    return result;
+  }
+
+  const value = field.type === "checkboxes" ? result.values : result.value;
+  setAnswer(field.field, value, { render: false });
+  const labels = matchedLabels(result);
+  voiceFeedback = {
+    field: field.field,
+    accepted: true,
+    message: `我聽到「${transcript || labels.join("、")}」，送出答案：${labels.join("、")}。`
+  };
+  stopVoiceListening();
+  render();
+  window.setTimeout(() => advanceToNextQuestion({ fromAuto: true }), 520);
+  return result;
+}
+
+function applyVoiceSupplement(field, transcript) {
+  const cleanTranscript = String(transcript || voiceTranscript || "").trim();
+  if (cleanTranscript) {
+    setAnswer(field.field, cleanTranscript, { render: false });
+  }
+  voiceFeedback = {
+    field: field.field,
+    accepted: true,
+    message: cleanTranscript
+      ? `我聽到「${cleanTranscript}」，已送出補充內容。`
+      : "30 秒已結束，沒有收到補充內容，已送出本題。"
+  };
+  stopVoiceListening();
+  render();
+  window.setTimeout(() => advanceToNextQuestion({ fromAuto: true }), 520);
+}
+
+function handleVoiceTranscript(field, transcript, acousticScores) {
+  if (!field) return { accepted: false, reason: "no-current-field" };
+  const cleanTranscript = String(transcript || "").trim();
+  voiceTranscript = cleanTranscript;
+  if (field.type === "textarea") {
+    applyVoiceSupplement(field, cleanTranscript);
+    return { accepted: true, mode: "textarea", transcript: cleanTranscript };
+  }
+  return applyVoiceChoice(field, cleanTranscript, acousticScores);
+}
+
+function startVoiceForField(fieldName) {
+  const field = currentField();
+  if (!field || field.field !== fieldName) return;
+  if (isVoiceListening && voiceFieldName === fieldName) {
+    if (field.type === "textarea") {
+      applyVoiceSupplement(field, voiceTranscript);
+    } else {
+      stopVoiceListening();
+      render();
+    }
+    return;
+  }
+
+  stopVoiceListening();
+  if (!speechRecognitionAvailable()) {
+    voiceFeedback = {
+      field: field.field,
+      accepted: false,
+      message: "此瀏覽器目前不能使用語音輸入，請直接點選答案。"
+    };
+    render();
+    return;
+  }
+
+  const isText = field.type === "textarea";
+  const recognition = createSpeechRecognition(isText);
+  if (!recognition) return;
+  voiceRecognition = recognition;
+  voiceFieldName = field.field;
+  voiceTranscript = "";
+  voiceFeedback = null;
+  isVoiceListening = true;
+  voiceCountdown = isText ? VOICE_SUPPLEMENT_SECONDS : 0;
+
+  recognition.onresult = (event) => {
+    const parts = [];
+    let hasFinal = false;
+    for (let index = 0; index < event.results.length; index += 1) {
+      const result = event.results[index];
+      parts.push(result[0].transcript);
+      if (result.isFinal) hasFinal = true;
+    }
+    voiceTranscript = parts.join(" ").trim();
+    if (!isText && hasFinal) {
+      handleVoiceTranscript(field, voiceTranscript);
+      return;
+    }
+    render();
+  };
+
+  recognition.onerror = () => {
+    voiceFeedback = {
+      field: field.field,
+      accepted: false,
+      message: "語音輸入沒有成功啟動，請直接點選答案或再試一次。"
+    };
+    stopVoiceListening();
+    render();
+  };
+
+  recognition.onend = () => {
+    if (!isVoiceListening || voiceFieldName !== field.field) return;
+    if (isText) return;
+    isVoiceListening = false;
+    voiceRecognition = null;
+    if (voiceTranscript) {
+      handleVoiceTranscript(field, voiceTranscript);
+    } else {
+      voiceFeedback = {
+        field: field.field,
+        accepted: false,
+        message: "沒有收到聲音，請再按一次或直接點選答案。"
+      };
+      render();
+    }
+  };
+
+  try {
+    recognition.start();
+    if (isText) {
+      voiceCountdownTimer = window.setInterval(() => {
+        voiceCountdown = Math.max(voiceCountdown - 1, 0);
+        render();
+      }, 1000);
+      voiceStopTimer = window.setTimeout(() => {
+        applyVoiceSupplement(field, voiceTranscript);
+      }, VOICE_SUPPLEMENT_SECONDS * 1000);
+    }
+    render();
+  } catch (error) {
+    voiceFeedback = {
+      field: field.field,
+      accepted: false,
+      message: "語音輸入暫時無法使用，請直接點選答案。"
+    };
+    stopVoiceListening();
+    render();
+  }
 }
 
 function sourceFromMode(mode) {
@@ -647,13 +931,12 @@ function setAnswer(field, value, options = {}) {
 }
 
 function toggleCheckbox(field, value, checked) {
-  const exclusive = new Set(["None of these", "Not sure"]);
   let next = Array.isArray(answers[field]) ? answers[field].filter((item) => item !== value) : [];
   if (checked) {
-    if (exclusive.has(value)) {
+    if (EXCLUSIVE_CHECKBOX_VALUES.has(value)) {
       next = [value];
     } else {
-      next = next.filter((item) => !exclusive.has(item));
+      next = next.filter((item) => !EXCLUSIVE_CHECKBOX_VALUES.has(item));
       next.push(value);
     }
   }
@@ -701,6 +984,7 @@ function renderField(field) {
       <div class="field wide-field elder-text-field short-field">
         <label for="${escapeHtml(field.field)}">${escapeHtml(field.label)}</label>
         <textarea id="${escapeHtml(field.field)}" data-field="${escapeHtml(field.field)}" placeholder="${escapeHtml(field.placeholder || "")}">${escapeHtml(answers[field.field])}</textarea>
+        ${renderVoicePanel(field)}
       </div>
     `;
   }
@@ -722,6 +1006,7 @@ function renderField(field) {
             </label>
           `).join("")}
         </div>
+        ${renderVoicePanel(field)}
       </fieldset>
     `;
   }
@@ -743,6 +1028,7 @@ function renderField(field) {
           `).join("")}
         </div>
         ${optionButton(field.field, "Not sure", "不確定")}
+        ${renderVoicePanel(field)}
       </div>
     `;
   }
@@ -753,6 +1039,7 @@ function renderField(field) {
       <div class="option-grid elder-choice-grid" role="group" aria-label="${escapeHtml(field.label || "")}">
         ${field.options.map(([value, label]) => optionButton(field.field, value, label)).join("")}
       </div>
+      ${renderVoicePanel(field)}
     </div>
   `;
 }
@@ -804,7 +1091,10 @@ function cancelAutoAdvance() {
 }
 
 function advanceToNextQuestion(options = {}) {
-  if (!options.fromAuto) cancelAutoAdvance();
+  if (!options.fromAuto) {
+    cancelAutoAdvance();
+    stopVoiceListening();
+  }
   if (isReviewMode()) {
     showToast("短版資料已儲存，可切到護理端或醫師摘要。");
     return;
@@ -834,6 +1124,7 @@ function advanceToNextQuestion(options = {}) {
 
 function goBackInFlow() {
   cancelAutoAdvance();
+  stopVoiceListening();
   if (isReviewMode()) {
     currentIndex = QUESTIONS.length - 1;
     fieldCursors[QUESTIONS[currentIndex].id] = Math.max(visibleFields(QUESTIONS[currentIndex]).length - 1, 0);
@@ -1000,11 +1291,17 @@ function renderQuestion() {
   const fields = visibleFields(question);
   const index = currentFieldIndex(question);
   const field = fields[index];
+  const title = field && field.label ? field.label : question.title.replace(/^\d+\.\s*/, "");
+  const copy = field
+    ? field.type === "textarea"
+      ? "可以留空；若要用說的補充，系統會在 30 秒後自動送出。"
+      : voiceHint(field)
+    : question.copy;
   mount.innerHTML = `
     <section class="step-panel short-question-panel ${fields.length > 1 ? "has-subquestions" : ""}" aria-labelledby="question-title">
       <div class="step-kicker">第 ${currentIndex + 1} 題，共 ${QUESTION_TOTAL} 題</div>
-      <h2 id="question-title">${escapeHtml(question.title)}</h2>
-      <p class="step-copy">${escapeHtml(question.copy)}</p>
+      <h2 id="question-title">${escapeHtml(title)}</h2>
+      <p class="step-copy">${escapeHtml(copy)}</p>
       ${/family|helper/i.test(answers.filledBy) ? `
         <div class="source-notice" role="note">
           <strong>已標記家人協助</strong>
@@ -1012,7 +1309,6 @@ function renderQuestion() {
         </div>
       ` : ""}
       <div class="short-question-fields">
-        ${renderSubquestionProgress(question, fields, index)}
         ${field ? renderField(field) : "<p>這一題目前沒有需要補充的欄位。</p>"}
         ${field ? renderCareNotice(fieldCareNotice(field)) : ""}
       </div>
@@ -1021,6 +1317,7 @@ function renderQuestion() {
 }
 
 function renderNav() {
+  if (!stepNav) return;
   const items = QUESTIONS.concat([{ id: "confirm", label: "確認", review: true }]);
   stepNav.innerHTML = items.map((question, index) => {
     const isActive = index === currentIndex;
@@ -1078,6 +1375,11 @@ function showToast(message) {
 }
 
 mount.addEventListener("click", (event) => {
+  const voiceButton = event.target.closest("[data-voice-field]");
+  if (voiceButton) {
+    startVoiceForField(voiceButton.dataset.voiceField);
+    return;
+  }
   const option = event.target.closest("[data-option-field]");
   if (!option) return;
   setAnswer(option.dataset.optionField, option.dataset.optionValue);
@@ -1104,13 +1406,16 @@ mount.addEventListener("input", (event) => {
   persistAnswers();
 });
 
-stepNav.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-question-index]");
-  if (!button) return;
-  cancelAutoAdvance();
-  currentIndex = Number(button.dataset.questionIndex);
-  render();
-});
+if (stepNav) {
+  stepNav.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-question-index]");
+    if (!button) return;
+    cancelAutoAdvance();
+    stopVoiceListening();
+    currentIndex = Number(button.dataset.questionIndex);
+    render();
+  });
+}
 
 backButton.addEventListener("click", () => {
   goBackInFlow();
@@ -1121,25 +1426,52 @@ nextButton.addEventListener("click", () => {
   advanceToNextQuestion();
 });
 
-loadSample.addEventListener("click", () => {
-  const sample = SYNTHETIC_CASES[0];
-  answers = normalizeAnswers(sample.answers);
-  fillShortDefaults();
-  persistAnswers();
-  currentIndex = QUESTIONS.length;
-  fieldCursors = {};
-  render();
-  showToast(`已載入示範：${sample.shortLabel || sample.label}`);
-});
+if (loadSample) {
+  loadSample.addEventListener("click", () => {
+    const sample = SYNTHETIC_CASES[0];
+    answers = normalizeAnswers(sample.answers);
+    fillShortDefaults();
+    persistAnswers();
+    currentIndex = QUESTIONS.length;
+    fieldCursors = {};
+    render();
+    showToast(`已載入示範：${sample.shortLabel || sample.label}`);
+  });
+}
 
 resetDemo.addEventListener("click", () => {
+  stopVoiceListening();
   answers = emptyAnswers();
   persistAnswers();
   currentIndex = 0;
   fieldCursors = {};
+  voiceFeedback = null;
   render();
   showToast("已重新開始短版問答。");
 });
+
+window.addEventListener("urology:asr-result", (event) => {
+  const detail = event.detail || {};
+  if (isReviewMode()) return;
+  const field = currentField();
+  if (!field || (detail.field && detail.field !== field.field)) return;
+  handleVoiceTranscript(field, detail.transcript || "", detail.acousticScores || {});
+});
+
+window.UrologyPatientShortDemo = {
+  submitSpeechTranscriptForTest(transcript, acousticScores) {
+    if (isReviewMode()) return { accepted: false, reason: "review-mode" };
+    return handleVoiceTranscript(currentField(), transcript, acousticScores || {});
+  },
+  currentFieldForTest() {
+    if (isReviewMode()) return "";
+    const field = currentField();
+    return field ? field.field : "";
+  },
+  answersForTest() {
+    return JSON.parse(JSON.stringify(answers));
+  }
+};
 
 fillShortDefaults();
 persistAnswers();

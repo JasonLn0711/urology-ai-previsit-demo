@@ -2,6 +2,21 @@
 
 This changelog records meaningful product, demo, safety, question-bank, and evidence-system changes.
 
+## v2.0.7 - 2026-05-15
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Add voice answer matching and simplified patient intake
+- Add deterministic visible-option speech matching with optional backend acoustic scores.
+- Simplify the short patient route for Taiwan hospital use: click or voice answer, visible confirmation, automatic advance, and 30-second final supplement.
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run version:check`
+
 ## v2.0.6 - 2026-05-15
 
 Stage: `demo-freeze-candidate`

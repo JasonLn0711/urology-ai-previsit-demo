@@ -3,80 +3,45 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>安心看診前整理 - 10 題內短版</title>
+    <title>安心看診前整理 - 語音填答短版</title>
     <link rel="stylesheet" href="../shared/styles.css">
   </head>
-  <body class="short-demo-page">
+  <body class="short-demo-page hospital-patient-page">
     <header class="topbar patient-topbar" aria-label="看診前短版整理">
       <a class="brand" href="./index.html" aria-label="安心看診前整理短版首頁">
         <span class="brand-mark" aria-hidden="true"></span>
         <span>
           <strong>安心看診前整理</strong>
-          <small>10 題內短版</small>
+          <small>病人填答</small>
         </span>
       </a>
       <nav class="nav-actions" aria-label="示範操作">
-        <button class="ghost-button" id="loadSample" type="button">載入示範</button>
         <button class="ghost-button" id="resetDemo" type="button">重新開始</button>
-        <div class="demo-mode-switch" aria-label="示範模式">
-          <a aria-current="page" href="./">快速展示</a>
-          <a href="../patient/">完整整理</a>
-        </div>
       </nav>
     </header>
 
-    <main class="app-shell patient-app">
+    <main class="app-shell patient-app hospital-patient-app">
       <section class="mvp-brief patient-brief" aria-labelledby="mvp-title">
         <div>
-          <p class="eyebrow">泌尿科看診前短版</p>
-          <h1 id="mvp-title">用 9 個重點，先把今天最需要說清楚的事整理好</h1>
+          <p class="eyebrow">門診前填答</p>
+          <h1 id="mvp-title">請回答今天的泌尿狀況</h1>
           <p class="lead">
-            這個短版優先收集主訴、病程、困擾程度、警示症狀、用藥與資料來源。答案只作為門診前整理，不做診斷、分流或治療建議。
+            可以直接點選答案，也可以按「用說的回答」。不知道就選「不確定」。
           </p>
-        </div>
-        <div class="brief-visual" aria-hidden="true">
-          <img src="../shared/assets/bladder-flow.svg" alt="">
         </div>
       </section>
 
       <section class="safety-strip patient-strip" role="note" aria-label="使用提醒">
-        <span>可以選「不確定」，不用猜。</span>
-        <span>這是合成資料示範，可接續護理、醫師與審閱頁面。</span>
-        <span>若現在尿不出來、發燒或看到血尿，現場仍需由醫療人員確認。</span>
+        <span>請只回答畫面上的選項。</span>
+        <span>系統會顯示聽到的答案，然後自動下一題。</span>
+        <span>最後一題可以簡短補充給醫師，最多 30 秒。</span>
       </section>
 
       <section class="workspace patient-workspace" aria-label="短版填答區">
-        <aside class="case-rail patient-help" aria-labelledby="help-title">
-          <div class="rail-section">
-            <p class="eyebrow">短版定位</p>
-            <h2 id="help-title">適合 2-3 分鐘展示</h2>
-            <ol class="gate-list">
-              <li>先跑完短版 9 題。</li>
-              <li>直接切到護理端看缺漏補齊。</li>
-              <li>再切到醫師摘要或看診前資料包。</li>
-            </ol>
-          </div>
-
-          <div class="rail-section">
-            <p class="eyebrow">填答進度</p>
-            <div class="step-nav side-step-nav" id="stepNav" aria-label="短版題目"></div>
-          </div>
-
-          <div class="rail-section">
-            <p class="eyebrow">下一步入口</p>
-            <div class="shortcut-list">
-              <a href="../nurse/">護理端</a>
-              <a href="../clinician/">醫師摘要</a>
-              <a href="../clinician/visit-packet/">看診前資料包</a>
-              <a href="../reviewer/">審閱工作台</a>
-            </div>
-          </div>
-        </aside>
-
         <section class="intake-panel patient-intake" aria-labelledby="intake-title">
           <div class="panel-head">
             <div>
-              <p class="eyebrow">短版問答</p>
+              <p class="eyebrow">填答進度</p>
               <h2 id="intake-title">9 題完成</h2>
             </div>
             <div class="readiness" aria-live="polite">
@@ -110,6 +75,7 @@
     <script src="../../core/missing_fields/index.js"></script>
     <script src="../../core/summary/index.js"></script>
     <script src="../../core/role_transform/index.js"></script>
+    <script src="../../core/speech_answer_matching/index.js"></script>
     <script src="../shared/summary.js"></script>
     <script src="../../data/synthetic_cases/index.js"></script>
     <script src="../shared/cases.js"></script>

@@ -2400,6 +2400,123 @@ pre.summary-body {
   background: rgba(255, 255, 255, 0.96);
 }
 
+.hospital-patient-page .topbar {
+  min-height: 70px;
+}
+
+.hospital-patient-app {
+  max-width: 960px;
+}
+
+.hospital-patient-app .mvp-brief {
+  grid-template-columns: 1fr;
+  padding: 12px 0 8px;
+}
+
+.hospital-patient-app h1 {
+  max-width: 720px;
+  font-size: clamp(2rem, 3vw, 2.75rem);
+}
+
+.hospital-patient-app .lead {
+  display: block;
+  max-width: 720px;
+  font-size: 1.08rem;
+}
+
+.hospital-patient-app .patient-workspace {
+  grid-template-columns: minmax(0, 820px);
+  justify-content: center;
+}
+
+.hospital-patient-app .patient-intake {
+  width: 100%;
+}
+
+.hospital-patient-app .short-question-panel h2,
+.hospital-patient-app .short-question-panel.has-subquestions h2 {
+  max-width: 780px;
+  font-size: clamp(1.9rem, 3vw, 2.45rem);
+  line-height: 1.14;
+}
+
+.hospital-patient-app .step-copy {
+  max-width: 700px;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.voice-answer-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid #cfd8d2;
+  border-radius: 8px;
+  background: #f8faf8;
+}
+
+.voice-answer-panel.listening {
+  border-color: var(--accent);
+  background: #eef7f2;
+}
+
+.voice-answer-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.voice-answer-copy strong {
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.voice-answer-copy span,
+.voice-transcript {
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 750;
+}
+
+.voice-button {
+  min-width: 140px;
+  width: auto;
+}
+
+.voice-transcript,
+.voice-result {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.voice-result {
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.voice-result strong {
+  color: var(--ink);
+}
+
+.voice-result.accepted {
+  border: 1px solid #b7ddc9;
+}
+
+.voice-result.accepted strong {
+  color: var(--accent-strong);
+}
+
+.voice-result.needs-repeat {
+  border: 1px solid #efd6a5;
+}
+
 @media (max-width: 1180px) {
   .workspace {
     grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
@@ -2582,6 +2699,34 @@ pre.summary-body {
 
   .short-demo-page .subquestion-detail-title {
     font-size: 1.45rem;
+  }
+
+  .hospital-patient-app .patient-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .hospital-patient-app h1 {
+    font-size: 1.95rem;
+  }
+
+  .hospital-patient-app .lead {
+    display: block;
+  }
+
+  .hospital-patient-page .safety-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .hospital-patient-page .safety-strip span:nth-child(n + 2) {
+    display: flex;
+  }
+
+  .voice-answer-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .voice-button {
+    width: 100%;
   }
 }
 

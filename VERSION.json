@@ -1,12 +1,12 @@
 {
-  "version": "2.0.6",
-  "versionLabel": "v2.0.6",
+  "version": "2.0.7",
+  "versionLabel": "v2.0.7",
   "product": "UroPrevisit Navigator",
   "track": "urology-ai-previsit-demo",
   "stage": "demo-freeze-candidate",
   "releasedAt": "2026-05-12",
   "updatedAt": "2026-05-15",
-  "summary": "Localize Taiwan hospital interfaces",
+  "summary": "Add voice answer matching and simplified patient intake",
   "safetyBoundary": [
     "synthetic data only",
     "no diagnosis",

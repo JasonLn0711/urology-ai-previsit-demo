@@ -48,7 +48,7 @@ http://localhost:4173/app/adaptive-intake/
 Current product version:
 
 ```text
-v2.0.6
+v2.0.7
 ```
 
 Keep these fallback routes ready:
@@ -70,8 +70,8 @@ Expected current baseline:
 
 ```text
 npm run version:check: 10/10
-npm test: 35/35
-npm run smoke: 150/150
+npm test: 42/42
+npm run smoke: 153/153
 npm run demo:v2-freeze: 738/738
 adaptive route: HTTP 200
 question bank: 41 governed questions
@@ -153,7 +153,7 @@ This is the strongest V2 behavior. When patient wording is unclear, the system d
 ## Five-Minute Recording Flow
 
 1. Open with the v1 -> v2 contrast.
-2. State the visible product version: `UroPrevisit Navigator v2.0.6`.
+2. State the visible product version: `UroPrevisit Navigator v2.0.7`.
 3. State the safety boundary: synthetic demo, no diagnosis, no treatment, no free-form medical question generation, no LLM runtime.
 4. Run Case A and point to detected state, missing fields, selected question, and top 3 candidates.
 5. Run Case B and point to governed follow-up plus safety-boundary wording.
@@ -189,6 +189,8 @@ Freeze V2 only when all are true:
 ```text
 - app/adaptive-intake/ opens locally
 - typed input works
+- short patient intake supports click or voice answer submission
+- spoken choice answers are matched to visible options before auto-advance
 - ASR button remains optional and does not block the demo
 - Case A selects nocturia_count or another defensible nocturia follow-up
 - Case B selects pain_burning, pain_timing, duration, or safety-boundary follow-up
