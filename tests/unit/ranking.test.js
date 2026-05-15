@@ -32,10 +32,10 @@ test("spec-shaped wrappers expose state, retrieval, ranking, and explanation", (
   });
   const explanation = explainSelection(ranking);
 
-  assert.ok(candidates.some((candidate) => candidate.questionId === "nocturia_count"));
-  assert.equal(ranking.selected.question.id, "nocturia_count");
+  assert.ok(candidates.some((candidate) => candidate.questionId === "compact_storage_symptoms"));
+  assert.equal(ranking.selected.question.id, "compact_storage_symptoms");
   assert.ok(explanation.selectedReason);
-  assert.ok(explanation.missingSlotsFilled.includes("nocturiaCount"));
+  assert.ok(explanation.missingSlotsFilled.includes("compactStorageSymptoms"));
 });
 
 test("red flag terms increase safety-priority questions without diagnosis", () => {
@@ -46,7 +46,7 @@ test("red flag terms increase safety-priority questions without diagnosis", () =
     questionBank: QUESTION_BANK
   });
 
-  assert.ok(["systemic_symptoms", "fever_chills", "flank_pain"].includes(result.selected.question.id));
-  assert.ok(result.selected.components.safety >= 0.68);
+  assert.equal(result.selected.question.id, "compact_pain_systemic");
+  assert.ok(result.selected.components.safety >= 0.8);
   assert.doesNotMatch(result.selected.question.text, /diagnosis|treatment|antibiotic|cancer|infection likely/i);
 });

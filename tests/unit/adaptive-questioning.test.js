@@ -1,6 +1,12 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { QUESTION_BANK, rankQuestions } = require("../../core/adaptive_questioning");
+const {
+  QUESTION_BANK,
+  LEGACY_QUESTION_BANK,
+  COMPACT_PREVISIT_QUESTION_BANK,
+  MAX_PREVISIT_QUESTIONS,
+  rankQuestions
+} = require("../../core/adaptive_questioning");
 
 test("adaptive ranking selects nocturia follow-up from night urination transcript", () => {
   const result = rankQuestions({
@@ -10,7 +16,7 @@ test("adaptive ranking selects nocturia follow-up from night urination transcrip
     questionBank: QUESTION_BANK
   });
 
-  assert.equal(result.selected.question.id, "nocturia_count");
+  assert.equal(result.selected.question.id, "compact_storage_symptoms");
   assert.ok(result.state.symptoms.includes("nocturia"));
   assert.ok(result.ranked[0].reasons.some((reason) => reason.includes("補足缺口")));
 });
@@ -18,12 +24,12 @@ test("adaptive ranking selects nocturia follow-up from night urination transcrip
 test("adaptive ranking does not repeat already answered question", () => {
   const result = rankQuestions({
     transcript: "我晚上一直起來尿。",
-    answers: { nocturiaCount: "3 次以上" },
-    askedQuestionIds: ["nocturia_count"],
+    answers: { compactStorageSymptoms: ["晚上睡著後會起床尿尿"] },
+    askedQuestionIds: ["compact_storage_symptoms"],
     questionBank: QUESTION_BANK
   });
 
-  assert.notEqual(result.selected.question.id, "nocturia_count");
+  assert.notEqual(result.selected.question.id, "compact_storage_symptoms");
 });
 
 test("adaptive ranking prioritizes safety-visible systemic symptoms", () => {
@@ -34,8 +40,8 @@ test("adaptive ranking prioritizes safety-visible systemic symptoms", () => {
     questionBank: QUESTION_BANK
   });
 
-  assert.equal(result.selected.question.id, "systemic_symptoms");
-  assert.ok(result.selected.components.safety > 0.7);
+  assert.equal(result.selected.question.id, "compact_pain_systemic");
+  assert.ok(result.selected.components.safety > 0.8);
 });
 
 test("adaptive ranking follows dysuria with governed pain or duration follow-up", () => {
@@ -46,20 +52,20 @@ test("adaptive ranking follows dysuria with governed pain or duration follow-up"
     questionBank: QUESTION_BANK
   });
 
-  assert.ok(["pain_burning", "duration", "systemic_symptoms"].includes(result.selected.question.id));
+  assert.ok(["compact_pain_systemic", "compact_duration_bother"].includes(result.selected.question.id));
   assert.ok(result.state.symptoms.includes("pain"));
   assert.ok(QUESTION_BANK.some((question) => question.id === result.selected.question.id));
 });
 
-test("adaptive ranking follows hematuria with pattern question after visible blood is answered", () => {
+test("adaptive ranking follows hematuria with compact visible-blood question", () => {
   const result = rankQuestions({
     transcript: "今天看到紅色尿，好像有血塊。",
-    answers: { visibleBlood: "有" },
-    askedQuestionIds: ["visible_blood"],
+    answers: {},
+    askedQuestionIds: [],
     questionBank: QUESTION_BANK
   });
 
-  assert.equal(result.selected.question.id, "hematuria_pattern");
+  assert.equal(result.selected.question.id, "compact_visible_blood");
 });
 
 test("adaptive ranking asks clarification before vague lower-body pain retrieval", () => {
@@ -89,9 +95,14 @@ test("adaptive ranking asks symptom-type clarification before vague urinary retr
   assert.equal(result.state.ambiguity[0].type, "urinary_symptom_type");
 });
 
-test("adaptive question bank exposes governed metadata required for v2 explanation", () => {
-  assert.ok(QUESTION_BANK.length >= 40);
-  for (const question of QUESTION_BANK) {
+test("adaptive question banks expose governed metadata and preserve legacy bank", () => {
+  assert.equal(QUESTION_BANK.length, MAX_PREVISIT_QUESTIONS);
+  assert.equal(COMPACT_PREVISIT_QUESTION_BANK.length, MAX_PREVISIT_QUESTIONS);
+  assert.ok(LEGACY_QUESTION_BANK.length >= 40);
+  assert.ok(LEGACY_QUESTION_BANK.some((question) => question.id === "nocturia_count"));
+  assert.ok(LEGACY_QUESTION_BANK.some((question) => question.id === "visible_blood"));
+
+  for (const question of QUESTION_BANK.concat(LEGACY_QUESTION_BANK)) {
     assert.ok(question.id);
     assert.ok(question.text);
     assert.ok(question.type);
@@ -117,7 +128,7 @@ test("adaptive ranking supports English demo cases from the v2 spec", () => {
     askedQuestionIds: [],
     questionBank: QUESTION_BANK
   });
-  assert.ok(["nocturia_count", "duration"].includes(nocturia.selected.question.id));
+  assert.ok(["compact_storage_symptoms", "compact_duration_bother"].includes(nocturia.selected.question.id));
 
   const dysuria = rankQuestions({
     transcript: "It burns when I pee.",
@@ -125,7 +136,7 @@ test("adaptive ranking supports English demo cases from the v2 spec", () => {
     askedQuestionIds: [],
     questionBank: QUESTION_BANK
   });
-  assert.ok(["pain_burning", "duration", "pain_timing", "systemic_symptoms", "fever_chills"].includes(dysuria.selected.question.id));
+  assert.ok(["compact_pain_systemic", "compact_duration_bother"].includes(dysuria.selected.question.id));
 
   const vaguePain = rankQuestions({
     transcript: "I feel pain down there.",
@@ -146,4 +157,26 @@ test("adaptive ranking resumes normal retrieval after ambiguity clarification is
 
   assert.notEqual(result.selected.question.id, "clarify_pain_location");
   assert.equal(result.state.ambiguityStatus, "clear_enough");
+});
+
+test("compact previsit bank can finish within the 12-question design cap", () => {
+  const transcript = "我最近晚上起來尿，尿尿刺痛，有時候漏尿，也看到紅色尿，尿流變弱。";
+  const answers = {};
+  const askedQuestionIds = [];
+
+  for (let turn = 0; turn < MAX_PREVISIT_QUESTIONS; turn += 1) {
+    const result = rankQuestions({ transcript, answers, askedQuestionIds, questionBank: QUESTION_BANK });
+    const question = result.selected.question;
+    if (askedQuestionIds.includes(question.id)) break;
+    askedQuestionIds.push(question.id);
+    answers[question.asksFor[0]] = question.answerType === "multi_choice"
+      ? [question.options[0]]
+      : question.options[0] || "補充內容";
+  }
+
+  assert.ok(askedQuestionIds.length <= MAX_PREVISIT_QUESTIONS);
+  assert.equal(new Set(askedQuestionIds).size, askedQuestionIds.length);
+  assert.ok(askedQuestionIds.includes("compact_storage_symptoms"));
+  assert.ok(askedQuestionIds.includes("compact_pain_systemic"));
+  assert.ok(askedQuestionIds.includes("compact_visible_blood"));
 });

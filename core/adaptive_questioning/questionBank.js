@@ -709,6 +709,237 @@ const RAW_QUESTION_BANK = [
   }
 ];
 
+const RAW_COMPACT_PREVISIT_QUESTION_BANK = [
+  {
+    id: "clarify_pain_location",
+    compactFrom: ["clarify_pain_location", "pain_location_detail", "lower_abdominal_pain"],
+    text: "你說的疼痛或不舒服，位置比較接近哪裡？",
+    asksFor: ["painLocationClarification"],
+    symptoms: ["pain", "ambiguous_location"],
+    ambiguityType: "pain_location",
+    keywords: ["下面痛", "下面不舒服", "那邊痛", "私密處", "尿道痛", "生殖器痛", "會陰", "下腹痛", "pain down there", "private area pain", "hurts down there"],
+    value: "疼痛位置模糊時先定位，避免系統直接把病人說法導向特定病因。",
+    explanation: "這是釐清題；只把位置變清楚，不做診斷。",
+    safety: "clarification",
+    safetyLevel: "clarification_only",
+    workflowValue: 0.94,
+    clinicalWorkflowValue: 0.94,
+    safetyPriority: 0.62,
+    nextUsefulWhen: ["病人說下面痛、私密處痛、那邊痛，或疼痛位置不清楚"],
+    skipWhen: ["已經回答 painLocationClarification", "病人已明確說尿尿時尿道刺痛、下腹痛、腰側痛、生殖器痛或會陰痛"],
+    options: ["尿尿時尿道刺痛或灼熱", "下腹或膀胱附近不適", "生殖器或陰囊疼痛", "會陰或肛門前方疼痛", "腰部兩側痛", "不確定"]
+  },
+  {
+    id: "clarify_urinary_symptom_type",
+    compactFrom: ["clarify_urinary_symptom_type", "chief_complaint_open", "most_bothersome_symptom"],
+    text: "你說的「尿尿怪怪的」比較接近哪一種？",
+    asksFor: ["urinarySymptomClarification"],
+    symptoms: ["ambiguous_urinary"],
+    ambiguityType: "urinary_symptom_type",
+    keywords: ["尿尿怪怪", "怪怪的", "不舒服", "怪", "說不出來", "不順", "weird", "not sure", "i don't know"],
+    value: "病人只說怪怪的時，先把主訴方向縮小成可追問的症狀類型。",
+    explanation: "這題讓模糊主訴進入正確題組，不讓 similarity 過早猜方向。",
+    safety: "clarification",
+    safetyLevel: "clarification_only",
+    workflowValue: 0.94,
+    clinicalWorkflowValue: 0.94,
+    safetyPriority: 0.58,
+    nextUsefulWhen: ["病人只說尿尿怪怪的、下體不舒服、或無法說清楚是哪一類泌尿問題"],
+    skipWhen: ["已經回答 urinarySymptomClarification", "病人已明確指出夜尿、急尿、尿痛、血尿、漏尿或尿不出來"],
+    options: ["次數變多或晚上起床尿", "尿尿會痛或灼熱", "尿不太出來或尿流變弱", "看到紅色或茶色尿", "漏尿", "不確定"]
+  },
+  {
+    id: "clarify_pain_burning_conflict",
+    compactFrom: ["clarify_pain_burning_conflict", "pain_burning"],
+    text: "我想確認一下：你現在排尿時是否有疼痛、刺痛或灼熱？",
+    asksFor: ["painBurningConflict"],
+    symptoms: ["pain", "infection"],
+    ambiguityType: "pain_burning_conflict",
+    keywords: ["前後不一致", "確認", "burns when i pee", "pain when urinating"],
+    value: "前後回答不一致時先確認目前狀態，避免門診摘要留下互相衝突的病史。",
+    explanation: "這是矛盾釐清題；只確認病人現在的說法。",
+    safety: "clarification",
+    safetyLevel: "clarification_only",
+    workflowValue: 0.9,
+    clinicalWorkflowValue: 0.9,
+    safetyPriority: 0.62,
+    nextUsefulWhen: ["先前記錄沒有尿痛，但新回答提到排尿疼痛或灼熱"],
+    skipWhen: ["已經回答 painBurningConflict"],
+    options: ["目前沒有", "目前有", "不確定"]
+  },
+  {
+    id: "compact_primary_concern",
+    compactFrom: ["chief_complaint_open", "most_bothersome_symptom", "clarify_urinary_symptom_type"],
+    text: "今天最想先讓醫師知道哪一類泌尿問題？",
+    asksFor: ["compactPrimaryConcern"],
+    symptoms: ["general", "frequency", "nocturia", "urgency", "leakage", "voiding", "pain", "hematuria"],
+    keywords: ["主要", "最困擾", "頻尿", "夜尿", "急尿", "漏尿", "尿不出來", "尿痛", "血尿", "main concern", "chief complaint"],
+    value: "先取得病人主訴方向，讓後續問題只問醫師接手前需要的最小資訊。",
+    explanation: "這是門診前問診入口，不做診斷或分流。",
+    safety: "non_diagnostic",
+    safetyLevel: "routine",
+    workflowValue: 0.96,
+    clinicalWorkflowValue: 0.96,
+    safetyPriority: 0.18,
+    nextUsefulWhen: ["尚未知道病人今天最想先說的泌尿問題"],
+    skipWhen: ["已經回答 compactPrimaryConcern"],
+    answerType: "multi_choice",
+    options: ["頻尿、夜尿或急尿", "尿會不小心漏出來", "尿不太出來或尿流變弱", "尿尿疼痛或灼熱", "看到紅色或茶色尿、血塊", "其他泌尿問題", "不確定"]
+  },
+  {
+    id: "compact_duration_bother",
+    compactFrom: ["duration", "bother_score", "symptom_start_pattern", "daytime_urgency_impact"],
+    text: "這個問題大約多久了？困擾程度大約多高？",
+    asksFor: ["durationBother"],
+    symptoms: ["general"],
+    keywords: ["多久", "開始", "最近", "困擾", "嚴重", "today", "week", "month", "bother", "severity"],
+    value: "用一題同時補病程與主觀負擔，讓醫師快速知道時間軸與病人在意程度。",
+    explanation: "只整理病程與困擾程度，不判斷原因。",
+    safety: "non_diagnostic",
+    safetyLevel: "routine",
+    workflowValue: 0.9,
+    clinicalWorkflowValue: 0.9,
+    safetyPriority: 0.22,
+    nextUsefulWhen: ["已有主訴但尚未建立病程與困擾程度"],
+    skipWhen: ["已經回答 durationBother"],
+    answerType: "multi_choice",
+    options: ["今天開始", "1 到 7 天", "1 到 4 週", "超過 1 個月", "反覆出現", "困擾 0 到 3 分", "困擾 4 到 6 分", "困擾 7 到 10 分", "不確定"]
+  },
+  {
+    id: "compact_storage_symptoms",
+    compactFrom: ["nocturia_count", "urgency", "daytime_frequency", "nocturia_sleep_impact", "fluid_context_evening", "urgency_hold_time"],
+    text: "頻尿、夜尿或急尿方面，有哪些情況？",
+    asksFor: ["compactStorageSymptoms"],
+    symptoms: ["frequency", "nocturia", "urgency"],
+    keywords: ["頻尿", "一直跑廁所", "白天", "晚上", "夜尿", "急", "忍不住", "nocturia", "frequency", "urgency"],
+    value: "把儲尿相關症狀壓成一題，提供醫師後續判斷需要的方向與嚴重度線索。",
+    explanation: "只記錄病人回報的儲尿症狀，不推論診斷。",
+    safety: "non_diagnostic",
+    safetyLevel: "routine",
+    workflowValue: 0.9,
+    clinicalWorkflowValue: 0.9,
+    safetyPriority: 0.24,
+    nextUsefulWhen: ["病人提到頻尿、夜尿、急尿、一直跑廁所或忍不住"],
+    skipWhen: ["已經回答 compactStorageSymptoms"],
+    answerType: "multi_choice",
+    options: ["白天尿尿次數明顯變多", "晚上睡著後會起床尿尿", "突然很急、很難忍住", "尿意來時幾乎來不及", "睡眠或外出明顯受影響", "以上都沒有", "不確定"]
+  },
+  {
+    id: "compact_leakage_pattern",
+    compactFrom: ["leakage", "leakage_trigger", "urgency_hold_time"],
+    text: "最近 4 週如果有漏尿，通常是什麼情況？",
+    asksFor: ["compactLeakagePattern"],
+    symptoms: ["leakage", "urgency"],
+    keywords: ["漏尿", "滲出", "褲子", "護墊", "咳嗽", "笑", "運動", "睡覺", "來不及", "leak", "incontinence"],
+    value: "漏尿方向只問是否發生與常見情境，避免拆成多題造成負擔。",
+    explanation: "只整理漏尿情境，不判斷漏尿類型。",
+    safety: "non_diagnostic",
+    safetyLevel: "routine",
+    workflowValue: 0.84,
+    clinicalWorkflowValue: 0.84,
+    safetyPriority: 0.2,
+    nextUsefulWhen: ["病人提到漏尿、忍不住、來不及、護墊或尿會滲出"],
+    skipWhen: ["已經回答 compactLeakagePattern"],
+    answerType: "multi_choice",
+    options: ["沒有漏尿", "來不及到廁所前漏出來", "咳嗽、笑、運動或搬重物時漏", "睡覺時漏", "沒有明顯原因", "不確定"]
+  },
+  {
+    id: "compact_voiding_symptoms",
+    compactFrom: ["unable_to_urinate", "current_retention", "incomplete_emptying", "weak_stream", "straining_to_void"],
+    text: "排尿不順方面，有哪些情況？",
+    asksFor: ["compactVoidingSymptoms"],
+    symptoms: ["voiding", "retention"],
+    keywords: ["尿不出來", "尿流弱", "尿流細", "排尿困難", "尿不乾淨", "用力", "等很久", "retention", "weak stream"],
+    value: "用一題整理排尿困難、尿流、用力與目前是否尿不出來。",
+    explanation: "只把排尿不順變成可讀病史；若病人說現在尿不出來，讓現場人員看見。",
+    safety: "priority_notice",
+    safetyLevel: "priority_notice",
+    workflowValue: 0.9,
+    clinicalWorkflowValue: 0.9,
+    safetyPriority: 0.72,
+    nextUsefulWhen: ["病人提到尿不出來、尿流弱、卡住、尿不乾淨或排尿困難"],
+    skipWhen: ["已經回答 compactVoidingSymptoms"],
+    answerType: "multi_choice",
+    options: ["尿流變細或變弱", "尿尿斷斷續續", "需要用力或等很久才尿得出來", "尿完常覺得沒尿乾淨", "現在仍尿不出來", "以上都沒有", "不確定"]
+  },
+  {
+    id: "compact_pain_systemic",
+    compactFrom: ["pain_burning", "pain_timing", "pain_location_detail", "lower_abdominal_pain", "flank_pain", "fever_chills", "systemic_symptoms"],
+    text: "疼痛、灼熱或發燒發冷方面，有哪些情況？",
+    asksFor: ["compactPainSystemic"],
+    symptoms: ["pain", "infection", "flank_pain", "lower_abdominal_pain", "red_flag"],
+    keywords: ["痛", "刺痛", "灼熱", "下腹", "膀胱", "腰痛", "腰側", "發燒", "發冷", "burning", "pain", "fever", "chills", "flank"],
+    value: "一題整理尿痛、位置與系統性症狀，讓醫師知道接下來要追問的方向。",
+    explanation: "只標出病人回報的疼痛與發燒發冷，不判斷感染或其他病因。",
+    safety: "priority_notice",
+    safetyLevel: "priority_notice",
+    workflowValue: 0.9,
+    clinicalWorkflowValue: 0.9,
+    safetyPriority: 0.82,
+    nextUsefulWhen: ["病人提到尿痛、灼熱、下腹痛、腰側痛、發燒或發冷"],
+    skipWhen: ["疼痛位置仍模糊時應先問位置釐清", "已經回答 compactPainSystemic"],
+    answerType: "multi_choice",
+    options: ["尿尿時疼痛、刺痛或灼熱", "下腹或膀胱附近疼痛/悶脹", "腰部兩側或背側痛", "發燒或發冷", "以上都沒有", "不確定"]
+  },
+  {
+    id: "compact_visible_blood",
+    compactFrom: ["visible_blood", "hematuria_pattern", "visible_blood_color"],
+    text: "有沒有看過尿液變紅、茶色，或看到血塊？",
+    asksFor: ["compactVisibleBlood"],
+    symptoms: ["hematuria", "red_flag"],
+    keywords: ["血尿", "紅色", "茶色", "深色", "血塊", "blood", "clot", "red urine"],
+    value: "血尿方向用一題收集是否出現、顏色與血塊，讓醫師接續判斷。",
+    explanation: "只記錄病人看到的顏色或血塊，不解釋原因。",
+    safety: "priority_notice",
+    safetyLevel: "priority_notice",
+    workflowValue: 0.92,
+    clinicalWorkflowValue: 0.92,
+    safetyPriority: 0.86,
+    nextUsefulWhen: ["病人提到血尿、紅色尿、茶色尿、深色尿或血塊"],
+    skipWhen: ["已經回答 compactVisibleBlood"],
+    answerType: "multi_choice",
+    options: ["沒有看過", "粉紅或紅色尿", "茶色或深色尿", "看到血塊", "不只一次或最近常出現", "不確定"]
+  },
+  {
+    id: "compact_background_medication",
+    compactFrom: ["diabetes_kidney_history", "stone_history", "uti_history", "urologic_surgery_history", "medication_list", "new_medication_context"],
+    text: "有哪些背景或資料需要先讓醫師知道？",
+    asksFor: ["compactBackgroundMedication"],
+    symptoms: ["context"],
+    keywords: ["藥", "藥袋", "藥單", "糖尿病", "腎臟病", "結石", "感染", "手術", "導尿", "medication", "history", "diabetes", "kidney"],
+    value: "把慢性病、既往泌尿病史與用藥資料合併成一題，避免背景問題拖長流程。",
+    explanation: "這題只收集背景與可提供資料，不要求病人背藥名或判斷藥物作用。",
+    safety: "non_diagnostic",
+    safetyLevel: "routine",
+    workflowValue: 0.82,
+    clinicalWorkflowValue: 0.82,
+    safetyPriority: 0.22,
+    nextUsefulWhen: ["核心症狀已初步清楚後，補足醫師接手前的重要背景"],
+    skipWhen: ["已經回答 compactBackgroundMedication"],
+    answerType: "multi_choice",
+    options: ["可以提供藥袋、藥單或藥物照片", "最近有開始、停止或調整藥物", "糖尿病或腎臟病", "神經或脊髓相關病史", "曾有結石、泌尿感染、手術或導尿", "以上都沒有", "不確定"]
+  },
+  {
+    id: "compact_closing_note",
+    compactFrom: ["clinician_priority", "closing_review"],
+    text: "最後，還有什麼想補充給醫師知道？",
+    asksFor: ["compactClosingNote"],
+    symptoms: ["general", "context"],
+    keywords: ["補充", "其他", "希望醫師知道", "最重要", "anything else", "closing", "priority"],
+    value: "結尾保留病人沒有被選項涵蓋的重點，避免結構化過程抹掉病人的主觀優先事項。",
+    explanation: "這是最後補充題，只收集病人想讓醫師知道的內容。",
+    safety: "non_diagnostic",
+    safetyLevel: "routine",
+    workflowValue: 0.66,
+    clinicalWorkflowValue: 0.66,
+    safetyPriority: 0.12,
+    nextUsefulWhen: ["主要症狀、優先告知線索與背景已大致整理後"],
+    skipWhen: ["已經回答 compactClosingNote"],
+    answerType: "open_text",
+    options: ["自由輸入"]
+  }
+];
+
 function inferQuestionType(question) {
   if (question.type) return question.type;
   if (question.ambiguityType) return "clarification";
@@ -749,14 +980,32 @@ function enrichQuestion(question) {
   }, question);
 }
 
-const QUESTION_BANK = RAW_QUESTION_BANK.map(enrichQuestion);
+const LEGACY_QUESTION_BANK = RAW_QUESTION_BANK.map(enrichQuestion);
+const COMPACT_PREVISIT_QUESTION_BANK = RAW_COMPACT_PREVISIT_QUESTION_BANK.map(enrichQuestion);
+const QUESTION_BANK = COMPACT_PREVISIT_QUESTION_BANK;
+const MAX_PREVISIT_QUESTIONS = 12;
 
 if (typeof module !== "undefined") {
-  module.exports = { QUESTION_BANK };
+  module.exports = {
+    QUESTION_BANK,
+    LEGACY_QUESTION_BANK,
+    COMPACT_PREVISIT_QUESTION_BANK,
+    MAX_PREVISIT_QUESTIONS
+  };
 }
 
 if (typeof window !== "undefined") {
-  window.UrologyAdaptiveQuestionBank = { QUESTION_BANK };
-  window.UrologyAdaptiveQuestioning = Object.assign({}, window.UrologyAdaptiveQuestioning || {}, { QUESTION_BANK });
+  window.UrologyAdaptiveQuestionBank = {
+    QUESTION_BANK,
+    LEGACY_QUESTION_BANK,
+    COMPACT_PREVISIT_QUESTION_BANK,
+    MAX_PREVISIT_QUESTIONS
+  };
+  window.UrologyAdaptiveQuestioning = Object.assign({}, window.UrologyAdaptiveQuestioning || {}, {
+    QUESTION_BANK,
+    LEGACY_QUESTION_BANK,
+    COMPACT_PREVISIT_QUESTION_BANK,
+    MAX_PREVISIT_QUESTIONS
+  });
 }
 }());

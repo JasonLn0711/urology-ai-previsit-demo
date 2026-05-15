@@ -1,5 +1,14 @@
 (function () {
 const FIELD_LABELS = {
+  compactPrimaryConcern: "主要泌尿問題",
+  durationBother: "病程與困擾程度",
+  compactStorageSymptoms: "頻尿、夜尿或急尿",
+  compactLeakagePattern: "漏尿情境",
+  compactVoidingSymptoms: "排尿不順",
+  compactPainSystemic: "疼痛、灼熱或發燒發冷",
+  compactVisibleBlood: "血尿或血塊",
+  compactBackgroundMedication: "背景病史與用藥資料",
+  compactClosingNote: "最後補充",
   duration: "病程",
   botherScore: "困擾程度",
   nocturiaCount: "夜尿次數",
@@ -38,7 +47,7 @@ const FIELD_LABELS = {
   urinarySymptomClarification: "泌尿症狀類型釐清"
 };
 
-const CORE_FIELDS = [
+const LEGACY_CORE_FIELDS = [
   "duration",
   "botherScore",
   "nocturiaCount",
@@ -47,6 +56,18 @@ const CORE_FIELDS = [
   "painBurning",
   "visibleBlood",
   "systemicSymptoms"
+];
+
+const CORE_FIELDS = [
+  "compactPrimaryConcern",
+  "durationBother",
+  "compactStorageSymptoms",
+  "compactLeakagePattern",
+  "compactVoidingSymptoms",
+  "compactPainSystemic",
+  "compactVisibleBlood",
+  "compactBackgroundMedication",
+  "compactClosingNote"
 ];
 
 const SYMPTOM_KEYWORDS = {
@@ -141,6 +162,7 @@ function extractFacts({ transcript = "", answers = {}, questionBank = [] } = {})
 
 const api = {
   CORE_FIELDS,
+  LEGACY_CORE_FIELDS,
   FIELD_LABELS,
   SYMPTOM_KEYWORDS,
   answeredFields,

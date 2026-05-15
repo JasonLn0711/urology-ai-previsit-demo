@@ -3,7 +3,13 @@
 const fs = require("node:fs");
 const http = require("node:http");
 const path = require("node:path");
-const { QUESTION_BANK, rankQuestions } = require("../../core/adaptive_questioning");
+const {
+  QUESTION_BANK,
+  LEGACY_QUESTION_BANK,
+  COMPACT_PREVISIT_QUESTION_BANK,
+  MAX_PREVISIT_QUESTIONS,
+  rankQuestions
+} = require("../../core/adaptive_questioning");
 
 const root = path.resolve(__dirname, "..", "..");
 const baseUrl = process.env.UROLOGY_V2_BASE_URL || "http://localhost:4173/app/adaptive-intake/";
@@ -61,7 +67,10 @@ function checkFiles() {
 }
 
 function checkQuestionBank() {
-  record("question bank has at least 40 governed questions", QUESTION_BANK.length >= 40, `count=${QUESTION_BANK.length}`);
+  record("compact question bank has at most 12 governed questions", QUESTION_BANK.length <= MAX_PREVISIT_QUESTIONS, `count=${QUESTION_BANK.length}`);
+  record("compact question bank is the active default", QUESTION_BANK === COMPACT_PREVISIT_QUESTION_BANK, `count=${COMPACT_PREVISIT_QUESTION_BANK.length}`);
+  record("legacy question bank remains preserved", LEGACY_QUESTION_BANK.length >= 40, `count=${LEGACY_QUESTION_BANK.length}`);
+  record("legacy question bank keeps original nocturia question", LEGACY_QUESTION_BANK.some((question) => question.id === "nocturia_count"));
   const ids = new Set();
   for (const question of QUESTION_BANK) {
     record(`question id unique: ${question.id}`, !ids.has(question.id));
@@ -93,13 +102,13 @@ function checkCases() {
     {
       name: "Case A nocturia",
       transcript: "I wake up several times at night to pee.",
-      allowed: ["nocturia_count"],
+      allowed: ["compact_storage_symptoms"],
       requiredType: null
     },
     {
       name: "Case B dysuria",
       transcript: "It burns when I pee.",
-      allowed: ["pain_burning"],
+      allowed: ["compact_pain_systemic"],
       requiredType: null
     },
     {
@@ -147,6 +156,7 @@ function checkSafetyText() {
   record("UI defaults to Taiwan Traditional Chinese document language", /<html lang="zh-Hant">/.test(html));
   record("UI does not expose an English language switch", !/data-lang-option="en"|>English</.test(html));
   record("UI exposes Taiwan Traditional Chinese adaptive copy", /泌尿預診導航 V2|找下一題|模糊說法閘門/.test(html));
+  record("UI exposes 12-question compact previsit framing", /12 題內門診前問診|最多 12 題/.test(html) && /新版 12 題內題庫/.test(app));
   record("UI tells multi-select users to press Next", /Select all that apply, then press Next|勾選完畢後請按下一步/.test(app));
   record("UI has multi-select submit control", /data-submit-multi/.test(app));
 }

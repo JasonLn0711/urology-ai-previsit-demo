@@ -252,7 +252,7 @@ function checkAdaptiveQuestioningContract() {
   });
   record(
     "adaptive smoke: nocturia picks quantification",
-    ["nocturia_count", "daytime_frequency"].includes(nocturia.selected.question.id),
+    nocturia.selected.question.id === "compact_storage_symptoms",
     nocturia.selected.question.id
   );
 
@@ -270,15 +270,15 @@ function checkAdaptiveQuestioningContract() {
     askedQuestionIds: [],
     questionBank: adaptive.QUESTION_BANK
   });
-  record("adaptive smoke: hematuria remains boundary-safe", hematuria.selected.question.id === "visible_blood" && !/診斷|治療|癌症/.test(hematuria.selected.question.text), hematuria.selected.question.id);
+  record("adaptive smoke: hematuria remains boundary-safe", hematuria.selected.question.id === "compact_visible_blood" && !/診斷|治療|癌症/.test(hematuria.selected.question.text), hematuria.selected.question.id);
 
   const repeated = adaptive.rankQuestions({
     transcript: "我晚上一直起來尿。",
-    answers: { nocturiaCount: "3 次以上" },
-    askedQuestionIds: ["nocturia_count"],
+    answers: { compactStorageSymptoms: ["晚上睡著後會起床尿尿"] },
+    askedQuestionIds: ["compact_storage_symptoms"],
     questionBank: adaptive.QUESTION_BANK
   });
-  record("adaptive smoke: already asked question is penalized", repeated.selected.question.id !== "nocturia_count", repeated.selected.question.id);
+  record("adaptive smoke: already asked question is penalized", repeated.selected.question.id !== "compact_storage_symptoms", repeated.selected.question.id);
 }
 
 function checkDocsAndExperiments() {

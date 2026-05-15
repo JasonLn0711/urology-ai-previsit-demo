@@ -1,5 +1,6 @@
 const { QUESTION_BANK, rankQuestions, FIELD_LABELS } = window.UrologyAdaptiveQuestioning;
-const VERSION = window.UroPrevisitVersion || { versionLabel: "v2.0.6" };
+const VERSION = window.UroPrevisitVersion || { versionLabel: "v2.1.0" };
+const MAX_PREVISIT_QUESTIONS = window.UrologyAdaptiveQuestioning.MAX_PREVISIT_QUESTIONS || 12;
 
 const STORAGE_KEY = "urologyAdaptiveDemoState";
 const LANGUAGE_KEY = "urologyAdaptiveDemoLanguage";
@@ -8,7 +9,7 @@ const DEFAULT_LANGUAGE = "zh";
 const UI_COPY = {
   en: {
     brandTitle: "UroPrevisit Navigator V2",
-    brandSubtitle: "Guided next-question selection",
+    brandSubtitle: "Compact guided previsit intake",
     sampleNocturia: "Night urination",
     samplePain: "Burning pain",
     sampleBlood: "Blood in urine",
@@ -23,6 +24,7 @@ const UI_COPY = {
     proofV1Detail: "Patient follows the form",
     proofV2Detail: "System follows the patient state",
     proofNext: "Next question",
+    proofBudget: "12-question cap",
     inputEyebrow: "Input",
     inputTitle: "Patient statement",
     inputCopy: "Type or paste what the patient said. ASR is optional.",
@@ -57,6 +59,9 @@ const UI_COPY = {
     rankingCopy: "The system ranks governed questions by fit, missing information, workflow value, ambiguity, and safety.",
     stateEyebrow: "State",
     noCandidates: "No candidates yet.",
+    completeTitle: "Previsit intake summary is ready.",
+    completeBody: "The compact question bank has collected the minimum useful history for clinician follow-up. The system stops here instead of adding diagnostic questions.",
+    completeCount: "Questions answered",
     noState: "Not inferred yet",
     answeredFields: "Answered fields",
     missingFields: "Still missing",
@@ -78,7 +83,7 @@ const UI_COPY = {
   },
   zh: {
     brandTitle: "泌尿預診導航 V2",
-    brandSubtitle: "受治理的下一題推薦",
+    brandSubtitle: "12 題內門診前問診",
     sampleNocturia: "夜尿案例",
     samplePain: "尿痛案例",
     sampleBlood: "血尿案例",
@@ -88,11 +93,12 @@ const UI_COPY = {
     shortMode: "短版問答",
     heroEyebrow: "V2 示範",
     heroTitle: "問下一個最有用的問題，而不是每題都問。",
-    heroLead: "系統把病人說法轉成狀態，再從受治理題庫選出一題補問。ASR 可選；排序引擎不診斷、不建議治療。",
+    heroLead: "系統把病人說法轉成狀態，再從新版 12 題內題庫選出一題補問。ASR 可選；排序引擎不診斷、不建議治療。",
     proofV1: "V1 固定問卷",
     proofV1Detail: "病人跟著表單走",
     proofV2Detail: "系統跟著病人狀態走",
     proofNext: "下一題",
+    proofBudget: "最多 12 題",
     inputEyebrow: "輸入",
     inputTitle: "病人說法",
     inputCopy: "可貼上病人說的話；ASR 只是可選輸入。",
@@ -127,6 +133,9 @@ const UI_COPY = {
     rankingCopy: "系統依照語意、缺口、流程價值、模糊度與安全邊界排序。",
     stateEyebrow: "狀態",
     noCandidates: "尚未產生候選題。",
+    completeTitle: "門診前問診整理已完成。",
+    completeBody: "新版題庫已收集醫師接手問診前需要的最小病史資訊；系統到此停止，不再加入診斷題。",
+    completeCount: "已回答題數",
     noState: "尚未推定",
     answeredFields: "已回答欄位",
     missingFields: "仍缺資訊",
@@ -374,6 +383,15 @@ const QUESTION_COPY = {
 };
 
 const FIELD_LABELS_EN = {
+  compactPrimaryConcern: "Main urinary concern",
+  durationBother: "Duration and bother",
+  compactStorageSymptoms: "Frequency, nocturia, or urgency",
+  compactLeakagePattern: "Leakage pattern",
+  compactVoidingSymptoms: "Voiding difficulty",
+  compactPainSystemic: "Pain, burning, fever, or chills",
+  compactVisibleBlood: "Visible blood or clot",
+  compactBackgroundMedication: "Background and medication information",
+  compactClosingNote: "Final note",
   chiefComplaint: "Main concern",
   duration: "Duration",
   botherScore: "Bother score",
@@ -468,7 +486,8 @@ function emptyState() {
     askedQuestionIds: [],
     current: null,
     ranking: null,
-    turn: 0
+    turn: 0,
+    completed: false
   };
 }
 
@@ -592,13 +611,23 @@ function updateStaticCopy() {
 
 function computeNext() {
   state.transcript = transcriptInput.value.trim();
+  if (flowComplete()) {
+    state.current = null;
+    state.ranking = null;
+    state.completed = true;
+    persistState();
+    render();
+    return;
+  }
   state.ranking = rankQuestions({
     transcript: state.transcript,
     answers: state.answers,
     askedQuestionIds: state.askedQuestionIds,
     questionBank: QUESTION_BANK
   });
-  state.current = state.ranking.selected;
+  const selectedId = state.ranking.selected?.question?.id;
+  state.completed = !selectedId || state.askedQuestionIds.includes(selectedId);
+  state.current = state.completed ? null : state.ranking.selected;
   persistState();
   render();
 }
@@ -612,8 +641,15 @@ function answerCurrent(value) {
     state.askedQuestionIds.push(question.id);
   }
   state.turn += 1;
+  state.completed = false;
   showToast(t("answerSaved"));
   computeNext();
+}
+
+function flowComplete() {
+  const asked = new Set(state.askedQuestionIds || []);
+  return state.turn >= MAX_PREVISIT_QUESTIONS ||
+    QUESTION_BANK.every((question) => asked.has(question.id));
 }
 
 function reset() {
@@ -671,7 +707,20 @@ function isExclusiveOption(option) {
 }
 
 function renderQuestion() {
-  turnLabel.textContent = language === "en" ? `${t("turn")} ${state.turn + 1}` : `${t("turn")} ${state.turn + 1} 輪`;
+  turnLabel.textContent = language === "en"
+    ? `${t("turn")} ${Math.min(state.turn + 1, MAX_PREVISIT_QUESTIONS)} / ${MAX_PREVISIT_QUESTIONS}`
+    : `${t("turn")} ${Math.min(state.turn + 1, MAX_PREVISIT_QUESTIONS)} / ${MAX_PREVISIT_QUESTIONS} 題`;
+  if (state.completed) {
+    questionTitle.textContent = t("completeTitle");
+    scoreLabel.textContent = `${t("completeCount")} ${state.turn}/${MAX_PREVISIT_QUESTIONS}`;
+    questionMount.innerHTML = `
+      <div class="adaptive-empty complete">
+        <h3>${escapeHtml(t("completeTitle"))}</h3>
+        <p>${escapeHtml(t("completeBody"))}</p>
+      </div>
+    `;
+    return;
+  }
   if (!state.current) {
     questionTitle.textContent = t("waitingTitle");
     scoreLabel.textContent = t("notRanked");

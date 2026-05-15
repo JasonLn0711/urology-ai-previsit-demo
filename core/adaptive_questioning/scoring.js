@@ -45,6 +45,10 @@ function missingInfoScore(question, answers = {}) {
 }
 
 function dependencyAllowed(question, answers = {}, symptoms = []) {
+  const answeredCount = Object.keys(answers || {}).filter((field) => hasAnswer(answers, field)).length;
+  if (question.id === "compact_duration_bother") return hasAnswer(answers, "compactPrimaryConcern") || symptoms.length > 0;
+  if (question.id === "compact_background_medication") return hasAnswer(answers, "compactPrimaryConcern") || answeredCount >= 2 || symptoms.includes("context");
+  if (question.id === "compact_closing_note") return answeredCount >= 5;
   if (question.id === "leakage_trigger") return hasAnswer(answers, "leakage") || symptoms.includes("leakage");
   if (question.id === "current_retention") return hasAnswer(answers, "unableToUrinate") || symptoms.includes("retention");
   if (question.id === "hematuria_pattern") return hasAnswer(answers, "visibleBlood") || symptoms.includes("hematuria");
