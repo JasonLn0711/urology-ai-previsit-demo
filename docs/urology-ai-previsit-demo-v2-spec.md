@@ -8,6 +8,22 @@ V2 is an ASR-ready adaptive previsit questioning demo that uses a governed urolo
 
 V2 是一個「AI 輔助門診前病史蒐集系統」：病人每回答一次，系統就重新計算目前資訊狀態，從受治理的泌尿科題庫中選出下一個最合理問題。
 
+## 2026-05-15 Compact Bank Addendum
+
+The original 41-question governed bank remains preserved as
+`LEGACY_QUESTION_BANK`. The active runtime bank is now
+`COMPACT_PREVISIT_QUESTION_BANK`, exported as `QUESTION_BANK`.
+
+First-principles decision:
+
+```text
+門診前問診不是診斷。系統只需要問到醫師接手後能繼續判斷的程度。
+```
+
+Therefore the patient-facing adaptive flow is capped at 12 questions. The
+compact bank intentionally gathers the minimum useful handoff history instead
+of exhausting every diagnostic branch in the legacy bank.
+
 ## 1. Product Goal
 
 ### 1.1 Core Problem
@@ -465,7 +481,8 @@ closing
 
 ## 11. Urology Question Categories
 
-The first governed bank should include at least 40 questions and cover:
+Historical V2.0 note: the first governed bank included at least 40 questions and
+covered:
 
 ```text
 chief complaint
@@ -481,6 +498,22 @@ ambiguous pain clarification
 past history
 medication / context
 closing
+```
+
+Current V2.1 runtime note: the legacy 41-question bank is still available for
+traceability, but the active patient-facing bank is compacted to 12 questions or
+fewer. It covers:
+
+```text
+main concern
+duration and bother
+frequency / nocturia / urgency
+leakage
+weak stream / hesitancy / incomplete emptying
+pain, burning, fever, chills, and flank discomfort
+visible blood in urine
+history and medication context
+final patient supplement
 ```
 
 ## 12. Ambiguity Handling Spec

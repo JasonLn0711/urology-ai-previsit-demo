@@ -14,6 +14,22 @@ The real previsit problem is not that patients need an AI doctor. The real probl
 
 V2 should help convert vague patient speech into structured previsit information useful for clinician review.
 
+The system should stop once it has enough structured previsit history for the
+clinician to continue the diagnostic conversation. It should not keep adding
+diagnostic questions just because the old bank contains more possible follow-up
+items.
+
+## Compact Bank Decision
+
+The old 41-question bank remains preserved as `LEGACY_QUESTION_BANK` for
+traceability and future expansion. The active runtime export, `QUESTION_BANK`,
+now points to `COMPACT_PREVISIT_QUESTION_BANK`.
+
+The compact bank is capped by `MAX_PREVISIT_QUESTIONS = 12`. Its job is to
+collect the smallest useful handoff set: main concern, duration/bother, storage
+symptoms, leakage, voiding difficulty, pain/systemic symptoms, visible blood,
+background/medication context, and one final supplement from the patient.
+
 ## Six-Layer Architecture
 
 ```text
@@ -27,7 +43,7 @@ Layer 3: Patient State Layer
 Track known symptoms, answered slots, missing slots, and ambiguity flags
 
 Layer 4: Question Bank Layer
-Governed urology questions with metadata
+Compact governed previsit bank with legacy bank preserved
 
 Layer 5: Retrieval and Ranking Layer
 Embedding-style similarity + rule constraints + gap scoring

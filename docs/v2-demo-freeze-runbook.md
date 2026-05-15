@@ -48,7 +48,7 @@ http://localhost:4173/app/adaptive-intake/
 Current product version:
 
 ```text
-v2.0.7
+v2.1.0
 ```
 
 Keep these fallback routes ready:
@@ -70,11 +70,12 @@ Expected current baseline:
 
 ```text
 npm run version:check: 10/10
-npm test: 42/42
+npm test: 43/43
 npm run smoke: 153/153
-npm run demo:v2-freeze: 738/738
+npm run demo:v2-freeze: 249/249
 adaptive route: HTTP 200
-question bank: 41 governed questions
+active question bank: 12 compact previsit questions
+legacy question bank: 41 governed questions preserved
 ```
 
 If a test count changes because the repo gained tests, treat a clean pass as acceptable and update this runbook.
@@ -92,16 +93,16 @@ I wake up several times at night to pee.
 Expected current engine output:
 
 ```text
-selected: nocturia_count
-question: 晚上睡著後通常會起來尿尿幾次？
+selected: compact_storage_symptoms
+question: 頻尿、夜尿或急尿方面，有哪些情況？
 ambiguity: clear_enough
-top 3: nocturia_count, nocturia_sleep_impact, daytime_frequency
+top 3: compact_storage_symptoms plus defensible compact follow-ups
 ```
 
 Talk track:
 
 ```text
-The patient used ordinary language. The system detected nocturia and selected a quantification question because nocturia count is the most useful missing field.
+The patient used ordinary language. The system detected nocturia and selected the compact storage-symptom question because this previsit flow only needs the clinician handoff field, not every diagnostic sub-branch.
 ```
 
 ### Case B: Dysuria
@@ -115,10 +116,10 @@ It burns when I pee.
 Expected current engine output:
 
 ```text
-selected: pain_burning
-question: 尿尿時會痛、刺痛或灼熱嗎？
+selected: compact_pain_systemic
+question: 疼痛、灼熱或全身不舒服方面，有哪些情況？
 ambiguity: clear_enough
-top 3: pain_burning, pain_timing, systemic_symptoms
+top 3: compact_pain_systemic plus defensible compact follow-ups
 ```
 
 Talk track:
@@ -153,7 +154,7 @@ This is the strongest V2 behavior. When patient wording is unclear, the system d
 ## Five-Minute Recording Flow
 
 1. Open with the v1 -> v2 contrast.
-2. State the visible product version: `UroPrevisit Navigator v2.0.7`.
+2. State the visible product version: `UroPrevisit Navigator v2.1.0`.
 3. State the safety boundary: synthetic demo, no diagnosis, no treatment, no free-form medical question generation, no LLM runtime.
 4. Run Case A and point to detected state, missing fields, selected question, and top 3 candidates.
 5. Run Case B and point to governed follow-up plus safety-boundary wording.
@@ -192,8 +193,8 @@ Freeze V2 only when all are true:
 - short patient intake supports click or voice answer submission
 - spoken choice answers are matched to visible options before auto-advance
 - ASR button remains optional and does not block the demo
-- Case A selects nocturia_count or another defensible nocturia follow-up
-- Case B selects pain_burning, pain_timing, duration, or safety-boundary follow-up
+- Case A selects compact_storage_symptoms or another defensible compact storage follow-up
+- Case B selects compact_pain_systemic, duration, or safety-boundary follow-up
 - Case C selects a clarification question
 - top 3 candidates are visible
 - explanation reasons are visible

@@ -4,6 +4,23 @@ This document defines the governed metadata contract for V2 adaptive questioning
 
 The canonical V2 spec is `docs/urology-ai-previsit-demo-v2-spec.md`.
 
+## Active Banks
+
+The old 41-question bank is preserved for traceability as
+`LEGACY_QUESTION_BANK`. The active runtime bank is
+`COMPACT_PREVISIT_QUESTION_BANK`, exported as `QUESTION_BANK`.
+
+First-principles constraint:
+
+```text
+The active patient-facing previsit flow must stay within 12 questions.
+```
+
+The compact bank keeps only the minimum information a clinician needs to take
+over the diagnostic conversation: main concern, duration/bother, storage
+symptoms, leakage, voiding difficulty, pain/systemic symptoms, visible blood,
+background/medication context, and final patient supplement.
+
 ## Required Fields
 
 Each question exported by `core/adaptive_questioning/questionBank.js` should expose:
@@ -67,4 +84,3 @@ closing
 ## Safety Rule
 
 Question-bank entries can support clarification and red-flag boundary checks, but they must not make diagnosis, treatment, medication, exam-ordering, or triage claims.
-

@@ -1,13 +1,13 @@
 (function initUroPrevisitVersion(globalScope) {
   const VERSION = {
-      "version": "2.0.7",
-      "versionLabel": "v2.0.7",
+      "version": "2.1.0",
+      "versionLabel": "v2.1.0",
       "product": "UroPrevisit Navigator",
       "track": "urology-ai-previsit-demo",
       "stage": "demo-freeze-candidate",
       "releasedAt": "2026-05-12",
       "updatedAt": "2026-05-15",
-      "summary": "Add voice answer matching and simplified patient intake",
+      "summary": "Add compact 12-question previsit bank",
       "safetyBoundary": [
           "synthetic data only",
           "no diagnosis",

@@ -2,6 +2,24 @@
 
 This changelog records meaningful product, demo, safety, question-bank, and evidence-system changes.
 
+## v2.1.0 - 2026-05-15
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Add compact 12-question previsit bank
+- Preserve the old 41-question bank as `LEGACY_QUESTION_BANK`.
+- Make the active runtime `QUESTION_BANK` use `COMPACT_PREVISIT_QUESTION_BANK`
+  and cap the patient-facing flow at 12 questions.
+- Update adaptive intake copy, freeze checks, and unit coverage for the compact
+  previsit handoff design.
+
+### Versioning
+
+- Bump type: `minor`
+- Verification command to run before freeze or commit: `npm run version:check`
+
 ## v2.0.7 - 2026-05-15
 
 Stage: `demo-freeze-candidate`

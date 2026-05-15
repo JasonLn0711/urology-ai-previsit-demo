@@ -53,6 +53,11 @@ This is not a free-form chatbot. Questions still come from the governed question
 bank, and the ranking evidence is visible so reviewers can see why the next
 question was selected.
 
+As of `v2.1.0`, the active runtime bank is the compact 12-question previsit bank.
+The older 41-question bank remains exported as `LEGACY_QUESTION_BANK` for
+traceability, but the patient-facing demo stops once it has enough history for a
+clinician handoff instead of continuing into diagnostic branching.
+
 The product distinction is:
 
 - v1: fixed questionnaire; the patient follows the system.

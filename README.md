@@ -8,7 +8,7 @@ It uses synthetic urology previsit cases and local browser answers to produce ro
 
 Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate from 許醫師's current `陽明小幫手` prototype name, which should be treated as benchmark/source context only.
 
-Current product version: `v2.0.7`.
+Current product version: `v2.1.0`.
 
 ## Project Ownership Rule
 
@@ -25,8 +25,9 @@ Huicheng may borrow architecture, interaction patterns, and safety lessons from 
 - A simplified Taiwan hospital patient intake screen with click or voice answer
   submission, visible answer confirmation, and 30-second final supplement.
 - A Version 2 ASR-ready adaptive-question demo that shows how
-  embedding-style retrieval over a governed question bank can choose the next
-  reasonable clarification or follow-up question.
+  embedding-style retrieval over a governed compact previsit question bank can
+  choose the next reasonable clarification or follow-up question within 12
+  patient-facing questions.
 
 ## What This Is Not
 
@@ -54,7 +55,7 @@ Fallback routes:
 The first-principles demo claim is narrow:
 
 ```text
-After each patient answer, the system selects the next most useful governed question from the current patient state.
+After each patient answer, the system selects the next most useful governed previsit question from the current patient state, and stops before drifting into diagnostic questioning.
 ```
 
 ## Demo Ready Check
@@ -113,6 +114,8 @@ Repository primitives:
 - Voice answer matching: `core/speech_answer_matching`
   with governed question-bank metadata, an ambiguity gate, and deterministic ranking before ordinary question selection
 - Governed V2 question bank export: `data/question_bank/urology_adaptive_bank.js`
+  (`QUESTION_BANK` is the compact 12-question runtime bank;
+  `LEGACY_QUESTION_BANK` preserves the older 41-question bank)
 - Role UI: `app/patient`, `app/patient-short`, `app/adaptive-intake`, `app/nurse`, `app/clinician`, `app/reviewer`
 - Evidence: `experiments/phase1`
 - Governance: `core/safety`, `docs/safety`
