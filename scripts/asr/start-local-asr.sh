@@ -12,7 +12,7 @@ export UROLOGY_ASR_PORT="${UROLOGY_ASR_PORT:-8765}"
 
 if [[ ! -x "$ASR_PYTHON" ]]; then
   echo "ASR Python is not executable: $ASR_PYTHON" >&2
-  echo "Set UROLOGY_ASR_PYTHON to a Python environment with faster-whisper and ctranslate2." >&2
+  echo "Set UROLOGY_ASR_PYTHON to a Python environment with faster-whisper, ctranslate2, pydub, noisereduce, and numpy." >&2
   exit 1
 fi
 

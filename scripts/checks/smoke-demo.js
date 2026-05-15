@@ -229,10 +229,13 @@ function checkBrowserScriptOrder() {
   );
   record(
     "app/adaptive-intake/index.html: adaptive engine loads before page app",
-    adaptive.indexOf("./adaptive-intake.js") > adaptive.indexOf("core/adaptive_questioning/index.js")
+    adaptive.indexOf("core/speech_answer_matching/index.js") > adaptive.indexOf("core/adaptive_questioning/index.js") &&
+      adaptive.indexOf("shared/local-asr-client.js") > adaptive.indexOf("core/speech_answer_matching/index.js") &&
+      adaptive.indexOf("./adaptive-intake.js") > adaptive.indexOf("shared/local-asr-client.js")
   );
   record("app/adaptive-intake/index.html: version badge visible", /versionBadge/.test(adaptive));
   record("local ASR server is RTX-only", /DEVICE = "cuda"/.test(read("scripts/asr/local_faster_whisper_server.py")) && /COMPUTE_TYPE = "int8"/.test(read("scripts/asr/local_faster_whisper_server.py")) && /noCpuFallback/.test(read("scripts/asr/local_faster_whisper_server.py")));
+  record("local ASR server runs fixed denoise before normalization", /DENOISE_PRESET = "light"/.test(read("scripts/asr/local_faster_whisper_server.py")) && /DENOISE_PROP_DECREASE = 0\.35/.test(read("scripts/asr/local_faster_whisper_server.py")) && /TARGET_DBFS = -20\.0/.test(read("scripts/asr/local_faster_whisper_server.py")) && /prepare_audio_for_transcription/.test(read("scripts/asr/local_faster_whisper_server.py")));
   record("local ASR client loaded before adaptive app", adaptive.indexOf("shared/local-asr-client.js") > -1 && adaptive.indexOf("./adaptive-intake.js") > adaptive.indexOf("shared/local-asr-client.js"));
 }
 
@@ -253,6 +256,18 @@ function checkCoreContract() {
 }
 
 function checkAdaptiveQuestioningContract() {
+  const fresh = adaptive.rankQuestions({
+    transcript: "",
+    answers: {},
+    askedQuestionIds: [],
+    questionBank: adaptive.QUESTION_BANK
+  });
+  record(
+    "adaptive smoke: fresh intake starts with primary concern",
+    fresh.selected.question.id === "compact_primary_concern",
+    fresh.selected.question.id
+  );
+
   const nocturia = adaptive.rankQuestions({
     transcript: "我最近晚上一直起來尿，而且有時候突然很急。",
     answers: {},

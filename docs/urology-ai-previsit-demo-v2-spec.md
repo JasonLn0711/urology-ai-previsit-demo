@@ -843,19 +843,35 @@ Requirements:
 ```text
 - ASR optional
 - typed fallback mandatory
-- ASR transcript editable before submit
-- system should not auto-submit uncertain ASR transcript
+- ASR starts from the first question page, not an intro page
+- browser VAD ends a spoken answer after 0.5 seconds of silence
+- choice-question ASR may auto-submit only after matching a visible option
+- uncertain ASR text must not be auto-submitted
+- no audio normalization or denoise controls in the urology demo
+- local ASR server must still run fixed denoise plus normalization internally
 ```
 
 UI behavior:
 
 ```text
-1. User clicks Start Voice Input.
-2. ASR transcript appears.
-3. User can edit transcript.
-4. User clicks Submit Answer.
-5. System updates patient state.
-6. System selects next question.
+1. The route opens directly on question 1.
+2. User clicks Start ASR.
+3. The browser records the original microphone audio and reads RMS/dBFS for VAD.
+4. After speech starts, 0.5 seconds of silence sends the segment to local ASR.
+5. Local ASR applies fixed noisereduce-light denoise, then -20 dBFS normalization.
+6. ASR transcript is matched against the current question's visible options.
+7. A reliable match is selected on screen, submitted, and the flow advances.
+8. If the transcript is uncertain, the UI asks the patient to retry or click.
+```
+
+Project AURA reference:
+
+```text
+Project AURA uses target-dBFS normalization and optional denoise for a desktop
+transcription app. This urology demo borrows the same preprocessing order:
+`denoise -> normalize -> ASR`. The UI exposes no controls, but the local ASR
+server always applies `noisereduce` light denoise (`prop_decrease=0.35`) and
+normalizes the prepared WAV to `-20 dBFS` before faster-whisper transcription.
 ```
 
 ## 18. LLM Policy

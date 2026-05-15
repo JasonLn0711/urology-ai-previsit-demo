@@ -2,6 +2,32 @@
 
 This changelog records meaningful product, demo, safety, question-bank, and evidence-system changes.
 
+## v2.4.0 - 2026-05-15
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Add built-in ASR audio preprocessing
+
+### Versioning
+
+- Bump type: `minor`
+- Verification command to run before freeze or commit: `npm run version:check`
+
+## v2.3.0 - 2026-05-15
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Add VAD auto-answer ASR flow
+
+### Versioning
+
+- Bump type: `minor`
+- Verification command to run before freeze or commit: `npm run version:check`
+
 ## v2.2.0 - 2026-05-15
 
 Stage: `demo-freeze-candidate`

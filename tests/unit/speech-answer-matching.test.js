@@ -103,3 +103,39 @@ test("multi-select can use acoustic scores for more than one visible answer", ()
   assert.equal(result.accepted, true);
   assert.deepEqual(result.values, ["Diabetes", "Kidney disease"]);
 });
+
+test("matches compact first-question spoken answer to visible option", () => {
+  const result = matchSpeechAnswer({
+    transcript: "我主要是晚上一直起來尿尿，白天也常跑廁所",
+    mode: "multi",
+    options: [
+      ["頻尿、夜尿或急尿", "頻尿、夜尿或急尿"],
+      ["尿會不小心漏出來", "尿會不小心漏出來"],
+      ["尿不太出來或尿流變弱", "尿不太出來或尿流變弱"],
+      ["尿尿疼痛或灼熱", "尿尿疼痛或灼熱"],
+      ["看到紅色或茶色尿、血塊", "看到紅色或茶色尿、血塊"],
+      ["不確定", "不確定"]
+    ]
+  });
+
+  assert.equal(result.accepted, true);
+  assert.deepEqual(result.values, ["頻尿、夜尿或急尿"]);
+});
+
+test("matches compact multi-select symptoms from one spoken answer", () => {
+  const result = matchSpeechAnswer({
+    transcript: "尿尿會刺痛，還有發燒發冷",
+    mode: "multi",
+    options: [
+      ["尿尿時疼痛、刺痛或灼熱", "尿尿時疼痛、刺痛或灼熱"],
+      ["下腹或膀胱附近疼痛/悶脹", "下腹或膀胱附近疼痛/悶脹"],
+      ["腰部兩側或背側痛", "腰部兩側或背側痛"],
+      ["發燒或發冷", "發燒或發冷"],
+      ["以上都沒有", "以上都沒有"],
+      ["不確定", "不確定"]
+    ]
+  });
+
+  assert.equal(result.accepted, true);
+  assert.deepEqual(result.values, ["尿尿時疼痛、刺痛或灼熱", "發燒或發冷"]);
+});

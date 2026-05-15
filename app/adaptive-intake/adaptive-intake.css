@@ -18,6 +18,26 @@
   margin-top: 0.4rem;
 }
 
+.question-first-shell {
+  padding-top: 18px;
+}
+
+.question-first-shell .adaptive-workspace {
+  grid-template-columns: minmax(430px, 1.1fr) minmax(280px, 0.72fr) minmax(320px, 0.82fr);
+  margin-top: 0;
+}
+
+.adaptive-question-panel {
+  min-height: min(74vh, 760px);
+}
+
+.adaptive-question-panel h1 {
+  font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+  letter-spacing: 0;
+  line-height: 1.18;
+  margin: 0;
+}
+
 .adaptive-fact-item {
   align-items: center;
   display: grid;
@@ -73,6 +93,12 @@
   box-shadow: inset 0 0 0 2px rgba(36, 116, 93, 0.14);
 }
 
+.adaptive-answer-button.voice-selected,
+.adaptive-answer-button[aria-pressed="true"].voice-selected {
+  outline: 3px solid rgba(36, 116, 93, 0.26);
+  outline-offset: 2px;
+}
+
 .answer-next-button {
   margin-top: 12px;
   width: min(100%, 220px);
@@ -108,6 +134,61 @@
 }
 
 @media (max-width: 840px) {
+  .adaptive-demo-page .topbar {
+    align-items: flex-start;
+    gap: 12px;
+    position: static;
+  }
+
+  .adaptive-demo-page .nav-actions {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    padding-bottom: 4px;
+  }
+
+  .adaptive-demo-page .nav-actions > * {
+    flex: 0 0 auto;
+  }
+
+  .adaptive-demo-page .version-pill {
+    order: 0;
+  }
+
+  .adaptive-demo-page #resetDemo {
+    order: 1;
+  }
+
+  .adaptive-demo-page .demo-mode-switch {
+    order: 2;
+  }
+
+  .adaptive-demo-page .nav-actions .ghost-button:not(#resetDemo) {
+    order: 3;
+  }
+
+  .adaptive-demo-page #loadNocturia,
+  .adaptive-demo-page #loadPain,
+  .adaptive-demo-page #loadBlood,
+  .adaptive-demo-page #loadVaguePain,
+  .adaptive-demo-page #loadVagueUrinary {
+    display: none;
+  }
+
+  .adaptive-demo-page .ghost-button,
+  .adaptive-demo-page .link-button,
+  .adaptive-demo-page .tool-button {
+    min-height: 40px;
+    padding: 8px 12px;
+  }
+
+  .adaptive-demo-page .demo-mode-switch {
+    min-width: max-content;
+  }
+
+  .question-first-shell .adaptive-workspace {
+    grid-template-columns: 1fr;
+  }
+
   .adaptive-shell .mvp-brief {
     grid-template-columns: 1fr;
     gap: 16px;
@@ -120,6 +201,11 @@
     word-break: normal;
   }
 
+  .adaptive-question-panel h1 {
+    font-size: 1.55rem;
+    line-height: 1.2;
+  }
+
   .adaptive-shell .lead {
     margin-top: 12px;
     font-size: 1rem;
@@ -130,9 +216,24 @@
   }
 }
 
+@media (min-width: 841px) and (max-width: 1180px) {
+  .question-first-shell .adaptive-workspace {
+    grid-template-columns: minmax(0, 1.24fr) minmax(260px, 0.76fr);
+  }
+
+  .question-first-shell .adaptive-rationale-panel {
+    grid-column: 1 / -1;
+    position: static;
+  }
+}
+
 @media (max-width: 460px) {
   .adaptive-demo-page h1 {
     font-size: 2rem;
+  }
+
+  .adaptive-question-panel h1 {
+    font-size: 1.38rem;
   }
 
   .adaptive-proof {

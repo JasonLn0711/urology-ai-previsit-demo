@@ -93,6 +93,23 @@ http://localhost:4173/app/adaptive-intake/
 http://localhost:4173/app/patient-short/
 ```
 
-The browser records audio with `MediaRecorder`, sends the audio blob to the
-local ASR server, and receives a transcript. Choice questions still accept only
-visible answers through `core/speech_answer_matching`.
+The adaptive intake route uses a browser-side VAD loop for short answer
+segments:
+
+1. The patient starts ASR from the question page.
+2. The browser records the original microphone audio with `MediaRecorder`.
+3. A Web Audio analyser reads RMS / dBFS levels for VAD only.
+4. After speech starts, `0.5` seconds of silence ends the segment.
+5. The original audio blob is sent to the local ASR server.
+6. The local ASR server applies fixed audio preprocessing:
+   `noisereduce` light denoise, then `-20 dBFS` volume normalization.
+7. The transcript is matched only against the current question's visible
+   choices through `core/speech_answer_matching`.
+8. A reliable match is selected on screen and then submitted automatically.
+
+This design references Project AURA's live-capture pattern: short speech
+segments, silence-boundary flushing, and a target `-20 dBFS` level as an
+operational calibration point. It also borrows Project AURA's imported-audio
+preprocessing order: denoise first, then normalization, then ASR. This urology
+demo deliberately does not expose normalization or denoise controls in the UI;
+the local ASR server always runs the fixed policy internally.

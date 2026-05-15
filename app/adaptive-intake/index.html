@@ -31,30 +31,23 @@
       </nav>
     </header>
 
-    <main class="app-shell adaptive-shell">
-      <section class="mvp-brief patient-brief" aria-labelledby="mvp-title">
-        <div>
-          <p class="eyebrow" data-i18n="heroEyebrow">V2 示範</p>
-          <h1 id="mvp-title" data-i18n="heroTitle">問下一個最有用的問題，而不是每題都問。</h1>
-          <p class="lead" data-i18n="heroLead">
-            系統把病人說法轉成狀態，再從新版 12 題內題庫選出一題補問。ASR 可選；排序引擎不診斷、不建議治療。
-          </p>
-        </div>
-        <div class="adaptive-proof" aria-label="示範邏輯">
-          <strong data-i18n="proofV1">V1 固定問卷</strong>
-          <span data-i18n="proofV1Detail">病人跟著表單走</span>
-          <strong>V2 自適應問答</strong>
-          <span data-i18n="proofV2Detail">系統跟著病人狀態走</span>
-          <strong>ASR / 文字輸入</strong>
-          <span>模糊說法閘門</span>
-          <strong>語意檢索</strong>
-          <span data-i18n="proofNext">下一題</span>
-          <strong data-i18n="proofBudget">最多 12 題</strong>
-          <span>醫師接手問診</span>
-        </div>
-      </section>
-
+    <main class="app-shell adaptive-shell question-first-shell">
       <section class="workspace adaptive-workspace" aria-label="自適應看診前問答示範">
+        <section class="intake-panel adaptive-question-panel" aria-labelledby="question-title">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow" data-i18n="nextEyebrow">下一題</p>
+              <h1 id="question-title">等待</h1>
+            </div>
+            <div class="readiness" aria-live="polite">
+              <span id="turnLabel">第 0 輪</span>
+              <strong id="scoreLabel">尚未排序</strong>
+            </div>
+          </div>
+
+          <div id="questionMount" class="adaptive-question-mount"></div>
+        </section>
+
         <aside class="case-rail adaptive-input-panel" aria-labelledby="input-title">
           <div class="rail-section">
             <p class="eyebrow" data-i18n="inputEyebrow">輸入</p>
@@ -74,21 +67,6 @@
             <div id="answeredFacts" class="fact-list"></div>
           </div>
         </aside>
-
-        <section class="intake-panel adaptive-question-panel" aria-labelledby="question-title">
-          <div class="panel-head">
-            <div>
-              <p class="eyebrow" data-i18n="nextEyebrow">下一題</p>
-              <h2 id="question-title">等待</h2>
-            </div>
-            <div class="readiness" aria-live="polite">
-              <span id="turnLabel">第 0 輪</span>
-              <strong id="scoreLabel">尚未排序</strong>
-            </div>
-          </div>
-
-          <div id="questionMount" class="adaptive-question-mount"></div>
-        </section>
 
         <aside class="summary-panel adaptive-rationale-panel" aria-labelledby="rationale-title">
           <div class="rail-section">
@@ -121,6 +99,7 @@
     <script src="../../core/adaptive_questioning/scoring.js"></script>
     <script src="../../core/adaptive_questioning/rankQuestions.js"></script>
     <script src="../../core/adaptive_questioning/index.js"></script>
+    <script src="../../core/speech_answer_matching/index.js"></script>
     <script src="../shared/local-asr-client.js"></script>
     <script src="./adaptive-intake.js"></script>
   </body>

@@ -21,6 +21,18 @@ test("adaptive ranking selects nocturia follow-up from night urination transcrip
   assert.ok(result.ranked[0].reasons.some((reason) => reason.includes("補足缺口")));
 });
 
+test("adaptive ranking starts fresh intake on the primary concern question", () => {
+  const result = rankQuestions({
+    transcript: "",
+    answers: {},
+    askedQuestionIds: [],
+    questionBank: QUESTION_BANK
+  });
+
+  assert.equal(result.selected.question.id, "compact_primary_concern");
+  assert.equal(result.ranked[0].question.id, "compact_primary_concern");
+});
+
 test("adaptive ranking does not repeat already answered question", () => {
   const result = rankQuestions({
     transcript: "我晚上一直起來尿。",

@@ -8,7 +8,7 @@ It uses synthetic urology previsit cases and local browser answers to produce ro
 
 Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate from 許醫師's current `陽明小幫手` prototype name, which should be treated as benchmark/source context only.
 
-Current product version: `v2.2.0`.
+Current product version: `v2.4.0`.
 
 ## Project Ownership Rule
 
@@ -26,7 +26,8 @@ Huicheng may borrow architecture, interaction patterns, and safety lessons from 
   submission, visible answer confirmation, and 30-second final supplement.
 - A local ASR backend that uses the existing
   `SoybeanMilk/faster-whisper-Breeze-ASR-25` model on RTX GPU with
-  `compute_type=int8` and no CPU fallback.
+  `compute_type=int8`, no CPU fallback, and fixed denoise plus `-20 dBFS`
+  normalization before transcription.
 - A Version 2 ASR-ready adaptive-question demo that shows how
   embedding-style retrieval over a governed compact previsit question bank can
   choose the next reasonable clarification or follow-up question within 12

@@ -4,10 +4,26 @@ const ambiguityEngine = typeof require === "function" ? require("./detectAmbigui
 const scoring = typeof require === "function" ? require("./scoring") : window.UrologyAdaptiveQuestioning;
 const questionBankModule = typeof require === "function" ? require("./questionBank") : window.UrologyAdaptiveQuestioning;
 
-const { extractFacts } = facts;
+const { extractFacts, hasAnswer } = facts;
 const { detectAmbiguity } = ambiguityEngine;
 const { DEFAULT_WEIGHTS, scoreQuestion } = scoring;
 const { QUESTION_BANK } = questionBankModule;
+
+function isFreshIntake(transcript, answers = {}, askedQuestionIds = []) {
+  return !String(transcript || "").trim() &&
+    !askedQuestionIds.length &&
+    !Object.keys(answers || {}).some((field) => hasAnswer(answers, field));
+}
+
+function promoteInitialQuestion(ranked) {
+  const index = ranked.findIndex((item) => item.question.id === "compact_primary_concern");
+  if (index <= 0) return ranked;
+  return [
+    ranked[index],
+    ...ranked.slice(0, index),
+    ...ranked.slice(index + 1)
+  ];
+}
 
 function rankQuestions({
   transcript = "",
@@ -20,7 +36,7 @@ function rankQuestions({
   const extracted = extractFacts({ transcript, answers, questionBank });
   const ambiguity = detectAmbiguity(transcript, answers);
   const activeAmbiguity = ambiguity.find((item) => item.active);
-  const ranked = questionBank.map((question) => {
+  const scoredQuestions = questionBank.map((question) => {
     const scored = scoreQuestion({
       question,
       stateText: extracted.stateText,
@@ -38,6 +54,9 @@ function rankQuestions({
       reasons: scored.reasons
     };
   }).sort((a, b) => b.score - a.score);
+  const ranked = isFreshIntake(transcript, answers, askedQuestionIds)
+    ? promoteInitialQuestion(scoredQuestions)
+    : scoredQuestions;
 
   return {
     selected: ranked.find((item) => item.score > -0.5) || ranked[0] || null,

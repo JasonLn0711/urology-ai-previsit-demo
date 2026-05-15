@@ -1,11 +1,23 @@
 const { QUESTION_BANK, rankQuestions, FIELD_LABELS } = window.UrologyAdaptiveQuestioning;
 const VERSION = window.UroPrevisitVersion || { versionLabel: "v2.2.0" };
 const LOCAL_ASR = window.UrologyLocalAsr;
+const SPEECH_MATCHER = window.UrologySpeechAnswerMatching;
 const MAX_PREVISIT_QUESTIONS = window.UrologyAdaptiveQuestioning.MAX_PREVISIT_QUESTIONS || 12;
 
 const STORAGE_KEY = "urologyAdaptiveDemoState";
 const LANGUAGE_KEY = "urologyAdaptiveDemoLanguage";
 const DEFAULT_LANGUAGE = "zh";
+// Audio preprocessing policy:
+// Project AURA uses target-dBFS normalization and optional denoise for a desktop
+// transcription app. This hospital demo deliberately does not mutate audio
+// samples or expose normalization/denoise controls. It only reads browser RMS
+// levels for VAD so the original microphone blob is sent to the RTX ASR server.
+const ASR_VAD_TARGET_DBFS = -20;
+const ASR_VAD_SPEECH_THRESHOLD_DBFS = -36;
+const ASR_VAD_SILENCE_MS = 500;
+const ASR_VAD_MIN_SPEECH_MS = 160;
+const ASR_VAD_MAX_UTTERANCE_MS = 8000;
+const ASR_RESTART_DELAY_MS = 450;
 
 const UI_COPY = {
   en: {
@@ -28,24 +40,31 @@ const UI_COPY = {
     proofBudget: "12-question cap",
     inputEyebrow: "Input",
     inputTitle: "Patient statement",
-    inputCopy: "Type or paste what the patient said. Local ASR uses Breeze on RTX GPU/int8.",
+    inputCopy: "Click Start ASR once. The browser detects one spoken answer, sends it after 0.5 seconds of silence, matches visible choices, and advances.",
     transcriptLabel: "Current statement",
     transcriptPlaceholder: "Example: I wake up several times at night to pee.",
-    startAsr: "Start ASR",
+    startAsr: "Start continuous ASR",
     stopAsr: "Stop ASR",
     computeNext: "Find next question",
     asrIdle: "Local Breeze ASR requires npm run asr:local and RTX GPU/int8.",
     asrUnsupported: "This browser cannot record audio for local ASR. Use typed input.",
-    asrListening: "Recording for local Breeze ASR. Press Stop ASR to transcribe.",
-    asrStopped: "Recording stopped. Transcribing with local RTX/int8 ASR.",
+    asrListening: "Listening. The answer is sent after 0.5 seconds of silence.",
+    asrStopped: "Speech segment ended. Transcribing with local RTX/int8 ASR.",
+    asrProcessing: "Transcribing and matching this question's visible options.",
+    asrReady: "Local ASR ready",
+    asrChecking: "Checking local ASR endpoint.",
+    asrMatched: "Matched answer",
+    asrNoMatch: "Heard speech, but it did not match this question's visible options.",
     asrError: "Local ASR failed. Confirm npm run asr:local is running with RTX/int8.",
+    asrCaptureError: "Browser microphone or recorder failed.",
+    asrBackendError: "Local ASR request failed.",
     answeredEyebrow: "Answered",
     answeredEmpty: "No answers yet.",
     nextEyebrow: "Next question",
     waitingTitle: "Waiting",
     notRanked: "Not ranked",
-    emptyTitle: "Enter a statement, then find the next question.",
-    emptyBody: "The system will rank governed questions and show the selected follow-up.",
+    emptyTitle: "The first question is ready.",
+    emptyBody: "Click an answer or start ASR. The system will continue from the selected answer.",
     selectedQuestion: "Selected question",
     whyQuestion: "Why this question",
     multiHint: "Select all that apply, then press Next.",
@@ -102,24 +121,31 @@ const UI_COPY = {
     proofBudget: "最多 12 題",
     inputEyebrow: "輸入",
     inputTitle: "病人說法",
-    inputCopy: "可貼上病人說的話；本機 ASR 使用 Breeze 模型與 RTX GPU/int8。",
+    inputCopy: "可直接點選；也可以按一次開始 ASR。系統會聽本題回答，安靜 0.5 秒後自動送出、比對選項並前進。",
     transcriptLabel: "目前說法",
     transcriptPlaceholder: "例如：我最近晚上一直起來尿，有時候突然很急。",
-    startAsr: "開始 ASR",
+    startAsr: "開始連續 ASR",
     stopAsr: "停止 ASR",
     computeNext: "找下一題",
     asrIdle: "本機 Breeze ASR 需要先啟動 npm run asr:local，並使用 RTX GPU/int8。",
     asrUnsupported: "此瀏覽器無法錄音給本機 ASR；請使用文字輸入。",
-    asrListening: "正在錄音給本機 Breeze ASR；按停止 ASR 後轉文字。",
-    asrStopped: "錄音已停止，正在用本機 RTX/int8 ASR 轉文字。",
+    asrListening: "正在聽本題回答；偵測到 0.5 秒安靜就會自動送出。",
+    asrStopped: "已切出本題語音，正在用本機 RTX/int8 ASR 轉文字。",
+    asrProcessing: "正在轉文字並比對本題畫面上的選項。",
+    asrReady: "本機 ASR 就緒",
+    asrChecking: "正在確認本機 ASR 服務。",
+    asrMatched: "已比對到答案",
+    asrNoMatch: "有聽到語音，但沒有可靠對上本題畫面上的選項。",
     asrError: "本機 ASR 未成功；請確認 npm run asr:local 已啟動且使用 RTX/int8。",
+    asrCaptureError: "瀏覽器麥克風或錄音器啟動失敗。",
+    asrBackendError: "本機 ASR 轉錄請求失敗。",
     answeredEyebrow: "已回答",
     answeredEmpty: "尚未回答任何欄位。",
     nextEyebrow: "下一題",
     waitingTitle: "等待",
     notRanked: "尚未排序",
-    emptyTitle: "輸入說法後，找下一題。",
-    emptyBody: "系統會排序受治理題庫，並顯示選出的補問。",
+    emptyTitle: "第一題已準備好。",
+    emptyBody: "請直接點選答案，或開始 ASR。系統會依答案自動往下一題。",
     selectedQuestion: "系統選題",
     whyQuestion: "為什麼問這題",
     multiHint: "可複選；勾選完畢後請按下一步。",
@@ -479,8 +505,20 @@ let state = restoreState();
 let language = restoreLanguage();
 let asrRecorder = null;
 let asrStream = null;
+let asrAudioContext = null;
+let asrAudioSource = null;
+let asrAnalyser = null;
+let asrVadFrame = null;
 let asrChunks = [];
+let asrSessionActive = false;
 let listening = false;
+let asrTranscribing = false;
+let asrSpeechStarted = false;
+let asrSpeechStartedAt = 0;
+let asrLastSpeechAt = 0;
+let asrPeakDbfs = -90;
+let asrStatusLastAt = 0;
+let asrQuestionAtCapture = null;
 
 function emptyState() {
   return {
@@ -604,11 +642,35 @@ function updateStaticCopy() {
     element.textContent = t(element.dataset.i18n);
   });
   transcriptInput.placeholder = t("transcriptPlaceholder");
-  asrStatus.textContent = listening ? t("asrListening") : t("asrIdle");
-  asrButton.textContent = listening ? t("stopAsr") : t("startAsr");
+  if (!listening && !asrTranscribing && !asrSessionActive) {
+    asrStatus.textContent = t("asrIdle");
+  }
+  asrButton.textContent = asrSessionActive ? t("stopAsr") : t("startAsr");
   languageButtons.forEach((button) => {
     button.setAttribute("aria-pressed", String(button.dataset.langOption === language));
   });
+}
+
+function rankCurrentQuestion() {
+  state.ranking = rankQuestions({
+    transcript: state.transcript || "",
+    answers: state.answers,
+    askedQuestionIds: state.askedQuestionIds,
+    questionBank: QUESTION_BANK
+  });
+  const selectedId = state.ranking.selected?.question?.id;
+  state.completed = !selectedId || state.askedQuestionIds.includes(selectedId);
+  state.current = state.completed ? null : state.ranking.selected;
+}
+
+function ensureInitialQuestion() {
+  if (state.completed || state.current) return;
+  if (flowComplete()) {
+    state.completed = true;
+    return;
+  }
+  rankCurrentQuestion();
+  persistState();
 }
 
 function computeNext() {
@@ -621,15 +683,7 @@ function computeNext() {
     render();
     return;
   }
-  state.ranking = rankQuestions({
-    transcript: state.transcript,
-    answers: state.answers,
-    askedQuestionIds: state.askedQuestionIds,
-    questionBank: QUESTION_BANK
-  });
-  const selectedId = state.ranking.selected?.question?.id;
-  state.completed = !selectedId || state.askedQuestionIds.includes(selectedId);
-  state.current = state.completed ? null : state.ranking.selected;
+  rankCurrentQuestion();
   persistState();
   render();
 }
@@ -657,6 +711,7 @@ function flowComplete() {
 function reset() {
   state = emptyState();
   transcriptInput.value = "";
+  ensureInitialQuestion();
   persistState();
   render();
 }
@@ -705,7 +760,7 @@ function isOpenText(question) {
 }
 
 function isExclusiveOption(option) {
-  return ["沒有", "以上都沒有", "不確定"].includes(option);
+  return /^(沒有|目前沒有|沒有看過|以上都沒有|不確定)$/.test(String(option || ""));
 }
 
 function renderQuestion() {
@@ -897,36 +952,243 @@ function toggleMultiOption(button) {
   updateMultiNextState();
 }
 
+function visibleOptionPairs(question) {
+  return (question?.options || []).map((option, index) => [option, optionText(question, option, index)]);
+}
+
+function delay(ms) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+function selectedDisplayFor(question, values) {
+  return values.map((value) => {
+    const index = question.options.indexOf(value);
+    return index >= 0 ? optionText(question, value, index) : value;
+  }).join(language === "en" ? ", " : "、");
+}
+
+function markVoiceSelectedValues(question, values) {
+  if (isMultiChoice(question)) {
+    const buttons = Array.from(questionMount.querySelectorAll("[data-multi-option]"));
+    buttons.forEach((button) => {
+      button.setAttribute("aria-pressed", String(values.includes(button.dataset.multiOption)));
+      button.classList.toggle("voice-selected", values.includes(button.dataset.multiOption));
+    });
+    updateMultiNextState();
+    return;
+  }
+
+  Array.from(questionMount.querySelectorAll("[data-answer-value]")).forEach((button) => {
+    const selected = values.includes(button.dataset.answerValue);
+    button.classList.toggle("voice-selected", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+}
+
+function acousticScoresFrom(result) {
+  return result?.acousticScores || result?.optionScores || result?.scores || null;
+}
+
+async function applyAsrTranscriptToQuestion(text, result, question) {
+  if (!text || !question) return false;
+
+  if (isOpenText(question)) {
+    const openAnswer = questionMount.querySelector("#openAnswerInput");
+    if (openAnswer) openAnswer.value = text;
+    asrStatus.textContent = `${t("asrMatched")}：${text}`;
+    await delay(320);
+    answerCurrent(text);
+    return true;
+  }
+
+  if (!SPEECH_MATCHER || !SPEECH_MATCHER.matchSpeechAnswer) {
+    asrStatus.textContent = t("asrNoMatch");
+    return false;
+  }
+
+  const match = SPEECH_MATCHER.matchSpeechAnswer({
+    transcript: text,
+    options: visibleOptionPairs(question),
+    mode: isMultiChoice(question) ? "multi" : "single",
+    acousticScores: acousticScoresFrom(result)
+  });
+
+  if (!match.accepted) {
+    const heard = language === "en" ? `Heard: ${text}` : `我聽到：${text}`;
+    asrStatus.textContent = `${t("asrNoMatch")} ${heard}`;
+    showToast(t("asrNoMatch"));
+    return false;
+  }
+
+  const values = isMultiChoice(question) ? match.values : [match.value];
+  markVoiceSelectedValues(question, values);
+  asrStatus.textContent = `${t("asrMatched")}：${selectedDisplayFor(question, values)}`;
+  await delay(420);
+  answerCurrent(isMultiChoice(question) ? values : values[0]);
+  return true;
+}
+
+function stopVadLoop() {
+  if (asrVadFrame) {
+    window.cancelAnimationFrame(asrVadFrame);
+  }
+  asrVadFrame = null;
+}
+
+function stopAsrAudioAnalysis() {
+  stopVadLoop();
+  if (asrAudioSource) {
+    try {
+      asrAudioSource.disconnect();
+    } catch (error) {
+      // Ignore browser-specific disconnect races during capture shutdown.
+    }
+  }
+  asrAudioSource = null;
+  asrAnalyser = null;
+  if (asrAudioContext) {
+    asrAudioContext.close().catch(() => {});
+  }
+  asrAudioContext = null;
+}
+
 function stopAsrTracks() {
+  stopAsrAudioAnalysis();
   if (asrStream) {
     asrStream.getTracks().forEach((track) => track.stop());
   }
   asrStream = null;
 }
 
-async function transcribeAdaptiveAudio(blob) {
+function audioDbfsFromAnalyser() {
+  if (!asrAnalyser) return -100;
+  const samples = new Float32Array(asrAnalyser.fftSize);
+  asrAnalyser.getFloatTimeDomainData(samples);
+  let sumSquares = 0;
+  for (const sample of samples) {
+    sumSquares += sample * sample;
+  }
+  const rms = Math.sqrt(sumSquares / samples.length);
+  if (!Number.isFinite(rms) || rms <= 0.000001) return -100;
+  return 20 * Math.log10(rms);
+}
+
+function vadComparableDbfs(rawDbfs) {
+  if (rawDbfs > asrPeakDbfs) {
+    asrPeakDbfs = rawDbfs;
+  }
+  if (asrPeakDbfs <= -80) return rawDbfs;
+  return rawDbfs + (ASR_VAD_TARGET_DBFS - asrPeakDbfs);
+}
+
+function updateVadStatus(levelDbfs) {
+  const now = performance.now();
+  if (now - asrStatusLastAt < 300) return;
+  asrStatusLastAt = now;
+  const rounded = Math.round(levelDbfs);
+  asrStatus.textContent = language === "en"
+    ? `${t("asrListening")} VAD ${rounded} dBFS`
+    : `${t("asrListening")} VAD ${rounded} dBFS`;
+}
+
+function stopAsrCapture({ submitAudio = true } = {}) {
+  stopVadLoop();
+  if (asrRecorder && asrRecorder.state !== "inactive") {
+    asrRecorder._submitAudio = submitAudio;
+    asrRecorder.stop();
+    return;
+  }
+  listening = false;
+  stopAsrTracks();
+}
+
+function runVadLoop() {
+  if (!listening || !asrRecorder || asrRecorder.state === "inactive") return;
+  const now = performance.now();
+  const levelDbfs = vadComparableDbfs(audioDbfsFromAnalyser());
+  const speechDetected = levelDbfs >= ASR_VAD_SPEECH_THRESHOLD_DBFS;
+  updateVadStatus(levelDbfs);
+
+  if (speechDetected) {
+    if (!asrSpeechStarted) {
+      asrSpeechStarted = true;
+      asrSpeechStartedAt = now;
+    }
+    asrLastSpeechAt = now;
+  }
+
+  const speechLongEnough = asrSpeechStarted && (now - asrSpeechStartedAt >= ASR_VAD_MIN_SPEECH_MS);
+  const silenceLongEnough = speechLongEnough && (now - asrLastSpeechAt >= ASR_VAD_SILENCE_MS);
+  const utteranceTooLong = asrSpeechStarted && (now - asrSpeechStartedAt >= ASR_VAD_MAX_UTTERANCE_MS);
+  if (silenceLongEnough || utteranceTooLong) {
+    stopAsrCapture({ submitAudio: true });
+    return;
+  }
+
+  asrVadFrame = window.requestAnimationFrame(runVadLoop);
+}
+
+function scheduleNextAsrCapture() {
+  if (!asrSessionActive || listening || asrTranscribing || state.completed) return;
+  window.setTimeout(() => {
+    if (asrSessionActive && !listening && !asrTranscribing && !state.completed) {
+      startAsrCapture();
+    }
+  }, ASR_RESTART_DELAY_MS);
+}
+
+function asrFailureText(error, fallbackKey = "asrError") {
+  const message = String(error?.message || "").trim();
+  if (!message) return t(fallbackKey);
+  return `${t(fallbackKey)} ${language === "en" ? "Detail" : "細節"}：${message}`;
+}
+
+function stopAsrSessionAfterFailure(error, fallbackKey = "asrError") {
+  asrSessionActive = false;
+  listening = false;
+  asrButton.disabled = false;
+  asrButton.textContent = t("startAsr");
+  asrStatus.textContent = asrFailureText(error, fallbackKey);
+  if (error) console.error("[urology-asr]", error);
+  stopAsrTracks();
+}
+
+async function transcribeAdaptiveAudio(blob, question) {
   try {
+    asrTranscribing = true;
     asrStatus.textContent = t("asrStopped");
-    const result = await LOCAL_ASR.transcribeBlob(blob, { mode: "adaptive-intake" });
+    const result = await LOCAL_ASR.transcribeBlob(blob, {
+      mode: "adaptive-intake-vad",
+      field: question?.asksFor?.[0] || "",
+      question: question?.id || "",
+      options: question ? visibleOptionPairs(question) : undefined
+    });
+    asrStatus.textContent = t("asrProcessing");
     const text = String(result.text || "").trim();
     transcriptInput.value = text;
     state.transcript = text;
     persistState();
-    asrStatus.textContent = text
-      ? `我聽到：${text}`
-      : "本機 ASR 沒有聽到可用文字；請再試一次或使用文字輸入。";
+    if (text) {
+      await applyAsrTranscriptToQuestion(text, result, question);
+    } else {
+      asrStatus.textContent = "本機 ASR 沒有聽到可用文字；請再試一次或使用文字輸入。";
+    }
   } catch (error) {
-    asrStatus.textContent = t("asrError");
+    stopAsrSessionAfterFailure(error, "asrBackendError");
   } finally {
+    asrTranscribing = false;
     listening = false;
-    asrButton.textContent = t("startAsr");
+    asrButton.textContent = asrSessionActive ? t("stopAsr") : t("startAsr");
     stopAsrTracks();
+    scheduleNextAsrCapture();
   }
 }
 
 async function startAsrCapture() {
   if (!LOCAL_ASR || !LOCAL_ASR.supported()) {
+    asrSessionActive = false;
     asrButton.disabled = true;
+    asrButton.textContent = t("startAsr");
     asrStatus.textContent = t("asrUnsupported");
     return;
   }
@@ -934,34 +1196,85 @@ async function startAsrCapture() {
   try {
     asrStream = await navigator.mediaDevices.getUserMedia({ audio: true });
     asrChunks = [];
-    asrRecorder = new MediaRecorder(asrStream);
-    const mimeType = asrRecorder.mimeType || "audio/webm";
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) throw new Error("browser cannot run VAD audio analysis");
+    asrAudioContext = new AudioContextClass();
+    asrAudioSource = asrAudioContext.createMediaStreamSource(asrStream);
+    asrAnalyser = asrAudioContext.createAnalyser();
+    asrAnalyser.fftSize = 2048;
+    asrAudioSource.connect(asrAnalyser);
+    const supportedTypes = ["audio/webm;codecs=opus", "audio/webm", "audio/ogg;codecs=opus"];
+    const preferredMimeType = supportedTypes.find((type) => MediaRecorder.isTypeSupported(type)) || "";
+    asrRecorder = preferredMimeType ? new MediaRecorder(asrStream, { mimeType: preferredMimeType }) : new MediaRecorder(asrStream);
+    const recorderMimeType = asrRecorder.mimeType || "audio/webm";
+    asrQuestionAtCapture = state.current?.question || null;
+    asrSpeechStartedAt = 0;
+    asrLastSpeechAt = 0;
+    asrPeakDbfs = -90;
+    asrStatusLastAt = 0;
+    asrSpeechStarted = false;
     asrRecorder.ondataavailable = (event) => {
       if (event.data && event.data.size > 0) asrChunks.push(event.data);
     };
     asrRecorder.onstop = () => {
-      const blob = new Blob(asrChunks, { type: mimeType });
+      const blob = new Blob(asrChunks, { type: recorderMimeType });
+      const submitAudio = asrRecorder?._submitAudio !== false;
+      const question = asrQuestionAtCapture;
       asrRecorder = null;
-      transcribeAdaptiveAudio(blob);
+      listening = false;
+      stopAsrTracks();
+      if (submitAudio && blob.size > 0 && asrSpeechStarted) {
+        transcribeAdaptiveAudio(blob, question);
+      } else {
+        asrButton.textContent = asrSessionActive ? t("stopAsr") : t("startAsr");
+        asrStatus.textContent = asrSessionActive ? t("asrListening") : t("asrIdle");
+        scheduleNextAsrCapture();
+      }
     };
-    asrRecorder.start();
+    asrRecorder.start(250);
     listening = true;
     asrButton.textContent = t("stopAsr");
     asrStatus.textContent = t("asrListening");
+    runVadLoop();
   } catch (error) {
-    asrStatus.textContent = t("asrError");
-    stopAsrTracks();
+    stopAsrSessionAfterFailure(error, "asrCaptureError");
   }
 }
 
-function stopAsrCapture() {
-  if (asrRecorder && asrRecorder.state !== "inactive") {
-    asrRecorder.stop();
+async function startAsrSession() {
+  if (!LOCAL_ASR || !LOCAL_ASR.supported()) {
+    asrButton.disabled = true;
+    asrButton.textContent = t("startAsr");
+    asrStatus.textContent = t("asrUnsupported");
     return;
   }
-  listening = false;
+
+  asrButton.disabled = true;
+  asrStatus.textContent = t("asrChecking");
+  try {
+    const health = await LOCAL_ASR.health();
+    asrStatus.textContent = `${t("asrReady")}：${health.gpuNames.join("、")} / ${health.computeType}`;
+  } catch (error) {
+    stopAsrSessionAfterFailure(error, "asrBackendError");
+    return;
+  } finally {
+    asrButton.disabled = false;
+  }
+
+  asrSessionActive = true;
+  asrButton.textContent = t("stopAsr");
+  if (!listening && !asrTranscribing) startAsrCapture();
+}
+
+function stopAsrSession() {
+  asrSessionActive = false;
   asrButton.textContent = t("startAsr");
-  stopAsrTracks();
+  if (listening) {
+    stopAsrCapture({ submitAudio: asrSpeechStarted });
+  } else {
+    stopAsrTracks();
+    if (!asrTranscribing) asrStatus.textContent = t("asrIdle");
+  }
 }
 
 function setupAsr() {
@@ -972,7 +1285,9 @@ function setupAsr() {
   }
   LOCAL_ASR.health()
     .then((health) => {
-      asrStatus.textContent = `本機 ASR 就緒：${health.gpuNames.join("、")} / ${health.computeType}`;
+      if (!asrSessionActive && !listening && !asrTranscribing) {
+        asrStatus.textContent = `${t("asrReady")}：${health.gpuNames.join("、")} / ${health.computeType}`;
+      }
     })
     .catch(() => {
       asrStatus.textContent = t("asrIdle");
@@ -1022,12 +1337,13 @@ questionMount.addEventListener("click", (event) => {
   }
 });
 asrButton.addEventListener("click", () => {
-  if (listening) {
-    stopAsrCapture();
+  if (asrSessionActive) {
+    stopAsrSession();
   } else {
-    startAsrCapture();
+    startAsrSession();
   }
 });
 
 setupAsr();
+ensureInitialQuestion();
 render();

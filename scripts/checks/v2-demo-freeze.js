@@ -100,6 +100,14 @@ function checkQuestionBank() {
 }
 
 function checkCases() {
+  const fresh = rankQuestions({
+    transcript: "",
+    answers: {},
+    askedQuestionIds: [],
+    questionBank: QUESTION_BANK
+  });
+  record("Fresh intake starts with primary concern question", fresh.selected?.question?.id === "compact_primary_concern", fresh.selected?.question?.id);
+
   const cases = [
     {
       name: "Case A nocturia",
@@ -153,13 +161,18 @@ function checkSafetyText() {
 
   const html = read("app/adaptive-intake/index.html");
   const app = read("app/adaptive-intake/adaptive-intake.js");
+  const asrServer = read("scripts/asr/local_faster_whisper_server.py");
   record("UI includes version badge", /versionBadge/.test(html));
   record("UI keeps safety boundary out of the visible reminder strip", !/Synthetic demo only|No diagnosis, treatment, or triage/.test(html));
   record("UI defaults to Taiwan Traditional Chinese document language", /<html lang="zh-Hant">/.test(html));
   record("UI does not expose an English language switch", !/data-lang-option="en"|>English</.test(html));
   record("UI exposes Taiwan Traditional Chinese adaptive copy", /泌尿預診導航 V2|找下一題|模糊說法閘門/.test(html));
   record("UI exposes 12-question compact previsit framing", /12 題內門診前問診|最多 12 題/.test(html) && /新版 12 題內題庫/.test(app));
+  record("UI starts directly on the first question surface", /question-first-shell/.test(html) && !/mvp-brief patient-brief/.test(html));
   record("UI routes ASR through local Breeze endpoint", /UrologyLocalAsr/.test(read("app/shared/local-asr-client.js")) && /本機 Breeze ASR|RTX\/int8/.test(app));
+  record("UI uses VAD auto-submit after 0.5 seconds of silence", /ASR_VAD_SILENCE_MS = 500/.test(app) && /adaptive-intake-vad/.test(app) && /matchSpeechAnswer/.test(app));
+  record("UI does not expose normalization or denoise controls", !/normalization|denoise|降噪|正規化/i.test(html));
+  record("local ASR applies fixed Project AURA-style preprocessing", /DENOISE_PRESET = "light"/.test(asrServer) && /DENOISE_PROP_DECREASE = 0\.35/.test(asrServer) && /TARGET_DBFS = -20\.0/.test(asrServer) && /reduce_audio_segment_noise/.test(asrServer) && /prepare_audio_for_transcription/.test(asrServer));
   record("UI tells multi-select users to press Next", /Select all that apply, then press Next|勾選完畢後請按下一步/.test(app));
   record("UI has multi-select submit control", /data-submit-multi/.test(app));
 }

@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import glob
 import json
+import math
 import os
 import shutil
 import site
@@ -23,6 +24,10 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
+import noisereduce as nr
+import numpy as np
+from pydub import AudioSegment
+
 
 MODEL_REPO = "SoybeanMilk/faster-whisper-Breeze-ASR-25"
 MODEL_CACHE_DIR = Path.home() / ".cache/huggingface/hub/models--SoybeanMilk--faster-whisper-Breeze-ASR-25"
@@ -31,6 +36,11 @@ DEFAULT_PORT = 8765
 DEVICE = "cuda"
 COMPUTE_TYPE = "int8"
 MAX_AUDIO_BYTES = 50 * 1024 * 1024
+TARGET_DBFS = -20.0
+DENOISE_PRESET = "light"
+DENOISE_PROP_DECREASE = 0.35
+MIN_DENOISE_SAMPLES = 64
+SILENCE_RMS_THRESHOLD = 1e-6
 
 CUDA_RUNTIME_GLOBS = (
     "nvidia/cuda_runtime/lib/libcudart.so*",
@@ -44,6 +54,92 @@ INITIAL_PROMPT = (
     "病人正在以台灣使用的繁體中文回答泌尿科門診前問題。"
     "請轉錄病人實際說出的答案，不要補診斷，不要補治療建議。"
 )
+
+
+def audio_preprocessing_policy() -> dict[str, Any]:
+    return {
+        "enabled": True,
+        "source": "project_aura",
+        "order": ["denoise", "normalize"],
+        "denoisePreset": DENOISE_PRESET,
+        "denoiseBackend": "noisereduce",
+        "denoiseStationary": False,
+        "denoisePropDecrease": DENOISE_PROP_DECREASE,
+        "targetDbfs": TARGET_DBFS,
+        "uiControlsExposed": False,
+    }
+
+
+def reduce_noise_safely(audio_np: np.ndarray, sample_rate: int) -> np.ndarray:
+    """Project AURA-style conservative noisereduce wrapper for ASR segments."""
+    if audio_np.size < MIN_DENOISE_SAMPLES:
+        return audio_np
+    if float(np.sqrt(np.mean(audio_np.astype(np.float32) ** 2))) < SILENCE_RMS_THRESHOLD:
+        return audio_np
+
+    n_fft = min(1024, int(audio_np.size))
+    hop_length = max(1, n_fft // 4)
+    return nr.reduce_noise(
+        y=audio_np,
+        sr=sample_rate,
+        stationary=False,
+        prop_decrease=DENOISE_PROP_DECREASE,
+        n_fft=n_fft,
+        win_length=n_fft,
+        hop_length=hop_length,
+    )
+
+
+def reduce_audio_segment_noise(audio: AudioSegment) -> AudioSegment:
+    """Denoise an AudioSegment while preserving the original channel layout."""
+    audio = audio.set_sample_width(2)
+    samples = np.array(audio.get_array_of_samples(), dtype=np.int16)
+
+    if audio.channels > 1:
+        samples = samples.reshape((-1, audio.channels))
+        denoised_channels = [
+            reduce_noise_safely(samples[:, channel_idx].astype(np.float32), audio.frame_rate)
+            for channel_idx in range(audio.channels)
+        ]
+        denoised = np.stack(denoised_channels, axis=1)
+    else:
+        denoised = reduce_noise_safely(samples.astype(np.float32), audio.frame_rate)
+
+    denoised = np.clip(denoised, -32768, 32767).astype(np.int16)
+    return audio._spawn(denoised.tobytes())
+
+
+def normalization_gain_db(audio: AudioSegment) -> float:
+    current_dbfs = float(audio.dBFS)
+    if not math.isfinite(current_dbfs):
+        return 0.0
+    return TARGET_DBFS - current_dbfs
+
+
+def prepare_audio_for_transcription(input_path: Path) -> tuple[Path, dict[str, Any]]:
+    """Decode, denoise, normalize, and export a temporary WAV for faster-whisper."""
+    with input_path.open("rb") as source:
+        audio = AudioSegment.from_file(source)
+
+    original_dbfs = float(audio.dBFS)
+    denoised = reduce_audio_segment_noise(audio)
+    gain_db = normalization_gain_db(denoised)
+    normalized = denoised.apply_gain(gain_db)
+
+    fd, prepared_name = tempfile.mkstemp(prefix="urology-asr-preprocessed-", suffix=".wav")
+    os.close(fd)
+    prepared_path = Path(prepared_name)
+    normalized.export(prepared_path, format="wav")
+
+    return prepared_path, {
+        **audio_preprocessing_policy(),
+        "inputDbfs": original_dbfs if math.isfinite(original_dbfs) else None,
+        "gainDb": round(gain_db, 3),
+        "outputDbfs": float(normalized.dBFS) if math.isfinite(float(normalized.dBFS)) else None,
+        "frameRate": normalized.frame_rate,
+        "channels": normalized.channels,
+        "sampleWidth": normalized.sample_width,
+    }
 
 
 def json_response(handler: BaseHTTPRequestHandler, status: int, payload: dict[str, Any]) -> None:
@@ -220,6 +316,7 @@ class LocalAsrServer(ThreadingHTTPServer):
             "cudaRuntimeSource": self.cuda_runtime_source,
             "ctranslate2": self.ctranslate2_version,
             "noCpuFallback": True,
+            "audioPreprocessing": audio_preprocessing_policy(),
         }
 
 
@@ -263,13 +360,16 @@ class LocalAsrHandler(BaseHTTPRequestHandler):
         suffix = suffix_for_content_type(content_type)
 
         started = time.perf_counter()
+        preprocessed_path: Path | None = None
+        preprocessing_payload: dict[str, Any] = {}
         with tempfile.NamedTemporaryFile(prefix="urology-asr-", suffix=suffix, delete=False) as audio_file:
             audio_file.write(audio_bytes)
             audio_path = Path(audio_file.name)
 
         try:
+            preprocessed_path, preprocessing_payload = prepare_audio_for_transcription(audio_path)
             segments, info = self.server.model.transcribe(
-                str(audio_path),
+                str(preprocessed_path),
                 language=self.server.language,
                 task="transcribe",
                 beam_size=self.server.beam_size,
@@ -293,6 +393,7 @@ class LocalAsrHandler(BaseHTTPRequestHandler):
                 self,
                 200,
                 {
+                    **self.server.health_payload(),
                     "ok": True,
                     "text": text,
                     "segments": segment_payload,
@@ -300,7 +401,7 @@ class LocalAsrHandler(BaseHTTPRequestHandler):
                     "languageProbability": getattr(info, "language_probability", None),
                     "duration": getattr(info, "duration", None),
                     "elapsedMs": elapsed_ms,
-                    **self.server.health_payload(),
+                    "audioPreprocessing": preprocessing_payload,
                 },
             )
         except Exception as exc:
@@ -320,6 +421,11 @@ class LocalAsrHandler(BaseHTTPRequestHandler):
                 audio_path.unlink()
             except OSError:
                 pass
+            if preprocessed_path:
+                try:
+                    preprocessed_path.unlink()
+                except OSError:
+                    pass
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:

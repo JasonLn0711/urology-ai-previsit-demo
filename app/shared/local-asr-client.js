@@ -15,9 +15,21 @@
     );
   }
 
+  function encodedJsonHeader(value) {
+    return encodeURIComponent(JSON.stringify(value));
+  }
+
+  async function readJsonResponse(response) {
+    try {
+      return await response.json();
+    } catch (error) {
+      throw new Error(`local ASR returned non-JSON response (${response.status})`);
+    }
+  }
+
   async function health() {
     const response = await root.fetch(`${baseUrl()}/health`, { method: "GET" });
-    const payload = await response.json();
+    const payload = await readJsonResponse(response);
     if (!response.ok || !payload.ok) {
       throw new Error(payload.error || "local ASR health check failed");
     }
@@ -36,7 +48,7 @@
       "X-Urology-Asr-Question": metadata.question || ""
     };
     if (metadata.options) {
-      headers["X-Urology-Asr-Options"] = JSON.stringify(metadata.options);
+      headers["X-Urology-Asr-Options"] = encodedJsonHeader(metadata.options);
     }
 
     const response = await root.fetch(`${baseUrl()}/transcribe`, {
@@ -44,7 +56,7 @@
       headers,
       body: blob
     });
-    const payload = await response.json();
+    const payload = await readJsonResponse(response);
     if (!response.ok || !payload.ok) {
       throw new Error(payload.error || "local ASR transcription failed");
     }
