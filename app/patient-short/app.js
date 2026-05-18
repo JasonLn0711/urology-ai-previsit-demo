@@ -207,6 +207,16 @@ const QUESTIONS = [
         field: "botherScore",
         label: "困擾程度",
         type: "scale",
+        help: {
+          title: "這個 1 到 10 分不是診斷分數，也不是分流等級。",
+          body: "這裡先整理病人困擾與臨床風險線索：請先用自己的感受選分數；發燒、血尿、尿不出來、快昏倒等臨床風險線索會在其他題目另外整理給醫療人員確認。",
+          ranges: [
+            ["1 到 4 分", "還可以忍受，生活或睡眠只有輕微受影響。"],
+            ["5 到 7 分", "明顯困擾，已影響工作、外出、睡眠或讓你擔心。"],
+            ["8 到 10 分", "非常困擾、很痛、很害怕，或覺得今天一定要讓醫療人員知道。"]
+          ],
+          note: "病人覺得很痛不一定最危險；病人覺得還好，也可能有需要醫療人員注意的風險線索。"
+        },
         options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Not sure"]
       }
     ]
@@ -214,27 +224,14 @@ const QUESTIONS = [
   {
     id: "storage",
     label: "頻尿夜尿",
-    title: "4. 頻尿、夜尿或急尿的狀況如何？",
-    copy: "用區間回答即可，不要求精準計算。",
+    title: "4. 頻尿、夜尿或急尿，最需要先知道什麼？",
+    copy: "短答只保留白天是否變多、夜尿次數與是否急尿。",
     fields: [
       {
         field: "daytimeFrequencyChange",
         label: "白天尿尿次數有明顯變多嗎？",
         type: "select",
         options: YES_NO_UNSURE
-      },
-      {
-        field: "daytimeFrequencyCount",
-        label: "白天大約尿尿幾次？",
-        type: "select",
-        when: (currentAnswers) => storageContext(currentAnswers),
-        options: [
-          ["1 to 4 times", "1 到 4 次"],
-          ["5 to 8 times", "5 到 8 次"],
-          ["9 to 12 times", "9 到 12 次"],
-          ["More than 12 times", "超過 12 次"],
-          ["Not sure", "不確定"]
-        ]
       },
       {
         field: "nocturiaCount",
@@ -253,19 +250,6 @@ const QUESTIONS = [
         label: "會突然很想尿，而且很難忍住嗎？",
         type: "select",
         options: YES_NO_UNSURE
-      },
-      {
-        field: "urgencyFrequency",
-        label: "急尿大約多常發生？",
-        type: "select",
-        when: (currentAnswers) => currentAnswers.urgency === "Yes" || hasConcern(currentAnswers, "Frequency / nocturia / urgency"),
-        options: [
-          ["Rarely", "很少"],
-          ["Some days", "有些天"],
-          ["Most days", "大多數日子"],
-          ["Several times a day", "一天好幾次"],
-          ["Not sure", "不確定"]
-        ]
       }
     ]
   },
@@ -273,52 +257,13 @@ const QUESTIONS = [
     id: "leakage",
     label: "漏尿",
     title: "5. 最近 4 週有沒有漏尿？",
-    copy: "這題用來整理頻率、量與情境，不自動判斷漏尿類型。",
+    copy: "短答只確認有沒有；頻率、量與情境留給現場補問。",
     fields: [
       {
         field: "leakage",
         label: "最近 4 週有尿不小心漏出來嗎？",
         type: "select",
         options: YES_NO_UNSURE
-      },
-      {
-        field: "leakageFrequency",
-        label: "若有，大約多常發生？",
-        type: "select",
-        when: (currentAnswers) => currentAnswers.leakage === "Yes",
-        options: [
-          ["Less than once a week", "少於每週一次"],
-          ["Weekly", "每週"],
-          ["Daily", "每天"],
-          ["Several times a day", "一天好幾次"],
-          ["Not sure", "不確定"]
-        ]
-      },
-      {
-        field: "leakageAmount",
-        label: "通常量大約多少？",
-        type: "select",
-        when: (currentAnswers) => currentAnswers.leakage === "Yes",
-        options: [
-          ["A few drops", "幾滴"],
-          ["Small amount", "少量"],
-          ["Moderate amount", "會濕內褲或護墊"],
-          ["Large amount", "量較多或需要更換衣物"],
-          ["Not sure", "不確定"]
-        ]
-      },
-      {
-        field: "leakageTriggers",
-        label: "最常在什麼情況發生？",
-        type: "checkboxes",
-        when: (currentAnswers) => currentAnswers.leakage === "Yes",
-        options: [
-          ["Before reaching toilet", "來不及到廁所"],
-          ["Coughing, laughing, or exercise", "咳嗽、笑、運動或搬重物時"],
-          ["During sleep", "睡覺時"],
-          ["Without warning", "沒有明顯原因"],
-          ["Not sure", "不確定"]
-        ]
       }
     ]
   },
@@ -326,7 +271,7 @@ const QUESTIONS = [
     id: "voiding",
     label: "排尿困難",
     title: "6. 有沒有尿不出來或尿流變弱？",
-    copy: "只記錄病人感覺到的現象，不判斷原因。",
+    copy: "短答優先確認是否尿不出來，尤其是否正在發生。",
     fields: [
       {
         field: "unableToUrinate",
@@ -340,27 +285,6 @@ const QUESTIONS = [
         type: "select",
         when: (currentAnswers) => currentAnswers.unableToUrinate === "Yes",
         options: YES_NO_UNSURE
-      },
-      {
-        field: "weakStream",
-        label: "尿流有變細或變弱嗎？",
-        type: "select",
-        when: (currentAnswers) => voidingContext(currentAnswers),
-        options: YES_NO_UNSURE
-      },
-      {
-        field: "straining",
-        label: "尿尿時常需要用力嗎？",
-        type: "select",
-        when: (currentAnswers) => voidingContext(currentAnswers),
-        options: YES_NO_UNSURE
-      },
-      {
-        field: "incompleteEmptying",
-        label: "尿完常覺得還沒尿乾淨嗎？",
-        type: "select",
-        when: (currentAnswers) => voidingContext(currentAnswers),
-        options: YES_NO_UNSURE
       }
     ]
   },
@@ -368,7 +292,7 @@ const QUESTIONS = [
     id: "infection",
     label: "疼痛發燒",
     title: "7. 有尿痛、發燒、發冷或腰側痛嗎？",
-    copy: "這些是看診前需要標出的病人回報，但仍需現場醫療人員確認。",
+    copy: "短答只標出尿痛與需要現場優先看見的風險線索。",
     fields: [
       {
         field: "painBurning",
@@ -387,31 +311,6 @@ const QUESTIONS = [
           ["None of these", "以上都沒有"],
           ["Not sure", "不確定"]
         ]
-      },
-      {
-        field: "painFrequency",
-        label: "疼痛或灼熱通常什麼時候發生？",
-        type: "select",
-        when: (currentAnswers) => painContext(currentAnswers),
-        options: [
-          ["Only while urinating", "尿尿時"],
-          ["After urinating", "尿完後"],
-          ["Most of the day", "一天中大多時間"],
-          ["Comes and goes", "有時有、有時沒有"],
-          ["Not sure", "不確定"]
-        ]
-      },
-      {
-        field: "infectionEpisodeHistory",
-        label: "過去 12 個月有因類似症狀就醫或吃抗生素嗎？",
-        type: "select",
-        when: (currentAnswers) => painContext(currentAnswers) || hasConcern(currentAnswers, "Recurrent infection concern"),
-        options: [
-          ["No", "沒有"],
-          ["Yes, once", "有，1 次"],
-          ["Yes, more than once", "有，超過 1 次"],
-          ["Not sure", "不確定"]
-        ]
       }
     ]
   },
@@ -419,31 +318,12 @@ const QUESTIONS = [
     id: "hematuria",
     label: "血尿",
     title: "8. 有沒有看到紅色、茶色尿或血塊？",
-    copy: "只記錄看到的現象；這不是診斷。",
+    copy: "短答只確認是否看見；細節留給現場補問。",
     fields: [
       {
         field: "visibleBlood",
         label: "有看過尿液變紅、茶色，或看到血塊嗎？",
         type: "select",
-        options: YES_NO_UNSURE
-      },
-      {
-        field: "hematuriaPattern",
-        label: "若有，是一次、反覆，還是最近幾乎每次都有？",
-        type: "select",
-        when: (currentAnswers) => currentAnswers.visibleBlood === "Yes",
-        options: [
-          ["One time", "一次"],
-          ["More than once", "不只一次"],
-          ["Every time recently", "最近幾乎每次都有"],
-          ["Not sure", "不確定"]
-        ]
-      },
-      {
-        field: "bloodClots",
-        label: "有沒有看到像血塊的東西？",
-        type: "select",
-        when: (currentAnswers) => currentAnswers.visibleBlood === "Yes",
         options: YES_NO_UNSURE
       }
     ]
@@ -452,7 +332,7 @@ const QUESTIONS = [
     id: "context",
     label: "用藥背景",
     title: "9. 用藥、病史與補充事項",
-    copy: "不用背藥名；能帶藥袋、藥單或照片即可。",
+    copy: "短答只確認藥物資料準備狀態，其他留給自由補充。",
     fields: [
       {
         field: "medicationListStatus",
@@ -463,25 +343,6 @@ const QUESTIONS = [
           ["Partial list only", "只記得一部分"],
           ["Not sure", "不清楚"],
           ["No regular medicines", "沒有固定用藥"]
-        ]
-      },
-      {
-        field: "medicationAssist",
-        label: "是否需要現場協助確認藥袋或藥單？",
-        type: "select",
-        options: YES_NO_UNSURE
-      },
-      {
-        field: "relevantComorbidities",
-        label: "有哪些背景要先讓團隊知道？",
-        type: "checkboxes",
-        options: [
-          ["Diabetes", "糖尿病"],
-          ["Kidney disease", "腎臟病"],
-          ["Neurologic disease", "神經系統疾病"],
-          ["Spinal cord problem", "脊髓相關問題"],
-          ["None of these", "以上都沒有"],
-          ["Not sure", "不確定"]
         ]
       },
       {
@@ -869,24 +730,6 @@ function hasAnySystemicSignal(sourceAnswers) {
   return values.some((value) => !["None of these", "Not sure"].includes(value));
 }
 
-function storageContext(sourceAnswers) {
-  return hasConcern(sourceAnswers, "Frequency / nocturia / urgency") ||
-    sourceAnswers.daytimeFrequencyChange === "Yes" ||
-    sourceAnswers.urgency === "Yes" ||
-    ["2 times", "3 or more times"].includes(sourceAnswers.nocturiaCount);
-}
-
-function voidingContext(sourceAnswers) {
-  return hasConcern(sourceAnswers, "Difficulty emptying or weak stream") ||
-    sourceAnswers.unableToUrinate === "Yes";
-}
-
-function painContext(sourceAnswers) {
-  return hasConcern(sourceAnswers, "Pain, burning, or possible infection") ||
-    sourceAnswers.painBurning === "Yes" ||
-    hasAnySystemicSignal(sourceAnswers);
-}
-
 function fieldVisible(field) {
   return !field.when || field.when(answers);
 }
@@ -947,12 +790,26 @@ function fillFieldIfBlank(field, value) {
 }
 
 function fillShortDefaults() {
+  fillFieldIfBlank("daytimeFrequencyCount", "Not sure");
+  fillFieldIfBlank("urgencyFrequency", "Not sure");
   fillFieldIfBlank("fluidCaffeineContext", "Not sure");
   fillFieldIfBlank("bladderDiaryFeasible", "Not sure");
+  fillFieldIfBlank("leakageFrequency", "Not sure");
+  fillFieldIfBlank("leakageAmount", "Not sure");
+  fillFieldIfBlank("leakageTriggers", "Not sure");
   fillFieldIfBlank("containmentProducts", "Not sure");
+  fillFieldIfBlank("weakStream", "Not sure");
+  fillFieldIfBlank("straining", "Not sure");
   fillFieldIfBlank("intermittency", "Not sure");
+  fillFieldIfBlank("incompleteEmptying", "Not sure");
+  fillFieldIfBlank("hematuriaPattern", "Not sure");
+  fillFieldIfBlank("bloodClots", "Not sure");
   fillFieldIfBlank("hematuriaCoSymptoms", "Not sure");
+  fillFieldIfBlank("painFrequency", "Not sure");
+  fillFieldIfBlank("infectionEpisodeHistory", "Not sure");
   fillFieldIfBlank("flankPainScore", "Not sure");
+  fillFieldIfBlank("medicationAssist", "Not sure");
+  fillFieldIfBlank("relevantComorbidities", "Not sure");
   fillFieldIfBlank("diureticAnticoagulantAwareness", "Not sure");
   fillFieldIfBlank("language", "Mandarin");
   fillFieldIfBlank("deviceComfort", "Can use phone with help");
@@ -1010,7 +867,8 @@ function renderField(field) {
     return `
       <div class="field wide-field short-field">
         <label>${escapeHtml(field.label)}</label>
-        <div class="scale-grid">
+        ${renderScaleHelp(field)}
+        <div class="scale-grid" aria-describedby="${escapeHtml(field.field)}-guidance">
           ${field.options.filter((value) => /^\d+$/.test(value)).map((value) => `
             <button
               class="scale-button"
@@ -1035,6 +893,26 @@ function renderField(field) {
         ${field.options.map(([value, label]) => optionButton(field.field, value, label)).join("")}
       </div>
       ${renderVoicePanel(field)}
+    </div>
+  `;
+}
+
+function renderScaleHelp(field) {
+  if (!field.help) return "";
+  const ranges = field.help.ranges || [];
+  return `
+    <div class="scale-guidance" id="${escapeHtml(field.field)}-guidance">
+      <strong>${escapeHtml(field.help.title)}</strong>
+      <p>${escapeHtml(field.help.body)}</p>
+      <dl>
+        ${ranges.map(([range, explanation]) => `
+          <div>
+            <dt>${escapeHtml(range)}</dt>
+            <dd>${escapeHtml(explanation)}</dd>
+          </div>
+        `).join("")}
+      </dl>
+      <p>${escapeHtml(field.help.note)}</p>
     </div>
   `;
 }

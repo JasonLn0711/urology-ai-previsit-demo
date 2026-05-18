@@ -2249,6 +2249,58 @@ pre.summary-body {
   grid-template-columns: 1fr;
 }
 
+.short-demo-page .scale-guidance {
+  display: grid;
+  gap: 10px;
+  margin: 6px 0 14px;
+  padding: 14px 16px;
+  border: 1px solid #d7e2dc;
+  border-radius: 8px;
+  background: #f7faf8;
+  color: var(--ink);
+}
+
+.short-demo-page .scale-guidance strong {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.short-demo-page .scale-guidance p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.short-demo-page .scale-guidance dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.short-demo-page .scale-guidance dl div {
+  display: grid;
+  grid-template-columns: minmax(88px, 0.22fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.short-demo-page .scale-guidance dt,
+.short-demo-page .scale-guidance dd {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.short-demo-page .scale-guidance dt {
+  font-weight: 900;
+  color: var(--accent-strong);
+}
+
+.short-demo-page .scale-guidance dd {
+  color: var(--ink);
+}
+
 .short-demo-page .option-button,
 .short-demo-page .checkbox-option,
 .short-demo-page .scale-button,
