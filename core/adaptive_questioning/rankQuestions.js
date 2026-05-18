@@ -9,6 +9,9 @@ const { detectAmbiguity } = ambiguityEngine;
 const { DEFAULT_WEIGHTS, scoreQuestion } = scoring;
 const { QUESTION_BANK } = questionBankModule;
 
+const CLOSING_QUESTION_ID = "compact_closing_note";
+const FINAL_QUESTION_INDEX = 11;
+
 function isFreshIntake(transcript, answers = {}, askedQuestionIds = []) {
   return !String(transcript || "").trim() &&
     !askedQuestionIds.length &&
@@ -25,6 +28,13 @@ function promoteInitialQuestion(ranked) {
   ];
 }
 
+function candidateQuestionPool(questionBank, asked) {
+  const finalTurn = asked.size >= FINAL_QUESTION_INDEX;
+  return questionBank.filter((question) => finalTurn
+    ? question.id === CLOSING_QUESTION_ID
+    : question.id !== CLOSING_QUESTION_ID);
+}
+
 function rankQuestions({
   transcript = "",
   answers = {},
@@ -36,7 +46,7 @@ function rankQuestions({
   const extracted = extractFacts({ transcript, answers, questionBank });
   const ambiguity = detectAmbiguity(transcript, answers);
   const activeAmbiguity = ambiguity.find((item) => item.active);
-  const scoredQuestions = questionBank.map((question) => {
+  const scoredQuestions = candidateQuestionPool(questionBank, asked).map((question) => {
     const scored = scoreQuestion({
       question,
       stateText: extracted.stateText,

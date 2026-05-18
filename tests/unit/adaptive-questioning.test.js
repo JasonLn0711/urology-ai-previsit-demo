@@ -214,11 +214,9 @@ test("compact closing note is locked to the twelfth question", () => {
     askedQuestionIds: nonClosingQuestionIds.slice(0, 10),
     questionBank: QUESTION_BANK
   });
-  const earlyClosing = beforeFinalTurn.ranked.find((item) => item.question.id === "compact_closing_note");
 
   assert.notEqual(beforeFinalTurn.selected.question.id, "compact_closing_note");
-  assert.ok(earlyClosing.score <= -0.5);
-  assert.ok(earlyClosing.reasons.some((reason) => reason.includes("第 12 題固定結尾題")));
+  assert.ok(!beforeFinalTurn.ranked.some((item) => item.question.id === "compact_closing_note"));
 
   const finalTurn = rankQuestions({
     transcript: "我還有其他事情想補充給醫師知道。",
@@ -228,4 +226,5 @@ test("compact closing note is locked to the twelfth question", () => {
   });
 
   assert.equal(finalTurn.selected.question.id, "compact_closing_note");
+  assert.deepEqual(finalTurn.ranked.map((item) => item.question.id), ["compact_closing_note"]);
 });
