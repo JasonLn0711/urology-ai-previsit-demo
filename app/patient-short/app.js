@@ -599,6 +599,7 @@ function applyVoiceChoice(field, transcript, acousticScores) {
       accepted: false,
       message: `我聽到「${transcript || "空白"}」，但沒有足夠把握對應到畫面上的答案。請再說一次或直接點選。`
     };
+    render();
     return result;
   }
 
