@@ -389,30 +389,155 @@
             "id": "case-bph",
             "title": "Case 1 - 良性攝護腺肥大（BPH）",
             "subtitle": "Benign Prostatic Hyperplasia",
+            "brief": {
+              "chiefConcern": "頻尿、夜尿、尿流變細與排尿遲疑",
+              "durationBother": "6 個月；近 2 個月逐漸加重",
+              "activeModules": "儲尿相關、排尿困難、用藥與病史",
+              "medication": "Amlodipine；無已知藥物過敏",
+              "reviewFlags": [
+                "夜尿 4-5 次/晚，影響睡眠。",
+                "合併尿流弱、排尿遲疑、尿不乾淨感。",
+                "DRE、PSA、尿液與膀胱超音波資料需由醫師確認。"
+              ],
+              "symptomSections": [
+                [
+                  "儲尿相關",
+                  "頻尿 6 個月；夜尿 4-5 次/晚；症狀近 2 個月加重。"
+                ],
+                [
+                  "排尿困難",
+                  "尿流變細、排尿遲疑、尿不乾淨感。"
+                ],
+                [
+                  "否認症狀",
+                  "否認發燒、肉眼血尿、腰側痛、體重減輕。"
+                ]
+              ]
+            },
             "narrative": "65-year-old male presents with urinary frequency and nocturia for 6 months.\nPatient reports waking up 4-5 times nightly to urinate. He also noticed weak urine stream, hesitancy, and incomplete emptying sensation. Symptoms gradually worsened over the past 2 months.\n\nDenies fever, gross hematuria, flank pain, or weight loss.\n\nPast history:\n- Hypertension\n- Hyperlipidemia\n\nMedication:\n- Amlodipine\n\nAllergy:\n- No known drug allergy\n\nFamily history:\n- Father had BPH\n\nSocial history:\n- Non-smoker\n- Occasional alcohol use\n\nPhysical examination:\nBP 138/82 mmHg\nHR 76 bpm\nTemp 36.7 C\n\nDigital rectal examination:\n- enlarged smooth prostate\n- non-tender\n\nUrinalysis:\n- no pyuria\n- no hematuria\n\nPSA:\n2.4 ng/mL\n\nBladder ultrasound:\n- enlarged prostate\n- post-void residual urine: 90 mL\n\nAssessment:\nPhysician-review draft: benign prostatic hyperplasia with lower urinary tract symptoms (LUTS).\n\nPlan:\n- Physician review field: tamsulosin 0.4 mg QD\n- Lifestyle modification\n- Reduce nighttime fluid intake\n- Follow-up in 4 weeks\n- Consider uroflowmetry if symptoms persist"
           },
           {
             "id": "case-uti",
             "title": "Case 2 - 泌尿道感染（UTI）",
             "subtitle": "Urinary Tract Infection",
+            "brief": {
+              "chiefConcern": "尿痛、頻尿與急尿",
+              "durationBother": "3 天；今日出現輕微下腹不適",
+              "activeModules": "疼痛/感染相關、儲尿相關、過敏史",
+              "medication": "目前無固定用藥；Penicillin allergy",
+              "reviewFlags": [
+                "尿痛與灼熱感 3 天，合併頻尿與急尿。",
+                "過去一年有兩次 UTI 病史。",
+                "尿液檢查與 urine culture pending 需由醫師確認。"
+              ],
+              "symptomSections": [
+                [
+                  "感染相關",
+                  "Dysuria、frequency、urgency；今日 mild suprapubic discomfort。"
+                ],
+                [
+                  "否認症狀",
+                  "否認 flank pain、fever、nausea、gross hematuria。"
+                ],
+                [
+                  "客觀資料",
+                  "Urinalysis: leukocyte esterase positive, nitrite positive, elevated WBC；culture pending。"
+                ]
+              ]
+            },
             "narrative": "28-year-old female presents with dysuria and urinary frequency for 3 days.\nPatient reports burning sensation during urination and urgency. Mild suprapubic discomfort developed today.\n\nDenies flank pain, fever, nausea, or gross hematuria.\n\nPast history:\n- Recurrent UTI twice last year\n\nMedication:\n- None\n\nAllergy:\n- Penicillin allergy\n\nSocial history:\n- Sexually active\n\nPhysical examination:\nBP 112/70 mmHg\nHR 88 bpm\nTemp 37.4 C\n\nAbdominal examination:\n- mild suprapubic tenderness\n\nUrinalysis:\n- leukocyte esterase positive\n- nitrite positive\n- elevated WBC\n\nUrine culture:\npending\n\nAssessment:\nPhysician-review draft: acute uncomplicated urinary tract infection.\n\nPlan:\n- Physician review field: oral antibiotics\n- Increase hydration\n- Urine culture follow-up\n- Return immediately if fever or flank pain develops"
           },
           {
             "id": "case-stone",
             "title": "Case 3 - 腎結石",
             "subtitle": "Kidney Stone",
+            "brief": {
+              "chiefConcern": "突發右側腰痛並放射至鼠蹊部",
+              "durationBother": "6 小時；疼痛嚴重且合併噁心冒汗",
+              "activeModules": "疼痛/發燒相關、血尿相關、影像資料",
+              "medication": "目前無固定用藥",
+              "reviewFlags": [
+                "突然 severe right flank pain，放射至 groin。",
+                "合併 nausea 與 diaphoresis。",
+                "CT 顯示 5 mm right distal ureter stone 與 mild hydronephrosis，需由醫師確認。"
+              ],
+              "symptomSections": [
+                [
+                  "疼痛型態",
+                  "右側腰痛 6 小時，疼痛放射至鼠蹊部。"
+                ],
+                [
+                  "合併症狀",
+                  "噁心、冒汗；否認 fever 或 dysuria。"
+                ],
+                [
+                  "客觀資料",
+                  "Right CVA tenderness；urinalysis microscopic hematuria；CT stone/hydronephrosis。"
+                ]
+              ]
+            },
             "narrative": "42-year-old male presents with sudden onset severe right flank pain for 6 hours.\nPain radiates to the groin area and is associated with nausea and diaphoresis.\n\nDenies fever or dysuria.\n\nPast history:\n- Kidney stone 5 years ago\n\nMedication:\n- None\n\nSocial history:\n- Poor water intake\n- High-salt diet\n\nPhysical examination:\nBP 150/92 mmHg\nHR 102 bpm\nTemp 36.8 C\n\nPositive right costovertebral angle tenderness.\n\nUrinalysis:\n- microscopic hematuria\n\nCT scan:\n- 5 mm right distal ureter stone\n- mild hydronephrosis\n\nAssessment:\nPhysician-review draft: right ureteral stone causing renal colic.\n\nPlan:\n- NSAIDs for pain control\n- Hydration\n- Medical expulsive therapy\n- Follow-up imaging in 2 weeks\n- Return if fever develops"
           },
           {
             "id": "case-hematuria",
             "title": "Case 4 - 無痛性血尿",
             "subtitle": "Hematuria",
+            "brief": {
+              "chiefConcern": "無痛性肉眼血尿",
+              "durationBother": "昨天開始；尿液呈暗紅色、無血塊",
+              "activeModules": "血尿相關、用藥/抽菸史、家族史",
+              "medication": "Aspirin",
+              "reviewFlags": [
+                "Painless gross hematuria since yesterday。",
+                "30 pack-years smoking history；father had bladder cancer。",
+                "CT urography pending，需由醫師確認後續評估。"
+              ],
+              "symptomSections": [
+                [
+                  "血尿型態",
+                  "尿液 dark red，無 blood clots。"
+                ],
+                [
+                  "否認症狀",
+                  "否認 dysuria、fever、flank pain、trauma。"
+                ],
+                [
+                  "背景與客觀資料",
+                  "Aspirin；smoking 30 pack-years；UA gross hematuria；CBC Hb within normal range。"
+                ]
+              ]
+            },
             "narrative": "58-year-old male presents with painless gross hematuria since yesterday.\nUrine appears dark red without blood clots.\n\nDenies dysuria, fever, flank pain, or trauma.\n\nPast history:\n- Smoking history: 30 pack-years\n\nMedication:\n- Aspirin\n\nFamily history:\n- Father had bladder cancer\n\nPhysical examination:\nVital signs stable.\n\nNo abdominal tenderness.\nNo flank knocking pain.\n\nUrinalysis:\n- gross hematuria\n\nCBC:\n- hemoglobin within normal range\n\nCT urography:\npending\n\nAssessment:\nPhysician-review draft: painless gross hematuria requiring urinary tract malignancy review.\n\nPlan:\n- Arrange cystoscopy\n- CT urography\n- Urine cytology\n- Smoking cessation counseling"
           },
           {
             "id": "case-retention",
             "title": "Case 5 - 急性尿滯留",
             "subtitle": "Urinary Retention",
+            "brief": {
+              "chiefConcern": "8 小時無法排尿與下腹脹痛",
+              "durationBother": "急性 8 小時；數月來已有尿流弱、遲疑、夜尿",
+              "activeModules": "排尿困難、急性尿滯留、腎功能與膀胱掃描資料",
+              "medication": "Antihypertensive medications",
+              "reviewFlags": [
+                "目前 8 小時無法排尿，合併 severe lower abdominal fullness。",
+                "Bladder scan retained urine approximately 900 mL。",
+                "Mildly elevated creatinine；需由醫師確認急性處置與後續評估。"
+              ],
+              "symptomSections": [
+                [
+                  "急性狀態",
+                  "Inability to urinate for 8 hours；lower abdominal fullness and discomfort。"
+                ],
+                [
+                  "既往排尿症狀",
+                  "數月來有 weak stream、hesitancy、nocturia。"
+                ],
+                [
+                  "客觀資料",
+                  "Lower abdomen distended with suprapubic tenderness；bladder scan about 900 mL；mildly elevated creatinine。"
+                ]
+              ]
+            },
             "narrative": "72-year-old male presents with inability to urinate for 8 hours.\nPatient complains of severe lower abdominal fullness and discomfort.\n\nOver the past several months, patient had:\n- weak stream\n- hesitancy\n- nocturia\n\nPast history:\n- Diabetes mellitus\n- Benign prostatic hyperplasia\n\nMedication:\n- Antihypertensive medications\n\nPhysical examination:\nBP 162/94 mmHg\nHR 96 bpm\nTemp 36.9 C\n\nLower abdomen distended with suprapubic tenderness.\n\nBladder scan:\n- retained urine volume approximately 900 mL\n\nLaboratory:\n- mildly elevated creatinine\n\nAssessment:\nPhysician-review draft: acute urinary retention secondary to BPH pattern.\n\nPlan:\n- Foley catheter insertion\n- Monitor urine output\n- Physician review field: alpha blocker\n- Urology follow-up\n- Evaluate surgical treatment if recurrent"
           }
         ],

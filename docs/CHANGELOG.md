@@ -2,6 +2,19 @@
 
 This changelog records meaningful product, demo, safety, question-bank, and evidence-system changes.
 
+## v2.4.10 - 2026-05-18
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Sync clinician brief with SOAP case studies
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run version:check`
+
 ## v2.4.9 - 2026-05-18
 
 Stage: `demo-freeze-candidate`

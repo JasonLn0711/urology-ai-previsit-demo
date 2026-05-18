@@ -173,12 +173,9 @@ function buildPatternSections(answers, sources) {
 }
 
 function buildSoapSection(soapDraft) {
-  if (!soapDraft) return "";
+  const selectedCase = selectedSoapCase(soapDraft);
+  if (!selectedCase) return "";
   const caseStudies = soapDraft.caseStudies || [];
-  const selectedCase = caseStudies.find((item) => item.id === selectedSoapCaseId) ||
-    caseStudies.find((item) => item.id === soapDraft.selectedCaseStudyId) ||
-    soapDraft;
-  selectedSoapCaseId = selectedCase.id || soapDraft.selectedCaseStudyId || "";
 
   return `
     <section class="clinical-block soap-draft-block">
@@ -206,6 +203,55 @@ function buildSoapSection(soapDraft) {
   `;
 }
 
+function selectedSoapCase(soapDraft) {
+  if (!soapDraft) return null;
+  const caseStudies = soapDraft.caseStudies || [];
+  const selectedCase = caseStudies.find((item) => item.id === selectedSoapCaseId) ||
+    caseStudies.find((item) => item.id === soapDraft.selectedCaseStudyId) ||
+    soapDraft;
+  selectedSoapCaseId = selectedCase.id || soapDraft.selectedCaseStudyId || "";
+  return selectedCase;
+}
+
+function caseBriefOrSummary(selectedCase, summary, answers) {
+  const brief = selectedCase && selectedCase.brief;
+  if (!brief) {
+    return {
+      chiefConcern: display(summary.chiefConcern),
+      durationBother: `${display(answers.duration)} / ${display(answers.botherScore)}`,
+      activeModules: summary.activeModules.map((module) => MODULE_LABELS[module] || module).join("、"),
+      medication: display(answers.medicationListStatus),
+      reviewFlags: summary.clinicianReviewFlags,
+      symptomHtml: buildPatternSections(answers, sourceLookup(summary.fieldSources))
+    };
+  }
+  return {
+    chiefConcern: brief.chiefConcern,
+    durationBother: brief.durationBother,
+    activeModules: brief.activeModules,
+    medication: brief.medication,
+    reviewFlags: brief.reviewFlags,
+    symptomHtml: buildCaseSymptomSections(brief.symptomSections)
+  };
+}
+
+function buildCaseSymptomSections(sections) {
+  if (!sections || !sections.length) return "";
+  return `
+    <section class="clinical-block">
+      <h3>症狀整理</h3>
+      <ul class="clinical-list">
+        ${sections.map(([label, detail]) => `
+          <li>
+            <strong>${escapeHtml(label)}</strong>
+            <span>${escapeHtml(detail)}</span>
+          </li>
+        `).join("")}
+      </ul>
+    </section>
+  `;
+}
+
 function render() {
   const answers = readAnswers();
   const summary = buildClinicianSummary(answers);
@@ -213,6 +259,8 @@ function render() {
   const missing = missingFieldEntries(answers);
   const status = summary.completionStatus;
   const sources = sourceLookup(summary.fieldSources);
+  const currentSoapCase = selectedSoapCase(summary.soapDraft);
+  const brief = caseBriefOrSummary(currentSoapCase, summary, answers);
 
   statusTitle.textContent = status.missingCount
     ? `${status.missingCount} 項仍可補齊`
@@ -239,30 +287,30 @@ function render() {
     <section class="doctor-brief-grid">
       <div class="doctor-brief-item">
         <span>主訴</span>
-        <strong>${escapeHtml(display(summary.chiefConcern))}</strong>
+        <strong>${escapeHtml(brief.chiefConcern)}</strong>
       </div>
       <div class="doctor-brief-item">
         <span>病程 / 困擾</span>
-        <strong>${escapeHtml(display(answers.duration))} / ${escapeHtml(display(answers.botherScore))}</strong>
+        <strong>${escapeHtml(brief.durationBother)}</strong>
       </div>
       <div class="doctor-brief-item">
         <span>啟動模組</span>
-        <strong>${escapeHtml(summary.activeModules.map((module) => MODULE_LABELS[module] || module).join("、"))}</strong>
+        <strong>${escapeHtml(brief.activeModules)}</strong>
       </div>
       <div class="doctor-brief-item">
         <span>用藥資料</span>
-        <strong>${escapeHtml(display(answers.medicationListStatus))}</strong>
+        <strong>${escapeHtml(brief.medication)}</strong>
       </div>
     </section>
 
     <section class="clinical-block alert-block">
       <h3>需現場確認的病人回報</h3>
       <ul class="flag-list">
-        ${summary.clinicianReviewFlags.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        ${brief.reviewFlags.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
       </ul>
     </section>
 
-    ${buildPatternSections(answers, sources) || `
+    ${brief.symptomHtml || buildPatternSections(answers, sources) || `
       <section class="clinical-block">
         <h3>症狀整理</h3>
         <p>目前尚未有足夠症狀回答。</p>

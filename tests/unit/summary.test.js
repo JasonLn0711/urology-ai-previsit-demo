@@ -24,6 +24,8 @@ test("synthetic cases build bounded clinician summaries", () => {
     assert.match(summary.soapDraft.narrative, /Plan:/);
     assert.equal(summary.soapDraft.caseStudies.length, 5);
     assert.match(summary.soapDraft.caseStudies[0].narrative, /65-year-old male presents with urinary frequency/);
+    assert.match(summary.soapDraft.caseStudies[0].brief.chiefConcern, /頻尿/);
+    assert.match(summary.soapDraft.caseStudies[4].brief.chiefConcern, /無法排尿/);
     assert.ok(summary.soapDraft.subjective.length >= 4);
     assert.ok(summary.soapDraft.objective.length >= 4);
     assert.ok(summary.soapDraft.assessment.length >= 2);

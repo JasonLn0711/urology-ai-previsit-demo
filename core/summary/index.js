@@ -151,6 +151,22 @@
       id: "case-bph",
       title: "Case 1 - 良性攝護腺肥大（BPH）",
       subtitle: "Benign Prostatic Hyperplasia",
+      brief: {
+        chiefConcern: "頻尿、夜尿、尿流變細與排尿遲疑",
+        durationBother: "6 個月；近 2 個月逐漸加重",
+        activeModules: "儲尿相關、排尿困難、用藥與病史",
+        medication: "Amlodipine；無已知藥物過敏",
+        reviewFlags: [
+          "夜尿 4-5 次/晚，影響睡眠。",
+          "合併尿流弱、排尿遲疑、尿不乾淨感。",
+          "DRE、PSA、尿液與膀胱超音波資料需由醫師確認。"
+        ],
+        symptomSections: [
+          ["儲尿相關", "頻尿 6 個月；夜尿 4-5 次/晚；症狀近 2 個月加重。"],
+          ["排尿困難", "尿流變細、排尿遲疑、尿不乾淨感。"],
+          ["否認症狀", "否認發燒、肉眼血尿、腰側痛、體重減輕。"]
+        ]
+      },
       narrative: [
         "65-year-old male presents with urinary frequency and nocturia for 6 months.",
         "Patient reports waking up 4-5 times nightly to urinate. He also noticed weak urine stream, hesitancy, and incomplete emptying sensation. Symptoms gradually worsened over the past 2 months.",
@@ -209,6 +225,22 @@
       id: "case-uti",
       title: "Case 2 - 泌尿道感染（UTI）",
       subtitle: "Urinary Tract Infection",
+      brief: {
+        chiefConcern: "尿痛、頻尿與急尿",
+        durationBother: "3 天；今日出現輕微下腹不適",
+        activeModules: "疼痛/感染相關、儲尿相關、過敏史",
+        medication: "目前無固定用藥；Penicillin allergy",
+        reviewFlags: [
+          "尿痛與灼熱感 3 天，合併頻尿與急尿。",
+          "過去一年有兩次 UTI 病史。",
+          "尿液檢查與 urine culture pending 需由醫師確認。"
+        ],
+        symptomSections: [
+          ["感染相關", "Dysuria、frequency、urgency；今日 mild suprapubic discomfort。"],
+          ["否認症狀", "否認 flank pain、fever、nausea、gross hematuria。"],
+          ["客觀資料", "Urinalysis: leukocyte esterase positive, nitrite positive, elevated WBC；culture pending。"]
+        ]
+      },
       narrative: [
         "28-year-old female presents with dysuria and urinary frequency for 3 days.",
         "Patient reports burning sensation during urination and urgency. Mild suprapubic discomfort developed today.",
@@ -257,6 +289,22 @@
       id: "case-stone",
       title: "Case 3 - 腎結石",
       subtitle: "Kidney Stone",
+      brief: {
+        chiefConcern: "突發右側腰痛並放射至鼠蹊部",
+        durationBother: "6 小時；疼痛嚴重且合併噁心冒汗",
+        activeModules: "疼痛/發燒相關、血尿相關、影像資料",
+        medication: "目前無固定用藥",
+        reviewFlags: [
+          "突然 severe right flank pain，放射至 groin。",
+          "合併 nausea 與 diaphoresis。",
+          "CT 顯示 5 mm right distal ureter stone 與 mild hydronephrosis，需由醫師確認。"
+        ],
+        symptomSections: [
+          ["疼痛型態", "右側腰痛 6 小時，疼痛放射至鼠蹊部。"],
+          ["合併症狀", "噁心、冒汗；否認 fever 或 dysuria。"],
+          ["客觀資料", "Right CVA tenderness；urinalysis microscopic hematuria；CT stone/hydronephrosis。"]
+        ]
+      },
       narrative: [
         "42-year-old male presents with sudden onset severe right flank pain for 6 hours.",
         "Pain radiates to the groin area and is associated with nausea and diaphoresis.",
@@ -302,6 +350,22 @@
       id: "case-hematuria",
       title: "Case 4 - 無痛性血尿",
       subtitle: "Hematuria",
+      brief: {
+        chiefConcern: "無痛性肉眼血尿",
+        durationBother: "昨天開始；尿液呈暗紅色、無血塊",
+        activeModules: "血尿相關、用藥/抽菸史、家族史",
+        medication: "Aspirin",
+        reviewFlags: [
+          "Painless gross hematuria since yesterday。",
+          "30 pack-years smoking history；father had bladder cancer。",
+          "CT urography pending，需由醫師確認後續評估。"
+        ],
+        symptomSections: [
+          ["血尿型態", "尿液 dark red，無 blood clots。"],
+          ["否認症狀", "否認 dysuria、fever、flank pain、trauma。"],
+          ["背景與客觀資料", "Aspirin；smoking 30 pack-years；UA gross hematuria；CBC Hb within normal range。"]
+        ]
+      },
       narrative: [
         "58-year-old male presents with painless gross hematuria since yesterday.",
         "Urine appears dark red without blood clots.",
@@ -346,6 +410,22 @@
       id: "case-retention",
       title: "Case 5 - 急性尿滯留",
       subtitle: "Urinary Retention",
+      brief: {
+        chiefConcern: "8 小時無法排尿與下腹脹痛",
+        durationBother: "急性 8 小時；數月來已有尿流弱、遲疑、夜尿",
+        activeModules: "排尿困難、急性尿滯留、腎功能與膀胱掃描資料",
+        medication: "Antihypertensive medications",
+        reviewFlags: [
+          "目前 8 小時無法排尿，合併 severe lower abdominal fullness。",
+          "Bladder scan retained urine approximately 900 mL。",
+          "Mildly elevated creatinine；需由醫師確認急性處置與後續評估。"
+        ],
+        symptomSections: [
+          ["急性狀態", "Inability to urinate for 8 hours；lower abdominal fullness and discomfort。"],
+          ["既往排尿症狀", "數月來有 weak stream、hesitancy、nocturia。"],
+          ["客觀資料", "Lower abdomen distended with suprapubic tenderness；bladder scan about 900 mL；mildly elevated creatinine。"]
+        ]
+      },
       narrative: [
         "72-year-old male presents with inability to urinate for 8 hours.",
         "Patient complains of severe lower abdominal fullness and discomfort.",

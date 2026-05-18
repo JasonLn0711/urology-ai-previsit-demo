@@ -8,7 +8,7 @@ It uses synthetic urology previsit cases and local browser answers to produce ro
 
 Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate from 許醫師's current `陽明小幫手` prototype name, which should be treated as benchmark/source context only.
 
-Current product version: `v2.4.9`.
+Current product version: `v2.4.10`.
 
 ## Project Ownership Rule
 
