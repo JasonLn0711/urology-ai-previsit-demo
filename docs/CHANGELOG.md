@@ -2,6 +2,45 @@
 
 This changelog records meaningful product, demo, safety, question-bank, and evidence-system changes.
 
+## v2.4.3 - 2026-05-18
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Document AI similarity workflow diagram
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run version:check`
+
+## v2.4.2 - 2026-05-18
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Simplify short-answer question groups
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run version:check`
+
+## v2.4.1 - 2026-05-18
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Clarify patient distress score guidance
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run version:check`
+
 ## v2.4.0 - 2026-05-15
 
 Stage: `demo-freeze-candidate`

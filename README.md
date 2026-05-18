@@ -8,7 +8,7 @@ It uses synthetic urology previsit cases and local browser answers to produce ro
 
 Working brand: `泌尿預診導航` (`UroPrevisit Navigator`). This is separate from 許醫師's current `陽明小幫手` prototype name, which should be treated as benchmark/source context only.
 
-Current product version: `v2.4.0`.
+Current product version: `v2.4.3`.
 
 ## Project Ownership Rule
 
@@ -24,6 +24,9 @@ Huicheng may borrow architecture, interaction patterns, and safety lessons from 
 - An experiment system for logs, scorecards, and decision memos.
 - A simplified Taiwan hospital patient intake screen with click or voice answer
   submission, visible answer confirmation, and 30-second final supplement.
+- A synthetic-case workflow that can automatically generate a draft medical
+  note from patient physiology records, history, and question-answer context,
+  using SOAP as the medical-education design structure for physician reference.
 - A local ASR backend that uses the existing
   `SoybeanMilk/faster-whisper-Breeze-ASR-25` model on RTX GPU with
   `compute_type=int8`, no CPU fallback, and fixed denoise plus `-20 dBFS`
@@ -69,6 +72,52 @@ The first-principles demo claim is narrow:
 ```text
 After each patient answer, the system selects the next most useful governed previsit question from the current patient state, and stops before drifting into diagnostic questioning.
 ```
+
+## Workflow Diagram
+
+```mermaid
+flowchart TD
+  A[Synthetic urology case or local browser intake] --> B{Input mode}
+  B -->|Click or typed answer| C[Patient answer confirmation]
+  B -->|Optional voice answer| D[Local RTX ASR server]
+  D --> E[Transcript and visible-answer matching]
+  E --> C
+
+  C --> F[Canonical previsit state]
+  F --> G[Source attribution and audit trace]
+  F --> H[Missing-field and safety-boundary checks]
+  F --> I[Governed compact question bank]
+
+  G --> J[AI similarity engine]
+  H --> J
+  I --> J
+  J --> K[Best next governed previsit question]
+  K --> C
+
+  H --> L{Enough previsit context?}
+  L -->|No| K
+  L -->|Yes| M[Role-separated outputs]
+
+  M --> N[Patient confirmation]
+  M --> O[Nurse missing-field repair]
+  M --> P[Clinician summary]
+  M --> Q[Visit packet]
+  M --> R[Reviewer decision evidence]
+  M --> S[SOAP-structured draft note for physician reference]
+```
+
+The `AI similarity engine` wraps the current embedding-style cosine similarity
+and related ranking logic. The README intentionally treats it as a single
+selection component; algorithm details live in the code and supporting docs.
+
+For the final synthetic-case output, the intended case behavior is:
+
+```text
+依據病人之生理紀錄、病史以及問答情形，自動生成病例草稿（以醫學教育中 SOAP 原則為設計架構）提供醫師參考。
+```
+
+The generated draft remains a reference artifact for physician review; it is
+not a diagnosis, triage decision, treatment recommendation, or exam order.
 
 ## Demo Ready Check
 
