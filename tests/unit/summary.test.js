@@ -15,7 +15,16 @@ test("synthetic cases build bounded clinician summaries", () => {
 
     assert.equal(summary.requiresPhysicianReview, true);
     assert.ok(summary.fieldSources.length > 0);
+    assert.equal(summary.soapDraft.title, "SOAP 病例草稿（醫師審閱用）");
+    assert.ok(summary.soapDraft.subjective.length >= 4);
+    assert.ok(summary.soapDraft.objective.length >= 4);
+    assert.ok(summary.soapDraft.assessment.length >= 2);
+    assert.ok(summary.soapDraft.plan.length >= 2);
     assert.match(text, /醫療人員確認|臨床使用前必須由醫療人員確認/);
+    assert.match(text, /s - subjective/);
+    assert.match(text, /o - objective/);
+    assert.match(text, /a - assessment/);
+    assert.match(text, /p - plan/);
     assert.doesNotMatch(text, /likely infection|probable cancer|take medication|diagnosed with|you have/);
   }
 });

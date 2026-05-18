@@ -169,6 +169,7 @@
           ["用藥 / 背景", clinicianSummary.medicines],
           ["病人補充", clinicianSummary.patientNote]
         ],
+        soapDraft: clinicianSummary.soapDraft,
         priorityReviewFlags: clinicianSummary.clinicianReviewFlags,
         missingInformation: clinicianSummary.missingInformation,
         sourceAttributionSummary: clinicianSummary.sourceAttributionSummary,
@@ -203,6 +204,17 @@
       "",
       `[${packet.clinicianPage.title}]`,
       ...packet.clinicianPage.rows.map(([label, value]) => `${label}：${value}`),
+      packet.clinicianPage.soapDraft ? packet.clinicianPage.soapDraft.title : "",
+      ...(packet.clinicianPage.soapDraft ? [
+        "S - Subjective",
+        ...packet.clinicianPage.soapDraft.subjective.map((item) => `- ${item}`),
+        "O - Objective",
+        ...packet.clinicianPage.soapDraft.objective.map((item) => `- ${item}`),
+        "A - Assessment",
+        ...packet.clinicianPage.soapDraft.assessment.map((item) => `- ${item}`),
+        "P - Plan",
+        ...packet.clinicianPage.soapDraft.plan.map((item) => `- ${item}`)
+      ] : []),
       "需現場確認的病人回報：",
       ...packet.clinicianPage.priorityReviewFlags.map((item) => `- ${item}`),
       "答案來源分布：",

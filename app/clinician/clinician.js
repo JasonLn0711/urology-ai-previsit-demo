@@ -170,6 +170,33 @@ function buildPatternSections(answers, sources) {
     .join("");
 }
 
+function buildSoapSection(soapDraft) {
+  if (!soapDraft) return "";
+  const blocks = [
+    ["S", "Subjective", soapDraft.subjective],
+    ["O", "Objective", soapDraft.objective],
+    ["A", "Assessment", soapDraft.assessment],
+    ["P", "Plan", soapDraft.plan]
+  ];
+
+  return `
+    <section class="clinical-block soap-draft-block">
+      <h3>${escapeHtml(soapDraft.title)}</h3>
+      <p>${escapeHtml(soapDraft.boundary)}</p>
+      <div class="soap-draft-grid">
+        ${blocks.map(([letter, label, items]) => `
+          <article class="soap-draft-card">
+            <strong><span>${escapeHtml(letter)}</span>${escapeHtml(label)}</strong>
+            <ul>
+              ${(items || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+            </ul>
+          </article>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
 function render() {
   const answers = readAnswers();
   const summary = buildClinicianSummary(answers);
@@ -232,6 +259,8 @@ function render() {
         <p>目前尚未有足夠症狀回答。</p>
       </section>
     `}
+
+    ${buildSoapSection(summary.soapDraft)}
 
     <section class="clinical-block">
       <h3>缺漏資訊</h3>

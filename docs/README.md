@@ -32,6 +32,7 @@ Use these only when the active docs point to them or when a stakeholder asks for
 - `adaptive-questioning-design.md`
 - `ambiguity-handling.md`
 - `question-bank-schema.md`
+- `soap-example-case-reports.md`
 - `safety-boundary.md`
 - `demo-script-5min.md`
 - `v1-to-v2-change-log.md`

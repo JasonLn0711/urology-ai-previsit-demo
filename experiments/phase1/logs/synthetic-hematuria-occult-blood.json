@@ -374,6 +374,34 @@
         ]
       },
       "handoffNote": "本資料來自病人、家屬或現場補問；仍需醫療人員確認。",
+      "soapDraft": {
+        "title": "SOAP 病例草稿（醫師審閱用）",
+        "boundary": "由合成問答資料自動整理，僅作為醫師看診前參考。",
+        "subjective": [
+          "主訴：Visible blood or health-check occult blood",
+          "病程與困擾：Within 1 week / 困擾程度 5/10",
+          "病人回報症狀型態：可見血尿/血塊：病人看到：有; 發生模式：One recent episode; health-check urine test also mentioned occult blood; 血塊：沒有; 合併回報：No pain or burning、No fever or chills",
+          "病史與用藥背景：用藥資料：可提供藥單; 確認協助：沒有; 病人回報背景：不確定; 利尿劑/抗凝血藥物認知：不確定",
+          "病人補充：Patient wants to ask whether the visible color change and health-check result should be reviewed together."
+        ],
+        "objective": [
+          "填答來源：本人回答",
+          "啟動整理模組：可見血尿/血塊、用藥補充",
+          "來源分布：填答開始時標記：1；本人回答：22",
+          "缺漏或不確定資訊：目前沒有必補核心欄位。",
+          "目前未接入院內檢查、生命徵象或影像資料；若有客觀紀錄，需由醫療人員於現場核對後補入。"
+        ],
+        "assessment": [
+          "醫師待評估：本草稿僅把病人回報與結構化欄位整理成看診前問題清單。",
+          "需現場確認的病人回報：病人回報曾看到血尿或血塊。",
+          "若病人描述與現場評估不一致，以醫療人員確認內容為準。"
+        ],
+        "plan": [
+          "醫師可依現場流程決定是否補問、補登客觀資料或調整病歷內容。",
+          "可優先補齊：目前沒有必補核心欄位。",
+          "本草稿不可直接作為診斷、分流、治療建議或檢查開立依據。"
+        ]
+      },
       "rawAnswers": {
         "filledBy": "Patient self-filled",
         "chiefConcern": "Visible blood or health-check occult blood",

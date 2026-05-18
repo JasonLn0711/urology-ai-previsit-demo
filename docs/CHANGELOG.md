@@ -2,6 +2,32 @@
 
 This changelog records meaningful product, demo, safety, question-bank, and evidence-system changes.
 
+## v2.4.7 - 2026-05-18
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Add SOAP draft clinician summary examples
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run version:check`
+
+## v2.4.6 - 2026-05-18
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Exclude closing supplement prompt until final turn
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run version:check`
+
 ## v2.4.5 - 2026-05-18
 
 Stage: `demo-freeze-candidate`

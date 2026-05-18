@@ -36,6 +36,9 @@ test("nurse and clinician outputs differ without mutating core logic", () => {
   assert.equal(packet.patientPage.audience, "patient-family");
   assert.equal(packet.nursePage.audience, "nurse");
   assert.equal(packet.clinicianPage.audience, "clinician");
+  assert.equal(packet.clinicianPage.soapDraft.title, "SOAP 病例草稿（醫師審閱用）");
+  assert.ok(packet.clinicianPage.soapDraft.subjective.length > 0);
+  assert.ok(packet.clinicianPage.soapDraft.objective.length > 0);
 });
 
 test("patient page does not expose staff-only navigation", () => {

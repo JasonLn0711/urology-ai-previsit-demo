@@ -328,6 +328,52 @@
     return cues.length ? cues : ["目前沒有例行檢視以外的護理提醒。"];
   }
 
+  function soapLine(label, value, fallback) {
+    return `${label}：${value || fallback}`;
+  }
+
+  function buildSoapDraftFromPieces(safeAnswers, pieces) {
+    const modules = pieces.moduleNames.length ? pieces.moduleNames : ["core only"];
+    const moduleLabels = modules.map((module) => MODULE_LABELS[module] || module).join("、");
+    const flags = pieces.flags.length ? pieces.flags : [NEUTRAL_EMPTY_FLAG];
+    const missing = pieces.missing.length ? pieces.missing : ["目前沒有必補核心欄位。"];
+    const subjective = [
+      soapLine("主訴", formatList(safeAnswers.chiefConcern, "未提供"), "未提供"),
+      soapLine("病程與困擾", durationBother(safeAnswers), "未提供"),
+      soapLine("病人回報症狀型態", symptomPattern(safeAnswers), "目前資訊不足"),
+      soapLine("病史與用藥背景", medicineContext(safeAnswers), "未提供"),
+      soapLine("病人補充", answer(safeAnswers.notes), "沒有補充說明")
+    ];
+    const objective = [
+      soapLine("填答來源", displayValue(safeAnswers.filledBy), "未提供"),
+      soapLine("啟動整理模組", moduleLabels, "核心欄位"),
+      soapLine("來源分布", sourceAttributionSummary(safeAnswers).join("；"), "未標記"),
+      soapLine("缺漏或不確定資訊", missing.join("；"), "目前沒有必補核心欄位"),
+      "目前未接入院內檢查、生命徵象或影像資料；若有客觀紀錄，需由醫療人員於現場核對後補入。"
+    ];
+    const assessment = [
+      "醫師待評估：本草稿僅把病人回報與結構化欄位整理成看診前問題清單。",
+      soapLine("需現場確認的病人回報", flags.join("；"), NEUTRAL_EMPTY_FLAG),
+      "若病人描述與現場評估不一致，以醫療人員確認內容為準。"
+    ];
+    const plan = [
+      "醫師可依現場流程決定是否補問、補登客觀資料或調整病歷內容。",
+      `可優先補齊：${missing.join("；")}`,
+      "本草稿不可直接作為診斷、分流、治療建議或檢查開立依據。"
+    ];
+
+    const draft = {
+      title: "SOAP 病例草稿（醫師審閱用）",
+      boundary: "由合成問答資料自動整理，僅作為醫師看診前參考。",
+      subjective,
+      objective,
+      assessment,
+      plan
+    };
+    assertSafeLanguage(draft, "SOAP draft");
+    return draft;
+  }
+
   function buildClinicianSummary(answers) {
     const safeAnswers = answers || {};
     const missing = missingFieldLabels(safeAnswers);
@@ -356,11 +402,34 @@
       sourceAttributionSummary: sourceAttributionSummary(safeAnswers),
       attribution: attributionBlock(safeAnswers),
       handoffNote: "本資料來自病人、家屬或現場補問；仍需醫療人員確認。",
+      soapDraft: buildSoapDraftFromPieces(safeAnswers, { missing, flags, moduleNames }),
       rawAnswers: Object.assign({}, safeAnswers)
     });
 
     assertSafeLanguage(summary, "clinician summary");
     return summary;
+  }
+
+  function soapDraftToText(soapDraft) {
+    if (!soapDraft) return "";
+    const text = [
+      soapDraft.title,
+      soapDraft.boundary,
+      "",
+      "S - Subjective",
+      ...soapDraft.subjective.map((item) => `- ${item}`),
+      "",
+      "O - Objective",
+      ...soapDraft.objective.map((item) => `- ${item}`),
+      "",
+      "A - Assessment",
+      ...soapDraft.assessment.map((item) => `- ${item}`),
+      "",
+      "P - Plan",
+      ...soapDraft.plan.map((item) => `- ${item}`)
+    ].join("\n");
+    assertSafeLanguage(text, "SOAP draft text");
+    return text;
   }
 
   function summaryToText(summary) {
@@ -394,6 +463,8 @@
       ...summary.sourceNotes.map((item) => `- ${item}`),
       ...summary.sourceAttributionSummary.map((item) => `- ${item}`),
       "",
+      soapDraftToText(summary.soapDraft),
+      "",
       `用藥/背景：${summary.medicines}`,
       `病人補充：${summary.patientNote}`,
       "",
@@ -412,6 +483,7 @@
     medicineContext,
     patientConstraints,
     nurseCues,
+    soapDraftToText,
     buildClinicianSummary,
     summaryToText
   };
