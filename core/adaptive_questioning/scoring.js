@@ -15,6 +15,8 @@ const DEFAULT_WEIGHTS = {
   safety: 0.05
 };
 
+const FINAL_QUESTION_INDEX = 11;
+
 function semanticSimilarity(stateText, question) {
   const stateTokens = new Set(tokenize(stateText));
   const questionTokens = tokenize([
@@ -44,11 +46,11 @@ function missingInfoScore(question, answers = {}) {
   return missing / fields.length;
 }
 
-function dependencyAllowed(question, answers = {}, symptoms = []) {
+function dependencyAllowed(question, answers = {}, symptoms = [], asked = new Set()) {
   const answeredCount = Object.keys(answers || {}).filter((field) => hasAnswer(answers, field)).length;
   if (question.id === "compact_duration_bother") return hasAnswer(answers, "compactPrimaryConcern") || symptoms.length > 0;
   if (question.id === "compact_background_medication") return hasAnswer(answers, "compactPrimaryConcern") || answeredCount >= 2 || symptoms.includes("context");
-  if (question.id === "compact_closing_note") return answeredCount >= 5;
+  if (question.id === "compact_closing_note") return asked.size >= FINAL_QUESTION_INDEX;
   if (question.id === "leakage_trigger") return hasAnswer(answers, "leakage") || symptoms.includes("leakage");
   if (question.id === "current_retention") return hasAnswer(answers, "unableToUrinate") || symptoms.includes("retention");
   if (question.id === "hematuria_pattern") return hasAnswer(answers, "visibleBlood") || symptoms.includes("hematuria");
@@ -69,7 +71,8 @@ function scoreQuestion({ question, stateText, symptoms, answers, asked, activeAm
   const safety = question.safetyPriority || 0;
   const alreadyAskedPenalty = asked.has(question.id) ? 1 : 0;
   const answeredPenalty = (question.asksFor || []).every((field) => hasAnswer(answers, field)) ? 0.72 : 0;
-  const dependencyPenalty = dependencyAllowed(question, answers, symptoms) ? 0 : 0.45;
+  const dependencyPenalty = dependencyAllowed(question, answers, symptoms, asked) ? 0 : 0.45;
+  const finalQuestionSequencePenalty = question.id === "compact_closing_note" && asked.size < FINAL_QUESTION_INDEX ? 1 : 0;
   const ambiguityPenalty = isOtherQuestionDuringAmbiguity ? 0.65 : 0;
   const inactiveClarificationPenalty = inactiveClarification ? 0.55 : 0;
   const outOfScopePenalty = question.safetyLevel === "out_of_scope" ? 1 : 0;
@@ -81,6 +84,7 @@ function scoreQuestion({ question, stateText, symptoms, answers, asked, activeAm
     alreadyAskedPenalty -
     answeredPenalty -
     dependencyPenalty -
+    finalQuestionSequencePenalty -
     ambiguityPenalty -
     inactiveClarificationPenalty -
     outOfScopePenalty;
@@ -97,6 +101,7 @@ function scoreQuestion({ question, stateText, symptoms, answers, asked, activeAm
     alreadyAskedPenalty,
     answeredPenalty,
     dependencyPenalty,
+    finalQuestionSequencePenalty,
     ambiguityPenalty,
     inactiveClarificationPenalty,
     outOfScopePenalty
@@ -128,6 +133,7 @@ function buildReasons({
   alreadyAskedPenalty,
   answeredPenalty,
   dependencyPenalty,
+  finalQuestionSequencePenalty,
   ambiguityPenalty,
   inactiveClarificationPenalty,
   outOfScopePenalty
@@ -145,6 +151,7 @@ function buildReasons({
   if (alreadyAskedPenalty) reasons.push("已問過，因此降權，避免病人重複回答");
   if (answeredPenalty) reasons.push("對應欄位已有答案，因此降權");
   if (dependencyPenalty) reasons.push("前置資訊尚不足，因此暫緩");
+  if (finalQuestionSequencePenalty) reasons.push("這是第 12 題固定結尾題，尚未到最後一題，因此排除");
   if (outOfScopePenalty) reasons.push("超出此 demo 的門診前整理範圍，因此排除");
   if (inactiveClarificationPenalty) reasons.push("沒有 active ambiguity，因此釐清題降權");
   if (!reasons.length) reasons.push("作為一般背景補問候選");

@@ -192,3 +192,40 @@ test("compact previsit bank can finish within the 12-question design cap", () =>
   assert.ok(askedQuestionIds.includes("compact_pain_systemic"));
   assert.ok(askedQuestionIds.includes("compact_visible_blood"));
 });
+
+test("compact closing note is locked to the twelfth question", () => {
+  const nonClosingQuestionIds = QUESTION_BANK
+    .filter((question) => question.id !== "compact_closing_note")
+    .map((question) => question.id);
+  const answers = {
+    compactPrimaryConcern: ["頻尿、夜尿或急尿"],
+    compactDurationBother: ["1 到 7 天"],
+    compactStorageSymptoms: ["晚上睡著後會起床尿尿"],
+    compactLeakagePattern: ["咳嗽、大笑或用力時會漏尿"],
+    compactVoidingSymptoms: ["尿流變細或變弱"],
+    compactPainSystemic: ["尿尿會刺痛或灼熱"],
+    compactVisibleBlood: ["粉紅或紅色尿"],
+    compactBackgroundMedication: ["可以提供藥袋、藥單或藥物照片"]
+  };
+
+  const beforeFinalTurn = rankQuestions({
+    transcript: "我還有其他事情想補充給醫師知道。",
+    answers,
+    askedQuestionIds: nonClosingQuestionIds.slice(0, 10),
+    questionBank: QUESTION_BANK
+  });
+  const earlyClosing = beforeFinalTurn.ranked.find((item) => item.question.id === "compact_closing_note");
+
+  assert.notEqual(beforeFinalTurn.selected.question.id, "compact_closing_note");
+  assert.ok(earlyClosing.score <= -0.5);
+  assert.ok(earlyClosing.reasons.some((reason) => reason.includes("第 12 題固定結尾題")));
+
+  const finalTurn = rankQuestions({
+    transcript: "我還有其他事情想補充給醫師知道。",
+    answers,
+    askedQuestionIds: nonClosingQuestionIds,
+    questionBank: QUESTION_BANK
+  });
+
+  assert.equal(finalTurn.selected.question.id, "compact_closing_note");
+});
