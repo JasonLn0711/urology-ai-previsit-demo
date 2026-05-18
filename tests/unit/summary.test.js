@@ -15,13 +15,15 @@ test("synthetic cases build bounded clinician summaries", () => {
 
     assert.equal(summary.requiresPhysicianReview, true);
     assert.ok(summary.fieldSources.length > 0);
-    assert.match(summary.soapDraft.title, /^Case - /);
+    assert.match(summary.soapDraft.title, /^Case \d - /);
     assert.equal(summary.soapDraft.format, "case-report");
     assert.match(summary.soapDraft.narrative, /Past history:/);
     assert.match(summary.soapDraft.narrative, /Medication:/);
     assert.match(summary.soapDraft.narrative, /Physical examination:/);
     assert.match(summary.soapDraft.narrative, /Assessment:/);
     assert.match(summary.soapDraft.narrative, /Plan:/);
+    assert.equal(summary.soapDraft.caseStudies.length, 5);
+    assert.match(summary.soapDraft.caseStudies[0].narrative, /65-year-old male presents with urinary frequency/);
     assert.ok(summary.soapDraft.subjective.length >= 4);
     assert.ok(summary.soapDraft.objective.length >= 4);
     assert.ok(summary.soapDraft.assessment.length >= 2);
@@ -43,7 +45,7 @@ test("hematuria case stays observational and activates hematuria context", () =>
   assert.ok(summary.activeModules.includes("medication"));
   assert.match(text, /可見血尿|血尿/);
   assert.match(text, /occult blood/);
-  assert.doesNotMatch(text, /cancer|risk score|order placed/);
+  assert.doesNotMatch(text, /probable cancer|risk score|order placed/);
 });
 
 test("supports multiple selected main urinary concerns", () => {

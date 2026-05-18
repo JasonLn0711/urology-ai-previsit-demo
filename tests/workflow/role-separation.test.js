@@ -36,7 +36,7 @@ test("nurse and clinician outputs differ without mutating core logic", () => {
   assert.equal(packet.patientPage.audience, "patient-family");
   assert.equal(packet.nursePage.audience, "nurse");
   assert.equal(packet.clinicianPage.audience, "clinician");
-  assert.match(packet.clinicianPage.soapDraft.title, /^Case - /);
+  assert.match(packet.clinicianPage.soapDraft.title, /^Case \d - /);
   assert.equal(packet.clinicianPage.soapDraft.format, "case-report");
   assert.match(packet.clinicianPage.soapDraft.narrative, /Past history:/);
   assert.ok(packet.clinicianPage.soapDraft.subjective.length > 0);

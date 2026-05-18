@@ -378,11 +378,44 @@
       },
       "handoffNote": "本資料來自病人、家屬或現場補問；仍需醫療人員確認。",
       "soapDraft": {
-        "title": "Case - 排尿困難與急性尿滯留審閱模式",
-        "subtitle": "Voiding Difficulty / Urinary Retention Review Pattern",
+        "title": "Case 5 - 急性尿滯留",
+        "subtitle": "Urinary Retention",
         "boundary": "由合成問答資料自動整理，僅作為醫師看診前參考。",
         "format": "case-report",
-        "narrative": "排尿困難或尿流弱 for 1 到 4 週.\nPatient-reported pattern: 排尿困難：尿不出來/排尿困難：有; 目前仍發生：沒有; 尿流弱：有; 需用力：有; 斷斷續續：有; 尿不乾淨感：有\nClinician-review flags: 病人回報排尿困難或曾尿不出來。\n\nDenies or not yet confirms:\n- Items not captured by the structured intake remain for physician confirmation.\n\nPast history:\n- 不確定\n\nMedication:\n- 用藥資料：不確定; 確認協助：有; 病人回報背景：不確定; 利尿劑/抗凝血藥物認知：不確定\n\nAllergy:\n- Not captured by the current structured intake\n\nFamily history:\n- Not captured by the current structured intake\n\nSocial history:\n- Not captured by the current structured intake\n\nPhysical examination:\n- Not connected to clinic examination records in this synthetic demo\n\nObjective records:\n- Intake source: 家屬協助操作，本人回答\n- Active structured modules: 排尿困難、用藥補充\n- Source distribution: 填答開始時標記：1; 本人回答，家屬協助操作：24\n- Vital signs, laboratory data, imaging, and procedure results must be entered or confirmed by clinical staff when available\n\nAssessment:\nPhysician-review draft: structured previsit information is organized for clinician confirmation before final documentation.\nReview focus: 病人回報排尿困難或曾尿不出來。\n\nPlan:\n- Physician may confirm the history, examination, objective records, and missing fields during the visit.\n- Fields to consider completing: 目前沒有必補核心欄位。\n- This demo must not be used as diagnosis, triage, treatment advice, or exam ordering.",
+        "narrative": "72-year-old male presents with inability to urinate for 8 hours.\nPatient complains of severe lower abdominal fullness and discomfort.\n\nOver the past several months, patient had:\n- weak stream\n- hesitancy\n- nocturia\n\nPast history:\n- Diabetes mellitus\n- Benign prostatic hyperplasia\n\nMedication:\n- Antihypertensive medications\n\nPhysical examination:\nBP 162/94 mmHg\nHR 96 bpm\nTemp 36.9 C\n\nLower abdomen distended with suprapubic tenderness.\n\nBladder scan:\n- retained urine volume approximately 900 mL\n\nLaboratory:\n- mildly elevated creatinine\n\nAssessment:\nPhysician-review draft: acute urinary retention secondary to BPH pattern.\n\nPlan:\n- Foley catheter insertion\n- Monitor urine output\n- Physician review field: alpha blocker\n- Urology follow-up\n- Evaluate surgical treatment if recurrent",
+        "selectedCaseStudyId": "case-retention",
+        "caseStudies": [
+          {
+            "id": "case-bph",
+            "title": "Case 1 - 良性攝護腺肥大（BPH）",
+            "subtitle": "Benign Prostatic Hyperplasia",
+            "narrative": "65-year-old male presents with urinary frequency and nocturia for 6 months.\nPatient reports waking up 4-5 times nightly to urinate. He also noticed weak urine stream, hesitancy, and incomplete emptying sensation. Symptoms gradually worsened over the past 2 months.\n\nDenies fever, gross hematuria, flank pain, or weight loss.\n\nPast history:\n- Hypertension\n- Hyperlipidemia\n\nMedication:\n- Amlodipine\n\nAllergy:\n- No known drug allergy\n\nFamily history:\n- Father had BPH\n\nSocial history:\n- Non-smoker\n- Occasional alcohol use\n\nPhysical examination:\nBP 138/82 mmHg\nHR 76 bpm\nTemp 36.7 C\n\nDigital rectal examination:\n- enlarged smooth prostate\n- non-tender\n\nUrinalysis:\n- no pyuria\n- no hematuria\n\nPSA:\n2.4 ng/mL\n\nBladder ultrasound:\n- enlarged prostate\n- post-void residual urine: 90 mL\n\nAssessment:\nPhysician-review draft: benign prostatic hyperplasia with lower urinary tract symptoms (LUTS).\n\nPlan:\n- Physician review field: tamsulosin 0.4 mg QD\n- Lifestyle modification\n- Reduce nighttime fluid intake\n- Follow-up in 4 weeks\n- Consider uroflowmetry if symptoms persist"
+          },
+          {
+            "id": "case-uti",
+            "title": "Case 2 - 泌尿道感染（UTI）",
+            "subtitle": "Urinary Tract Infection",
+            "narrative": "28-year-old female presents with dysuria and urinary frequency for 3 days.\nPatient reports burning sensation during urination and urgency. Mild suprapubic discomfort developed today.\n\nDenies flank pain, fever, nausea, or gross hematuria.\n\nPast history:\n- Recurrent UTI twice last year\n\nMedication:\n- None\n\nAllergy:\n- Penicillin allergy\n\nSocial history:\n- Sexually active\n\nPhysical examination:\nBP 112/70 mmHg\nHR 88 bpm\nTemp 37.4 C\n\nAbdominal examination:\n- mild suprapubic tenderness\n\nUrinalysis:\n- leukocyte esterase positive\n- nitrite positive\n- elevated WBC\n\nUrine culture:\npending\n\nAssessment:\nPhysician-review draft: acute uncomplicated urinary tract infection.\n\nPlan:\n- Physician review field: oral antibiotics\n- Increase hydration\n- Urine culture follow-up\n- Return immediately if fever or flank pain develops"
+          },
+          {
+            "id": "case-stone",
+            "title": "Case 3 - 腎結石",
+            "subtitle": "Kidney Stone",
+            "narrative": "42-year-old male presents with sudden onset severe right flank pain for 6 hours.\nPain radiates to the groin area and is associated with nausea and diaphoresis.\n\nDenies fever or dysuria.\n\nPast history:\n- Kidney stone 5 years ago\n\nMedication:\n- None\n\nSocial history:\n- Poor water intake\n- High-salt diet\n\nPhysical examination:\nBP 150/92 mmHg\nHR 102 bpm\nTemp 36.8 C\n\nPositive right costovertebral angle tenderness.\n\nUrinalysis:\n- microscopic hematuria\n\nCT scan:\n- 5 mm right distal ureter stone\n- mild hydronephrosis\n\nAssessment:\nPhysician-review draft: right ureteral stone causing renal colic.\n\nPlan:\n- NSAIDs for pain control\n- Hydration\n- Medical expulsive therapy\n- Follow-up imaging in 2 weeks\n- Return if fever develops"
+          },
+          {
+            "id": "case-hematuria",
+            "title": "Case 4 - 無痛性血尿",
+            "subtitle": "Hematuria",
+            "narrative": "58-year-old male presents with painless gross hematuria since yesterday.\nUrine appears dark red without blood clots.\n\nDenies dysuria, fever, flank pain, or trauma.\n\nPast history:\n- Smoking history: 30 pack-years\n\nMedication:\n- Aspirin\n\nFamily history:\n- Father had bladder cancer\n\nPhysical examination:\nVital signs stable.\n\nNo abdominal tenderness.\nNo flank knocking pain.\n\nUrinalysis:\n- gross hematuria\n\nCBC:\n- hemoglobin within normal range\n\nCT urography:\npending\n\nAssessment:\nPhysician-review draft: painless gross hematuria requiring urinary tract malignancy review.\n\nPlan:\n- Arrange cystoscopy\n- CT urography\n- Urine cytology\n- Smoking cessation counseling"
+          },
+          {
+            "id": "case-retention",
+            "title": "Case 5 - 急性尿滯留",
+            "subtitle": "Urinary Retention",
+            "narrative": "72-year-old male presents with inability to urinate for 8 hours.\nPatient complains of severe lower abdominal fullness and discomfort.\n\nOver the past several months, patient had:\n- weak stream\n- hesitancy\n- nocturia\n\nPast history:\n- Diabetes mellitus\n- Benign prostatic hyperplasia\n\nMedication:\n- Antihypertensive medications\n\nPhysical examination:\nBP 162/94 mmHg\nHR 96 bpm\nTemp 36.9 C\n\nLower abdomen distended with suprapubic tenderness.\n\nBladder scan:\n- retained urine volume approximately 900 mL\n\nLaboratory:\n- mildly elevated creatinine\n\nAssessment:\nPhysician-review draft: acute urinary retention secondary to BPH pattern.\n\nPlan:\n- Foley catheter insertion\n- Monitor urine output\n- Physician review field: alpha blocker\n- Urology follow-up\n- Evaluate surgical treatment if recurrent"
+          }
+        ],
         "subjective": [
           "主訴：排尿困難或尿流弱",
           "病程與困擾：1 到 4 週 / 困擾程度 8/10",

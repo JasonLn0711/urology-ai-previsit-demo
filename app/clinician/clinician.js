@@ -17,6 +17,8 @@ const printSummary = document.querySelector("#printSummary");
 const loadSample = document.querySelector("#loadSample");
 const toast = document.querySelector("#toast");
 
+let selectedSoapCaseId = "";
+
 const LABELS = {
   "Patient self-filled": "本人回答",
   "Family helped operate; patient answered": "家屬協助操作，本人回答",
@@ -172,13 +174,34 @@ function buildPatternSections(answers, sources) {
 
 function buildSoapSection(soapDraft) {
   if (!soapDraft) return "";
+  const caseStudies = soapDraft.caseStudies || [];
+  const selectedCase = caseStudies.find((item) => item.id === selectedSoapCaseId) ||
+    caseStudies.find((item) => item.id === soapDraft.selectedCaseStudyId) ||
+    soapDraft;
+  selectedSoapCaseId = selectedCase.id || soapDraft.selectedCaseStudyId || "";
 
   return `
     <section class="clinical-block soap-draft-block">
-      <h3>${escapeHtml(soapDraft.title)}</h3>
-      <strong class="soap-draft-subtitle">${escapeHtml(soapDraft.subtitle || "Urology Previsit Review Pattern")}</strong>
+      <div class="soap-draft-head">
+        <div>
+          <h3>${escapeHtml(selectedCase.title || soapDraft.title)}</h3>
+          <strong class="soap-draft-subtitle">${escapeHtml(selectedCase.subtitle || soapDraft.subtitle || "Urology Previsit Review Pattern")}</strong>
+        </div>
+        ${caseStudies.length ? `
+          <label class="soap-case-picker">
+            <span>Case study</span>
+            <select id="soapCaseSelect">
+              ${caseStudies.map((item) => `
+                <option value="${escapeHtml(item.id)}"${item.id === selectedSoapCaseId ? " selected" : ""}>
+                  ${escapeHtml(item.title)}
+                </option>
+              `).join("")}
+            </select>
+          </label>
+        ` : ""}
+      </div>
       <p>${escapeHtml(soapDraft.boundary)}</p>
-      <pre class="soap-case-report">${escapeHtml(soapDraft.narrative || "")}</pre>
+      <pre class="soap-case-report">${escapeHtml(selectedCase.narrative || soapDraft.narrative || "")}</pre>
     </section>
   `;
 }
@@ -276,8 +299,16 @@ function showToast(message) {
 
 loadSample.addEventListener("click", () => {
   saveAnswers(SYNTHETIC_CASES[0].answers);
+  selectedSoapCaseId = "";
   render();
   showToast("已載入示範摘要。");
+});
+
+summaryMount.addEventListener("change", (event) => {
+  if (event.target && event.target.id === "soapCaseSelect") {
+    selectedSoapCaseId = event.target.value;
+    render();
+  }
 });
 
 printSummary.addEventListener("click", () => {

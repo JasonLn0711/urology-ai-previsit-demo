@@ -146,6 +146,248 @@
     "core only": "核心欄位"
   };
 
+  const SOAP_CASE_STUDIES = [
+    {
+      id: "case-bph",
+      title: "Case 1 - 良性攝護腺肥大（BPH）",
+      subtitle: "Benign Prostatic Hyperplasia",
+      narrative: [
+        "65-year-old male presents with urinary frequency and nocturia for 6 months.",
+        "Patient reports waking up 4-5 times nightly to urinate. He also noticed weak urine stream, hesitancy, and incomplete emptying sensation. Symptoms gradually worsened over the past 2 months.",
+        "",
+        "Denies fever, gross hematuria, flank pain, or weight loss.",
+        "",
+        "Past history:",
+        "- Hypertension",
+        "- Hyperlipidemia",
+        "",
+        "Medication:",
+        "- Amlodipine",
+        "",
+        "Allergy:",
+        "- No known drug allergy",
+        "",
+        "Family history:",
+        "- Father had BPH",
+        "",
+        "Social history:",
+        "- Non-smoker",
+        "- Occasional alcohol use",
+        "",
+        "Physical examination:",
+        "BP 138/82 mmHg",
+        "HR 76 bpm",
+        "Temp 36.7 C",
+        "",
+        "Digital rectal examination:",
+        "- enlarged smooth prostate",
+        "- non-tender",
+        "",
+        "Urinalysis:",
+        "- no pyuria",
+        "- no hematuria",
+        "",
+        "PSA:",
+        "2.4 ng/mL",
+        "",
+        "Bladder ultrasound:",
+        "- enlarged prostate",
+        "- post-void residual urine: 90 mL",
+        "",
+        "Assessment:",
+        "Physician-review draft: benign prostatic hyperplasia with lower urinary tract symptoms (LUTS).",
+        "",
+        "Plan:",
+        "- Physician review field: tamsulosin 0.4 mg QD",
+        "- Lifestyle modification",
+        "- Reduce nighttime fluid intake",
+        "- Follow-up in 4 weeks",
+        "- Consider uroflowmetry if symptoms persist"
+      ].join("\n")
+    },
+    {
+      id: "case-uti",
+      title: "Case 2 - 泌尿道感染（UTI）",
+      subtitle: "Urinary Tract Infection",
+      narrative: [
+        "28-year-old female presents with dysuria and urinary frequency for 3 days.",
+        "Patient reports burning sensation during urination and urgency. Mild suprapubic discomfort developed today.",
+        "",
+        "Denies flank pain, fever, nausea, or gross hematuria.",
+        "",
+        "Past history:",
+        "- Recurrent UTI twice last year",
+        "",
+        "Medication:",
+        "- None",
+        "",
+        "Allergy:",
+        "- Penicillin allergy",
+        "",
+        "Social history:",
+        "- Sexually active",
+        "",
+        "Physical examination:",
+        "BP 112/70 mmHg",
+        "HR 88 bpm",
+        "Temp 37.4 C",
+        "",
+        "Abdominal examination:",
+        "- mild suprapubic tenderness",
+        "",
+        "Urinalysis:",
+        "- leukocyte esterase positive",
+        "- nitrite positive",
+        "- elevated WBC",
+        "",
+        "Urine culture:",
+        "pending",
+        "",
+        "Assessment:",
+        "Physician-review draft: acute uncomplicated urinary tract infection.",
+        "",
+        "Plan:",
+        "- Physician review field: oral antibiotics",
+        "- Increase hydration",
+        "- Urine culture follow-up",
+        "- Return immediately if fever or flank pain develops"
+      ].join("\n")
+    },
+    {
+      id: "case-stone",
+      title: "Case 3 - 腎結石",
+      subtitle: "Kidney Stone",
+      narrative: [
+        "42-year-old male presents with sudden onset severe right flank pain for 6 hours.",
+        "Pain radiates to the groin area and is associated with nausea and diaphoresis.",
+        "",
+        "Denies fever or dysuria.",
+        "",
+        "Past history:",
+        "- Kidney stone 5 years ago",
+        "",
+        "Medication:",
+        "- None",
+        "",
+        "Social history:",
+        "- Poor water intake",
+        "- High-salt diet",
+        "",
+        "Physical examination:",
+        "BP 150/92 mmHg",
+        "HR 102 bpm",
+        "Temp 36.8 C",
+        "",
+        "Positive right costovertebral angle tenderness.",
+        "",
+        "Urinalysis:",
+        "- microscopic hematuria",
+        "",
+        "CT scan:",
+        "- 5 mm right distal ureter stone",
+        "- mild hydronephrosis",
+        "",
+        "Assessment:",
+        "Physician-review draft: right ureteral stone causing renal colic.",
+        "",
+        "Plan:",
+        "- NSAIDs for pain control",
+        "- Hydration",
+        "- Medical expulsive therapy",
+        "- Follow-up imaging in 2 weeks",
+        "- Return if fever develops"
+      ].join("\n")
+    },
+    {
+      id: "case-hematuria",
+      title: "Case 4 - 無痛性血尿",
+      subtitle: "Hematuria",
+      narrative: [
+        "58-year-old male presents with painless gross hematuria since yesterday.",
+        "Urine appears dark red without blood clots.",
+        "",
+        "Denies dysuria, fever, flank pain, or trauma.",
+        "",
+        "Past history:",
+        "- Smoking history: 30 pack-years",
+        "",
+        "Medication:",
+        "- Aspirin",
+        "",
+        "Family history:",
+        "- Father had bladder cancer",
+        "",
+        "Physical examination:",
+        "Vital signs stable.",
+        "",
+        "No abdominal tenderness.",
+        "No flank knocking pain.",
+        "",
+        "Urinalysis:",
+        "- gross hematuria",
+        "",
+        "CBC:",
+        "- hemoglobin within normal range",
+        "",
+        "CT urography:",
+        "pending",
+        "",
+        "Assessment:",
+        "Physician-review draft: painless gross hematuria requiring urinary tract malignancy review.",
+        "",
+        "Plan:",
+        "- Arrange cystoscopy",
+        "- CT urography",
+        "- Urine cytology",
+        "- Smoking cessation counseling"
+      ].join("\n")
+    },
+    {
+      id: "case-retention",
+      title: "Case 5 - 急性尿滯留",
+      subtitle: "Urinary Retention",
+      narrative: [
+        "72-year-old male presents with inability to urinate for 8 hours.",
+        "Patient complains of severe lower abdominal fullness and discomfort.",
+        "",
+        "Over the past several months, patient had:",
+        "- weak stream",
+        "- hesitancy",
+        "- nocturia",
+        "",
+        "Past history:",
+        "- Diabetes mellitus",
+        "- Benign prostatic hyperplasia",
+        "",
+        "Medication:",
+        "- Antihypertensive medications",
+        "",
+        "Physical examination:",
+        "BP 162/94 mmHg",
+        "HR 96 bpm",
+        "Temp 36.9 C",
+        "",
+        "Lower abdomen distended with suprapubic tenderness.",
+        "",
+        "Bladder scan:",
+        "- retained urine volume approximately 900 mL",
+        "",
+        "Laboratory:",
+        "- mildly elevated creatinine",
+        "",
+        "Assessment:",
+        "Physician-review draft: acute urinary retention secondary to BPH pattern.",
+        "",
+        "Plan:",
+        "- Foley catheter insertion",
+        "- Monitor urine output",
+        "- Physician review field: alpha blocker",
+        "- Urology follow-up",
+        "- Evaluate surgical treatment if recurrent"
+      ].join("\n")
+    }
+  ];
+
   function displayValue(value) {
     if (Array.isArray(value)) {
       const items = listValue(value).map(displayValue).filter(Boolean);
@@ -352,6 +594,18 @@
     return ["Case - 泌尿科門診前資料整理", "Urology Previsit Review Pattern"];
   }
 
+  function caseStudyFromModules(moduleNames, safeAnswers) {
+    const modules = new Set(moduleNames);
+    if (modules.has("hematuria")) return SOAP_CASE_STUDIES[3];
+    if (modules.has("pain") && containsValue(safeAnswers && safeAnswers.systemicSymptoms, "side or back pain")) {
+      return SOAP_CASE_STUDIES[2];
+    }
+    if (modules.has("pain")) return SOAP_CASE_STUDIES[1];
+    if (modules.has("voiding")) return SOAP_CASE_STUDIES[4];
+    if (modules.has("storage")) return SOAP_CASE_STUDIES[0];
+    return SOAP_CASE_STUDIES[0];
+  }
+
   function reportSection(label, lines) {
     const content = lines.filter(Boolean);
     return [
@@ -365,6 +619,7 @@
     const moduleLabels = modules.map((module) => MODULE_LABELS[module] || module).join("、");
     const flags = pieces.flags.length ? pieces.flags : [NEUTRAL_EMPTY_FLAG];
     const missing = pieces.missing.length ? pieces.missing : ["目前沒有必補核心欄位。"];
+    const selectedCaseStudy = caseStudyFromModules(modules, safeAnswers);
     const [caseTitle, caseSubtitle] = titleCaseFromModules(modules);
     const subjective = [
       soapLine("主訴", formatList(safeAnswers.chiefConcern, "未提供"), "未提供"),
@@ -390,7 +645,7 @@
       `可優先補齊：${missing.join("；")}`,
       "本草稿不可直接作為診斷、分流、治療建議或檢查開立依據。"
     ];
-    const narrative = [
+    const structuredNarrative = [
       `${formatList(safeAnswers.chiefConcern, "Urology previsit concern")} for ${displayValue(safeAnswers.duration) || "an unspecified duration"}.`,
       `Patient-reported pattern: ${symptomPattern(safeAnswers)}`,
       flags.filter((item) => item !== NEUTRAL_EMPTY_FLAG).length
@@ -446,11 +701,13 @@
     ].join("\n");
 
     const draft = {
-      title: caseTitle,
-      subtitle: caseSubtitle,
+      title: selectedCaseStudy.title || caseTitle,
+      subtitle: selectedCaseStudy.subtitle || caseSubtitle,
       boundary: "由合成問答資料自動整理，僅作為醫師看診前參考。",
       format: "case-report",
-      narrative,
+      narrative: selectedCaseStudy.narrative || structuredNarrative,
+      selectedCaseStudyId: selectedCaseStudy.id,
+      caseStudies: SOAP_CASE_STUDIES.map((item) => Object.assign({}, item)),
       subjective,
       objective,
       assessment,

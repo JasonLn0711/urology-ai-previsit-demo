@@ -2013,9 +2013,38 @@ pre.summary-body {
   gap: 12px;
 }
 
+.soap-draft-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+}
+
 .soap-draft-subtitle {
+  display: block;
+  margin-top: 6px;
   color: var(--accent-strong);
   font-size: 1rem;
+}
+
+.soap-case-picker {
+  min-width: min(280px, 100%);
+  display: grid;
+  gap: 6px;
+}
+
+.soap-case-picker span {
+  color: var(--muted);
+  font-weight: 850;
+}
+
+.soap-case-picker select {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 8px 10px;
 }
 
 .soap-case-report {
@@ -2707,10 +2736,15 @@ pre.summary-body {
   }
 
   .doctor-brief-grid,
+  .soap-draft-head,
   .clinical-list li,
   .packet-export-rows div,
   .task-card {
     grid-template-columns: 1fr;
+  }
+
+  .soap-draft-head {
+    display: grid;
   }
 
   .short-demo-page .patient-workspace,
