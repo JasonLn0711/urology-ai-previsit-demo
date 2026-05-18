@@ -1,12 +1,12 @@
 {
-  "version": "2.4.4",
-  "versionLabel": "v2.4.4",
+  "version": "2.4.5",
+  "versionLabel": "v2.4.5",
   "product": "UroPrevisit Navigator",
   "track": "urology-ai-previsit-demo",
   "stage": "demo-freeze-candidate",
   "releasedAt": "2026-05-12",
   "updatedAt": "2026-05-18",
-  "summary": "Fix patient-short ASR no-match feedback",
+  "summary": "Lock closing supplement question to twelfth turn",
   "safetyBoundary": [
     "synthetic data only",
     "no diagnosis",
