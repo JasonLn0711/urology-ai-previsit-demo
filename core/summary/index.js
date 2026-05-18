@@ -332,11 +332,40 @@
     return `${label}：${value || fallback}`;
   }
 
+  function titleCaseFromModules(moduleNames) {
+    const modules = new Set(moduleNames);
+    if (modules.has("hematuria")) {
+      return ["Case - 無痛性血尿審閱模式", "Hematuria Review Pattern"];
+    }
+    if (modules.has("pain")) {
+      return ["Case - 泌尿道感染或腎結石相關症狀審閱模式", "UTI / Kidney Stone Review Pattern"];
+    }
+    if (modules.has("voiding")) {
+      return ["Case - 排尿困難與急性尿滯留審閱模式", "Voiding Difficulty / Urinary Retention Review Pattern"];
+    }
+    if (modules.has("storage")) {
+      return ["Case - 良性攝護腺肥大與下泌尿道症狀審閱模式", "BPH / LUTS Review Pattern"];
+    }
+    if (modules.has("leakage")) {
+      return ["Case - 漏尿症狀審閱模式", "Urinary Leakage Review Pattern"];
+    }
+    return ["Case - 泌尿科門診前資料整理", "Urology Previsit Review Pattern"];
+  }
+
+  function reportSection(label, lines) {
+    const content = lines.filter(Boolean);
+    return [
+      `${label}:`,
+      ...(content.length ? content.map((item) => `- ${item}`) : ["- Not provided"])
+    ].join("\n");
+  }
+
   function buildSoapDraftFromPieces(safeAnswers, pieces) {
     const modules = pieces.moduleNames.length ? pieces.moduleNames : ["core only"];
     const moduleLabels = modules.map((module) => MODULE_LABELS[module] || module).join("、");
     const flags = pieces.flags.length ? pieces.flags : [NEUTRAL_EMPTY_FLAG];
     const missing = pieces.missing.length ? pieces.missing : ["目前沒有必補核心欄位。"];
+    const [caseTitle, caseSubtitle] = titleCaseFromModules(modules);
     const subjective = [
       soapLine("主訴", formatList(safeAnswers.chiefConcern, "未提供"), "未提供"),
       soapLine("病程與困擾", durationBother(safeAnswers), "未提供"),
@@ -361,10 +390,67 @@
       `可優先補齊：${missing.join("；")}`,
       "本草稿不可直接作為診斷、分流、治療建議或檢查開立依據。"
     ];
+    const narrative = [
+      `${formatList(safeAnswers.chiefConcern, "Urology previsit concern")} for ${displayValue(safeAnswers.duration) || "an unspecified duration"}.`,
+      `Patient-reported pattern: ${symptomPattern(safeAnswers)}`,
+      flags.filter((item) => item !== NEUTRAL_EMPTY_FLAG).length
+        ? `Clinician-review flags: ${flags.join(" ")}`
+        : "No special clinician-review flag is currently highlighted in this synthetic case.",
+      "",
+      "Denies or not yet confirms:",
+      "- Items not captured by the structured intake remain for physician confirmation.",
+      "",
+      reportSection("Past history", [
+        hasValue(safeAnswers.relevantComorbidities)
+          ? formatList(safeAnswers.relevantComorbidities, "")
+          : "Not provided in the structured intake"
+      ]),
+      "",
+      reportSection("Medication", [
+        medicineContext(safeAnswers)
+      ]),
+      "",
+      reportSection("Allergy", [
+        "Not captured by the current structured intake"
+      ]),
+      "",
+      reportSection("Family history", [
+        "Not captured by the current structured intake"
+      ]),
+      "",
+      reportSection("Social history", [
+        hasValue(safeAnswers.fluidCaffeineContext)
+          ? formatList(safeAnswers.fluidCaffeineContext, "")
+          : "Not captured by the current structured intake"
+      ]),
+      "",
+      reportSection("Physical examination", [
+        "Not connected to clinic examination records in this synthetic demo"
+      ]),
+      "",
+      reportSection("Objective records", [
+        `Intake source: ${displayValue(safeAnswers.filledBy) || "Not provided"}`,
+        `Active structured modules: ${moduleLabels}`,
+        `Source distribution: ${sourceAttributionSummary(safeAnswers).join("; ") || "Not marked"}`,
+        "Vital signs, laboratory data, imaging, and procedure results must be entered or confirmed by clinical staff when available"
+      ]),
+      "",
+      "Assessment:",
+      "Physician-review draft: structured previsit information is organized for clinician confirmation before final documentation.",
+      `Review focus: ${flags.join(" ")}`,
+      "",
+      "Plan:",
+      "- Physician may confirm the history, examination, objective records, and missing fields during the visit.",
+      `- Fields to consider completing: ${missing.join("；")}`,
+      "- This demo must not be used as diagnosis, triage, treatment advice, or exam ordering."
+    ].join("\n");
 
     const draft = {
-      title: "SOAP 病例草稿（醫師審閱用）",
+      title: caseTitle,
+      subtitle: caseSubtitle,
       boundary: "由合成問答資料自動整理，僅作為醫師看診前參考。",
+      format: "case-report",
+      narrative,
       subjective,
       objective,
       assessment,
@@ -414,7 +500,10 @@
     if (!soapDraft) return "";
     const text = [
       soapDraft.title,
+      soapDraft.subtitle,
       soapDraft.boundary,
+      "",
+      soapDraft.narrative,
       "",
       "S - Subjective",
       ...soapDraft.subjective.map((item) => `- ${item}`),

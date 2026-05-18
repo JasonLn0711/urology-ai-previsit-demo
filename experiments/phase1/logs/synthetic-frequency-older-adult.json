@@ -372,8 +372,11 @@
       },
       "handoffNote": "本資料來自病人、家屬或現場補問；仍需醫療人員確認。",
       "soapDraft": {
-        "title": "SOAP 病例草稿（醫師審閱用）",
+        "title": "Case - 良性攝護腺肥大與下泌尿道症狀審閱模式",
+        "subtitle": "BPH / LUTS Review Pattern",
         "boundary": "由合成問答資料自動整理，僅作為醫師看診前參考。",
+        "format": "case-report",
+        "narrative": "頻尿 / 夜尿 / 急尿 for 超過 1 個月.\nPatient-reported pattern: 儲尿相關：白天次數變化：有; 白天次數：9 到 12 次; 夜間起床尿尿：3 次以上; 急尿：有; 急尿頻率：大多數日子; 喝水/咖啡因背景：常喝咖啡、茶或含咖啡因飲料、睡前常喝較多水; 排尿日誌可行性：可以，但需要清楚說明\nNo special clinician-review flag is currently highlighted in this synthetic case.\n\nDenies or not yet confirms:\n- Items not captured by the structured intake remain for physician confirmation.\n\nPast history:\n- 不確定\n\nMedication:\n- 用藥資料：只記得部分; 確認協助：有; 病人回報背景：不確定; 利尿劑/抗凝血藥物認知：不確定\n\nAllergy:\n- Not captured by the current structured intake\n\nFamily history:\n- Not captured by the current structured intake\n\nSocial history:\n- 常喝咖啡、茶或含咖啡因飲料、睡前常喝較多水\n\nPhysical examination:\n- Not connected to clinic examination records in this synthetic demo\n\nObjective records:\n- Intake source: 本人回答\n- Active structured modules: 儲尿相關、用藥補充\n- Source distribution: 填答開始時標記：1; 本人回答：23\n- Vital signs, laboratory data, imaging, and procedure results must be entered or confirmed by clinical staff when available\n\nAssessment:\nPhysician-review draft: structured previsit information is organized for clinician confirmation before final documentation.\nReview focus: 此合成案例目前沒有需特別標示的病人回報。\n\nPlan:\n- Physician may confirm the history, examination, objective records, and missing fields during the visit.\n- Fields to consider completing: 目前沒有必補核心欄位。\n- This demo must not be used as diagnosis, triage, treatment advice, or exam ordering.",
         "subjective": [
           "主訴：頻尿 / 夜尿 / 急尿",
           "病程與困擾：超過 1 個月 / 困擾程度 7/10",

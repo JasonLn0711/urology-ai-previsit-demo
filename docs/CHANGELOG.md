@@ -2,6 +2,19 @@
 
 This changelog records meaningful product, demo, safety, question-bank, and evidence-system changes.
 
+## v2.4.8 - 2026-05-18
+
+Stage: `demo-freeze-candidate`
+
+### Changed
+
+- Render SOAP draft as case report
+
+### Versioning
+
+- Bump type: `patch`
+- Verification command to run before freeze or commit: `npm run version:check`
+
 ## v2.4.7 - 2026-05-18
 
 Stage: `demo-freeze-candidate`

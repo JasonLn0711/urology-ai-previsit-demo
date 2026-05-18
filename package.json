@@ -1,6 +1,6 @@
 {
   "name": "uroprevisit-navigator-demo",
-  "version": "2.4.7",
+  "version": "2.4.8",
   "private": true,
   "description": "Synthetic-data urology previsit workflow evidence system.",
   "scripts": {

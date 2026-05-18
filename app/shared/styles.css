@@ -2013,45 +2013,22 @@ pre.summary-body {
   gap: 12px;
 }
 
-.soap-draft-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+.soap-draft-subtitle {
+  color: var(--accent-strong);
+  font-size: 1rem;
 }
 
-.soap-draft-card {
-  display: grid;
-  gap: 10px;
+.soap-case-report {
+  margin: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre-wrap;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--paper);
-  padding: 13px;
-}
-
-.soap-draft-card strong {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.soap-draft-card strong span {
-  width: 26px;
-  height: 26px;
-  display: inline-grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent-strong);
-  font-weight: 900;
-}
-
-.soap-draft-card ul {
-  display: grid;
-  gap: 7px;
-  margin: 0;
-  padding-left: 18px;
-  color: var(--muted);
-  line-height: 1.48;
+  color: var(--ink);
+  padding: 14px;
+  font: 0.92rem/1.55 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
 
 .alert-block {
@@ -2730,7 +2707,6 @@ pre.summary-body {
   }
 
   .doctor-brief-grid,
-  .soap-draft-grid,
   .clinical-list li,
   .packet-export-rows div,
   .task-card {

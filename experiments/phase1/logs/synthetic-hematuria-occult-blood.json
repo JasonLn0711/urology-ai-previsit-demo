@@ -375,8 +375,11 @@
       },
       "handoffNote": "本資料來自病人、家屬或現場補問；仍需醫療人員確認。",
       "soapDraft": {
-        "title": "SOAP 病例草稿（醫師審閱用）",
+        "title": "Case - 無痛性血尿審閱模式",
+        "subtitle": "Hematuria Review Pattern",
         "boundary": "由合成問答資料自動整理，僅作為醫師看診前參考。",
+        "format": "case-report",
+        "narrative": "Visible blood or health-check occult blood for Within 1 week.\nPatient-reported pattern: 可見血尿/血塊：病人看到：有; 發生模式：One recent episode; health-check urine test also mentioned occult blood; 血塊：沒有; 合併回報：No pain or burning、No fever or chills\nClinician-review flags: 病人回報曾看到血尿或血塊。\n\nDenies or not yet confirms:\n- Items not captured by the structured intake remain for physician confirmation.\n\nPast history:\n- 不確定\n\nMedication:\n- 用藥資料：可提供藥單; 確認協助：沒有; 病人回報背景：不確定; 利尿劑/抗凝血藥物認知：不確定\n\nAllergy:\n- Not captured by the current structured intake\n\nFamily history:\n- Not captured by the current structured intake\n\nSocial history:\n- Not captured by the current structured intake\n\nPhysical examination:\n- Not connected to clinic examination records in this synthetic demo\n\nObjective records:\n- Intake source: 本人回答\n- Active structured modules: 可見血尿/血塊、用藥補充\n- Source distribution: 填答開始時標記：1; 本人回答：22\n- Vital signs, laboratory data, imaging, and procedure results must be entered or confirmed by clinical staff when available\n\nAssessment:\nPhysician-review draft: structured previsit information is organized for clinician confirmation before final documentation.\nReview focus: 病人回報曾看到血尿或血塊。\n\nPlan:\n- Physician may confirm the history, examination, objective records, and missing fields during the visit.\n- Fields to consider completing: 目前沒有必補核心欄位。\n- This demo must not be used as diagnosis, triage, treatment advice, or exam ordering.",
         "subjective": [
           "主訴：Visible blood or health-check occult blood",
           "病程與困擾：Within 1 week / 困擾程度 5/10",

@@ -395,8 +395,11 @@
       },
       "handoffNote": "本資料來自病人、家屬或現場補問；仍需醫療人員確認。",
       "soapDraft": {
-        "title": "SOAP 病例草稿（醫師審閱用）",
+        "title": "Case - 泌尿道感染或腎結石相關症狀審閱模式",
+        "subtitle": "UTI / Kidney Stone Review Pattern",
         "boundary": "由合成問答資料自動整理，僅作為醫師看診前參考。",
+        "format": "case-report",
+        "narrative": "反覆感染相關困擾 for 超過 1 個月.\nPatient-reported pattern: 儲尿相關：白天次數變化：有; 白天次數：5 到 8 次; 夜間起床尿尿：1 次; 急尿：有; 急尿頻率：有些天; 喝水/咖啡因背景：以上都沒有; 排尿日誌可行性：需要家人或現場人員協助 | 疼痛或發燒相關：尿痛/灼熱：有; 疼痛時機：尿尿時; 發燒/發冷/腰側痛：以上都沒有; 近期類似就醫或抗生素經驗：有，超過 1 次\nClinician-review flags: 病人回報尿尿疼痛或灼熱。\n\nDenies or not yet confirms:\n- Items not captured by the structured intake remain for physician confirmation.\n\nPast history:\n- 糖尿病\n\nMedication:\n- 用藥資料：可提供藥單; 確認協助：沒有; 病人回報背景：糖尿病; 利尿劑/抗凝血藥物認知：沒有\n\nAllergy:\n- Not captured by the current structured intake\n\nFamily history:\n- Not captured by the current structured intake\n\nSocial history:\n- 以上都沒有\n\nPhysical examination:\n- Not connected to clinic examination records in this synthetic demo\n\nObjective records:\n- Intake source: 本人回答\n- Active structured modules: 儲尿相關、疼痛或發燒相關、用藥補充\n- Source distribution: 填答開始時標記：1; 本人回答：25\n- Vital signs, laboratory data, imaging, and procedure results must be entered or confirmed by clinical staff when available\n\nAssessment:\nPhysician-review draft: structured previsit information is organized for clinician confirmation before final documentation.\nReview focus: 病人回報尿尿疼痛或灼熱。\n\nPlan:\n- Physician may confirm the history, examination, objective records, and missing fields during the visit.\n- Fields to consider completing: 目前沒有必補核心欄位。\n- This demo must not be used as diagnosis, triage, treatment advice, or exam ordering.",
         "subjective": [
           "主訴：反覆感染相關困擾",
           "病程與困擾：超過 1 個月 / 困擾程度 6/10",

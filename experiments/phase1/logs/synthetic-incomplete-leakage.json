@@ -272,8 +272,11 @@
       },
       "handoffNote": "本資料來自病人、家屬或現場補問；仍需醫療人員確認。",
       "soapDraft": {
-        "title": "SOAP 病例草稿（醫師審閱用）",
+        "title": "Case - 漏尿症狀審閱模式",
+        "subtitle": "Urinary Leakage Review Pattern",
         "boundary": "由合成問答資料自動整理，僅作為醫師看診前參考。",
+        "format": "case-report",
+        "narrative": "漏尿 for an unspecified duration.\nPatient-reported pattern: 漏尿：最近 4 週：有; 頻率：每週; 情境：來不及到廁所; 用品：護墊或襯墊\nNo special clinician-review flag is currently highlighted in this synthetic case.\n\nDenies or not yet confirms:\n- Items not captured by the structured intake remain for physician confirmation.\n\nPast history:\n- Not provided in the structured intake\n\nMedication:\n- 未提供\n\nAllergy:\n- Not captured by the current structured intake\n\nFamily history:\n- Not captured by the current structured intake\n\nSocial history:\n- Not captured by the current structured intake\n\nPhysical examination:\n- Not connected to clinic examination records in this synthetic demo\n\nObjective records:\n- Intake source: 家屬依觀察協助回答\n- Active structured modules: 漏尿\n- Source distribution: 填答開始時標記：1; 家屬/協助者觀察：14\n- Vital signs, laboratory data, imaging, and procedure results must be entered or confirmed by clinical staff when available\n\nAssessment:\nPhysician-review draft: structured previsit information is organized for clinician confirmation before final documentation.\nReview focus: 此合成案例目前沒有需特別標示的病人回報。\n\nPlan:\n- Physician may confirm the history, examination, objective records, and missing fields during the visit.\n- Fields to consider completing: 症狀持續時間；白天尿尿次數變化；尿尿疼痛或灼熱；發燒、發冷或腰側痛；用藥資料準備狀態；漏尿量\n- This demo must not be used as diagnosis, triage, treatment advice, or exam ordering.",
         "subjective": [
           "主訴：漏尿",
           "病程與困擾：未提供病程 / 困擾程度 4/10",

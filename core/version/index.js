@@ -1,13 +1,13 @@
 (function initUroPrevisitVersion(globalScope) {
   const VERSION = {
-      "version": "2.4.7",
-      "versionLabel": "v2.4.7",
+      "version": "2.4.8",
+      "versionLabel": "v2.4.8",
       "product": "UroPrevisit Navigator",
       "track": "urology-ai-previsit-demo",
       "stage": "demo-freeze-candidate",
       "releasedAt": "2026-05-12",
       "updatedAt": "2026-05-18",
-      "summary": "Add SOAP draft clinician summary examples",
+      "summary": "Render SOAP draft as case report",
       "safetyBoundary": [
           "synthetic data only",
           "no diagnosis",

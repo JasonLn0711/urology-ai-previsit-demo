@@ -172,27 +172,13 @@ function buildPatternSections(answers, sources) {
 
 function buildSoapSection(soapDraft) {
   if (!soapDraft) return "";
-  const blocks = [
-    ["S", "Subjective", soapDraft.subjective],
-    ["O", "Objective", soapDraft.objective],
-    ["A", "Assessment", soapDraft.assessment],
-    ["P", "Plan", soapDraft.plan]
-  ];
 
   return `
     <section class="clinical-block soap-draft-block">
       <h3>${escapeHtml(soapDraft.title)}</h3>
+      <strong class="soap-draft-subtitle">${escapeHtml(soapDraft.subtitle || "Urology Previsit Review Pattern")}</strong>
       <p>${escapeHtml(soapDraft.boundary)}</p>
-      <div class="soap-draft-grid">
-        ${blocks.map(([letter, label, items]) => `
-          <article class="soap-draft-card">
-            <strong><span>${escapeHtml(letter)}</span>${escapeHtml(label)}</strong>
-            <ul>
-              ${(items || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-            </ul>
-          </article>
-        `).join("")}
-      </div>
+      <pre class="soap-case-report">${escapeHtml(soapDraft.narrative || "")}</pre>
     </section>
   `;
 }

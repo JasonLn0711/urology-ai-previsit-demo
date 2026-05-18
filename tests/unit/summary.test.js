@@ -15,7 +15,13 @@ test("synthetic cases build bounded clinician summaries", () => {
 
     assert.equal(summary.requiresPhysicianReview, true);
     assert.ok(summary.fieldSources.length > 0);
-    assert.equal(summary.soapDraft.title, "SOAP 病例草稿（醫師審閱用）");
+    assert.match(summary.soapDraft.title, /^Case - /);
+    assert.equal(summary.soapDraft.format, "case-report");
+    assert.match(summary.soapDraft.narrative, /Past history:/);
+    assert.match(summary.soapDraft.narrative, /Medication:/);
+    assert.match(summary.soapDraft.narrative, /Physical examination:/);
+    assert.match(summary.soapDraft.narrative, /Assessment:/);
+    assert.match(summary.soapDraft.narrative, /Plan:/);
     assert.ok(summary.soapDraft.subjective.length >= 4);
     assert.ok(summary.soapDraft.objective.length >= 4);
     assert.ok(summary.soapDraft.assessment.length >= 2);

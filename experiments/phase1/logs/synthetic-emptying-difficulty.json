@@ -378,8 +378,11 @@
       },
       "handoffNote": "本資料來自病人、家屬或現場補問；仍需醫療人員確認。",
       "soapDraft": {
-        "title": "SOAP 病例草稿（醫師審閱用）",
+        "title": "Case - 排尿困難與急性尿滯留審閱模式",
+        "subtitle": "Voiding Difficulty / Urinary Retention Review Pattern",
         "boundary": "由合成問答資料自動整理，僅作為醫師看診前參考。",
+        "format": "case-report",
+        "narrative": "排尿困難或尿流弱 for 1 到 4 週.\nPatient-reported pattern: 排尿困難：尿不出來/排尿困難：有; 目前仍發生：沒有; 尿流弱：有; 需用力：有; 斷斷續續：有; 尿不乾淨感：有\nClinician-review flags: 病人回報排尿困難或曾尿不出來。\n\nDenies or not yet confirms:\n- Items not captured by the structured intake remain for physician confirmation.\n\nPast history:\n- 不確定\n\nMedication:\n- 用藥資料：不確定; 確認協助：有; 病人回報背景：不確定; 利尿劑/抗凝血藥物認知：不確定\n\nAllergy:\n- Not captured by the current structured intake\n\nFamily history:\n- Not captured by the current structured intake\n\nSocial history:\n- Not captured by the current structured intake\n\nPhysical examination:\n- Not connected to clinic examination records in this synthetic demo\n\nObjective records:\n- Intake source: 家屬協助操作，本人回答\n- Active structured modules: 排尿困難、用藥補充\n- Source distribution: 填答開始時標記：1; 本人回答，家屬協助操作：24\n- Vital signs, laboratory data, imaging, and procedure results must be entered or confirmed by clinical staff when available\n\nAssessment:\nPhysician-review draft: structured previsit information is organized for clinician confirmation before final documentation.\nReview focus: 病人回報排尿困難或曾尿不出來。\n\nPlan:\n- Physician may confirm the history, examination, objective records, and missing fields during the visit.\n- Fields to consider completing: 目前沒有必補核心欄位。\n- This demo must not be used as diagnosis, triage, treatment advice, or exam ordering.",
         "subjective": [
           "主訴：排尿困難或尿流弱",
           "病程與困擾：1 到 4 週 / 困擾程度 8/10",
